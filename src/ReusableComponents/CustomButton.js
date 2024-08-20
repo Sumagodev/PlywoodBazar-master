@@ -11,15 +11,15 @@ const CustomButton = ({
   buttonBgColor = CustomColors.mattBrownDark,
   rightIconBgColor = CustomColors.accentGreen,
   onPress,
-  textSize,
+  textSize = 16,
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, {backgroundColor: buttonBgColor}]} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }]} onPress={onPress}>
       <View style={styles.container}>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={[styles.text, { fontSize: textSize }]}>{text}</Text>
         {rightIcon && (
           <View style={[styles.iconContainer, { backgroundColor: rightIconBgColor }]}>
-            <MaterialCommunityIcons name="chevron-right" size={40} color= 'white' />
+            <MaterialCommunityIcons name="chevron-right" size={40} color='white' />
           </View>
         )}
       </View>
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: {textSize} ? {textSize} : 16,
     textAlign: 'center',
     paddingHorizontal: 10,
   },

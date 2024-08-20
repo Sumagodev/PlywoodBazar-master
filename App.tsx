@@ -60,7 +60,7 @@ export default function App() {
       {/* //ProductsYouMayLike */}
       <LikeProduct imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
       onCallPress={()=>{console.log("product item called");}}
-      onGetQuotePress={()=>{console.log("product item called");}}
+      onGetQuotePress={()=>{console.log("get quote called");}}
       />
       <View style={styles.spacer} />
 
