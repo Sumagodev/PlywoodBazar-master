@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
-import { Colors } from './Colors.js';
+import CustomColors from '../styles/CustomColors.js';
 
 const CustomTextInputField = ({ 
     imagePath,
@@ -42,20 +42,20 @@ const styles = StyleSheet.create({
   container: {
     margin: 1,
     flexDirection: 'row',
-    backgroundColor: Colors.mattBrownFaint,
+    backgroundColor: CustomColors.mattBrownFaint,
     borderRadius: 50,
-    shadowColor: Colors.shadowColorGray,
+    shadowColor: CustomColors.shadowColorGray,
     shadowRadius: 50,
     elevation: 5,
     borderWidth: 0.6,
-    borderColor: Colors.shadowColorGray,
+    borderColor: CustomColors.shadowColorGray,
   },
   iconContainer: {
     height: 45, 
     width: 45, 
     borderRadius: 50,
     margin: 2,
-    backgroundColor: Colors.mattBrownDark,
+    backgroundColor: CustomColors.mattBrownDark,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 50,
-    backgroundColor: Colors.mattBrownDark,
+    backgroundColor: CustomColors.mattBrownDark,
   }
 });
 

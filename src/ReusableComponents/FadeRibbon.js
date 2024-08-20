@@ -1,16 +1,13 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Colors } from './Colors.js';
+import LinearGradient from 'react-native-linear-gradient';
+import CustomColors from '../styles/CustomColors.js';
 
-const FadeRibbonText = ({ text, colorStart=Colors.childBackground, colorEnd=Colors.mattBrownFaint }) => {
+const FadeRibbonText = ({ text, colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint }) => {
   const styles = StyleSheet.create({
     gradientContainer: {
       padding: 10,
       borderRadius: 50,
-    },
-    gradient: {
-      flex: 1,
     },
     text: {
       color: 'white',

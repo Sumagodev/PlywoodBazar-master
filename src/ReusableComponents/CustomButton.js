@@ -2,16 +2,16 @@
 
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Colors } from './Colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomColors from '../styles/CustomColors';
 
 const CustomButton = ({
   text,
   rightIcon = false,
-  buttonBgColor = Colors.mattBrownDark,
-  rightIconBgColor = Colors.accentGreen,
-  onPress
+  buttonBgColor = CustomColors.mattBrownDark,
+  rightIconBgColor = CustomColors.accentGreen,
+  onPress,
+  textSize,
 }) => {
   return (
     <TouchableOpacity style={[styles.button, {backgroundColor: buttonBgColor}]} onPress={onPress}>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: 16,
+    fontSize: {textSize} ? {textSize} : 16,
     textAlign: 'center',
     paddingHorizontal: 10,
   },
