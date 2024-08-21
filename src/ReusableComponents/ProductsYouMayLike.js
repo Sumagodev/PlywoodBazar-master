@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dimensions } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
@@ -7,9 +8,9 @@ import CustomButton from './CustomButton.js';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const LikeProduct = ({ imagePath, name, location, price, onCallPressed, onGetQuotePressed, onCardPressed }) => {
+const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }) => {
     return (
-      <TouchableOpacity onPress={onCardPressed}>
+      <View>
         <View style={styles.container}>
             <View style={styles.elevatedContainer}>
                 <Image style={styles.upperImageStyle} source={imagePath} />
@@ -19,19 +20,19 @@ const LikeProduct = ({ imagePath, name, location, price, onCallPressed, onGetQuo
                       <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
                         <Text style={styles.locationText}>{location}</Text>
                     </View>
-                    <Text style={styles.priceText}>₹{price}</Text>
+                   
                 </View>
                 <View style={styles.callIconContainer}>
-                <TouchableOpacity onPress={onCallPressed}>
+                <TouchableOpacity onPress={onCallPress}>
                   <Image style={styles.callIcon} source={require('../../assets/img/phone.png')} />
                 </TouchableOpacity>
                 </View>
             </View>
         </View>
         <View style={styles.buttonContainer}>
-        <CustomButton text='Get Quote' textSize={22} style={styles.button} onPress={onGetQuotePressed}/>
+        <CustomButton text='Get Quote' textSize={16} style={styles.button} onPress={onGetQuotePress}/>
     </View>
-    </TouchableOpacity>
+    </View>
     );
 };
 
@@ -39,9 +40,10 @@ const styles = StyleSheet.create({
     container: {
         margin: 2,
         borderRadius: 25,
-        width: screenWidth * 0.45,
-        height: screenWidth * 0.65, // Adjust the height for a fixed but scalable size
+         width: (Dimensions.get('window').width / 2) - 20, // Width for two columns
+         height: screenWidth * 0.60, // Adjust the height for a fixed but scalable size
         elevation: 10,
+        margin: 10,
         overflow: 'hidden',
     },
     elevatedContainer: {
@@ -52,12 +54,12 @@ const styles = StyleSheet.create({
     },
     upperImageStyle: {
         width: '100%',
-        height: '50%',
+        height: '55%',
         borderRadius: 25,
     },
     callIconContainer: {
         position: 'absolute',
-        top: '40%', // Center vertically in the upper half
+        top: '43%', // Center vertically in the upper half
         left: '50%', // Center horizontally
         transform: [{ translateX: -25 }], // Adjust for centering
         backgroundColor: 'white',
@@ -82,8 +84,8 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     locationImageStyle: {
-        height: 18,
-        width: 18,
+        height: 13,
+        width: 13,
         marginRight: 5,
     },
     textContainer: {
@@ -94,12 +96,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontWeight: 'bold',
         color: CustomColors.textGrey,
-        fontSize: 18,
+        fontSize: 15,
     },
     locationText: {
         alignSelf: 'center',
         color: CustomColors.textGrey,
-        fontSize: 16,
+        fontSize: 13,
     },
     priceText: {
         alignSelf: 'center',
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       position: 'absolute',
-      bottom: -14,
+      bottom: -1,
       left: 0,
       right: 0,
       alignItems: 'center',

@@ -1,9 +1,8 @@
 import React from 'react';
-import axios from 'axios';
-export const axiosApiInstance = axios.create();
 import {View, StyleSheet} from 'react-native'
 import CustomColors from './src/styles/CustomColors';
 import TopProfilesCard from './src/ReusableComponents/TopProfilesCard';
+import CustomButton from './src/ReusableComponents/CustomButton';
 
 function App(): JSX.Element {
   return (
