@@ -6,21 +6,39 @@ import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButt
 import CustomColors from '../styles/CustomColors';
 import CustomInputWithLeftIcon from '../ReusableComponents/CustomInputWithLeftIcon';
 import VerifyOtp from './VerifyOtp';
+import { sendOtpService } from '../services/User.service';
+import { errorToast, toastSuccess } from '../utils/toastutill';
 
 export default Login = () => {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [error, setError] = useState(false);
 
-  const handleSendOTP = () => {
+  const handleSendOTP  = async () => {
     const mobileNumberPattern = /^[6-9][0-9]{9}$/;
-
+    try {    
     if (!mobileNumberPattern.test(mobileNumber)) {
       setError(true); // Set error state if the input is invalid
     } else {
       setError(false); // Clear error if the input is valid
       console.log('Sending OTP to', mobileNumber);
       // Proceed with OTP sending logic here
+      let obj = {
+        phone:mobileNumber
+      }
+      let {data:res} = await sendOtpService(obj);
+      if(res.message){
+        toastSuccess(res.message)
+        // console.log(JSON.stringify(res,null,2))
+        navigation.navigate("VerifyOtp", mobileNumber)
+      } else {
+        errorToast("Please enter a valid phone number !!!")
+        return;
+      }
+    }
+  } 
+   catch (error) {
+      errorToast(error)
     }
   };
   return (
