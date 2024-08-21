@@ -149,13 +149,85 @@ export default function Home() {
     try {
       let {data: res} = await getForHomepage();
       if (res.data) {
-        // console.log(res.data, "data")
+        console.log(res.data, "data")
         setAdvertisementsArr(res.data);
       }
     } catch (err) {
       errorToast(err);
     }
   };
+  var dummyData=[
+    {
+      "__v": 0,
+      "_id": "66068293dab9276daca9279a",
+      "createdAt": "2024-03-29T08:57:55.419Z",
+      "endDate": "2024-04-09T23:59:59.059Z",
+      "image": "1711703286896.png",
+      "isVideo": false,
+      "message": "Best Quality Product Made In very High Standard Wood ",
+      "productId": "65ded48f4052bcfbe3438127",
+      "productSlug": "royal-forest-plywood",
+      "startDate": "2024-03-29T00:00:00.000Z",
+      "updatedAt": "2024-03-29T09:08:06.899Z",
+      "userId": "64f07c1522ee5f347112f95f"
+  },
+  {
+      "__v": 0,
+      "_id": "66068293dab9276daca9279a",
+      "createdAt": "2024-03-29T08:57:55.419Z",
+      "endDate": "2024-04-09T23:59:59.059Z",
+      "image": "1711703286896.png",
+      "isVideo": false,
+      "message": "Best Quality Product Made In very High Standard Wood ",
+      "productId": "65ded48f4052bcfbe3438127",
+      "productSlug": "royal-forest-plywood",
+      "startDate": "2024-03-29T00:00:00.000Z",
+      "updatedAt": "2024-03-29T09:08:06.899Z",
+      "userId": "64f07c1522ee5f347112f95f"
+  },
+  {
+      "__v": 0,
+      "_id": "66068293dab9276daca9279a",
+      "createdAt": "2024-03-29T08:57:55.419Z",
+      "endDate": "2024-04-09T23:59:59.059Z",
+      "image": "1711703286896.png",
+      "isVideo": false,
+      "message": "Best Quality Product Made In very High Standard Wood ",
+      "productId": "65ded48f4052bcfbe3438127",
+      "productSlug": "royal-forest-plywood",
+      "startDate": "2024-03-29T00:00:00.000Z",
+      "updatedAt": "2024-03-29T09:08:06.899Z",
+      "userId": "64f07c1522ee5f347112f95f"
+  },
+  {
+      "__v": 0,
+      "_id": "66068293dab9276daca9279a",
+      "createdAt": "2024-03-29T08:57:55.419Z",
+      "endDate": "2024-04-09T23:59:59.059Z",
+      "image": "1711703286896.png",
+      "isVideo": false,
+      "message": "Best Quality Product Made In very High Standard Wood ",
+      "productId": "65ded48f4052bcfbe3438127",
+      "productSlug": "royal-forest-plywood",
+      "startDate": "2024-03-29T00:00:00.000Z",
+      "updatedAt": "2024-03-29T09:08:06.899Z",
+      "userId": "64f07c1522ee5f347112f95f"
+  },
+  {
+      "__v": 0,
+      "_id": "66068293dab9276daca9279a",
+      "createdAt": "2024-03-29T08:57:55.419Z",
+      "endDate": "2024-04-09T23:59:59.059Z",
+      "image": "1711703286896.png",
+      "isVideo": false,
+      "message": "Best Quality Product Made In very High Standard Wood ",
+      "productId": "65ded48f4052bcfbe3438127",
+      "productSlug": "royal-forest-plywood",
+      "startDate": "2024-03-29T00:00:00.000Z",
+      "updatedAt": "2024-03-29T09:08:06.899Z",
+      "userId": "64f07c1522ee5f347112f95f"
+  }
+  ]
   useEffect(() => {
     if (focused) {
       handleGetAdvvertisementForHomepage();
@@ -238,7 +310,7 @@ export default function Home() {
     console.log('######################################################')
     console.log(item)
     return (
-      <LikeProduct imagePath={{uri: generateImageUrl(item.image)}} ></LikeProduct>
+      <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={"Nashik"}></LikeProduct>
   
     );
   };
@@ -402,7 +474,7 @@ export default function Home() {
                 data={categoryArr}
                 keyExtractor={(item, index) => `${index}`}
                 horizontal
-                // numColumns={2}
+                //  olumns={2}
                 renderItem={rendercategory}
                 // columnWrapperStyle={{justifyContent: 'space-between'}}
                 // scrollEnabled={false} style={{width: '100%'}}
@@ -415,7 +487,8 @@ export default function Home() {
                   <Text style={styles1.viewall}>View All</Text>
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderProductsYouMayLike} keyExtractor={(item, index) => `${index}`} />
+              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData}    horizontal    columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                renderItem={renderProductsYouMayLike}  keyExtractor={(item, index) => `${index}`} />
 
               <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>New Products</Text>
@@ -903,5 +976,8 @@ const styles1 = StyleSheet.create({
   youtube: {
     height: 300,
     resizeMode: 'cover',
+  },
+  columnWrapper: {
+    justifyContent: 'space-between', // Ensures spacing between columns
   },
 });

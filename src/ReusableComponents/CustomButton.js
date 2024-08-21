@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     textAlign: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
+    paddingVertical:3
   },
   iconContainer: {
     width: 40,

@@ -8,7 +8,7 @@ import CustomButton from './CustomButton.js';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuotePress }) => {
+const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }) => {
     return (
       <View>
         <View style={styles.container}>
@@ -20,7 +20,7 @@ const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuote
                       <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
                         <Text style={styles.locationText}>{location}</Text>
                     </View>
-                    <Text style={styles.priceText}>₹{price}</Text>
+                   
                 </View>
                 <View style={styles.callIconContainer}>
                 <TouchableOpacity onPress={onCallPress}>
@@ -30,7 +30,7 @@ const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuote
             </View>
         </View>
         <View style={styles.buttonContainer}>
-        <CustomButton text='Get Quote' textSize={22} style={styles.button} onPress={onGetQuotePress}/>
+        <CustomButton text='Get Quote' textSize={16} style={styles.button} onPress={onGetQuotePress}/>
     </View>
     </View>
     );
@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
     container: {
         margin: 2,
         borderRadius: 25,
-        width: screenWidth * 0.50,
-        height: screenWidth * 0.70, // Adjust the height for a fixed but scalable size
+         width: (Dimensions.get('window').width / 2) - 20, // Width for two columns
+         height: screenWidth * 0.60, // Adjust the height for a fixed but scalable size
         elevation: 10,
+        margin: 10,
         overflow: 'hidden',
     },
     elevatedContainer: {
@@ -53,12 +54,12 @@ const styles = StyleSheet.create({
     },
     upperImageStyle: {
         width: '100%',
-        height: '50%',
+        height: '55%',
         borderRadius: 25,
     },
     callIconContainer: {
         position: 'absolute',
-        top: '40%', // Center vertically in the upper half
+        top: '43%', // Center vertically in the upper half
         left: '50%', // Center horizontally
         transform: [{ translateX: -25 }], // Adjust for centering
         backgroundColor: 'white',
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     locationImageStyle: {
-        height: 18,
-        width: 18,
+        height: 13,
+        width: 13,
         marginRight: 5,
     },
     textContainer: {
@@ -95,12 +96,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontWeight: 'bold',
         color: CustomColors.textGrey,
-        fontSize: 18,
+        fontSize: 15,
     },
     locationText: {
         alignSelf: 'center',
         color: CustomColors.textGrey,
-        fontSize: 16,
+        fontSize: 13,
     },
     priceText: {
         alignSelf: 'center',
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       position: 'absolute',
-      bottom: -10,
+      bottom: -1,
       left: 0,
       right: 0,
       alignItems: 'center',
