@@ -67,7 +67,7 @@ export default function Header(props) {
         <View style={styles1.sliderhome}>
           <SliderBox
             images={[...categoryArr.map(el => generateImageUrl(`${el?.image}`))]}
-            sliderBoxHeight={150}
+            sliderBoxHeight={300}
             autoplay={true}
             loop
           // onCurrentImagePressed={index => navigate.navigate('BottomBar', { screen: 'Shop', params: { data: categoryArr[index]?._id } })}
@@ -95,6 +95,8 @@ const styles1 = StyleSheet.create({
   },
   sliderhome: {
     marginVertical: 15,
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20
   },
   headerslid: {
     width: wp(95),

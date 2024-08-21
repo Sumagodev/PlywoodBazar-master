@@ -73,7 +73,7 @@ export default function Verifymobilenumber(props) {
 
   useEffect(() => {
     if (focused && props.route.params.data) {
-      setPhone(props.route.params.data);
+      setPhone(props.route.params.data); 
     }
   }, [focused, props.route.params.data]);
 

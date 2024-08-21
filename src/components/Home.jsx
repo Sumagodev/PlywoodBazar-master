@@ -1,7 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Dimensions } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Video from 'react-native-video';
@@ -22,7 +22,7 @@ import { getAllFlashSales } from '../services/FlashSales.service';
 import { addUserRequirement } from '../services/UserRequirements.service';
 import { generateImageUrl } from '../services/url.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-
+const screenWidth = Dimensions.get('window').width;
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
 export default function Home() {
@@ -37,16 +37,40 @@ export default function Home() {
   const [address, setAddress] = useState('');
   const [productName, setProductName] = useState('');
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
-  const {height, width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   const focused = useIsFocused();
 
   const [blogsArr, setBlogsArr] = useState([]);
   const [blogVideoArr, setBlogVideoArr] = useState([]);
 
+  const data = [
+    { id: '1', name: 'Item 1', image: require('../Assets/HomeImages/subicon.png') },
+    { id: '2', name: 'Item 2', image: require('../Assets/HomeImages/subicon.png') },
+    { id: '3', name: 'Item 3', image: require('../Assets/HomeImages/subicon.png') },
+    { id: '4', name: 'Item 4', image: require('../Assets/HomeImages/subicon.png') },
+    { id: '5', name: 'Item 5', image: require('../Assets/HomeImages/subicon.png') },
+  ];
+
+  // const renderItem = ({ item }) => (
+  //   <View style={styles1.itemContainer}>
+  //     <Image source={item.image} style={styles1.imageflat} />
+  //     <Text style={styles1.text}>{item.name}</Text>
+  //   </View>
+  // );
+
+  const renderItem = ({ item, index }) => {
+    const scaleStyle = index === 1 ? { transform: [{ scale: 1.2 }] } : {};
+    return (
+      <View style={[styles1.itemContainer, scaleStyle]}>
+        <Image source={item.image} style={[styles1.imageflat, scaleStyle]} />
+        <Text style={styles1.text}>{item.name}</Text>
+      </View>
+    );
+  }
   const handleGetBlogs = async () => {
     try {
-      let {data: res} = await getBlogApi();
+      let { data: res } = await getBlogApi();
       if (res.data) {
         // console.log(res.data, 'res.data');
         setBlogsArr(res.data);
@@ -58,7 +82,7 @@ export default function Home() {
 
   const handleGetBlogVideo = async () => {
     try {
-      let {data: res} = await getBlogVideoApi();
+      let { data: res } = await getBlogVideoApi();
       if (res.data) {
         setBlogVideoArr(res.data);
       }
@@ -101,7 +125,7 @@ export default function Home() {
         productName,
       };
 
-      let {data: res} = await addUserRequirement(obj);
+      let { data: res } = await addUserRequirement(obj);
 
       if (res.message) {
         toastSuccess(res.message);
@@ -121,7 +145,7 @@ export default function Home() {
       tomorrow.setDate(tomorrow.getDate() - 1); // even 32 is acceptable
       let endDate = `${tomorrow.getFullYear()}-${(tomorrow.getMonth() + 1 < 10 ? '0' : '') + (tomorrow.getMonth() + 1)}-${(tomorrow.getDate() + 1 < 10 ? '0' : '') + tomorrow.getDate()}`;
 
-      let {data: res} = await getAllFlashSales('endDate=' + endDate);
+      let { data: res } = await getAllFlashSales('endDate=' + endDate);
       if (res.data) {
         // console.log(res.data, "flash sales")
         setFlashSalesArr(res.data);
@@ -134,7 +158,7 @@ export default function Home() {
   const handleNestedcategories = async () => {
     setIsloding(true)
     try {
-      let {data: res} = await getAllCategories('level=1');
+      let { data: res } = await getAllCategories('level=1');
       if (res.data && res.data?.length > 0) {
         setCategoryArr(res.data);
         setIsloding(false)
@@ -146,7 +170,7 @@ export default function Home() {
 
   const handleGetAdvvertisementForHomepage = async () => {
     try {
-      let {data: res} = await getForHomepage();
+      let { data: res } = await getForHomepage();
       if (res.data) {
         // console.log(res.data, "data")
         setAdvertisementsArr(res.data);
@@ -186,35 +210,35 @@ export default function Home() {
     },
   ];
 
-  const rendercategory = ({item, index}) => {
+  const rendercategory = ({ item, index }) => {
     // console.log(JSON.stringify(item, null, 2), "item")
     return (
       <>
-      {
-        isloding ? 
-        <ShimmerPlaceHolder style={{width:wp(50), height:hp(27), marginRight:10}}    />
+        {
+          isloding ?
+            <ShimmerPlaceHolder style={{ width: wp(50), height: hp(27), marginRight: 10 }} />
 
-        :
-        <TouchableOpacity
-          onPress={() => navigate.navigate('BottomBar', {screen: 'Shop', params: {data: item?._id}})}
-          // style={[styles1.categorybix, {width: wp(75), marginRight:wp(4), paddingBottom: 50, elevation:2, backgroundColor: categoryColorArr[generateRandomDigits()].bacolor, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
-          style={[styles1.categorybix, {width: wp(60), marginRight: wp(4), overflow: 'hidden', paddingBottom: 50, elevation: 2, backgroundColor: '#FFF9E6', display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
-          <Image source={{uri: generateImageUrl(`${item?.image}`)}} style={[styles1.imgsize, {borderRadius: 10}]} resizeMode="center" />
-          <Text style={styles1.centername}>{item.name}</Text>
-        </TouchableOpacity>
-       } 
-      
-        
+            :
+            <TouchableOpacity
+              onPress={() => navigate.navigate('BottomBar', { screen: 'Shop', params: { data: item?._id } })}
+              // style={[styles1.categorybix, {width: wp(75), marginRight:wp(4), paddingBottom: 50, elevation:2, backgroundColor: categoryColorArr[generateRandomDigits()].bacolor, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
+              style={[styles1.categorybix, { width: wp(60), marginRight: wp(4), overflow: 'hidden', paddingBottom: 50, elevation: 2, backgroundColor: '#FFF9E6', display: 'flex', justifyContent: 'center', alignItems: 'center' }]}>
+              <Image source={{ uri: generateImageUrl(`${item?.image}`) }} style={[styles1.imgsize, { borderRadius: 10 }]} resizeMode="center" />
+              <Text style={styles1.centername}>{item.name}</Text>
+            </TouchableOpacity>
+        }
+
+
       </>
     );
   };
 
-  const renderHighlights = ({item, index}) => {
+  const renderHighlights = ({ item, index }) => {
     return (
-      <Pressable onPress={() => navigate.navigate('Productdetails', {data: item.productSlug})} style={styles1.boxproduct}>
+      <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} style={styles1.boxproduct}>
         <Image source={require('../../assets/img/call.png')} style={styles1.imgphone} />
         {item.isVideo ? (
-          <Video source={{uri: generateImageUrl(item.image)}} style={{height: 140, width: '100%'}} resizeMode="cover" loop paused={false} />
+          <Video source={{ uri: generateImageUrl(item.image) }} style={{ height: 140, width: '100%' }} resizeMode="cover" loop paused={false} />
         ) : (
           // <AutoHeightWebView
           //   //               javaScriptEnabled={true}
@@ -225,7 +249,7 @@ export default function Home() {
           //   source={{uri: generateImageUrl(item.image)}}
           //   style={{height: 170, width: '100%'}}
           // />
-          <Image source={{uri: generateImageUrl(item.image)}} style={styles1.imgfluid} />
+          <Image source={{ uri: generateImageUrl(item.image) }} style={styles1.imgfluid} />
         )}
         <View style={styles1.infoproduct}>
           <Text style={styles1.producthead}>{item.message}</Text>
@@ -234,42 +258,42 @@ export default function Home() {
     );
   };
 
-  const renderProduct = ({item, index}) => {
+  const renderProduct = ({ item, index }) => {
     return (
-      <Pressable onPress={() => navigate.navigate('Productdetails', {data: item.slug})} style={styles1.boxproduct}>
+      <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.slug })} style={styles1.boxproduct}>
         <Image source={require('../../assets/img/call.png')} style={styles1.imgphone} />
-        <Image source={{uri: generateImageUrl(item.mainImage)}} style={styles1.imgfluid} />
+        <Image source={{ uri: generateImageUrl(item.mainImage) }} style={styles1.imgfluid} />
         <View style={styles1.infoproduct}>
           <Text style={styles1.producthead}>{item.name}</Text>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={[styles1.producthead, {textDecorationLine: 'line-through'}]}>₹{item?.price}</Text>
-            <Text style={[styles1.producthead, {color: '#B08218', paddingLeft: 5}]}>₹{item?.sellingprice}</Text>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={[styles1.producthead, { textDecorationLine: 'line-through' }]}>₹{item?.price}</Text>
+            <Text style={[styles1.producthead, { color: '#B08218', paddingLeft: 5 }]}>₹{item?.sellingprice}</Text>
           </View>
         </View>
       </Pressable>
     );
   };
 
-  const renderSale = ({item, index}) => {
+  const renderSale = ({ item, index }) => {
     return (
-      <Pressable style={styles1.boxproduct} onPress={() => navigate.navigate('Productdetails', {data: item?.productId?.slug})}>
-        <View style={{position: 'relative'}}>
-          <Image source={{uri: generateImageUrl(item?.productId?.mainImage)}} style={styles1.imgfluid} />
-          <View style={{position: 'absolute', height: '100%', width: '100%', zIndex: 100, backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: 'white', fontSize: 18, fontWeight: '600'}}>Ends on</Text>
-            <Text style={{color: 'white'}}>{moment(item.startDate).format('DD / MM / YYYY')}</Text>
+      <Pressable style={styles1.boxproduct} onPress={() => navigate.navigate('Productdetails', { data: item?.productId?.slug })}>
+        <View style={{ position: 'relative' }}>
+          <Image source={{ uri: generateImageUrl(item?.productId?.mainImage) }} style={styles1.imgfluid} />
+          <View style={{ position: 'absolute', height: '100%', width: '100%', zIndex: 100, backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: '600' }}>Ends on</Text>
+            <Text style={{ color: 'white' }}>{moment(item.startDate).format('DD / MM / YYYY')}</Text>
           </View>
         </View>
         <View style={[styles1.infoproduct]}>
-          <Text style={[styles1.producthead,{textAlign:'left', marginBottom:4, fontFamily:'Manrope-Bold'}]}>{item?.productId?.name}</Text>
-          <View style={{display: 'flex', flexDirection: 'column', gap: 3}}>
-            <View style={{display: 'flex', flexDirection: 'row', gap: 3}}>
-              <Text style={[styles1.producthead, {textDecorationLine: 'line-through'}]}>₹{item?.price}</Text>
-              <Text style={{fontSize: 9}}>{item.pricetype ? item.pricetype  : ' Sq Ft' }</Text>
+          <Text style={[styles1.producthead, { textAlign: 'left', marginBottom: 4, fontFamily: 'Manrope-Bold' }]}>{item?.productId?.name}</Text>
+          <View style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+              <Text style={[styles1.producthead, { textDecorationLine: 'line-through' }]}>₹{item?.price}</Text>
+              <Text style={{ fontSize: 9 }}>{item.pricetype ? item.pricetype : ' Sq Ft'}</Text>
             </View>
-            <View style={{display: 'flex', flexDirection: 'row', gap: 1}}>
-              <Text style={[styles1.producthead, {color: '#B08218', paddingLeft: 5}]}>₹{item?.salePrice}</Text>
-              <Text style={{fontSize: 9, color: '#B08218'}}>{item.pricetype ? item.pricetype  : 'Sq Ft' }</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+              <Text style={[styles1.producthead, { color: '#B08218', paddingLeft: 5 }]}>₹{item?.salePrice}</Text>
+              <Text style={{ fontSize: 9, color: '#B08218' }}>{item.pricetype ? item.pricetype : 'Sq Ft'}</Text>
             </View>
           </View>
         </View>
@@ -277,14 +301,14 @@ export default function Home() {
     );
   };
 
-  const renderBlogs = ({item, index}) => {
+  const renderBlogs = ({ item, index }) => {
     return (
-      <View style={{width: wp(65), borderColor: 'rgba(0,0,0,0.2)', marginRight: 10, borderWidth: 1, borderRadius: 10, overflow: 'hidden'}}>
-        <Image source={{uri: generateImageUrl(item.image)}} style={{height: hp(17), width: wp(65), borderTopLeftRadius: 10, borderTopRightRadius: 10}} resizeMode="stretch" />
-        <View style={{paddingHorizontal: 10}}>
-          <Text style={{marginTop: 10, color: '#fcaf17'}}>{item?.name}</Text>
-          <TouchableOpacity onPress={() => navigate.navigate('BlogDetails', {data: item._id})}>
-            <Text style={{color: '#000', marginTop: 10, marginBottom: 10}}>
+      <View style={{ width: wp(65), borderColor: 'rgba(0,0,0,0.2)', marginRight: 10, borderWidth: 1, borderRadius: 10, overflow: 'hidden' }}>
+        <Image source={{ uri: generateImageUrl(item.image) }} style={{ height: hp(17), width: wp(65), borderTopLeftRadius: 10, borderTopRightRadius: 10 }} resizeMode="stretch" />
+        <View style={{ paddingHorizontal: 10 }}>
+          <Text style={{ marginTop: 10, color: '#fcaf17' }}>{item?.name}</Text>
+          <TouchableOpacity onPress={() => navigate.navigate('BlogDetails', { data: item._id })}>
+            <Text style={{ color: '#000', marginTop: 10, marginBottom: 10 }}>
               Read More <AntDesign name="arrowright" color="#000" size={15} />{' '}
             </Text>
           </TouchableOpacity>
@@ -293,11 +317,11 @@ export default function Home() {
     );
   };
 
-  const renderVideo = ({item, index}) => {
+  const renderVideo = ({ item, index }) => {
     return (
       <>
-        <View style={{width: wp(85), marginRight: 10}}>
-          <YoutubePlayer height={200} play={false} videoId={item.url?.split('embed/')[1]} style={{resizeMode: 'cover', borderRadius: 20}} />
+        <View style={{ width: wp(85), marginRight: 10 }}>
+          <YoutubePlayer height={200} play={false} videoId={item.url?.split('embed/')[1]} style={{ resizeMode: 'cover', borderRadius: 20 }} />
 
           {/* <AutoHeightWebView
           //           javaScriptEnabled={true}
@@ -308,7 +332,7 @@ export default function Home() {
           source={{uri: item.url}}
           style={{height: 250, width: '100%'}}
         /> */}
-          <Text style={{marginTop: -2, color: '#b08218', fontSize: 12, textAlign: 'center'}}>{item?.name}</Text>
+          <Text style={{ marginTop: -2, color: '#b08218', fontSize: 12, textAlign: 'center' }}>{item?.name}</Text>
         </View>
       </>
     );
@@ -342,7 +366,7 @@ export default function Home() {
     <>
       <View style={[styles.padinghr, styles.bgwhite]}>
         <FlatList
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index}
           //Header to show above listview
           removeClippedSubviews={true}
@@ -354,6 +378,7 @@ export default function Home() {
           //Footer to show below listview
           ListFooterComponent={
             <>
+              <Text>Raviii</Text>
               {/* <View style={{width: width}}>
                 <FlatList
                   data={sliderimg}
@@ -386,7 +411,7 @@ export default function Home() {
               </View> */}
 
               <Pressable Pressable onPress={() => navigate.navigate('Categories')}>
-                <Text style={[styles1.headingmain, {marginBottom: 15}]}> Product Categories</Text>
+                <Text style={[styles1.headingmain, { marginBottom: 15 }]}> Product Categories</Text>
               </Pressable>
 
               <FlatList
@@ -397,16 +422,16 @@ export default function Home() {
                 renderItem={rendercategory}
                 // columnWrapperStyle={{justifyContent: 'space-between'}}
                 // scrollEnabled={false} style={{width: '100%'}}
-                contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
+                contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }}
               />
 
               <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>New Products</Text>
-                <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
+                <Pressable onPress={() => navigate.navigate('AllProducts', { type: '' })}>
                   <Text style={styles1.viewall}>View All</Text>
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} />
+              <FlatList style={styles.mttop10} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} />
 
               <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>Flash Sales</Text>
@@ -414,7 +439,7 @@ export default function Home() {
                   <Text style={styles1.viewall}>View All</Text>
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSalesArr} horizontal renderItem={renderSale} keyExtractor={(item, index) => `${index}`} />
+              <FlatList style={styles.mttop10} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderSale} keyExtractor={(item, index) => `${index}`} />
 
               {/* <View style={[styles1.flexbetwen, {width: wp(95)}]}>
                 <Text style={[styles1.headingmain]}>Our Blogs </Text>
@@ -423,47 +448,90 @@ export default function Home() {
                 </TouchableOpacity>
               </View> */}
 
-                <View style={{alignItems:'center', justifyContent:'space-between', flexDirection:'row', marginBottom:10, }}>
-                  <Text  style={[styles1.headingmain]}>Our Blogs</Text>
-                  <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
+              <View style={{ alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10, }}>
+                <Text style={[styles1.headingmain]}>Our Blogs</Text>
+                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
                   <Text style={styles1.viewall}>View All</Text>
-                  </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
+              </View>
 
-              <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
+              <FlatList contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
 
-              <View style={{alignItems:'center', justifyContent:'space-between', flexDirection:'row', marginBottom:10, marginTop:10,}}>
-                  <Text  style={[styles1.headingmain]}>Our Videos</Text>
-                  <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
+              <View style={{ alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10, marginTop: 10, }}>
+                <Text style={[styles1.headingmain]}>Our Videos</Text>
+                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
                   <Text style={styles1.viewall}>View All</Text>
-                  </TouchableOpacity>
-                </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
+                </TouchableOpacity>
+              </View>
+              <FlatList style={styles.mttop10} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
               {/* <FlatList data={categoryProductBelowArr} renderItem={renderCategoryContainer} keyExtractor={(item, index) => `${index}`} /> */}
-              <Text style={[styles1.textqoute, {marginTop: hp(3)}]}>Get free quotes </Text>
+              <Text style={[styles1.textqoute, { marginTop: hp(3) }]}>Get free quotes </Text>
               <Text style={styles1.textqoute}>from multiple sellers</Text>
-              <View style={[styles1.flexevenely, {gap: 10}]}>
+              <View style={[styles1.flexevenely, { gap: 10 }]}>
                 <View style={[styles.flex1, styles1.col4]}>
-                  <View style={{width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  <View style={{ width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <MaterialCommunityIcons name="message-processing" size={19} color="#fff" />
                   </View>
                   <Text style={styles1.tellcontnt}>Tell us what You Need</Text>
                 </View>
 
                 <View style={[styles.flex1, styles1.col4]}>
-                  <View style={{width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  <View style={{ width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <FontAwesome name="money" size={19} color="#fff" />
                   </View>
                   <Text style={styles1.tellcontnt}>Receive free quotes from sellers</Text>
                 </View>
 
                 <View style={[styles.flex1, styles1.col4]}>
-                  <View style={{width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  <View style={{ width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <FontAwesome5 name="handshake" size={19} color="#fff" />
                   </View>
                   <Text style={styles1.tellcontnt}>Seal The Deal</Text>
                 </View>
+              </View>
+              <LinearGradient
+                colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']} // Gradient colors (left to right)
+                style={styles1.tableimagewrap} // Apply the gradient to this style
+                start={{ x: 0, y: 1 }} // Start point of the gradient
+              // end={{ x: 1, y: 1 }}   // End point of the gradient (horizontal)
+              >
+
+
+                <View style={styles1.textwrap}>
+                  <Text style={{ fontSize: 16 }}>Unlock Endless Possibilities With Our</Text>
+                  <View style={{ flexDirection: 'row', marginTop: 0 }}>
+                    <Text style={{ fontSize: 20, color: '#FFFFFF', fontWeight: 'bold' }}>Subscription!</Text>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 5, height: 30, width: 30 }}>
+                      <Image
+                        source={require('../Assets/HomeImages/subicon.png')} // Replace with your image path
+                        style={{ height: 25, width: 25 }}
+                      />
+                    </View>
+
+                  </View>
+
+                </View>
+                <View style={styles1.imagewrap}>
+                  <Image
+                    source={require('../Assets/HomeImages/table.png')} // Replace with your image path
+                    style={styles1.image1}
+                  />
+                </View>
+
+              </LinearGradient>
+              <View style={styles1.container}>
+                <FlatList
+                  data={data}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.flatListContainer}
+                  snapToAlignment="start"
+                  decelerationRate="fast"
+                  snapToInterval={screenWidth / 4} // Snap to each item (1/4 of the screen width)
+                />
               </View>
               <Text
                 style={[
@@ -585,7 +653,7 @@ export default function Home() {
                 underlineColorAndroid="#E7E7E8"
               />
 
-              <TouchableOpacity onPress={() => handleSubmitRequirement()} style={[styles.btnbg, {marginBottom: 50}]}>
+              <TouchableOpacity onPress={() => handleSubmitRequirement()} style={[styles.btnbg, { marginBottom: 50 }]}>
                 <Text style={styles.textbtn}>Submit Requirement </Text>
               </TouchableOpacity>
             </>
@@ -886,5 +954,74 @@ const styles1 = StyleSheet.create({
   youtube: {
     height: 300,
     resizeMode: 'cover',
+  },
+  tableimagewrap: {
+    flex: 1,
+    height: hp(20),
+    backgroundColor: '#3498db',
+    borderRadius: 30,
+    // borderWidth:1,
+    bordercolor: '#000000',
+    marginTop: 100,
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // alignItems: 'center',
+    justifyContent: "center"
+  },
+  image1: {
+    width: wp(75),  // Set your desired width
+    height: hp(35), // Set your desired height
+    resizeMode: 'contain', // Optional: control how the image fits,
+    bottom: 30,
+
+  },
+  imagewrap: {
+
+    justifyContent: 'flex-end',
+    alignItems: "flex-end",
+    // left: 10,
+    // bottom: 60
+    position: 'absolute',
+    alignSelf: "flex-end",
+    // marginLeft:30
+  },
+  textwrap: {
+
+    // alignItems: 'center',
+    justifyContent: 'center',
+    // top: 120,
+    marginTop: 50,
+    marginHorizontal: 15,
+    width: wp(60),
+
+  },
+  flatListContainer: {
+    // paddingHorizontal: 10,
+  },
+  itemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginHorizontal: 10,
+    width: screenWidth / 4,
+     padding:30
+  },
+  imageflat: {
+    width: screenWidth * 0.2,  // 20% of screen width
+    height: screenWidth * 0.2, // 20% of screen height
+    borderRadius: (screenWidth * 0.2) / 2, // Makes the image circular
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+  },
+  text: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#000',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+   
   },
 });
