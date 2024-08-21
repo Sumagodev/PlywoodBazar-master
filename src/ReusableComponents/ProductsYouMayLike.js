@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dimensions } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
@@ -8,9 +7,9 @@ import CustomButton from './CustomButton.js';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuotePress }) => {
+const LikeProduct = ({ imagePath, name, location, price, onCallPressed, onGetQuotePressed, onCardPressed }) => {
     return (
-      <View>
+      <TouchableOpacity onPress={onCardPressed}>
         <View style={styles.container}>
             <View style={styles.elevatedContainer}>
                 <Image style={styles.upperImageStyle} source={imagePath} />
@@ -23,16 +22,16 @@ const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuote
                     <Text style={styles.priceText}>₹{price}</Text>
                 </View>
                 <View style={styles.callIconContainer}>
-                <TouchableOpacity onPress={onCallPress}>
+                <TouchableOpacity onPress={onCallPressed}>
                   <Image style={styles.callIcon} source={require('../../assets/img/phone.png')} />
                 </TouchableOpacity>
                 </View>
             </View>
         </View>
         <View style={styles.buttonContainer}>
-        <CustomButton text='Get Quote' textSize={22} style={styles.button} onPress={onGetQuotePress}/>
+        <CustomButton text='Get Quote' textSize={22} style={styles.button} onPress={onGetQuotePressed}/>
     </View>
-    </View>
+    </TouchableOpacity>
     );
 };
 
@@ -40,8 +39,8 @@ const styles = StyleSheet.create({
     container: {
         margin: 2,
         borderRadius: 25,
-        width: screenWidth * 0.50,
-        height: screenWidth * 0.70, // Adjust the height for a fixed but scalable size
+        width: screenWidth * 0.45,
+        height: screenWidth * 0.65, // Adjust the height for a fixed but scalable size
         elevation: 10,
         overflow: 'hidden',
     },
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       position: 'absolute',
-      bottom: -10,
+      bottom: -14,
       left: 0,
       right: 0,
       alignItems: 'center',

@@ -6,22 +6,19 @@ import LikeProduct from './src/ReusableComponents/ProductsYouMayLike';
 import CustomButton from './src/ReusableComponents/CustomButton';
 import CustomColors from './src/styles/CustomColors';
 import OtpRow from './src/ReusableComponents/OtpRow';
+import NewArrivalProductCard from './src/ReusableComponents/NewArrivalProductCard';
 
 export default function App() {
-  const [otp, setOtp] = useState('');
-
-  const handleOtpChange = (newOtp: React.SetStateAction<string>) => {
-    setOtp(newOtp);
-  };
-
-  const submitOtp = () => {
-    console.log('Submitted OTP:', otp);
-    // You can pass the otp string to any function here
-  };
-
   return (
+    /*
+      <SafeAreaView style={{flex:1}}>
+      <RootStack />
+      <Toast />
+    </SafeAreaView>
+    */
     <View style={styles.container}>
-      {/* button with image */}
+      {/*
+      {/* button with image 
       <CustomButton
         buttonBgColor={CustomColors.mattBrownDark}
         text="Icon Button" 
@@ -31,7 +28,7 @@ export default function App() {
       />
       <View style={styles.spacer} />
 
-      {/* button without image */}
+      {/* button without image 
       <CustomButton 
         buttonBgColor={CustomColors.mattBrownDark}
         text="No Icon" 
@@ -57,14 +54,37 @@ export default function App() {
       />
       <View style={styles.spacer} />
       
-      {/* //ProductsYouMayLike */}
+      {/* //ProductsYouMayLike 
+      <View style={{flexDirection:'row'}}>
       <LikeProduct imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
-      onCallPress={()=>{console.log("product item called");}}
-      onGetQuotePress={()=>{console.log("get quote called");}}
+      onCallPressed={()=>{console.log("product item called");}}
+      onGetQuotePressed={()=>{console.log("get quote called");}}
+      onCardPressed = {()=>{console.log("master card called");}}
       />
+      
+      <LikeProduct imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
+      onCallPressed={()=>{console.log("product item called");}}
+      onGetQuotePressed={()=>{console.log("get quote called");}}
+      onCardPressed={()=>{console.log("get quote called");}} />
+      </View>
+      <View style={styles.spacer} />
+      
+
+      <NewArrivalProductCard imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
+      isVerified={true}
+      onCallPressed={()=>{console.log("product item called");}}
+      onGetQuotePressed={()=>{console.log("get quote called");}}
+      onCardPressed={()=>{console.log("get quote called");}} />
       <View style={styles.spacer} />
 
+      <NewArrivalProductCard imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
+      onCallPressed={()=>{console.log("product item called");}}
+      onGetQuotePressed={()=>{console.log("get quote called");}}
+      onCardPressed={()=>{console.log("get quote called");}} />
+      */}
 
+<FadeRibbonText text="A very long text for testing" />
+<FadeRibbonText text="A very long text for testing" reverseDirection={true} textColor='black'/>
     </View>
   );
 }
