@@ -5,6 +5,8 @@ import {
   View,
   ImageBackground,
   TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
@@ -94,7 +96,12 @@ export default VerifyOtp = ({route}) => {
     }
   };
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+  style={{ flex: 1 }} 
+  behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+>
+<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
           source={require('../images/logo1.png')} // Replace with your actual logo image
@@ -148,6 +155,8 @@ export default VerifyOtp = ({route}) => {
         </View>
       </View>
     </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

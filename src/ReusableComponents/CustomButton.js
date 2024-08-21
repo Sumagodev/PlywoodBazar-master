@@ -12,9 +12,10 @@ const CustomButton = ({
   rightIconBgColor = CustomColors.accentGreen,
   onPress,
   textSize = 16,
+  paddingHorizontal=0
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }]} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor,paddingHorizontal:paddingHorizontal }]} onPress={onPress}>
       <View style={styles.container}>
         <Text style={[styles.text, { fontSize: textSize }]}>{text}</Text>
         {rightIcon && (
@@ -32,7 +33,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     elevation: 5,
     paddingVertical: 2,
-    paddingHorizontal: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },

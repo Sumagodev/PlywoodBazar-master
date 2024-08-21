@@ -1,7 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Video from 'react-native-video';
@@ -26,6 +26,10 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import LikeProduct from '../ReusableComponents/ProductsYouMayLike';
+import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
+import CustomButton from '../ReusableComponents/CustomButton';
+import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
+import TopProfilesCard from '../ReusableComponents/TopProfilesCard';
 export default function Home() {
 
   const navigate = useNavigation();
@@ -315,6 +319,27 @@ export default function Home() {
     );
   };
 
+  const renderNewArrivals = ({item, index}) => {
+    console.log('######################################################')
+    console.log(item)
+    if(index<=1)
+    return (
+      <NewArrivalProductCard imagePath={require('../../assets/img/ply_sample.png')}   isVerified={true} name={item.productSlug} location={"Nahsik"}></NewArrivalProductCard>
+  
+    );
+  };
+
+  
+  const returnTopProfiles = ({item, index}) => {
+    console.log('######################################################')
+    console.log(item)
+    if(index<=1)
+    return (
+      <TopProfilesCard imagePath={require('../../assets/img/user_icon_1.png')}  name={item.productSlug}></TopProfilesCard>
+  
+    );
+  };
+
   const renderProduct = ({item, index}) => {
     return (
       <Pressable onPress={() => navigate.navigate('Productdetails', {data: item.slug})} style={styles1.boxproduct}>
@@ -421,7 +446,7 @@ export default function Home() {
 
   return (
     <>
-      <View style={[styles.padinghr, styles.bgwhite]}>
+      <View style={[styles.bgwhite]}>
         <FlatList
         showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index}
@@ -466,11 +491,11 @@ export default function Home() {
                 />
               </View> */}
 
-              <Pressable Pressable onPress={() => navigate.navigate('Categories')}>
+              <Pressable Pressable onPress={() => navigate.navigate('Categories')} style={[styles.padinghr]}>
                 <Text style={[styles1.headingmain, {marginBottom: 15}]}> Product Categories</Text>
               </Pressable>
 
-              <FlatList
+              <FlatList style={[styles.padinghr]}
                 data={categoryArr}
                 keyExtractor={(item, index) => `${index}`}
                 horizontal
@@ -481,22 +506,41 @@ export default function Home() {
                 contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
               />
 
-              <View style={styles1.flexbetwen}>
+              <View style={[styles.padinghr,styles1.flexbetwen]} >
                 <Text style={styles1.headingmain}>Products You May Like</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <Text style={styles1.viewall}>View All</Text>
+                  <CustomButton textSize={12} text="View All"/>
                 </Pressable>
               </View>
               <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData}    horizontal    columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
                 renderItem={renderProductsYouMayLike}  keyExtractor={(item, index) => `${index}`} />
 
-              <View style={styles1.flexbetwen}>
+               <View style={[styles.padinghr,styles1.flexbetwen]}>
+                <Text style={styles1.headingmain}>New Arrivals</Text>
+                <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
+                  <CustomButton textSize={12} text="View All"/>
+                </Pressable>
+              </View>
+              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData} columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                renderItem={renderNewArrivals}  keyExtractor={(item, index) => `${index}`} />
+                <View >
+                <ImageBackground source={require('../../assets/img/bg_top_profile.png')} style={styles1.topProfileContainer}>
+                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <Text style={styles1.topProfileHeading}>Top Profiles</Text>
+                <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData} columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                renderItem={returnTopProfiles}  horizontal keyExtractor={(item, index) => `${index}`} />
+                </View>
+                </ImageBackground>
+              </View>
+              
+
+              {/* <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>New Products</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
                   <Text style={styles1.viewall}>View All</Text>
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} />
+              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} /> */}
 
               <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>Flash Sales</Text>
@@ -892,7 +936,7 @@ const styles1 = StyleSheet.create({
   },
   viewall: {
     color: '#B08218',
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: 'Manrope-Medium',
   },
   flexbetwen: {
@@ -980,4 +1024,18 @@ const styles1 = StyleSheet.create({
   columnWrapper: {
     justifyContent: 'space-between', // Ensures spacing between columns
   },
+  topProfileContainer:{
+    paddingBottom:20,
+
+  },
+  topProfileHeading:{
+    paddingTop:20,
+    paddingBottom:20,
+    color:'black',
+    fontStyle:'bold',
+    fontFamily:'Poppins-Bold',
+    fontWeight:600,
+    fontSize:22,
+    alignSelf:'center'
+  }
 });
