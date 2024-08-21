@@ -41,7 +41,7 @@ export default VerifyOtp = ({route}) => {
 
   };
   const handleVerifyOTP = async () => {
-    const otpPattern = /^[0-9]{4}$/; // Regex to match exactly 4 digits
+    const otpPattern = /^[0-9]{6}$/; // Regex to match exactly 4 digits
 
    
     try{

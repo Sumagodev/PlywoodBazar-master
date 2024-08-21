@@ -3,15 +3,15 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import OtpSingleDigit from './OtpSingleDigit';
 
 const OtpRow = ({ onOtpChange }) => {
-    const [otp, setOtp] = useState(['', '', '', '']);
-    const digitRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+    const [otp, setOtp] = useState(['', '', '', '','','']);
+    const digitRefs = [useRef(null), useRef(null), useRef(null), useRef(null),useRef(null), useRef(null)];
 
     const handleTextChange = (text, index) => {
         const newOtp = [...otp];
         newOtp[index] = text;
         setOtp(newOtp);
 
-        if (text && index < 3) {
+        if (text && index < 5) {
             digitRefs[index + 1].current.focus(); // Move to the next input
         } else if (!text && index > 0) {
             digitRefs[index - 1].current.focus(); // Move to the previous input

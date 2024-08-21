@@ -25,6 +25,7 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import LikeProduct from '../ReusableComponents/ProductsYouMayLike';
 export default function Home() {
 
   const navigate = useNavigation();
@@ -233,6 +234,14 @@ export default function Home() {
       </Pressable>
     );
   };
+  const renderProductsYouMayLike = ({item, index}) => {
+    console.log('######################################################')
+    console.log(item)
+    return (
+      <LikeProduct imagePath={{uri: generateImageUrl(item.image)}} ></LikeProduct>
+  
+    );
+  };
 
   const renderProduct = ({item, index}) => {
     return (
@@ -399,6 +408,14 @@ export default function Home() {
                 // scrollEnabled={false} style={{width: '100%'}}
                 contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
               />
+
+              <View style={styles1.flexbetwen}>
+                <Text style={styles1.headingmain}>Products You May Like</Text>
+                <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
+                  <Text style={styles1.viewall}>View All</Text>
+                </Pressable>
+              </View>
+              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderProductsYouMayLike} keyExtractor={(item, index) => `${index}`} />
 
               <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>New Products</Text>
