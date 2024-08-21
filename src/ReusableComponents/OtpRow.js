@@ -47,8 +47,7 @@ const OtpRow = ({ onOtpChange }) => {
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        alignSelf: 'center',
     },
 });
 

@@ -49,6 +49,9 @@ import Privacy from '../../components/Privacy';
 import Aboutus from '../../components/Aboutus';
 import LegalAbouts from '../../components/LegalAbouts';
 import Chkdropdown from '../../components/Chkdropdown';
+import Login from '../../components/Login';
+import VerifyOtp from '../../components/VerifyOtp';
+
 
 export const isAuthorisedContext = createContext({});
 const Stack = createNativeStackNavigator();
@@ -120,8 +123,8 @@ export default function RootStack() {
                 headerShown: false,
                 gestureDirection: 'horizontal',
               }}
-              name="Mobilenumber"
-              component={Mobilenumber}
+              name="Login"
+              component={Login}
             />
             <Stack.Screen
               options={{
@@ -480,6 +483,15 @@ export default function RootStack() {
               }}
               name="Chkdropdown"
               component={Chkdropdown}
+            />
+
+           <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="VerifyOtp"
+              component={VerifyOtp}
             />
 
           </Stack.Navigator>
