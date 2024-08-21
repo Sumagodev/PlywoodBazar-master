@@ -10,6 +10,8 @@ const CustomButton = ({
   rightIcon = false,
   buttonBgColor = CustomColors.mattBrownDark,
   rightIconBgColor = CustomColors.accentGreen,
+  leftIconBgColor = CustomButton.accentGreen,
+  leftIconPath = ,
   onPress,
   textSize = 16,
 }) => {
