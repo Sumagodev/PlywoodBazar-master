@@ -3,13 +3,17 @@ import Toast from 'react-native-toast-message';
 import RootStack from './src/navigation/Stack/Root';
 import axios from 'axios';
 export const axiosApiInstance = axios.create();
-import {SafeAreaView} from 'react-native'
+import {View} from 'react-native'
+import NewArrivalProductCard from './src/ReusableComponents/NewArrivalProductCard';
+
 function App(): JSX.Element {
   return (
+    /*
     <SafeAreaView style={{flex:1}}>
       <RootStack />
       <Toast />
     </SafeAreaView>
+    */
     // <View style={styles.container}>
     //   {/* button with image */}
     //   <CustomButton
@@ -53,12 +57,12 @@ function App(): JSX.Element {
     //   onGetQuotePress={()=>{console.log("get quote called");}}
     //   />
     //   <View style={styles.spacer} />
-    /*<NewArrivalProductCard imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
+    <View style={styles.container}>
+      <NewArrivalProductCard imagePath={require('./assets/img/products_you_may_like_bg.png')} name='Greenlam Laminates' location='Chennai' price='3360' 
       onCallPressed={()=>{console.log("product item called");}}
       onGetQuotePressed={()=>{console.log("get quote called");}}
       onCardPressed={()=>{console.log("get quote called");}} />
-    // </View>
-    */
+    </View>
   );
 }
 export default App;
