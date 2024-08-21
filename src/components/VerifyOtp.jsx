@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,18 +6,24 @@ import {
   ImageBackground,
   TextInput,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Image } from 'react-native-elements';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
 import CustomColors  from '../styles/CustomColors';
 import OtpRow from '../ReusableComponents/OtpRow';
+import { errorToast, toastSuccess } from '../utils/toastutill';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { loginUser, sendOtpService, setToken } from '../services/User.service';
 
 export default VerifyOtp = ({route}) => {
-  const navigate = useNavigation();
   const [otp, setOtp] = useState('');
   const [error, setError] = useState(false);
   const [timer, setTimer] = useState(60); // Start timer at 60 seconds
   const [canResend, setCanResend] = useState(false); // Control resend button state
+  const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
+  const navigation = useNavigation();
+  const focused = useIsFocused();
+
   const mobileNumber=route.params
   useEffect(() => {
     if (timer > 0) {
@@ -34,27 +40,59 @@ export default VerifyOtp = ({route}) => {
     setOtp(newOtp);
 
   };
-  const handleVerifyOTP = () => {
+  const handleVerifyOTP = async () => {
     const otpPattern = /^[0-9]{4}$/; // Regex to match exactly 4 digits
 
-    if (!otpPattern.test(otp)) {
-      setError(true); // Set error state if the input is invalid
-    } else {
-      setError(false); // Clear error if the input is valid
-      console.log('Verifying OTP:', otp);
-      // Proceed with OTP verification logic here
+   
+    try{
+      if (!otpPattern.test(otp)) {
+        setError(true); // Set error state if the input is invalid
+        errorToast('Invalid otp please check your OTP again !!!');
+        return;
+      } else {
+        setError(false); // Clear error if the input is valid
+        console.log('Verifying OTP:', otp);
+        // Proceed with OTP verification logic here
+        let obj = {
+          phone:mobileNumber,
+          otp,
+        };
+        console.log('sending response');
+        let { data: res } = await loginUser(obj);
+        if (res) {
+          // console.log(JSON.stringify(res,null,2), "cke tokkene")
+          await setToken(res.token);
+          setIsAuthorized(true);
+          navigation.navigate('BottomBar');
+        }
+  
+      }
+    } catch (error) {
+      errorToast(error)
     }
-  };
 
-  const handleResendOtp = () => {
+  };
+  const handleResendOtp = async() => {
     if (canResend) {
+
+      let obj = {
+        phone:mobileNumber
+      }
+      let {data:res} = await sendOtpService(obj);
+      if(res.message){
+        toastSuccess(res.message)
+        // console.log(JSON.stringify(res,null,2))
+        navigation.navigate("VerifyOtp", mobileNumber)
+      } else {
+        errorToast("Please enter a valid phone number !!!")
+        return;
+      }
       // Implement your OTP sending logic here
       console.log('Resending OTP to', mobileNumber);
       setTimer(60); // Reset timer for 60 seconds
       setCanResend(false); // Disable the resend button until the timer ends
     }
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -103,8 +141,8 @@ export default VerifyOtp = ({route}) => {
                 </Text>
               )}
             </View>
-            <View style={{with:'100%',height:'100%'}}>
-            <Image resizeMode='stretch' source={require('../images/login_image_1.png')}   style={{with:'100%',height:'100%'}}></Image>
+            <View style={{width:'100%',height:'100%'}}>
+            <Image resizeMode='stretch' source={require('../images/login_image_1.png')}   style={{width:'100%',height:'100%'}}></Image>
             </View>
           </ImageBackground>
         </View>
