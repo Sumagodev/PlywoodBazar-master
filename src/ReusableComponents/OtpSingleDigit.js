@@ -10,8 +10,8 @@ const OtpSingleDigit = forwardRef(({ value, onChangeText, onKeyPress }, ref) => 
                 value={value}
                 style={[
                     styles.input,
-                    { backgroundColor: value ? '#a57970' : '#fff' },
-                    { borderColor: value ? '#a57970' : '#fff' },
+                    { backgroundColor: value ? CustomColors.mattBrownDark : '#fff' },
+                    { borderColor: value ? CustomColors.mattBrownDark : '#fff' },
                 ]}
                 maxLength={1}
                 keyboardType="numeric"
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
+        marginHorizontal:5
     },
     input: {
         width: 45,
