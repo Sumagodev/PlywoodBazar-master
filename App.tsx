@@ -3,18 +3,21 @@ import {View, StyleSheet} from 'react-native'
 import CustomColors from './src/styles/CustomColors';
 import TopProfilesCard from './src/ReusableComponents/TopProfilesCard';
 import CustomButton from './src/ReusableComponents/CustomButton';
+import CategorySliderSingleItem from './src/ReusableComponents/CategorySliderSingleItem';
+import CategorySlider from './src/ReusableComponents/CategorySlider';
 
 function App(): JSX.Element {
   return (
     <View style={styles.container}>
-      <TopProfilesCard 
-        imagePath={require('./assets/img/userpic.png')}
-        name={'Keshav Enterprises'}
-        onCallPressed={()=>{}}
-        onCardPressed={()=>{}}
-        onVisitPressed={()=>{}}
-        >
-      </TopProfilesCard>
+      <CategorySlider data={[{id: '1', name:'A', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'B', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'C', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'D', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'E', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'F', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'G', imagePath:require('./assets/img/phone.png')},
+        {id: '1', name:'H', imagePath:require('./assets/img/phone.png')},
+       ]} />
     </View>
   );
 }
