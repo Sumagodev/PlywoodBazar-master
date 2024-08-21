@@ -18,6 +18,11 @@ export const sentOtp = async obj => {
 
   return axios.post(`${serverUrl}/sentOtp/`, obj);
 };
+export const sendOtpService = async obj => {
+  console.log("sdfbsdfgasdhasdhfsadfhsgadjhasgfjhasdfgfgjfgafgasfasdgasd", obj)
+
+  return axios.post(`${serverUrl}/sentOtp/`, obj);
+};
 export const getAllUsers = async (query, source) => {
   return axios.get(`${serverUrl}/getAllUsersForWebsite/?${query}`, { cancelToken: source?.token })
 }
