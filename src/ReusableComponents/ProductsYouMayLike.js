@@ -10,6 +10,7 @@ const screenHeight = Dimensions.get('window').height;
 
 const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuotePress }) => {
     return (
+      <View>
         <View style={styles.container}>
             <View style={styles.elevatedContainer}>
                 <Image style={styles.upperImageStyle} source={imagePath} />
@@ -20,20 +21,18 @@ const LikeProduct = ({ imagePath, name, location, price, onCallPress, onGetQuote
                         <Text style={styles.locationText}>{location}</Text>
                     </View>
                     <Text style={styles.priceText}>₹{price}</Text>
-                    <CustomButton text='Get Quote' />
                 </View>
                 <View style={styles.callIconContainer}>
                 <TouchableOpacity onPress={onCallPress}>
-                    <Icon
-                        name="phone"
-                        size={25}
-                        color='white'
-                        style={styles.callIcon}
-                    />
+                  <Image style={styles.callIcon} source={require('../../assets/img/phone.png')} />
                 </TouchableOpacity>
                 </View>
             </View>
         </View>
+        <View style={styles.buttonContainer}>
+        <CustomButton text='Get Quote' textSize={22} style={styles.button} onPress={onGetQuotePress}/>
+    </View>
+    </View>
     );
 };
 
@@ -41,8 +40,8 @@ const styles = StyleSheet.create({
     container: {
         margin: 2,
         borderRadius: 25,
-        width: screenWidth * 0.5,
-        height: screenWidth * 0.75, // Adjust the height for a fixed but scalable size
+        width: screenWidth * 0.50,
+        height: screenWidth * 0.70, // Adjust the height for a fixed but scalable size
         elevation: 10,
         overflow: 'hidden',
     },
@@ -55,8 +54,7 @@ const styles = StyleSheet.create({
     upperImageStyle: {
         width: '100%',
         height: '50%',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
+        borderRadius: 25,
     },
     callIconContainer: {
         position: 'absolute',
@@ -71,10 +69,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     callIcon: {
-        width: 40,
-        height: 40,
-        padding: 8,
-        backgroundColor: CustomColors.mattBrownDark, // Background color
+        width: 42,
+        height: 42,
+        padding: 10,
+        resizeMode: 'contain',
+        backgroundColor: CustomColors.accentBrownFaint, // Background color
         borderRadius: 50,
     },
     locationRow: {
@@ -107,7 +106,23 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: CustomColors.textGrey,
         fontSize: 16,
+        paddingBottom: 10,
     },
+    buttonContainer: {
+      position: 'absolute',
+      bottom: -10,
+      left: 0,
+      right: 0,
+      alignItems: 'center',
+  },
+  button: {
+      width: 'auto',
+      height: 'auto',
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      backgroundColor: CustomColors.primaryColor, // Replace with your color
+      borderRadius: 25,
+  },
 });
 
 export default LikeProduct;

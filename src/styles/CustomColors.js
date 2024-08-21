@@ -8,4 +8,5 @@ export default CustomColors = {
     textGrey: '#3d3b3b',
     childBackground: '#8a684d',
     shadowColorGray: '#8b8888',
+    accentBrownFaint: '#927251',
 };
