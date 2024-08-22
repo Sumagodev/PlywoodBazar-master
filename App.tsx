@@ -13,7 +13,7 @@ function App(): JSX.Element {
     <View style={styles.container}>
       <CategorySlider data={
         [
-          {imagePath: require('./assets/img/product1.png'), name: 'a', key},
+          {imagePath: require('./assets/img/product1.png'), name: 'a'},
           {imagePath: require('./assets/img/product2.png'), name: 'a'},
           {imagePath: require('./assets/img/product3.png'), name: 'a'},
           {imagePath: require('./assets/img/product4.png'), name: 'a'},
@@ -46,8 +46,20 @@ function App(): JSX.Element {
   );
 }
 
-const styles{
-  
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: CustomColors.masterBackground,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spacer: { width: 20, height: 20, },
+  row: {
+    flexDirection: 'row', // Horizontal layout
+    justifyContent: 'space-between', // Space between inputs
+    alignItems: 'center', // Center align items vertically
+    padding: 10, // Optional padding around the row
+  },
+});
 
 export default App;
