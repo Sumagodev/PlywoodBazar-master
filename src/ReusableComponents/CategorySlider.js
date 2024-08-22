@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     height: wp(18),
     borderRadius: wp(18) / 2,
     marginBottom: wp(2),
-    elevation: 10,
     backgroundColor: '#fff',
   },
   elevatedStyle: {
