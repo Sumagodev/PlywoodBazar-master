@@ -48,7 +48,7 @@ export default function Header(props) {
   }, []);
   return (
     <>
-      <View style={styles1.headermain}>
+      {/* <View style={styles1.headermain}>
         <Image source={require('../../assets/img/logoheader.png')} style={styles1.logoheader} resizeMode="contain" />
         <View style={styles1.rowflex}>
           {displayChat ?
@@ -56,49 +56,59 @@ export default function Header(props) {
             :
             <></>
           }
-          {/* <Ionicons name="notifications-circle" size={25} color="#e54d6b" />
+          <Ionicons name="notifications-circle" size={25} color="#e54d6b" />
           <Pressable onPress={() => navigation.navigate("")}>
             <Entypo name="user" size={25} color="#e54d6b" />
-          </Pressable> */}
+          </Pressable>
         </View>
-      </View>
-
-      {props.slidersection && (
-        <View style={styles1.sliderhome}>
+      </View> */}
+{props.slidersection && (
+        <View style={styles1.sliderhome1}>
           <SliderBox
-            images={[...categoryArr.map(el => generateImageUrl(`${el?.image}`))]}
-            sliderBoxHeight={150}
-            autoplay={true}
-            loop
-          // onCurrentImagePressed={index => navigate.navigate('BottomBar', { screen: 'Shop', params: { data: categoryArr[index]?._id } })}
+            images={categoryArr.map(el => generateImageUrl(`${el?.image}`))}
+            sliderBoxHeight={hp(25)}
+            autoplay
+            circleLoop
+            dotStyle={styles1.dotStyle}
+            paginationBoxVerticalPadding={0}
+            dotColor="#725842"
+            inactiveDotColor="#F5F1E8"
+            paginationBoxStyle={styles1.paginationBoxStyle}
+            ImageComponentStyle={styles1.imageStyle}
+            imageLoadingColor="#2196F3"
+            onCurrentImagePressed={index => console.log('Image pressed:', categoryArr[index]?._id)}
+            resizeMode={'stretch'}
           />
         </View>
       )}
     </>
   );
-}
+};
+
 const styles1 = StyleSheet.create({
-  headermain: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  logoheader: {
-    width: wp(46),
-    height: hp(8),
-  },
-  rowflex: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 5,
-  },
-  sliderhome: {
+  sliderhome1: {
+    borderRadius: 20,
+    marginRight: wp(2),
     marginVertical: 15,
   },
-  headerslid: {
-    width: wp(95),
-    height: hp(25),
-    borderRadius: 6,
+  imageStyle: {
+    width: '98%',
+    borderRadius: 15,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  dotStyle: {
+    width: wp(4),
+    height: wp(4),
+    borderRadius: 10,
+    marginHorizontal: 0,
+  },
+  paginationBoxStyle: {
+    position: 'relative', // Position relative so it stays within the layout flow
+    bottom: -10, // Adjust as needed to move dots below the image slider without affecting other views
+    alignSelf: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
   },
 });
+

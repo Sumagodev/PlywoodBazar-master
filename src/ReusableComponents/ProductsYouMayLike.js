@@ -15,10 +15,10 @@ const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }
             <View style={styles.elevatedContainer}>
                 <Image style={styles.upperImageStyle} source={imagePath} />
                 <View style={styles.textContainer}>
-                    <Text style={styles.nameText}>{name}</Text>
+                    <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail' >{name}</Text>
                     <View style={styles.locationRow}>
                       <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
-                        <Text style={styles.locationText}>{location}</Text>
+                        <Text style={styles.locationText} numberOfLines={1} ellipsizeMode='tail'>{location} </Text>
                     </View>
                    
                 </View>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     callIconContainer: {
         position: 'absolute',
-        top: '43%', // Center vertically in the upper half
+        top: '45%', // Center vertically in the upper half
         left: '50%', // Center horizontally
         transform: [{ translateX: -25 }], // Adjust for centering
         backgroundColor: 'white',

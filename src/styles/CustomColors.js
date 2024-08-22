@@ -9,4 +9,6 @@ export default CustomColors = {
     childBackground: '#8a684d',
     shadowColorGray: '#8b8888',
     accentBrownFaint: '#927251',
+    searchBackground: '#FFF3E9',
+    searchBgColor: '#CDC2A1',
 };

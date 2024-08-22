@@ -1,27 +1,27 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions} from 'react-native';
+import {TextInput} from 'react-native-paper';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Video from 'react-native-video';
 
 import LinearGradient from 'react-native-linear-gradient';
-import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../ReusableComponents/Header';
-import { getForHomepage } from '../services/Advertisement.service';
-import { getBlogApi } from '../services/Blog.service';
-import { getBlogVideoApi } from '../services/BlogVideo.service';
-import { getAllCategories } from '../services/Category.service';
-import { getAllFlashSales } from '../services/FlashSales.service';
-import { addUserRequirement } from '../services/UserRequirements.service';
-import { generateImageUrl } from '../services/url.service';
-import { errorToast, toastSuccess } from '../utils/toastutill';
+import {getForHomepage} from '../services/Advertisement.service';
+import {getBlogApi} from '../services/Blog.service';
+import {getBlogVideoApi} from '../services/BlogVideo.service';
+import {getAllCategories} from '../services/Category.service';
+import {getAllFlashSales} from '../services/FlashSales.service';
+import {addUserRequirement} from '../services/UserRequirements.service';
+import {generateImageUrl} from '../services/url.service';
+import {errorToast, toastSuccess} from '../utils/toastutill';
 
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
@@ -30,10 +30,14 @@ import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButt
 import CustomButton from '../ReusableComponents/CustomButton';
 import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import TopProfilesCard from '../ReusableComponents/TopProfilesCard';
+import CustomSearchComponent from '../ReusableComponents/CustomSearchComponent';
+import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
+import CategorySlider from '../ReusableComponents/CategorySlider';
+import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
+import BlogsItem from '../ReusableComponents/BlogsItem';
 export default function Home() {
-
   const navigate = useNavigation();
-  const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
+  const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const [isloding, setIsloding] = useState(false);
   const [categoryArr, setCategoryArr] = useState([]);
   const [flashSalesArr, setFlashSalesArr] = useState([]);
@@ -137,12 +141,12 @@ export default function Home() {
   };
 
   const handleNestedcategories = async () => {
-    setIsloding(true)
+    setIsloding(true);
     try {
       let {data: res} = await getAllCategories('level=1');
       if (res.data && res.data?.length > 0) {
         setCategoryArr(res.data);
-        setIsloding(false)
+        setIsloding(false);
       }
     } catch (error) {
       console.log(error);
@@ -153,85 +157,85 @@ export default function Home() {
     try {
       let {data: res} = await getForHomepage();
       if (res.data) {
-        console.log(res.data, "data")
+        console.log(res.data, 'data');
         setAdvertisementsArr(res.data);
       }
     } catch (err) {
       errorToast(err);
     }
   };
-  var dummyData=[
+  var dummyData = [
     {
-      "__v": 0,
-      "_id": "66068293dab9276daca9279a",
-      "createdAt": "2024-03-29T08:57:55.419Z",
-      "endDate": "2024-04-09T23:59:59.059Z",
-      "image": "1711703286896.png",
-      "isVideo": false,
-      "message": "Best Quality Product Made In very High Standard Wood ",
-      "productId": "65ded48f4052bcfbe3438127",
-      "productSlug": "royal-forest-plywood",
-      "startDate": "2024-03-29T00:00:00.000Z",
-      "updatedAt": "2024-03-29T09:08:06.899Z",
-      "userId": "64f07c1522ee5f347112f95f"
-  },
-  {
-      "__v": 0,
-      "_id": "66068293dab9276daca9279a",
-      "createdAt": "2024-03-29T08:57:55.419Z",
-      "endDate": "2024-04-09T23:59:59.059Z",
-      "image": "1711703286896.png",
-      "isVideo": false,
-      "message": "Best Quality Product Made In very High Standard Wood ",
-      "productId": "65ded48f4052bcfbe3438127",
-      "productSlug": "royal-forest-plywood",
-      "startDate": "2024-03-29T00:00:00.000Z",
-      "updatedAt": "2024-03-29T09:08:06.899Z",
-      "userId": "64f07c1522ee5f347112f95f"
-  },
-  {
-      "__v": 0,
-      "_id": "66068293dab9276daca9279a",
-      "createdAt": "2024-03-29T08:57:55.419Z",
-      "endDate": "2024-04-09T23:59:59.059Z",
-      "image": "1711703286896.png",
-      "isVideo": false,
-      "message": "Best Quality Product Made In very High Standard Wood ",
-      "productId": "65ded48f4052bcfbe3438127",
-      "productSlug": "royal-forest-plywood",
-      "startDate": "2024-03-29T00:00:00.000Z",
-      "updatedAt": "2024-03-29T09:08:06.899Z",
-      "userId": "64f07c1522ee5f347112f95f"
-  },
-  {
-      "__v": 0,
-      "_id": "66068293dab9276daca9279a",
-      "createdAt": "2024-03-29T08:57:55.419Z",
-      "endDate": "2024-04-09T23:59:59.059Z",
-      "image": "1711703286896.png",
-      "isVideo": false,
-      "message": "Best Quality Product Made In very High Standard Wood ",
-      "productId": "65ded48f4052bcfbe3438127",
-      "productSlug": "royal-forest-plywood",
-      "startDate": "2024-03-29T00:00:00.000Z",
-      "updatedAt": "2024-03-29T09:08:06.899Z",
-      "userId": "64f07c1522ee5f347112f95f"
-  },
-  {
-      "__v": 0,
-      "_id": "66068293dab9276daca9279a",
-      "createdAt": "2024-03-29T08:57:55.419Z",
-      "endDate": "2024-04-09T23:59:59.059Z",
-      "image": "1711703286896.png",
-      "isVideo": false,
-      "message": "Best Quality Product Made In very High Standard Wood ",
-      "productId": "65ded48f4052bcfbe3438127",
-      "productSlug": "royal-forest-plywood",
-      "startDate": "2024-03-29T00:00:00.000Z",
-      "updatedAt": "2024-03-29T09:08:06.899Z",
-      "userId": "64f07c1522ee5f347112f95f"
-  }
-  ]
+      __v: 0,
+      _id: '66068293dab9276daca9279a',
+      createdAt: '2024-03-29T08:57:55.419Z',
+      endDate: '2024-04-09T23:59:59.059Z',
+      image: '1711703286896.png',
+      isVideo: false,
+      message: 'Best Quality Product Made In very High Standard Wood ',
+      productId: '65ded48f4052bcfbe3438127',
+      productSlug: 'royal-forest-plywood',
+      startDate: '2024-03-29T00:00:00.000Z',
+      updatedAt: '2024-03-29T09:08:06.899Z',
+      userId: '64f07c1522ee5f347112f95f',
+    },
+    {
+      __v: 0,
+      _id: '66068293dab9276daca9279a',
+      createdAt: '2024-03-29T08:57:55.419Z',
+      endDate: '2024-04-09T23:59:59.059Z',
+      image: '1711703286896.png',
+      isVideo: false,
+      message: 'Best Quality Product Made In very High Standard Wood ',
+      productId: '65ded48f4052bcfbe3438127',
+      productSlug: 'royal-forest-plywood',
+      startDate: '2024-03-29T00:00:00.000Z',
+      updatedAt: '2024-03-29T09:08:06.899Z',
+      userId: '64f07c1522ee5f347112f95f',
+    },
+    {
+      __v: 0,
+      _id: '66068293dab9276daca9279a',
+      createdAt: '2024-03-29T08:57:55.419Z',
+      endDate: '2024-04-09T23:59:59.059Z',
+      image: '1711703286896.png',
+      isVideo: false,
+      message: 'Best Quality Product Made In very High Standard Wood ',
+      productId: '65ded48f4052bcfbe3438127',
+      productSlug: 'royal-forest-plywood',
+      startDate: '2024-03-29T00:00:00.000Z',
+      updatedAt: '2024-03-29T09:08:06.899Z',
+      userId: '64f07c1522ee5f347112f95f',
+    },
+    {
+      __v: 0,
+      _id: '66068293dab9276daca9279a',
+      createdAt: '2024-03-29T08:57:55.419Z',
+      endDate: '2024-04-09T23:59:59.059Z',
+      image: '1711703286896.png',
+      isVideo: false,
+      message: 'Best Quality Product Made In very High Standard Wood ',
+      productId: '65ded48f4052bcfbe3438127',
+      productSlug: 'royal-forest-plywood',
+      startDate: '2024-03-29T00:00:00.000Z',
+      updatedAt: '2024-03-29T09:08:06.899Z',
+      userId: '64f07c1522ee5f347112f95f',
+    },
+    {
+      __v: 0,
+      _id: '66068293dab9276daca9279a',
+      createdAt: '2024-03-29T08:57:55.419Z',
+      endDate: '2024-04-09T23:59:59.059Z',
+      image: '1711703286896.png',
+      isVideo: false,
+      message: 'Best Quality Product Made In very High Standard Wood ',
+      productId: '65ded48f4052bcfbe3438127',
+      productSlug: 'royal-forest-plywood',
+      startDate: '2024-03-29T00:00:00.000Z',
+      updatedAt: '2024-03-29T09:08:06.899Z',
+      userId: '64f07c1522ee5f347112f95f',
+    },
+  ];
   useEffect(() => {
     if (focused) {
       handleGetAdvvertisementForHomepage();
@@ -267,23 +271,23 @@ export default function Home() {
     // console.log(JSON.stringify(item, null, 2), "item")
     return (
       <>
-      {
-        isloding ? 
-        <ShimmerPlaceHolder style={{width:wp(50), height:hp(27), marginRight:10}}    />
-
-        :
-        <TouchableOpacity
-          onPress={() => navigate.navigate('BottomBar', {screen: 'Shop', params: {data: item?._id}})}
-          // style={[styles1.categorybix, {width: wp(75), marginRight:wp(4), paddingBottom: 50, elevation:2, backgroundColor: categoryColorArr[generateRandomDigits()].bacolor, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
-          style={[styles1.categorybix, {width: wp(60), marginRight: wp(4), overflow: 'hidden', paddingBottom: 50, elevation: 2, backgroundColor: '#FFF9E6', display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
-          <Image source={{uri: generateImageUrl(`${item?.image}`)}} style={[styles1.imgsize, {borderRadius: 10}]} resizeMode="center" />
-          <Text style={styles1.centername}>{item.name}</Text>
-        </TouchableOpacity>
-       } 
-      
-        
+        {isloding ? (
+          <ShimmerPlaceHolder style={{width: wp(50), height: hp(27), marginRight: 10}} />
+        ) : (
+          <TouchableOpacity
+            onPress={() => navigate.navigate('BottomBar', {screen: 'Shop', params: {data: item?._id}})}
+            // style={[styles1.categorybix, {width: wp(75), marginRight:wp(4), paddingBottom: 50, elevation:2, backgroundColor: categoryColorArr[generateRandomDigits()].bacolor, display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
+            style={[styles1.categorybix, {width: wp(60), marginRight: wp(4), overflow: 'hidden', paddingBottom: 50, elevation: 2, backgroundColor: '#FFF9E6', display: 'flex', justifyContent: 'center', alignItems: 'center'}]}>
+            <Image source={{uri: generateImageUrl(`${item?.image}`)}} style={[styles1.imgsize, {borderRadius: 10}]} resizeMode="center" />
+            <Text style={styles1.centername}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
       </>
     );
+  };
+  const rendercategorySlider = ({item, index}) => {
+    // console.log(JSON.stringify(item, null, 2), "item")
+    return <>{isloding ? <ShimmerPlaceHolder style={{width: wp(50), height: hp(27), marginRight: 10}} /> : <CategorySlider data={categoryArr}></CategorySlider>}</>;
   };
 
   const renderHighlights = ({item, index}) => {
@@ -311,33 +315,21 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({item, index}) => {
-    console.log('######################################################')
-    console.log(item)
-    return (
-      <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={"Nashik"}></LikeProduct>
-  
-    );
+    console.log('######################################################');
+    console.log(item);
+    return <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={'Nashik'}></LikeProduct>;
   };
 
   const renderNewArrivals = ({item, index}) => {
-    console.log('######################################################')
-    console.log(item)
-    if(index<=1)
-    return (
-      <NewArrivalProductCard imagePath={require('../../assets/img/ply_sample.png')}   isVerified={true} name={item.productSlug} location={"Nahsik"}></NewArrivalProductCard>
-  
-    );
+    console.log('######################################################');
+    console.log(item);
+    if (index <= 1) return <NewArrivalProductCard imagePath={require('../../assets/img/ply_sample.png')} isVerified={true} name={item.productSlug} location={'Nahsik'}></NewArrivalProductCard>;
   };
 
-  
   const returnTopProfiles = ({item, index}) => {
-    console.log('######################################################')
-    console.log(item)
-    if(index<=1)
-    return (
-      <TopProfilesCard imagePath={require('../../assets/img/user_icon_1.png')}  name={item.productSlug}></TopProfilesCard>
-  
-    );
+    console.log('######################################################');
+    console.log(item);
+    if (index <= 1) return <TopProfilesCard imagePath={require('../../assets/img/user_icon_1.png')} name={item.productSlug}></TopProfilesCard>;
   };
 
   const renderProduct = ({item, index}) => {
@@ -367,15 +359,15 @@ export default function Home() {
           </View>
         </View>
         <View style={[styles1.infoproduct]}>
-          <Text style={[styles1.producthead,{textAlign:'left', marginBottom:4, fontFamily:'Manrope-Bold'}]}>{item?.productId?.name}</Text>
+          <Text style={[styles1.producthead, {textAlign: 'left', marginBottom: 4, fontFamily: 'Manrope-Bold'}]}>{item?.productId?.name}</Text>
           <View style={{display: 'flex', flexDirection: 'column', gap: 3}}>
             <View style={{display: 'flex', flexDirection: 'row', gap: 3}}>
               <Text style={[styles1.producthead, {textDecorationLine: 'line-through'}]}>₹{item?.price}</Text>
-              <Text style={{fontSize: 9}}>{item.pricetype ? item.pricetype  : ' Sq Ft' }</Text>
+              <Text style={{fontSize: 9}}>{item.pricetype ? item.pricetype : ' Sq Ft'}</Text>
             </View>
             <View style={{display: 'flex', flexDirection: 'row', gap: 1}}>
               <Text style={[styles1.producthead, {color: '#B08218', paddingLeft: 5}]}>₹{item?.salePrice}</Text>
-              <Text style={{fontSize: 9, color: '#B08218'}}>{item.pricetype ? item.pricetype  : 'Sq Ft' }</Text>
+              <Text style={{fontSize: 9, color: '#B08218'}}>{item.pricetype ? item.pricetype : 'Sq Ft'}</Text>
             </View>
           </View>
         </View>
@@ -384,6 +376,9 @@ export default function Home() {
   };
 
   const renderBlogs = ({item, index}) => {
+    return <BlogsItem item={item}></BlogsItem>;
+  };
+  const renderBlogss = ({item, index}) => {
     return (
       <View style={{width: wp(65), borderColor: 'rgba(0,0,0,0.2)', marginRight: 10, borderWidth: 1, borderRadius: 10, overflow: 'hidden'}}>
         <Image source={{uri: generateImageUrl(item.image)}} style={{height: hp(17), width: wp(65), borderTopLeftRadius: 10, borderTopRightRadius: 10}} resizeMode="stretch" />
@@ -402,8 +397,8 @@ export default function Home() {
   const renderVideo = ({item, index}) => {
     return (
       <>
-        <View style={{width: wp(85), marginRight: 10}}>
-          <YoutubePlayer height={200} play={false} videoId={item.url?.split('embed/')[1]} style={{resizeMode: 'cover', borderRadius: 20}} />
+         <View style={{width: wp(85),height:wp(47), marginRight: wp(2),marginLeft:wp(2), backgroundColor:'red', borderRadius:15,overflow:'hidden'}}>
+         <YoutubePlayer height={wp(47)} play={false} videoId={item.url?.split('embed/')[1]} style={{resizeMode: 'cover', borderRadius: 20}} />
 
           {/* <AutoHeightWebView
           //           javaScriptEnabled={true}
@@ -414,7 +409,7 @@ export default function Home() {
           source={{uri: item.url}}
           style={{height: 250, width: '100%'}}
         /> */}
-          <Text style={{marginTop: -2, color: '#b08218', fontSize: 12, textAlign: 'center'}}>{item?.name}</Text>
+          {/* <Text style={{marginTop: -2, color: '#b08218', fontSize: 12, textAlign: 'center'}}>{item?.name}</Text> */}
         </View>
       </>
     );
@@ -447,8 +442,13 @@ export default function Home() {
   return (
     <>
       <View style={[styles.bgwhite]}>
+        <Pressable>
+          <View style={{width: wp(90), alignSelf: 'center', marginTop: wp(3)}}>
+            <CustomTextInputField placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} inputType="text"></CustomTextInputField>
+          </View>
+        </Pressable>
         <FlatList
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index}
           //Header to show above listview
           removeClippedSubviews={true}
@@ -458,6 +458,7 @@ export default function Home() {
             </>
           }
           //Footer to show below listview
+
           ListFooterComponent={
             <>
               {/* <View style={{width: width}}>
@@ -491,48 +492,68 @@ export default function Home() {
                 />
               </View> */}
 
-              <Pressable Pressable onPress={() => navigate.navigate('Categories')} style={[styles.padinghr]}>
-                <Text style={[styles1.headingmain, {marginBottom: 15}]}> Product Categories</Text>
-              </Pressable>
-
-              <FlatList style={[styles.padinghr]}
+              <>{isloding ? <ShimmerPlaceHolder style={{width: wp(100), height: wp(22), marginRight: 10}} /> : <CategorySlider data={categoryArr}></CategorySlider>}</>
+              {/* <FlatList style={[styles.padinghr]}
                 data={categoryArr}
                 keyExtractor={(item, index) => `${index}`}
                 horizontal
                 //  olumns={2}
-                renderItem={rendercategory}
+                renderItem={rendercategorySlider}
                 // columnWrapperStyle={{justifyContent: 'space-between'}}
                 // scrollEnabled={false} style={{width: '100%'}}
                 contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
-              />
+              /> */}
 
-              <View style={[styles.padinghr,styles1.flexbetwen]} >
+              <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Products You May Like</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={12} text="View All"/>
+                  <CustomButton textSize={12} text="View All" />
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData}    horizontal    columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
-                renderItem={renderProductsYouMayLike}  keyExtractor={(item, index) => `${index}`} />
+              <FlatList
+                style={styles.mttop10}
+                contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
+                data={dummyData}
+                horizontal
+                columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                renderItem={renderProductsYouMayLike}
+                keyExtractor={(item, index) => `${index}`}
+              />
 
-               <View style={[styles.padinghr,styles1.flexbetwen]}>
+              <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>New Arrivals</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={12} text="View All"/>
+                  <CustomButton textSize={12} text="View All" />
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData} columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
-                renderItem={renderNewArrivals}  keyExtractor={(item, index) => `${index}`} />
-                <View >
+              <FlatList
+                style={styles.mttop10}
+                contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
+                data={dummyData}
+                columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                renderItem={renderNewArrivals}
+                keyExtractor={(item, index) => `${index}`}
+              />
+
+              <View style={{marginVertical: wp(5)}}>
+                <StartBusinessBanner></StartBusinessBanner>
+              </View>
+              <View>
                 <ImageBackground source={require('../../assets/img/bg_top_profile.png')} style={styles1.topProfileContainer}>
-                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <Text style={styles1.topProfileHeading}>Top Profiles</Text>
-                <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={dummyData} columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
-                renderItem={returnTopProfiles}  horizontal keyExtractor={(item, index) => `${index}`} />
-                </View>
+                  <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={styles1.topProfileHeading}>Top Profiles</Text>
+                    <FlatList
+                      style={styles.mttop10}
+                      contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
+                      data={dummyData}
+                      columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                      renderItem={returnTopProfiles}
+                      horizontal
+                      keyExtractor={(item, index) => `${index}`}
+                    />
+                  </View>
                 </ImageBackground>
               </View>
-              
 
               {/* <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>New Products</Text>
@@ -542,7 +563,7 @@ export default function Home() {
               </View>
               <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} /> */}
 
-              <View style={styles1.flexbetwen}>
+              <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Flash Sales</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts')}>
                   <Text style={styles1.viewall}>View All</Text>
@@ -557,22 +578,22 @@ export default function Home() {
                 </TouchableOpacity>
               </View> */}
 
-                <View style={{alignItems:'center', justifyContent:'space-between', flexDirection:'row', marginBottom:10, }}>
-                  <Text  style={[styles1.headingmain]}>Our Blogs</Text>
-                  <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
-                  <Text style={styles1.viewall}>View All</Text>
-                  </TouchableOpacity>
-                </View>
+              <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10}]}>
+                <Text style={[styles1.headingmain]}>Our Blogs</Text>
+                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
+                  <CustomButton textSize={12} text="View All" />
+                </TouchableOpacity>
+              </View>
 
               <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
 
-              <View style={{alignItems:'center', justifyContent:'space-between', flexDirection:'row', marginBottom:10, marginTop:10,}}>
-                  <Text  style={[styles1.headingmain]}>Our Videos</Text>
-                  <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
+              <View style={[styles.padinghr, styles1.videoCardHome]}>
+                <Text style={[styles1.headingmain]}>Our Videos</Text>
+                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
                   <Text style={styles1.viewall}>View All</Text>
-                  </TouchableOpacity>
-                </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
+                </TouchableOpacity>
+              </View>
+              <FlatList  contentContainerStyle={{width:'100%'}} data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
               {/* <FlatList data={categoryProductBelowArr} renderItem={renderCategoryContainer} keyExtractor={(item, index) => `${index}`} /> */}
               <Text style={[styles1.textqoute, {marginTop: hp(3)}]}>Get free quotes </Text>
@@ -954,7 +975,7 @@ const styles1 = StyleSheet.create({
     marginVertical: 15,
   },
   headingmain: {
-    fontSize: 16,
+    fontSize: wp(5),
     fontFamily: 'Manrope-Bold',
     color: '#000',
   },
@@ -1024,18 +1045,24 @@ const styles1 = StyleSheet.create({
   columnWrapper: {
     justifyContent: 'space-between', // Ensures spacing between columns
   },
-  topProfileContainer:{
-    paddingBottom:20,
-
+  topProfileContainer: {
+    paddingBottom: 20,
   },
-  topProfileHeading:{
-    paddingTop:20,
-    paddingBottom:20,
-    color:'black',
-    fontStyle:'bold',
-    fontFamily:'Poppins-Bold',
-    fontWeight:600,
-    fontSize:22,
-    alignSelf:'center'
-  }
+  topProfileHeading: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    color: 'black',
+    fontFamily: 'Poppins-Bold',
+    fontWeight: 600,
+    fontSize: 22,
+    alignSelf: 'center',
+  },
+  videoCardHome: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginTop: 10,
+    borderRadius:50
+  },
 });
