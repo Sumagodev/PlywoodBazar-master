@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CustomColors from '../styles/CustomColors';
 
 const CustomButton = ({
@@ -24,7 +25,7 @@ const CustomButton = ({
         <Text style={[styles.text, { fontSize: textSize }]}>{text}</Text>
         {rightIcon && (
           <View style={[styles.iconContainer, { backgroundColor: rightIconBgColor }]}>
-            <MaterialCommunityIcons name="chevron-right" size={40} color='white' />
+            <MaterialCommunityIcons name="chevron-right" size={40} color="white" />
           </View>
         )}
       </View>
@@ -36,20 +37,20 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     elevation: 5,
-    paddingVertical: 2,
-    paddingHorizontal: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'center',
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     color: 'white',
     textAlign: 'center',
-    paddingHorizontal: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: wp(5),
+    paddingVertical: wp(1),
   },
   iconContainer: {
     width: 35,

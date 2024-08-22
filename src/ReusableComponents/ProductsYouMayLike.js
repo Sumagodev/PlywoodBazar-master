@@ -20,7 +20,6 @@ const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }
                       <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
                         <Text style={styles.locationText}>{location}</Text>
                     </View>
-                   
                 </View>
                 <View style={styles.callIconContainer}>
                 <TouchableOpacity onPress={onCallPress}>

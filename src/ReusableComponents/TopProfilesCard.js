@@ -8,8 +8,9 @@ import CustomButton from './CustomButton.js';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const TopProfilesCard = ({ imagePath, name, onCallPressed, onVisitPressed, onCardPressed }) => {
+const TopProfilesCard = ({ imagePath, name, onCallPressed, onVisitPressed, onCardPressed, height=null, width=null }) => {
     return (
+        <View style={styles.parent}>
       <TouchableOpacity onPress={onCardPressed}>
         <View style={styles.container}>
             <View style={styles.elevatedContainer}>
@@ -44,19 +45,22 @@ const TopProfilesCard = ({ imagePath, name, onCallPressed, onVisitPressed, onCar
             </TouchableOpacity>
         </View>
     </TouchableOpacity>
+    </View>
     );
 };
 
 const styles = StyleSheet.create({
+    parent:{
+        margin: 30,
+    },
     container: {
         margin: 2,
         borderRadius: 25,
         elevation: 10,
+        width: screenWidth * 0.85,
     },
     elevatedContainer: {
         borderRadius: 25,
-        borderWidth: 1,
-        borderColor: 'black',
         backgroundColor: '#fff',
         paddingVertical: 5,
         paddingHorizontal: 20,
@@ -70,20 +74,19 @@ const styles = StyleSheet.create({
     },
     callIconContainer: {
         elevation: 5,
-        position: 'absolute',
-        left: '-10%',
-        top: '50%',
-        transform: [{ translateY: -40 }], // Adjust this value based on the icon size
+        position: 'absolute',    
+        top: '25%',
+        left: '-8%',
         backgroundColor: 'white',
-        height: 80,
-        width: 80,
+        height: screenWidth*0.2,
+        width: screenWidth*0.2,
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
     },
     callIcon: {
-        width: 75,
-        height: 75,
+        width: screenWidth*0.18,
+        height: screenWidth*0.18,
         padding: 10,
         resizeMode: 'contain',
         backgroundColor: CustomColors.accentGreen, // Background color
