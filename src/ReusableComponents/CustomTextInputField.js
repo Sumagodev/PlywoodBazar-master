@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const CustomTextInputField = ({ 
-    imagePath,
+  imagePath,
   inputType = 'text',
   placeholder = '',
   validator,
@@ -40,6 +41,7 @@ const CustomTextInputField = ({
 
 const styles = StyleSheet.create({
   container: {
+    height: wp(11),
     margin: 1,
     flexDirection: 'row',
     backgroundColor: CustomColors.mattBrownFaint,
@@ -51,8 +53,8 @@ const styles = StyleSheet.create({
     borderColor: CustomColors.shadowColorGray,
   },
   iconContainer: {
-    height: 45, 
-    width: 45, 
+    height: wp(10),
+    width: wp(10),
     borderRadius: 50,
     margin: 2,
     backgroundColor: CustomColors.mattBrownDark,
@@ -61,13 +63,13 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 16,
+    fontSize: wp(4),
     color: '#000',
     paddingStart: 5,
   },
   imageStyle: {
-    height: 40,
-    width: 40,
+    height: wp(7),
+    width: wp(7),
     borderRadius: 50,
     backgroundColor: CustomColors.mattBrownDark,
   }

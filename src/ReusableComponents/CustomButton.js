@@ -13,6 +13,7 @@ const CustomButton = ({
   leftIconBgColor = CustomColors.accentGreen,
   onPress,
   textSize = 16,
+  fontWeight = 'bold'
 }) => {
   return (
     <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }]} onPress={onPress}>
@@ -22,7 +23,7 @@ const CustomButton = ({
             <Image source={leftIconPath} style={styles.leftIcon} size={50} />
           </View>
         )}
-        <Text style={[styles.text, { fontSize: textSize }]}>{text}</Text>
+        <Text style={[styles.text, { fontSize: textSize, fontWeight: fontWeight }]}>{text}</Text>
         {rightIcon && (
           <View style={[styles.iconContainer, { backgroundColor: rightIconBgColor }]}>
             <MaterialCommunityIcons name="chevron-right" size={40} color="white" />
@@ -37,14 +38,11 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     elevation: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
+    alignSelf: 'flex-start', // This will make the button wrap its content
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   text: {
     color: 'white',

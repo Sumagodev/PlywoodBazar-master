@@ -7,10 +7,17 @@ import CategorySlider from './src/ReusableComponents/CategorySlider';
 import StartBusinessBanner from './src/ReusableComponents/StartBusinessBanner';
 import FlashSaleItem from './src/ReusableComponents/FlashSaleItem';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
+import BlogsItem from './src/ReusableComponents/BlogsItem';
+import CustomTextInputField from './src/ReusableComponents/CustomTextInputField';
 
 function App(): JSX.Element {
   return (
     <View style={styles.container}>
+      <BlogsItem
+        blog={{imagePath: require('./assets/img/imgtre.png'), title: 'long title of the image', description: 'small description'}}
+      />
+      {/*
+      <CustomTextInputField imagePath={require('./assets/img/addcheck.png')} placeholder='Test' validator={()=>{}} />
       <CategorySlider data={
         [
           {imagePath: require('./assets/img/product1.png'), name: 'a'},
@@ -27,7 +34,7 @@ function App(): JSX.Element {
           {imagePath: require('./assets/img/product6.png'), name: 'a'},
         ]
       }/>
-      {/*
+      
     <FlashSaleItem
       imagePath={require('./assets/img/category.png') }
       name='Royal Forest Plywood'
