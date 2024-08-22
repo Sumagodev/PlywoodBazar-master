@@ -6,10 +6,21 @@ import CustomButton from './src/ReusableComponents/CustomButton';
 import CategorySliderSingleItem from './src/ReusableComponents/CategorySliderSingleItem';
 import CategorySlider from './src/ReusableComponents/CategorySlider';
 import StartBusinessBanner from './src/ReusableComponents/StartBusinessBanner';
+import FlashSaleItem from './src/ReusableComponents/FlashSaleItem';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 function App(): JSX.Element {
   return (
-    <StartBusinessBanner />    
+    <View style={styles.container}>
+    <FlashSaleItem
+      imagePath={require('./assets/img/category.png') }
+      name='Royal Forest Plywood'
+      actualPrice='300'
+      salePrice='245'
+      onCallPress={()=>{}}
+      onCardPress={()=>{}}
+    />
+    </View>
   );
 }
 
