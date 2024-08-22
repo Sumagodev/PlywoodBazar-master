@@ -1,21 +1,24 @@
 import React from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import CustomColors from '../styles/CustomColors';
 
-const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, onCallPress, onCardPress }) => {
+const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onCallPress, onCardPress }) => {
     return (
-      <View style={styles.masterContainer}>
+      <Pressable style={styles.masterContainer} onPress={onCardPress}>
         <View style={styles.container}>
             <Image style={styles.imageStyle} source={imagePath}/>
             <Text style={styles.nameStyle}>{name}</Text>
+            <Text style={[styles.salePriceStyle, {color: 'red', fontSize: wp(2)}]}>{duration} days left</Text>
             <Text style={styles.actualPriceStyle}>₹{actualPrice}/-</Text>
             <Text style={styles.salePriceStyle}>₹{salePrice}/-</Text>
         </View>
         <View style={styles.callImageStyle}>
-            <Image style={styles.callIconStyle} source={require('../../assets/img/phone.png')} />
+            <TouchableOpacity onPress={onCallPress}>
+                <Image style={styles.callIconStyle} source={require('../../assets/img/phone.png')} />
+            </TouchableOpacity>
         </View>
-      </View>
+      </Pressable>
     );
 };
 

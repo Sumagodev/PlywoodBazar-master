@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { View, ScrollView, Image, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, ScrollView, Image, Text, StyleSheet, TouchableOpacity, Dimensions, Pressable } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const { width } = Dimensions.get('window');
 
@@ -27,7 +28,7 @@ const CategorySlider = ({ data }) => {
         contentContainerStyle={styles.scrollViewContent}
       >
         {data.map((item, index) => (
-        <View onPress={
+        <Pressable onPress={
             ()=>{
 
             }
@@ -36,12 +37,12 @@ const CategorySlider = ({ data }) => {
             <Image source={item.imagePath} style={styles.image} />
             <Text style={styles.name}>{item.name}</Text>
           </View>
-        </View>
+        </Pressable>
         ))}
       </ScrollView>
       
       <TouchableOpacity onPress={scrollToEnd} style={styles.icon}>
-      <Image source={require('../../assets/img/chevron_right.png')} size={24} color="black" style={styles.imageStyle} />
+        <Image source={require('../../assets/img/chevron_right.png')} size={24} color="black" style={styles.imageStyle} />
       </TouchableOpacity>
     </View>
   );
@@ -61,12 +62,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 10,
+    elevation: 10, 
   },
   image: {
-    width: 55,
-    height: 55,
+    width: wp(18),
+    height: wp(18),
     borderRadius: 50,
-    marginBottom: 10,
+    marginBottom: wp(2),
+    elevation: 10,
   },
   name: {
     fontSize: 18,
@@ -75,12 +78,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingHorizontal: 10,
-    height: 30,
-    width: 30,
+    height: wp(5),
+    width: wp(5),
   },
   imageStyle: {
-    width: 30,
-    height: 30,
+    width: wp(5),
+    height: wp(5),
   },
 });
 
