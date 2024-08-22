@@ -364,6 +364,8 @@ export default function Home() {
 
   return (
     <>
+    <View style={[ styles.bgwhite]}>
+ 
       <View style={[styles.padinghr, styles.bgwhite]}>
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -376,42 +378,13 @@ export default function Home() {
             </>
           }
           //Footer to show below listview
+          
           ListFooterComponent={
             <>
-              <Text>Raviii</Text>
-              {/* <View style={{width: width}}>
-                <FlatList
-                  data={sliderimg}
-                  ref={flatlistref}
-                  horizontal
-                  showsVerticalScrollIndicator={false}
-                  pagingEnabled
-                  renderItem={({item, index}) => {
-                    return (
-                      <View style={{width: width}}>
-                        <Image source={item.img} style={{height: hp(30), width: wp(95), resizeMode: 'contain'}} />
-                      </View>
-                    );
-                  }}
-                />
-
-                <FlatList
-                  data={sliderimg}
-                  horizontal
-                  showsVerticalScrollIndicator={false}
-                  // pagingEnabled
-                  renderItem={({item, index}) => {
-                    return (
-                      <TouchableOpacity onPress={() => handelscroll1(index)} style={{marginRight: wp(10)}}>
-                        <Image source={item.img} style={{height: wp(20), width: wp(20), resizeMode: 'contain'}} />
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              </View> */}
-
+             
+              
               <Pressable Pressable onPress={() => navigate.navigate('Categories')}>
-                <Text style={[styles1.headingmain, { marginBottom: 15 }]}> Product Categories</Text>
+                <Text style={[styles1.headingmain, { marginBottom: 15,marginTop:40 }]}> Product Categories</Text>
               </Pressable>
 
               <FlatList
@@ -659,6 +632,7 @@ export default function Home() {
             </>
           }
         />
+      </View>
       </View>
     </>
   );
@@ -1003,7 +977,7 @@ const styles1 = StyleSheet.create({
     alignItems: 'center',
     // marginHorizontal: 10,
     width: screenWidth / 4,
-     padding:30
+     padding:20
   },
   imageflat: {
     width: screenWidth * 0.2,  // 20% of screen width
@@ -1016,6 +990,7 @@ const styles1 = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     color: '#000',
+   
   },
   container: {
     flex: 1,

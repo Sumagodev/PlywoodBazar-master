@@ -63,17 +63,27 @@ export default function Header(props) {
         </View>
       </View>
 
-      {props.slidersection && (
-        <View style={styles1.sliderhome}>
-          <SliderBox
-            images={[...categoryArr.map(el => generateImageUrl(`${el?.image}`))]}
-            sliderBoxHeight={300}
-            autoplay={true}
-            loop
-          // onCurrentImagePressed={index => navigate.navigate('BottomBar', { screen: 'Shop', params: { data: categoryArr[index]?._id } })}
-          />
-        </View>
-      )}
+     
+    {props.slidersection && (
+      <View style={styles1.sliderhome1}>
+        <SliderBox
+          images={categoryArr.map(el => generateImageUrl(`${el?.image}`))}
+          sliderBoxHeight={155}
+          autoplay
+          circleLoop
+          dotStyle={styles1.dotStyle}
+          paginationBoxVerticalPadding={20}
+          dotColor="#725842"
+          inactiveDotColor="#F5F1E8"
+          paginationBoxStyle={styles1.paginationBoxStyle}
+          ImageComponentStyle={{  width: '97%',borderBottomLeftRadius:15,borderBottomRightRadius:15 ,resizeMode:'center'}}
+
+          imageLoadingColor="#2196F3"
+          onCurrentImagePressed={index => console.log('Image pressed:', categoryArr[index]?._id)}
+        />
+      </View>
+    )
+          }
     </>
   );
 }
@@ -102,5 +112,24 @@ const styles1 = StyleSheet.create({
     width: wp(95),
     height: hp(25),
     borderRadius: 6,
+  },
+  sliderhome1: {
+    // marginTop: 10,
+  },
+  dotStyle: {
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    marginHorizontal: 0,
+  },
+  paginationBoxStyle: {
+    position: 'absolute',
+    bottom: -45,
+    padding: 0,
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    // paddingVertical: 10,
+  
   },
 });
