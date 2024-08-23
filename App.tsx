@@ -15,10 +15,22 @@ import TellUsYourRequirementForm from './src/ReusableComponents/TellUsYourRequir
 import BottomBanner from './src/ReusableComponents/BottomBanner';
 import NavBar from './src/ReusableComponents/NavBar';
 import InfiniteScrollImplementation from './src/ReusableComponents/InfiniteScrollImplementation';
+import ZoomInfiniteScrollImplementation from './src/ReusableComponents/ZoomInfiniteScrollImplementation';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={{ height: 20 }} />
+      <ZoomInfiniteScrollImplementation delay={1500} infinite={true} data={[
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long1', description: 'small description' },
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long2', description: 'small description' },
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long3', description: 'small description' },
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long3', description: 'small description' },
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long4', description: 'small description' },
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long5', description: 'small description' },
+        { imagePath: require('./assets/img/imgtre.png'), title: 'long6', description: 'small description' },
+      ]
+      }/>
       <View style={{ height: 20 }} />
       <InfiniteScrollImplementation delay={1500} infinite={true} data={[
         { imagePath: require('./assets/img/imgtre.png'), title: 'long1', description: 'small description' },
@@ -30,8 +42,6 @@ function App(): JSX.Element {
         { imagePath: require('./assets/img/imgtre.png'), title: 'long6', description: 'small description' },
       ]
       }/>
-      <View style={{ height: 20 }} />
-      <InfiniteScrollImplementation delay={1000} infinite={false} data={[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]}/>
       <View style={{ height: 20 }} />
       <NavBar />
       <View style={{ height: 20 }} />
