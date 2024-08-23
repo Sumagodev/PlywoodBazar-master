@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width:wp(22),
-    marginLeft:wp(2)
+    marginLeft:wp(3)
   },
   image: {
     resizeMode:'cover',
-    width: wp(20),
-    height: wp(20),
+    width: wp(18),
+    height: wp(18),
     marginBottom: wp(2),
     elevation: 10,
   },

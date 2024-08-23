@@ -88,12 +88,11 @@ export default function Header(props) {
 const styles1 = StyleSheet.create({
   sliderhome1: {
     borderRadius: 20,
-    marginRight: wp(2),
+    marginRight: wp(0),
     marginVertical: 15,
   },
   imageStyle: {
-    width: '98%',
-    borderRadius: 15,
+    width: '100%',
     alignSelf: 'center',
     justifyContent: 'center',
   },
@@ -105,7 +104,7 @@ const styles1 = StyleSheet.create({
   },
   paginationBoxStyle: {
     position: 'relative', // Position relative so it stays within the layout flow
-    bottom: -10, // Adjust as needed to move dots below the image slider without affecting other views
+    bottom:0, // Adjust as needed to move dots below the image slider without affecting other views
     alignSelf: 'center',
     justifyContent: 'center',
     paddingVertical: 10,

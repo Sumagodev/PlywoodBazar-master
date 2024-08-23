@@ -14,7 +14,6 @@ const CustomInputWithLeftIcon = ({
   onValueChange,
 }) => {
   const [inputValue, setInputValue] = useState('');
-
   const handleInputChange = (text) => {
     const sanitizedText = text.replace(/[^0-9]/g, '').slice(0, maxLength);
     setInputValue(sanitizedText);

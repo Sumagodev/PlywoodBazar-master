@@ -27,7 +27,7 @@ const BlogsItem = ({ item }) => {
 
 const styles = StyleSheet.create({
     container:{
-        width: wp(45),
+        width: wp(55),
         height: wp(50),
         borderRadius: 25,
         marginHorizontal:wp(2),

@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     height: screenWidth * 0.095,
     width: screenWidth * 0.095 ,
     borderRadius: 25,
-    elevation:10,
     alignItems: 'center',
     justifyContent: 'center',
   },

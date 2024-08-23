@@ -4,6 +4,8 @@ import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomColors from '../styles/CustomColors';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
 
 const CustomButton = ({
   text,
@@ -11,7 +13,7 @@ const CustomButton = ({
   buttonBgColor = CustomColors.mattBrownDark,
   rightIconBgColor = CustomColors.accentGreen,
   onPress,
-  textSize = 16,
+  textSize = wp(5),
   paddingHorizontal=0
 }) => {
   return (
@@ -43,8 +45,8 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     textAlign: 'center',
-    paddingHorizontal: 20,
-    paddingVertical:3
+    paddingHorizontal:wp(4),
+    paddingVertical:wp(1)
   },
   iconContainer: {
     width: 40,

@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     alignSelf:'center'
   },
   input: {
+    flex:1,
     fontSize: wp(4),
     color: '#000000',
     paddingStart: wp(2),

@@ -35,6 +35,8 @@ import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import CategorySlider from '../ReusableComponents/CategorySlider';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
 import BlogsItem from '../ReusableComponents/BlogsItem';
+import BottomBanner from '../ReusableComponents/BottomBanner';
+import TopProfileHomeCard from '../ReusableComponents/TopProfileHomeCard';
 export default function Home() {
   const navigate = useNavigation();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
@@ -85,7 +87,6 @@ export default function Home() {
 
   const handleSubmitRequirement = async () => {
     try {
-      // alert("Asd")
       if (name == '') {
         errorToast('Name cannot be empty');
         return;
@@ -378,38 +379,11 @@ export default function Home() {
   const renderBlogs = ({item, index}) => {
     return <BlogsItem item={item}></BlogsItem>;
   };
-  const renderBlogss = ({item, index}) => {
-    return (
-      <View style={{width: wp(65), borderColor: 'rgba(0,0,0,0.2)', marginRight: 10, borderWidth: 1, borderRadius: 10, overflow: 'hidden'}}>
-        <Image source={{uri: generateImageUrl(item.image)}} style={{height: hp(17), width: wp(65), borderTopLeftRadius: 10, borderTopRightRadius: 10}} resizeMode="stretch" />
-        <View style={{paddingHorizontal: 10}}>
-          <Text style={{marginTop: 10, color: '#fcaf17'}}>{item?.name}</Text>
-          <TouchableOpacity onPress={() => navigate.navigate('BlogDetails', {data: item._id})}>
-            <Text style={{color: '#000', marginTop: 10, marginBottom: 10}}>
-              Read More <AntDesign name="arrowright" color="#000" size={15} />{' '}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
   const renderVideo = ({item, index}) => {
     return (
       <>
-         <View style={{width: wp(85),height:wp(47), marginRight: wp(2),marginLeft:wp(2), backgroundColor:'red', borderRadius:15,overflow:'hidden'}}>
+         <View style={{width: wp(85),height:wp(47), marginRight: wp(2),marginLeft:wp(2),  borderRadius:15,overflow:'hidden'}}>
          <YoutubePlayer height={wp(47)} play={false} videoId={item.url?.split('embed/')[1]} style={{resizeMode: 'cover', borderRadius: 20}} />
-
-          {/* <AutoHeightWebView
-          //           javaScriptEnabled={true}
-          //           scrollEnabled={false}
-          //           allowsFullscreenVideo={true}
-          //           userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36
-          //  (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
-          source={{uri: item.url}}
-          style={{height: 250, width: '100%'}}
-        /> */}
-          {/* <Text style={{marginTop: -2, color: '#b08218', fontSize: 12, textAlign: 'center'}}>{item?.name}</Text> */}
         </View>
       </>
     );
@@ -460,7 +434,7 @@ export default function Home() {
           //Footer to show below listview
 
           ListFooterComponent={
-            <>
+            < >
               {/* <View style={{width: width}}>
                 <FlatList
                   data={sliderimg}
@@ -492,6 +466,7 @@ export default function Home() {
                 />
               </View> */}
 
+
               <>{isloding ? <ShimmerPlaceHolder style={{width: wp(100), height: wp(22), marginRight: 10}} /> : <CategorySlider data={categoryArr}></CategorySlider>}</>
               {/* <FlatList style={[styles.padinghr]}
                 data={categoryArr}
@@ -507,7 +482,7 @@ export default function Home() {
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Products You May Like</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={12} text="View All" />
+                  <CustomButton textSize={wp(3)} text="View All" />
                 </Pressable>
               </View>
               <FlatList
@@ -523,7 +498,7 @@ export default function Home() {
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>New Arrivals</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={12} text="View All" />
+                  <CustomButton textSize={wp(3)} text="View All" />
                 </Pressable>
               </View>
               <FlatList
@@ -538,22 +513,54 @@ export default function Home() {
               <View style={{marginVertical: wp(5)}}>
                 <StartBusinessBanner></StartBusinessBanner>
               </View>
-              <View>
-                <ImageBackground source={require('../../assets/img/bg_top_profile.png')} style={styles1.topProfileContainer}>
-                  <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={styles1.topProfileHeading}>Top Profiles</Text>
-                    <FlatList
-                      style={styles.mttop10}
-                      contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
-                      data={dummyData}
-                      columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
-                      renderItem={returnTopProfiles}
-                      horizontal
-                      keyExtractor={(item, index) => `${index}`}
+              <ImageBackground
+                  source={require('../../assets/img/bgtopprofile.png')}
+                  style={styles1.topprofilewrap}
+                  imageStyle={styles1.imagebg}
+                >
+                  <Text style={styles1.topprofiletext} >Top Profiles</Text>
+                  <FlatList
+                    data={DATA1}
+                    renderItem={({ item }) => (
+                      <TopProfileHomeCard title={item.title} image={item.image} description={item.description} />
+                    )}
+                    keyExtractor={(item) => item.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.container}
+                  />
+                </ImageBackground>
+
+              <LinearGradient
+                  colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']} // Gradient colors (left to right)
+                  style={[styles1.tableimagewrap,styles1.padinghr]} // Apply the gradient to this style
+                  start={{ x: 0, y: 1 }} // Start point of the gradient
+                // end={{ x: 1, y: 1 }}   // End point of the gradient (horizontal)
+                >
+
+
+                  <View style={[styles1.textwrap]}>
+                    <Text style={{ fontSize: wp(3.5) }}>Unlock Endless Possibilities With Our</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 0 }}>
+                      <Text style={{ fontSize:  wp(4.5), color: '#FFFFFF', fontWeight: 'bold' }}>Subscription!</Text>
+                      <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: wp(1), height: wp(6), width: wp(6) }}>
+                        <Image
+                          source={require('../../assets/img/subicon.png')} // Replace with your image path
+                          style={{ height: 25, width: 25 }}
+                        />
+                      </View>
+
+                    </View>
+
+                  </View>
+                  <View style={styles1.imagewrap}>
+                    <Image
+                      source={require('../../assets/img/table.png')} // Replace with your image path
+                      style={styles1.image1}
                     />
                   </View>
-                </ImageBackground>
-              </View>
+
+                </LinearGradient>
 
               {/* <View style={styles1.flexbetwen}>
                 <Text style={styles1.headingmain}>New Products</Text>
@@ -579,173 +586,59 @@ export default function Home() {
               </View> */}
 
               <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10}]}>
-                <Text style={[styles1.headingmain]}>Our Blogs</Text>
+                <Text style={[styles1.headingmain]}>Blogs</Text>
                 <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
-                  <CustomButton textSize={12} text="View All" />
+                  <CustomButton textSize={wp(3)} text="View All" />
                 </TouchableOpacity>
               </View>
 
               <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
 
               <View style={[styles.padinghr, styles1.videoCardHome]}>
-                <Text style={[styles1.headingmain]}>Our Videos</Text>
+                <Text style={[styles1.headingmain]}>Videos</Text>
                 <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
-                  <Text style={styles1.viewall}>View All</Text>
+                <CustomButton textSize={wp(3)} text="View All" />
                 </TouchableOpacity>
               </View>
-              <FlatList  contentContainerStyle={{width:'100%'}} data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
+              <FlatList  data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
-              {/* <FlatList data={categoryProductBelowArr} renderItem={renderCategoryContainer} keyExtractor={(item, index) => `${index}`} /> */}
-              <Text style={[styles1.textqoute, {marginTop: hp(3)}]}>Get free quotes </Text>
-              <Text style={styles1.textqoute}>from multiple sellers</Text>
-              <View style={[styles1.flexevenely, {gap: 10}]}>
-                <View style={[styles.flex1, styles1.col4]}>
-                  <View style={{width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <MaterialCommunityIcons name="message-processing" size={19} color="#fff" />
-                  </View>
-                  <Text style={styles1.tellcontnt}>Tell us what You Need</Text>
-                </View>
+             
 
-                <View style={[styles.flex1, styles1.col4]}>
-                  <View style={{width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <FontAwesome name="money" size={19} color="#fff" />
-                  </View>
-                  <Text style={styles1.tellcontnt}>Receive free quotes from sellers</Text>
-                </View>
 
-                <View style={[styles.flex1, styles1.col4]}>
-                  <View style={{width: wp(15), height: wp(15), backgroundColor: '#b08218', borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <FontAwesome5 name="handshake" size={19} color="#fff" />
-                  </View>
-                  <Text style={styles1.tellcontnt}>Seal The Deal</Text>
-                </View>
-              </View>
-              <Text
-                style={[
-                  styles1.textqoute,
-                  {
-                    marginVertical: 15,
-                    color: '#E7B84E',
-                    fontSize: 20,
-                    marginBottom: 16,
-                  },
-                ]}>
-                Tell us your Requirement
-              </Text>
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                label="Enter Your Name"
-                outlineStyle={{
-                  borderWidth: 0.8,
-                  borderRadius: 16,
-                  borderColor: '#B08218',
-                  marginBottom: 15,
-                  height: 50,
-                }}
-                theme={{
-                  colors: {
-                    text: '#848993',
-                    accent: '#ffffff',
-                    primary: '#848993',
-                    placeholder: '#f5f5f5',
-                    background: '#fff',
-                    borderWidth: '1',
-                  },
-                }}
-                underlineColor="#E7E7E8"
-                underlineColorAndroid="#E7E7E8"
-                onChangeText={e => setName(e)}
-                value={name}
-              />
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                onChangeText={e => setPhone(e)}
-                value={phone}
-                maxLength={10}
-                keyboardType={'numeric'}
-                label="Enter your mobile number"
-                outlineStyle={{
-                  borderWidth: 0.8,
-                  borderRadius: 16,
-                  borderColor: '#B08218',
-                  marginBottom: 15,
-                  height: 50,
-                }}
-                theme={{
-                  colors: {
-                    text: '#848993',
-                    accent: '#ffffff',
-                    primary: '#848993',
-                    placeholder: '#f5f5f5',
-                    background: '#fff',
-                    borderWidth: '1',
-                  },
-                }}
-                underlineColor="#E7E7E8"
-                underlineColorAndroid="#E7E7E8"
-              />
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                onChangeText={e => setAddress(e)}
-                value={address}
-                label="Enter your address"
-                outlineStyle={{
-                  borderWidth: 0.8,
-                  borderRadius: 16,
-                  borderColor: '#B08218',
-                  marginBottom: 15,
-                  height: 50,
-                }}
-                theme={{
-                  colors: {
-                    text: '#848993',
-                    accent: '#ffffff',
-                    primary: '#848993',
-                    placeholder: '#f5f5f5',
-                    background: '#fff',
-                    borderWidth: '1',
-                  },
-                }}
-                underlineColor="#E7E7E8"
-                underlineColorAndroid="#E7E7E8"
-              />
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                onChangeText={e => setProductName(e)}
-                value={productName}
-                label="Enter Product / Service name"
-                outlineStyle={{
-                  borderWidth: 0.8,
-                  borderRadius: 16,
-                  borderColor: '#B08218',
-                  marginBottom: 15,
-                  height: 50,
-                }}
-                theme={{
-                  colors: {
-                    text: '#f5f5f5',
-                    accent: '#ffffff',
-                    primary: '#666666',
-                    placeholder: '#f5f5f5',
-                    background: '#fff',
-                    borderWidth: '1',
-                    fontSize: 8,
-                  },
-                }}
-                underlineColor="#E7E7E8"
-                underlineColorAndroid="#E7E7E8"
-              />
+              
 
-              <TouchableOpacity onPress={() => handleSubmitRequirement()} style={[styles.btnbg, {marginBottom: 50}]}>
-                <Text style={styles.textbtn}>Submit Requirement </Text>
-              </TouchableOpacity>
+              
+
+            <View style={styles1.containerForm}>
+            <Text style={styles1.textStyle}>TELL US YOUR REQUIREMENT</Text>
+            <View style={styles1.textFieldContainer}>
+                <View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Name*' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Mobile Number*' onChangeText={(value)=>{                                
+                  const sanitizedText = value.replace(/[^0-9]/g, '').slice(0, 10);
+                  setPhone(sanitizedText) 
+                  value=sanitizedText
+                  }
+                  }  inputType='number' maxLength={10}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Address*' onChangeText={value=>setAddress(value)} /><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Product/Service*' onChangeText={value=>setProductName(value)}/><View style={{height:wp(1)}} />
+            </View>
+            <View style={styles1.btnContainer}>
+                <TouchableOpacity onPress={()=>{handleSubmitRequirement()}}>
+                    <Text style={{color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign:'center'}}>SUBMIT</Text>
+                </TouchableOpacity>
+            </View>
+           </View>
+
+          
+
+            <View style={{marginBottom:wp(18),marginTop:wp(7)}}>
+            <BottomBanner></BottomBanner>
+            </View>
             </>
           }
         />
+        
       </View>
     </>
   );
@@ -965,8 +858,7 @@ const styles1 = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 15,
-  },
+    marginTop:wp(10)  },
   imgsize: {
     width: wp(100),
     height: wp(40),
@@ -1065,4 +957,113 @@ const styles1 = StyleSheet.create({
     marginTop: 10,
     borderRadius:50
   },
+  tableimagewrap: {
+    flex: 1,
+    height: wp(38),
+    backgroundColor: '#3498db',
+    borderRadius: 30,
+    // borderWidth:1,
+    bordercolor: '#000000',
+    marginTop: wp(15),
+    marginHorizontal:wp(1),
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // alignItems: 'center',
+    justifyContent: "center"
+  },
+  image1: {
+    width: wp(60),  // Set your desired width
+    height: wp(50), // Set your desired height
+    resizeMode: 'contain', // Optional: control how the image fits,
+    bottom: wp(8),
+
+  },
+  imagewrap: {
+
+    justifyContent: 'flex-end',
+    alignItems: "flex-end",
+    // left: 10,
+    // bottom: 60
+    position: 'absolute',
+    alignSelf: "flex-end",
+    // marginLeft:30
+  },
+  textwrap: {
+
+    // alignItems: 'center',
+    justifyContent: 'center',
+    // top: 120,
+    marginTop: wp(15),
+    marginHorizontal: 15,
+    width: wp(60),
+
+  },
+  containerForm: {
+    elevation: 5,
+    backgroundColor: '#f4eddb',
+    borderRadius: 25,
+    width: wp(75),
+    height: wp(85),
+    alignItems: 'center',
+    overflow: 'hidden',
+    alignSelf:'center',
+    marginTop:wp(7)
+},
+textStyle: {
+    color: '#000000',
+    fontWeight: 'bold',
+    fontSize: wp(4),
+    marginTop: wp(8),
+    marginBottom: wp(3),
+},
+textFieldContainer: {
+    width: '85%',
+},
+btnContainer:{
+    position: 'absolute',
+    backgroundColor: '#6c4f37',
+    bottom: 0,
+    width: '100%',
+    justifyContent: 'center'
+},
+topprofilewrap: {
+
+  height: hp(25),
+  marginTop: wp(10),
+  // alignItems: 'center',
+  // justifyContent: 'center'
+
+},
+topprofiletext: {
+  fontSize: 22,
+  fontWeight: 'bold',
+  alignSelf: "center"
+},
+imagebg: {
+  height: hp(25),
+  alignItems: 'center',
+  justifyContent: 'center',
+  // paddingLeft:wp(10)
+},
 });
+
+
+const DATA1 = [
+  {
+    id: '1',
+    title: 'vishamberjfhdjfhjkdshfjkhsdfkjhdsjkfh 1',
+    image: 'https://imgd.aeplcdn.com/1056x594/n/cw/ec/103795/r15-right-side-view-7.png?isig=0&q=80&wm=3',
+
+  },
+  {
+    id: '2',
+    title: 'vishamberjfhdjfhjkdshfjkhsdfkjhdsjkf 2',
+    image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/171273/f77-left-side-view.jpeg?isig=0&q=80',
+  },
+  {
+    id: '3',
+    title: 'Card 3',
+    image: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+  },
+  // Add more items as needed
+];

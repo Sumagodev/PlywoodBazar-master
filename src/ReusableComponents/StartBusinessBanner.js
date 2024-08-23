@@ -16,7 +16,7 @@ const StartBusinessBanner = () => {
       <View style={{ width: wp(3) }} />
       <View style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
       <Text style={[styles.freeStyle, {backgroundColor: '#9d7b5f'} ]}/>
-        <CustomButton text="Start now" buttonBgColor="#67462A" textSize={wp(5)} onPress={() => {}} />
+        <CustomButton text="Start now" buttonBgColor="#67462A" textSize={wp(4)} onPress={() => {}} />
       </View>
     </View>
   );
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: '#5a432f',
     borderRadius: 50,
     backgroundColor: '#fae1cc',
-    paddingHorizontal: wp(3),
+    paddingHorizontal: wp(4),
     paddingVertical: wp(1),
     textAlign: 'center',
     fontSize: wp(3),
