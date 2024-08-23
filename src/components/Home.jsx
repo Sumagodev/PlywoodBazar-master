@@ -56,18 +56,18 @@ export default function Home() {
     {
       id: '1',
       title: 'vishamberjfhdjfhjkdshfjkhsdfkjhdsjkfh 1',
-      image: 'https://via.placeholder.com/150',
+      image: 'https://imgd.aeplcdn.com/1056x594/n/cw/ec/103795/r15-right-side-view-7.png?isig=0&q=80&wm=3',
 
     },
     {
       id: '2',
-      title: 'Card 2',
-      image: 'https://via.placeholder.com/150',
+      title: 'vishamberjfhdjfhjkdshfjkhsdfkjhdsjkf 2',
+      image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/171273/f77-left-side-view.jpeg?isig=0&q=80',
     },
     {
       id: '3',
       title: 'Card 3',
-      image: 'https://via.placeholder.com/150',
+      image: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
     },
     // Add more items as needed
   ];
@@ -84,16 +84,38 @@ export default function Home() {
 
   const Card = ({ title, image, description }) => (
     <View style={styles1.card1}>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-        <Image source={{ uri: image }} style={styles1.cardImage1} />
-        <View style={{ marginLeft: 70 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: "center", flexWrap: 'wrap' }}>
+
+        <View style={{ width: wp(8), right: wp(17) }}>
+          <Image source={{ uri: image }} style={styles1.cardImage1} />
+        </View>
+        <View style={{ width: wp(45) }}>
           <Text style={styles1.cardTitle1} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
 
-          <View><Image
+         <Image
             source={require('../Assets/HomeImages/rating.png')} // Replace with your image path
-            style={{ height: 25, width: wp(25) }}
-          /></View>
-          <Text style={styles1.cardDescription1}>{description}</Text>
+            style={{ height: 15, width: wp(30), resizeMode: 'contain' }}
+          />
+          <View style={{ flexDirection: 'row', margin: wp(3), alignItems: 'flex-start',right:wp(5)}}>
+            <View style={styles1.callwrap}>
+            <View style={styles1.iconwrap}> 
+            <Image
+            source={require('../Assets/HomeImages/phone.png')} // Replace with your image path
+            style={{ resizeMode:'cover',height:hp(4),width:wp(7) ,}}
+          />
+          </View>
+              <Text style={{right:wp(3),fontWeight:'500'}}>Connect</Text>
+            </View>
+            <View style={styles1.callwrap}>
+            <View style={styles1.iconwrap}>
+            <Image
+            source={require('../Assets/HomeImages/phone.png')} // Replace with your image path
+            style={{ resizeMode:'cover',height:hp(4),width:wp(7) ,}}
+          />
+            </View>
+            <Text style={{right:wp(2),fontWeight:'500'}}>Visit</Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -495,26 +517,26 @@ export default function Home() {
                   </View>
                 </View>
 
-                <View style={styles1.topprofilewrap}>
-                  <ImageBackground
-                    source={require('../Assets/HomeImages/bgtopprofile.png')}
-                    style={styles.imageBackground}
-                    imageStyle={styles1.imagebg}
-                  >
-                    <Text style={styles1.topprofiletext} >Top Profiles</Text>
-                    <FlatList
-                      data={DATA1}
-                      renderItem={({ item }) => (
-                        <Card title={item.title} image={item.image} description={item.description} />
-                      )}
-                      keyExtractor={(item) => item.id}
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                      contentContainerStyle={styles.container}
-                    />
-                  </ImageBackground>
 
-                </View>
+                <ImageBackground
+                  source={require('../Assets/HomeImages/bgtopprofile.png')}
+                  style={styles1.topprofilewrap}
+                  imageStyle={styles1.imagebg}
+                >
+                  <Text style={styles1.topprofiletext} >Top Profiles</Text>
+                  <FlatList
+                    data={DATA1}
+                    renderItem={({ item }) => (
+                      <Card title={item.title} image={item.image} description={item.description} />
+                    )}
+                    keyExtractor={(item) => item.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.container}
+                  />
+                </ImageBackground>
+
+
                 <LinearGradient
                   colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']} // Gradient colors (left to right)
                   style={styles1.tableimagewrap} // Apply the gradient to this style
@@ -1055,9 +1077,10 @@ const styles1 = StyleSheet.create({
   topprofilewrap: {
 
     height: hp(25),
-    marginTop: 20,
+    marginTop: wp(10),
     // alignItems: 'center',
     // justifyContent: 'center'
+
   },
   topprofiletext: {
     fontSize: 22,
@@ -1068,7 +1091,7 @@ const styles1 = StyleSheet.create({
     height: hp(25),
     alignItems: 'center',
     justifyContent: 'center',
-
+    // paddingLeft:wp(10)
   },
   card1: {
     backgroundColor: '#fff',
@@ -1078,31 +1101,45 @@ const styles1 = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-    margin: 10,
-    padding: 15,
-    width: wp(45),
-    marginLeft: 50,
+    margin: wp(5),
+    padding: 10,
+    width: wp(75),
+    marginLeft: wp(14),
     height: hp(15)
   },
   cardImage1: {
-    width: wp(20),
+    width: wp(25),
     height: hp(12),
     borderRadius: 60,
-    position: 'absolute',
-    right: 140,
-    // alignSelf:'flex-start',
-    marginRight: 40,
+    // position: 'absolute',
+    // left: wp(50),
+    // alignSelf:'flex-start'
+    borderWidth:2,
+    borderColor:'#FFFFFF'
+
+
 
 
   },
   cardTitle1: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginVertical: 10,
+    marginVertical: 5,
 
   },
   cardDescription1: {
     fontSize: 14,
     color: '#555',
   },
+  callwrap: {
+    width: wp(24),
+    height: hp(5),
+    backgroundColor: "#F5E5D8",
+    padding: wp(2), borderRadius: 20,
+    alignItems: 'center',
+    marginHorizontal: wp(1.2),
+    flexDirection:'row'
+
+  },
+  iconwrap:{height:hp(4.5),width:wp(9),borderRadius:20,backgroundColor:'#39AB68', right:wp(4),alignItems:'center',justifyContent:"center"}
 });
