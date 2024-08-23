@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Filtercategory from '../../components/Filtercategory';
 import Home from '../../components/Home';
@@ -12,6 +12,7 @@ import { isAuthorisedContext } from '../Stack/Root';
 import Notification from '../../components/Notification';
 import { getDecodedToken } from '../../services/User.service';
 import Login from '../../components/Login';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,21 +23,10 @@ function MyTabBar({ state, descriptors, navigation }) {
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: 'white',
-        height: 65,
-        paddingHorizontal: 8,
+        backgroundColor: '#5a432f',
+        paddingHorizontal: wp(3),
+        paddingVertical: wp(3),
         justifyContent: 'space-between',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-        alignItems: 'center',
-        elevation: 8,
       }}
     >
       {state.routes.map((route, index) => {
@@ -81,29 +71,53 @@ function MyTabBar({ state, descriptors, navigation }) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
-              alignItems: 'center',
-              backgroundColor: 'transparent',
-            }}
+            style={[ styles.navItem, isFocused && styles.selectedItem,]}
           >
-            {label.toLowerCase() === 'home' ? (
-              <Icon color={isFocused ? '#B08218' : '#ACA9C9'} size={20} name="home" />
-            ) : label.toLowerCase() === 'shop' ? (
-              <Icon color={isFocused ? '#B08218' : '#ACA9C9'} size={20} name="grid" />
-            ) : label.toLowerCase() === 'search' ? (
-              <Icon color={isFocused ? '#B08218' : '#ACA9C9'} size={20} name="search" />
-            ) : label.toLowerCase() === 'notification' ? (
-              <FontAwesome color={isFocused ? '#B08218' : '#ACA9C9'} size={20} name="bell-o" />
-            ) : (
-              <Icon color={isFocused ? '#B08218' : '#ACA9C9'} size={20} name="user" />
-            )}
-            <Text style={{ color: isFocused ? '#B08218' : '#ACA9C9', fontSize: 13 }}>{label}</Text>
+            {
+              label.toLowerCase() === 'home' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="home-variant" style={isFocused ? styles.iconSelected : styles.iconDefault} />) :
+              label.toLowerCase() === 'shop' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="store" style={isFocused ? styles.iconSelected : styles.iconDefault} />) : 
+              label.toLowerCase() === 'search' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
+              label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
+              (
+                <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="account-check" style={isFocused ? styles.iconSelected : styles.iconDefault} />
+              )
+            }
+            <Text style={[ styles.label, isFocused && styles.selectedLabel,]}>{label}</Text>
           </TouchableOpacity>
         );
       })}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  navItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedItem: {
+    elevation: 5,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: wp(3),
+  },
+  iconDefault: {
+    marginBottom: wp(1),
+  },
+  iconSelected: {
+    marginRight: wp(1),
+  },
+  label: {
+    color: 'white',
+    fontSize: wp(4),
+  },
+  selectedLabel: {
+    color: '#5a432f',
+    fontSize: wp(4),
+  },
+})
 
 export function BottomTabNavigator() {
   const [isAuthorized] = useContext(isAuthorisedContext);

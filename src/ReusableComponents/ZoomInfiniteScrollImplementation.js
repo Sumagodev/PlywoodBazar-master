@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { View, FlatList, Animated, Text } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import BlogsItem from './BlogsItem';
-import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import Carousel from 'react-native-snap-carousel';
 
 const ZoomInfiniteScrollImplementation = ({ data, infinite = true, delay = 3000 }) => {
     const flatListRef = useRef(null);
@@ -24,7 +24,7 @@ const ZoomInfiniteScrollImplementation = ({ data, infinite = true, delay = 3000 
 
     return (
         <View style={{ width: wp(100), margin: wp(2) }}>
-            <FlatList
+            <Carousel
                 ref={flatListRef}
                 data={data}
                 horizontal
