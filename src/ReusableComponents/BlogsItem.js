@@ -3,16 +3,16 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { View, StyleSheet, Text, Image, Pressable } from 'react-native';
 import CustomButton from './CustomButton';
 
-const BlogsItem = ({ blog }) => {
+const BlogsItem = ({ blog, onCardPress, onButtonPress }) => {
     return (
-        <Pressable onPress={()=>{}}>
+        <Pressable onPress={onCardPress}>
             <View style={styles.container} >
                 <Image source={blog.imagePath} style={styles.imageStyle}/>
                 <Text style={styles.titleStyle}>{blog.title}</Text>
                 <Text style={styles.descriptionStyle}>{blog.description}</Text>
                 <View style={styles.btnStyle}>
                 <CustomButton
-                    onPress={() => { /* Button Action */ }} 
+                    onPress={onButtonPress}
                     text="Read more" 
                     textSize={wp(4)}
                     fontWeight='bold'
