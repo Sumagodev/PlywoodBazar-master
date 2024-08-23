@@ -11,11 +11,14 @@ import BlogsItem from './src/ReusableComponents/BlogsItem';
 import CustomTextInputField from './src/ReusableComponents/CustomTextInputField';
 import FlashSaleCard from './src/ReusableComponents/FlashSaleAnimatedCard';
 import FlashSaleAnimatedCard from './src/ReusableComponents/FlashSaleAnimatedCard';
+import TellUsYourRequirementForm from './src/ReusableComponents/TellUsYourRequirementForm';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
-
+      <View style={{ height: 20 }} />
+      <TellUsYourRequirementForm />
+      <View style={{ height: 20 }} />
       <FlashSaleAnimatedCard gifSource={require('./assets/anim/flashSale1.gif')} />
       <View style={{ height: 20 }} />
       <StartBusinessBanner />
