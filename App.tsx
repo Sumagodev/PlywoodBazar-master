@@ -13,10 +13,13 @@ import FlashSaleCard from './src/ReusableComponents/FlashSaleAnimatedCard';
 import FlashSaleAnimatedCard from './src/ReusableComponents/FlashSaleAnimatedCard';
 import TellUsYourRequirementForm from './src/ReusableComponents/TellUsYourRequirementForm';
 import BottomBanner from './src/ReusableComponents/BottomBanner';
+import NavBar from './src/ReusableComponents/NavBar';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={{ height: 20 }} />
+      <NavBar />
       <View style={{ height: 20 }} />
       <BottomBanner />
       <View style={{ height: 20 }} />
