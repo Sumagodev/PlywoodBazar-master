@@ -4,8 +4,6 @@ import Carousel from 'react-native-snap-carousel';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import BlogsItem from './BlogsItem';
 
-const { width: screenWidth } = Dimensions.get('window');
-
 const ZoomInfiniteScrollImplementation = ({ data }) => {
     const renderItem = ({ item }) => (
         <BlogsItem blog={item} />
