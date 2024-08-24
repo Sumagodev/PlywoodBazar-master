@@ -2,18 +2,23 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomColors from '../styles/CustomColors.js';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const FadeRibbonText = ({ text, textColor='white', colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint, reverseDirection=false }) => {
+const FadeRibbonText = ({ 
+  text, textColor='white', colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint, reverseDirection=false,
+  fontSize=wp(4), paddingHorizontal, ...rest
+}) => {
   const styles = StyleSheet.create({
     gradientContainer: {
       padding: 10,
       borderRadius: 50,
+      rest,
     },
     text: {
       color: textColor,
       textAlign: 'center',
-      fontSize: 18,
-      paddingHorizontal: 10,
+      fontSize: fontSize,
+      paddingHorizontal: paddingHorizontal
     },
   });
 
@@ -28,7 +33,7 @@ const FadeRibbonText = ({ text, textColor='white', colorStart=CustomColors.child
       end={gradientDirection.end}
       style={styles.gradientContainer}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text} numberOfLines={1} ellipsizeMode='tail'>{text}</Text>
     </LinearGradient>
   );
 };

@@ -14,6 +14,8 @@ const CustomButton = ({
   onPress,
   textSize = 16,
   fontWeight = 'bold',
+  paddingHorizontal = wp(2),
+  paddingVertical = wp(2),
   ...rest
 }) => {
   return (
@@ -24,7 +26,7 @@ const CustomButton = ({
             <Image source={leftIconPath} style={styles.leftIcon} size={50} />
           </View>
         )}
-        <Text style={[styles.text, { fontSize: textSize, fontWeight: fontWeight }]}>{text}</Text>
+        <Text style={[styles.text, { fontSize: textSize, fontWeight: fontWeight, paddingHorizontal: paddingHorizontal, paddingVertical: paddingVertical }]}>{text}</Text>
         {rightIcon && (
           <View style={[styles.iconContainer, { backgroundColor: rightIconBgColor }]}>
             <Image source={rightIcon} style={styles.leftIcon} size={50} />

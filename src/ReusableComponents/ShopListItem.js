@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "./CustomButton";
 import CustomColors from "../styles/CustomColors";
 
-const VendorListItem = ({vendorItem})=>{
+const ShopListItem = ({vendorItem})=>{
     return(
         <View style={styles.container}>
             <View style={styles.mainContainer}>
@@ -92,4 +92,4 @@ const styles = StyleSheet.create({
         width: wp(45),
     }
 })
-export default VendorListItem
+export default ShopListItem

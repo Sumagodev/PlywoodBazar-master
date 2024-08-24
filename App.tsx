@@ -13,13 +13,37 @@ import NavBar from './src/ReusableComponents/NavBar';
 import InfiniteScrollImplementation from './src/ReusableComponents/InfiniteScrollImplementation';
 import ZoomInfiniteScrollImplementation from './src/ReusableComponents/ZoomInfiniteScrollImplementation';
 import BlogsItem from './src/ReusableComponents/BlogsItem';
-import VendorListItem from './src/ReusableComponents/VendorListItem';
+import ShopListItem from './src/ReusableComponents/ShopListItem';
+import MySubscriptionItem from './src/ReusableComponents/MySubscriptionItem';
+import MyTopUpItem from './src/ReusableComponents/MyTopUpItem';
 
 function App(): JSX.Element {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}>      
       <View style={{ height: 20 }} />
-      <VendorListItem vendorItem={{ imagePath: require('./assets/img/userimg.png'), name: 'Nilkanth Furniture', rating: 4.4, address: 'opp B. ed college , new akole road sangamner - 42205', contact: 8857955788, products: 'N.A' }}/>
+      <MySubscriptionItem subscriptionItem={{ 
+        name: 'Distributer', 
+        description: 'Plywood Bazaar Ads',
+        price: 5899,
+        startDate: '06-12-2031',
+        endDate: '06-12-2032',
+        purchaseDate: '01-03-2024',
+        numberOfSale: 1,
+        daysOfSale: 5,
+        numberOfAdvertisement: 1,
+        daysOfAdvertisement: 5,
+      }}/>
+      <View style={{ height: 20 }} />
+      <MyTopUpItem topUpItem={{ 
+        price: '1500',
+        validity: 'No Validity',
+        numberOfSale: 1,
+        daysOfSale: 3,
+        numberOfAdvertisement: 1,
+        daysOfAdvertisement: 3,
+      }} />
+      <View style={{ height: 20 }} />
+      <ShopListItem vendorItem={{ imagePath: require('./assets/img/category.png'), name: 'Nilkanth Furniture', rating: 4.4, address: 'opp B. ed college , new akole road sangamner - 42205', contact: 8857955788, products: 'N.A' }}/>
       <View style={{ height: 20 }} />
       <ZoomInfiniteScrollImplementation data={[
         { imagePath: require('./assets/img/imgtre.png'), title: 'long1', description: 'small description' },
@@ -57,11 +81,10 @@ function App(): JSX.Element {
         onVisitPressed={() => { }}
       />
       <View style={{ height: 20 }} />
-      {/*
       <BlogsItem
         blog={{ imagePath: require('./assets/img/imgtre.png'), title: 'long title of the image', description: 'small description' }}
+        onCardPress={()=>{}} onButtonPress={()=>{}}
       />
-      */}
       <View style={{ height: 20 }} />
       <CustomTextInputField imagePath={require('./assets/img/addcheck.png')} placeholder='Test' validator={() => { }} />
       <View style={{ height: 20 }} />
