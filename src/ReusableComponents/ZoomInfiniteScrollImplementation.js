@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import BlogsItem from './BlogsItem';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -12,10 +13,10 @@ const ZoomInfiniteScrollImplementation = ({ data }) => {
 
     return (
         <Carousel
-            data={data}
+            data={data}            
             renderItem={renderItem}
-            sliderWidth={screenWidth}
-            itemWidth={screenWidth/2.1}
+            sliderWidth={wp(100)}
+            itemWidth={wp(80)}
             loop={true}
             autoplay={true}
             autoplayDelay={1000}
