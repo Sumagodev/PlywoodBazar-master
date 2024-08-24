@@ -21,7 +21,7 @@ import {getAllCategories} from '../services/Category.service';
 import {getAllFlashSales} from '../services/FlashSales.service';
 import {addUserRequirement} from '../services/UserRequirements.service';
 import {generateImageUrl} from '../services/url.service';
-import {errorToast, toastSuccess} from '../utils/toastutill';
+import {errorToast, toastSuccess} from '../utils/toastutill'; 
 
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
