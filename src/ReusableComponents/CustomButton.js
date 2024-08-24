@@ -13,11 +13,12 @@ const CustomButton = ({
   leftIconBgColor = CustomColors.accentGreen,
   onPress,
   textSize = 16,
-  fontWeight = 'bold'
+  fontWeight = 'bold',
+  ...rest
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }]} onPress={onPress}>
-      <View style={styles.container}>
+    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }, rest]} onPress={onPress}>
+        <View style={styles.container}>
         {leftIconPath && (
           <View style={[styles.iconContainer, { backgroundColor: leftIconBgColor }]}>
             <Image source={leftIconPath} style={styles.leftIcon} size={50} />
@@ -26,7 +27,7 @@ const CustomButton = ({
         <Text style={[styles.text, { fontSize: textSize, fontWeight: fontWeight }]}>{text}</Text>
         {rightIcon && (
           <View style={[styles.iconContainer, { backgroundColor: rightIconBgColor }]}>
-            <MaterialCommunityIcons name="chevron-right" size={40} color="white" />
+            <Image source={rightIcon} style={styles.leftIcon} size={50} />
           </View>
         )}
       </View>
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 50,
+    margin: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

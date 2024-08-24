@@ -13,10 +13,13 @@ import NavBar from './src/ReusableComponents/NavBar';
 import InfiniteScrollImplementation from './src/ReusableComponents/InfiniteScrollImplementation';
 import ZoomInfiniteScrollImplementation from './src/ReusableComponents/ZoomInfiniteScrollImplementation';
 import BlogsItem from './src/ReusableComponents/BlogsItem';
+import VendorListItem from './src/ReusableComponents/VendorListItem';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={{ height: 20 }} />
+      <VendorListItem vendorItem={{ imagePath: require('./assets/img/userimg.png'), name: 'Nilkanth Furniture', rating: 4.4, address: 'opp B. ed college , new akole road sangamner - 42205', contact: 8857955788, products: 'N.A' }}/>
       <View style={{ height: 20 }} />
       <ZoomInfiniteScrollImplementation data={[
         { imagePath: require('./assets/img/imgtre.png'), title: 'long1', description: 'small description' },

@@ -14,13 +14,13 @@ const ZoomInfiniteScrollImplementation = ({ data }) => {
             data={data}            
             renderItem={renderItem}
             sliderWidth={wp(100)}
-            itemWidth={wp(80)}
+            itemWidth={wp(45)}
             loop={true}
             autoplay={true}
             autoplayDelay={1000}
             autoplayInterval={3000}
             layout={'default'}
-            inactiveSlideScale={0.9}
+            inactiveSlideScale={0.8}
             inactiveSlideOpacity={1}
         />
     );
