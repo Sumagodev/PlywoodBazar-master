@@ -37,6 +37,10 @@ import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
 import BlogsItem from '../ReusableComponents/BlogsItem';
 import BottomBanner from '../ReusableComponents/BottomBanner';
 import TopProfileHomeCard from '../ReusableComponents/TopProfileHomeCard';
+import ZoomInfiniteScrollImplementation from '../ReusableComponents/ZoomInfiniteScrollImplementation';
+import Carousel from 'react-native-snap-carousel';
+import StateItem from '../ReusableComponents/StateItem';
+
 export default function Home() {
   const navigate = useNavigation();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
@@ -158,7 +162,7 @@ export default function Home() {
     try {
       let {data: res} = await getForHomepage();
       if (res.data) {
-        console.log(res.data, 'data');
+        console.log(res.data, 'New Arrivals');
         setAdvertisementsArr(res.data);
       }
     } catch (err) {
@@ -316,21 +320,11 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({item, index}) => {
-    console.log('######################################################');
-    console.log(item);
     return <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={'Nashik'}></LikeProduct>;
   };
 
   const renderNewArrivals = ({item, index}) => {
-    console.log('######################################################');
-    console.log(item);
-    if (index <= 1) return <NewArrivalProductCard imagePath={require('../../assets/img/ply_sample.png')} isVerified={true} name={item.productSlug} location={'Nahsik'}></NewArrivalProductCard>;
-  };
-
-  const returnTopProfiles = ({item, index}) => {
-    console.log('######################################################');
-    console.log(item);
-    if (index <= 1) return <TopProfilesCard imagePath={require('../../assets/img/user_icon_1.png')} name={item.productSlug}></TopProfilesCard>;
+     return <NewArrivalProductCard onCardPressed={() => navigate.navigate('Productdetails', {data: item.productSlug})} imagePath={require('../../assets/img/ply_sample.png')} isVerified={true} name={item.productSlug} location={'Nahsik'}></NewArrivalProductCard>;
   };
 
   const renderProduct = ({item, index}) => {
@@ -504,12 +498,11 @@ export default function Home() {
               <FlatList
                 style={styles.mttop10}
                 contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
-                data={dummyData}
+                data={advertisementsArr}
                 columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
                 renderItem={renderNewArrivals}
                 keyExtractor={(item, index) => `${index}`}
               />
-
               <View style={{marginVertical: wp(5)}}>
                 <StartBusinessBanner></StartBusinessBanner>
               </View>
@@ -519,16 +512,23 @@ export default function Home() {
                   imageStyle={styles1.imagebg}
                 >
                   <Text style={styles1.topprofiletext} >Top Profiles</Text>
-                  <FlatList
-                    data={DATA1}
-                    renderItem={({ item }) => (
-                      <TopProfileHomeCard title={item.title} image={item.image} description={item.description} />
-                    )}
-                    keyExtractor={(item) => item.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.container}
-                  />
+                  <Carousel
+            data={DATA1}            
+            renderItem={({ item }) => (
+              <TopProfileHomeCard title={item.title} image={item.image} description={item.description} />
+            )}
+            sliderWidth={wp(100)}
+            itemWidth={wp(80)}
+            loop={true}
+            autoplay={true}
+            autoplayDelay={1000}
+            autoplayInterval={3000}
+            layout={'default'}
+            inactiveSlideScale={0.9}
+            inactiveSlideOpacity={1}
+            contentContainerStyle={{marginBottom:wp(5)}}            
+        />
+                
                 </ImageBackground>
 
               <LinearGradient
@@ -578,13 +578,29 @@ export default function Home() {
               </View>
               <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSalesArr} horizontal renderItem={renderSale} keyExtractor={(item, index) => `${index}`} />
 
-              {/* <View style={[styles1.flexbetwen, {width: wp(95)}]}>
-                <Text style={[styles1.headingmain]}>Our Blogs </Text>
-                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
-                  <Text style={styles1.viewall}>View All</Text>
-                </TouchableOpacity>
-              </View> */}
+               
 
+               <View>
+
+               <Text style={{alignSelf:'center',fontSize:wp(6),marginVertical:wp(3)}} numberOfLines={1} ellipsizeMode="tail">States</Text>
+               <Carousel
+            data={DATA1}            
+            renderItem={({ item }) => (
+              <StateItem item={item}></StateItem>
+            )}
+            sliderWidth={wp(100)}
+            itemWidth={wp(35)}
+            loop={true}
+            autoplay={true}
+            autoplayDelay={1000}
+            autoplayInterval={3000}
+            layout={'default'}
+            inactiveSlideScale={0.75}
+            inactiveSlideOpacity={1}
+            contentContainerStyle={{marginBottom:wp(5)}}            
+        />
+               </View>
+                
               <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10}]}>
                 <Text style={[styles1.headingmain]}>Blogs</Text>
                 <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
@@ -629,9 +645,6 @@ export default function Home() {
                 </TouchableOpacity>
             </View>
            </View>
-
-          
-
             <View style={{marginBottom:wp(18),marginTop:wp(7)}}>
             <BottomBanner></BottomBanner>
             </View>
@@ -1027,22 +1040,21 @@ btnContainer:{
     justifyContent: 'center'
 },
 topprofilewrap: {
-
-  height: hp(25),
-  marginTop: wp(10),
+  paddingVertical:wp(5)
   // alignItems: 'center',
   // justifyContent: 'center'
 
 },
 topprofiletext: {
-  fontSize: 22,
+  marginTop:wp(5),
+  fontSize: wp(5),
   fontWeight: 'bold',
   alignSelf: "center"
 },
 imagebg: {
-  height: hp(25),
   alignItems: 'center',
   justifyContent: 'center',
+  paddingBottom:wp(10)
   // paddingLeft:wp(10)
 },
 });

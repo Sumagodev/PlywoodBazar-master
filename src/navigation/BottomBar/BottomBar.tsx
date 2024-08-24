@@ -79,10 +79,12 @@ function MyTabBar({ state, descriptors, navigation }) {
               label.toLowerCase() === 'search' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
               label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
               (
-                <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="account-check" style={isFocused ? styles.iconSelected : styles.iconDefault} />
+                <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name={isAuthorized ? "account-check" : "account-arrow-right"} style={isFocused ? styles.iconSelected : styles.iconDefault} />
               )
             }
-            <Text style={[ styles.label, isFocused && styles.selectedLabel,]}>{label}</Text>
+            <Text style={[ styles.label, isFocused && styles.selectedLabel,]}>
+              {(label)}
+            </Text>
           </TouchableOpacity>
         );
       })}

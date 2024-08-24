@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     elevatedContainer: {
         flex: 1,
         borderRadius: 25,
-        elevation: 10,
         backgroundColor: '#fff',
     },
     upperImageStyle: {
