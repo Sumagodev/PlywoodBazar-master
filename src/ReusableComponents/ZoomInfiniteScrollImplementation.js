@@ -1,46 +1,29 @@
-import React, { useRef, useEffect } from 'react';
-import { View, FlatList, Animated, Text } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import BlogsItem from './BlogsItem';
+import React from 'react';
+import { View, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import BlogsItem from './BlogsItem';
 
-const ZoomInfiniteScrollImplementation = ({ data, infinite = true, delay = 3000 }) => {
-    const flatListRef = useRef(null);
-    const scrollX = useRef(new Animated.Value(0)).current;
-    let scrollIndex = 0;
+const { width: screenWidth } = Dimensions.get('window');
 
-    useEffect(() => {
-        if (infinite && data.length > 1) {
-            const intervalId = setInterval(() => {
-                scrollIndex += 1;
-                if (scrollIndex >= data.length) {
-                    scrollIndex = 0;
-                }
-                flatListRef.current.scrollToIndex({ animated: true, index: scrollIndex });
-            }, delay);
-            return () => clearInterval(intervalId);
-        }
-    }, [infinite, delay, data.length]);
+const ZoomInfiniteScrollImplementation = ({ data }) => {
+    const renderItem = ({ item }) => (
+        <BlogsItem blog={item} />
+    );
 
     return (
-        <View style={{ width: wp(100), margin: wp(2) }}>
-            <Carousel
-                ref={flatListRef}
-                data={data}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={{marginVertical: wp(2), marginHorizontal: wp(5)}}>
-                        <BlogsItem blog={item}  onButtonPress={()=>{ console.log(item) }}   onCardPress={()=>{}}/>
-                    </View>
-                )}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: false }
-                )}
-            />
-        </View>
+        <Carousel
+            data={data}
+            renderItem={renderItem}
+            sliderWidth={screenWidth}
+            itemWidth={screenWidth/2.1}
+            loop={true}
+            autoplay={true}
+            autoplayDelay={1000}
+            autoplayInterval={3000}
+            layout={'default'}
+            inactiveSlideScale={0.9}
+            inactiveSlideOpacity={1}
+        />
     );
 };
 
