@@ -34,7 +34,7 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
 
 const styles = StyleSheet.create({
     masterContainer: {
-        width: wp(50),
+        width: wp(45),
         height: wp(50),
         backgroundColor: '#FFFFFF',
         borderRadius: 25,
