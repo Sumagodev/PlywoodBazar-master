@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
+    fontWeight:500,
     color: 'white',
     textAlign: 'center',
     paddingHorizontal:wp(4),

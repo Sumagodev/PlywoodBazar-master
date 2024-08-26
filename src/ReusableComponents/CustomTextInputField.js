@@ -4,7 +4,7 @@ import CustomColors from '../styles/CustomColors.js';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const CustomTextInputField = ({ 
-    imagePath,
+  imagePath,
   inputType = 'text',
   placeholder = '',
   validator,

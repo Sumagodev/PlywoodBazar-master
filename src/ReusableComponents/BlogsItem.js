@@ -14,7 +14,7 @@ const BlogsItem = ({ item }) => {
                 <View style={styles.btnStyle}>
                 <CustomButton
                     onPress={() => { /* Button Action */ }} 
-                    text="Read more.." 
+                    text="Read more" 
                     textSize={wp(4)}
                     fontWeight='bold'
                     buttonBgColor='#624832'
@@ -27,7 +27,7 @@ const BlogsItem = ({ item }) => {
 
 const styles = StyleSheet.create({
     container:{
-        width: wp(55),
+        width: wp(45),
         height: wp(50),
         borderRadius: 25,
         marginHorizontal:wp(2),

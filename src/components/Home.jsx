@@ -1,7 +1,7 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions} from 'react-native';
+import {FlatList, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Video from 'react-native-video';
@@ -40,11 +40,19 @@ import TopProfileHomeCard from '../ReusableComponents/TopProfileHomeCard';
 import ZoomInfiniteScrollImplementation from '../ReusableComponents/ZoomInfiniteScrollImplementation';
 import Carousel from 'react-native-snap-carousel';
 import StateItem from '../ReusableComponents/StateItem';
+import FlashSaleComponent from '../ReusableComponents/FlashSaleComponent';
+import FlashSaleItem from '../ReusableComponents/FlashSaleItem';
+import AddOpportunitiesHomeBanner from '../ReusableComponents/AddOpportunitiesHomeBanner';
+import FadeRibbonText from '../ReusableComponents/FadeRibbon';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import CustomColors from '../styles/CustomColors';
+import FlashSaleItemWithDiscount from '../ReusableComponents/FlashSaleItemWithDiscount';
 
 export default function Home() {
   const navigate = useNavigation();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const [isloding, setIsloding] = useState(false);
+  const [applyFormModal, setApplyFromModal] = useState(false);
   const [categoryArr, setCategoryArr] = useState([]);
   const [flashSalesArr, setFlashSalesArr] = useState([]);
   const [name, setName] = useState('');
@@ -128,6 +136,46 @@ export default function Home() {
       errorToast(err);
     }
   };
+  const handleApplySubmitRequirement = async () => {
+    setApplyFromModal(false)
+    try {
+      if (name == '') {
+        errorToast('Name cannot be empty');
+        return;
+      }
+      if (phone == '') {
+        errorToast('Mobile number cannot be empty');
+        return;
+      }
+      if (address == '') {
+        errorToast('Address cannot be empty');
+        return;
+      }
+      if (productName == '') {
+        errorToast('Product cannot be empty');
+        return;
+      }
+
+      let obj = {
+        name,
+        phone,
+        address,
+        productName,
+      };
+
+      let {data: res} = await addUserRequirement(obj);
+
+      if (res.message) {
+        toastSuccess(res.message);
+        setName('');
+        setPhone('');
+        setAddress('');
+        setProductName('');
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
 
   const handleGetSubscriptions = async () => {
     try {
@@ -137,7 +185,7 @@ export default function Home() {
 
       let {data: res} = await getAllFlashSales('endDate=' + endDate);
       if (res.data) {
-        // console.log(res.data, "flash sales")
+         console.log(res.data, "flash sales")
         setFlashSalesArr(res.data);
       }
     } catch (err) {
@@ -320,7 +368,9 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({item, index}) => {
-    return <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={'Nashik'}></LikeProduct>;
+    return <Pressable onPress={() => navigate.navigate('Productdetails', {data: item.productSlug})}>
+      <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={'Nashik'}/>
+    </Pressable>
   };
 
   const renderNewArrivals = ({item, index}) => {
@@ -340,6 +390,19 @@ export default function Home() {
           </View>
         </View>
       </Pressable>
+    );
+  };
+
+  const renderFlashSale = ({item, index}) => {
+    return (
+        <View style={{marginHorizontal:wp(1)}}>
+          <FlashSaleItemWithDiscount imagePath={{uri: generateImageUrl("Asdadas.png")}}
+        actualPrice={10}
+        name={"Name"}
+        salePrice={155}
+        duration={10}
+        ></FlashSaleItemWithDiscount>
+        </View>
     );
   };
 
@@ -369,6 +432,8 @@ export default function Home() {
       </Pressable>
     );
   };
+  
+
 
   const renderBlogs = ({item, index}) => {
     return <BlogsItem item={item}></BlogsItem>;
@@ -475,9 +540,7 @@ export default function Home() {
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Products You May Like</Text>
-                <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={wp(3)} text="View All" />
-                </Pressable>
+                  <CustomButton textSize={wp(4)} text="View All" onPress={() => navigate.navigate('AllProducts', {type: ''})}/>
               </View>
               <FlatList
                 style={styles.mttop10}
@@ -490,11 +553,19 @@ export default function Home() {
               />
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
-                <Text style={styles1.headingmain}>New Arrivals</Text>
+                <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={wp(3)} text="View All" />
+                  <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)}/>
                 </Pressable>
               </View>
+
+              <View style={[styles.padinghr, styles1.flexbetwen]}>
+                <Text style={styles1.headingmain}>New Arrivals</Text>
+                <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
+                  <CustomButton textSize={wp(4)} text="View All" />
+                </Pressable>
+              </View>
+
               <FlatList
                 style={styles.mttop10}
                 contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
@@ -571,12 +642,17 @@ export default function Home() {
               <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} /> */}
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
-                <Text style={styles1.headingmain}>Flash Sales</Text>
+                <Text style={[styles1.headingmain,{fontWeight:800,color:'black',marginBottom:wp(5)}]}>Flash Sales</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts')}>
-                  <Text style={styles1.viewall}>View All</Text>
+                  <Text style={styles1.viewall}><CustomButton text={"Add"}></CustomButton></Text>
                 </Pressable>
               </View>
-              <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSalesArr} horizontal renderItem={renderSale} keyExtractor={(item, index) => `${index}`} />
+              <View style={{flexDirection:'row',paddingHorizontal:wp(2),}}
+              >
+                <FlashSaleComponent style={styles.padinghr}></FlashSaleComponent>
+                <FlatList style={[styles.mttop10,{paddingHorizontal:wp(4)}]} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSaleData} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
+              </View>
+              
 
                
 
@@ -589,32 +665,37 @@ export default function Home() {
               <StateItem item={item}></StateItem>
             )}
             sliderWidth={wp(100)}
-            itemWidth={wp(35)}
+            itemWidth={wp(25)}
             loop={true}
             autoplay={true}
             autoplayDelay={1000}
             autoplayInterval={3000}
             layout={'default'}
-            inactiveSlideScale={0.75}
-            inactiveSlideOpacity={1}
+            inactiveSlideScale={0.80}
+            inactiveSlideOpacity={0.9}
             contentContainerStyle={{marginBottom:wp(5)}}            
         />
                </View>
+
+               <View style={[styles.padinghr, { alignSelf:'center',alignItems: 'center', justifyContent: 'space-between', marginBottom: wp(5),paddingBottom:wp(10)}]}>
+                <Text style={[styles1.headingmain,{marginBottom:wp(5)}]}>Dealership Opportunities</Text>              
+                <AddOpportunitiesHomeBanner style={{marginTop:wp(5)}}></AddOpportunitiesHomeBanner>
+              </View>
+
+              
+
+
                 
               <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10}]}>
                 <Text style={[styles1.headingmain]}>Blogs</Text>
-                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
-                  <CustomButton textSize={wp(3)} text="View All" />
-                </TouchableOpacity>
+                <CustomButton textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
               </View>
 
               <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
 
               <View style={[styles.padinghr, styles1.videoCardHome]}>
                 <Text style={[styles1.headingmain]}>Videos</Text>
-                <TouchableOpacity onPress={() => navigate.navigate('Blogs')}>
-                <CustomButton textSize={wp(3)} text="View All" />
-                </TouchableOpacity>
+                <CustomButton textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
               </View>
               <FlatList  data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
@@ -622,7 +703,7 @@ export default function Home() {
 
 
               
-
+           
               
 
             <View style={styles1.containerForm}>
@@ -648,6 +729,38 @@ export default function Home() {
             <View style={{marginBottom:wp(18),marginTop:wp(7)}}>
             <BottomBanner></BottomBanner>
             </View>
+
+
+
+
+            <Modal
+        animationType="slide"
+        transparent={true}
+        visible={applyFormModal}
+        onRequestClose={() => {
+          setApplyFromModal(!applyFormModal);
+        }}>
+        <View style={styles1.centeredView}>
+        <View style={styles1.containerForm}>
+            <Text style={styles1.textStyle}>Apply Form</Text>
+            <View style={styles1.textFieldContainer}>
+                <View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Organization Name*' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Type*' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Product' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Brand' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Location' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Email' onChangeText={value=>setName(value)} inputType='email'/><View style={{height:wp(1)}} />                              
+            </View>
+            <View style={styles1.btnContainer}>
+                <TouchableOpacity onPress={()=>{handleApplySubmitRequirement()}}>
+                    <Text style={{color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign:'center'}}>SUBMIT</Text>
+                </TouchableOpacity>
+            </View>
+           </View>
+        </View>
+      </Modal>
+
             </>
           }
         />
@@ -1016,7 +1129,6 @@ const styles1 = StyleSheet.create({
     backgroundColor: '#f4eddb',
     borderRadius: 25,
     width: wp(75),
-    height: wp(85),
     alignItems: 'center',
     overflow: 'hidden',
     alignSelf:'center',
@@ -1031,6 +1143,7 @@ textStyle: {
 },
 textFieldContainer: {
     width: '85%',
+    marginBottom:wp(15),
 },
 btnContainer:{
     position: 'absolute',
@@ -1079,3 +1192,25 @@ const DATA1 = [
   },
   // Add more items as needed
 ];
+
+
+const flashSaleData = [
+  {
+    id: '1',
+    title: 'vishamberjfhdjfhjkdshfjkhsdfkjhdsjkfh 1',
+    image: 'https://imgd.aeplcdn.com/1056x594/n/cw/ec/103795/r15-right-side-view-7.png?isig=0&q=80&wm=3',
+
+  },
+  {
+    id: '2',
+    title: 'vishamberjfhdjfhjkdshfjkhsdfkjhdsjkf 2',
+    image: 'https://imgd.aeplcdn.com/664x374/n/cw/ec/171273/f77-left-side-view.jpeg?isig=0&q=80',
+  },
+  {
+    id: '3',
+    title: 'Card 3',
+    image: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+  },
+  // Add more items as needed
+];
+

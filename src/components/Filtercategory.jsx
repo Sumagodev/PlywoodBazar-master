@@ -152,7 +152,6 @@ const [role, setRole] = useState("");
           query = `${query}&rating=${rating}`;
         }
       }
-  
       console.log(query,'Request canceled');
       
       let { data: res } = await getAllUsers(query,source);
@@ -194,8 +193,6 @@ const [role, setRole] = useState("");
       }
     }
   };
-
-
   const fetchNextPage = () => {
 
     console.log("================================end===============================================",nextPageIdentifierRef)

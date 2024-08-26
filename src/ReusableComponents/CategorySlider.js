@@ -2,10 +2,14 @@ import React, { useRef, useState } from 'react';
 import { View, ScrollView, Image, Text, StyleSheet, TouchableOpacity, Dimensions, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { generateImageUrl, url } from '../services/url.service';
+import { useNavigation } from '@react-navigation/native';
+
 
 const { width } = Dimensions.get('window');
 
 const CategorySlider = ({ data }) => {
+  const navigate = useNavigation();
+
   const scrollViewRef = useRef();
   const [scrollPosition, setScrollPosition] = useState(0);
   
@@ -36,7 +40,7 @@ const CategorySlider = ({ data }) => {
       >
         <View style={{flexDirection:'row',width:wp(5)}}></View>
           {data.map((item, index) => (
-        <Pressable key={index} onPress={() => console.log(index)}>
+        <Pressable key={index} onPress={() => {navigate.navigate('BottomBar',{screen:'Shop',params:{data:item?._id}})}}>
           <View style={styles.item}>
             <Image source={{uri: generateImageUrl(item.image)}} style={styles.image} />
             <Text style={styles.name} numberOfLines={1} ellipsizeMode='tail' >{item.name}</Text>

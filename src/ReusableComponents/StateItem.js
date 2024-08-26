@@ -16,7 +16,7 @@ const StateItem=({item})=>{
 const stateStyle=StyleSheet.create({
 
     container:{        
-        marginHorizontal:widthPercentageToDP(3),
+        marginHorizontal:widthPercentageToDP(1),
         marginVertical:widthPercentageToDP(3),
         alignContent:'center',
         justifyContent:'center',
@@ -24,9 +24,9 @@ const stateStyle=StyleSheet.create({
     }
 ,
     image:{
-        width:widthPercentageToDP(25),
-        height:widthPercentageToDP(25),
-        borderRadius:50,
+        width:widthPercentageToDP(20),
+        height:widthPercentageToDP(20),
+        borderRadius:widthPercentageToDP(15),
     },
     title:{
         alignSelf:'center',

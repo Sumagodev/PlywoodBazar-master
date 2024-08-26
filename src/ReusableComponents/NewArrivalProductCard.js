@@ -8,7 +8,7 @@ import CustomRoundedTextButton from './CustomRoundedTextButton.js';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const NewArrivalProductCard = ({imagePath, name, location, isVerified = false, onCallPressed, onGetQuotePressed, onCardPressed}) => {
+const NewArrivalProductCard = ({imagePath, name, price, location, isVerified = false, onCallPressed, onGetQuotePressed, onCardPressed}) => {
   return (
     <Pressable onPress={onCardPressed}>
       <View style={styles.container}>
@@ -28,9 +28,13 @@ const NewArrivalProductCard = ({imagePath, name, location, isVerified = false, o
                 </View>
               )}
             </View>
+            <View style={{flexDirection: 'row',justifyContent:'space-between'}}>
+            <Text style={[styles.textPrice]} numberOfLines={1} ellipsizeMode='tail' >₹{price}</Text>
             <TouchableOpacity style={[styles.getQuoteBtn]} onPress={onGetQuotePressed}>
               <Text style={[styles.textQuote]} numberOfLines={1} ellipsizeMode='tail' >Get Quote</Text>
             </TouchableOpacity>
+
+            </View>
           </View>
         </View>
       </View>
@@ -120,6 +124,13 @@ const styles = StyleSheet.create({
   },
   textQuote:{
     color:'white',
+    paddingLeft: screenWidth * 0.02,
+    paddingRight: screenWidth * 0.02,
+    fontSize: screenWidth * 0.045,
+  },
+  textPrice:{
+    color:'#3D3B3B',
+    fontWeight:800,
     paddingLeft: screenWidth * 0.02,
     paddingRight: screenWidth * 0.02,
     fontSize: screenWidth * 0.045,
