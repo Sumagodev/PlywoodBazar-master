@@ -9,8 +9,7 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
         <Pressable style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
                 <Image style={styles.imageStyle} source={imagePath} />
-                <Text style={styles.nameStyle}>{name}</Text>
-                {/*<Text style={[styles.salePriceStyle, {color: 'red', fontSize: wp(2)}]}>{duration} days left</Text>*/}
+                <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
             </View>
             <View style={styles.priceRow}>
                 <Text style={styles.salePriceStyle}>₹{salePrice}/-</Text>
@@ -23,9 +22,11 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
                 </View>
             </View>
             <View style={styles.starContainer}>
-                <Icon name='decagram' color='#c3a186' size={wp(8)}>
-                    <Text color='white'>{offPercentage}</Text>
-                </Icon>
+                <Icon name='decagram' color='#c3a186' size={wp(15)} />
+                <View style={{flexDirection:'column', position: 'absolute'}}>
+                    <Text style={{color:'white', textAlign:'center', fontSize:wp(4)}}>{offPercentage}%</Text>
+                    <Text style={{color:'white', textAlign:'center', fontSize:wp(3)}}>OFF</Text>
+                </View>
             </View>
         </Pressable>
     );
@@ -33,15 +34,15 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
 
 const styles = StyleSheet.create({
     masterContainer: {
-        width: wp(40),
-        height: wp(48),
+        width: wp(50),
+        height: wp(50),
         backgroundColor: '#FFFFFF',
         borderRadius: 25,
         elevation: 5,
     },
     container: {
-        width: wp(40),
-        height: wp(42),
+        width: "100%",
+        height: "55%",
         borderRadius: 25,
         backgroundColor: '#FFFFFFF',
         flexDirection: 'column',
@@ -49,14 +50,14 @@ const styles = StyleSheet.create({
     imageStyle: {
         margin: wp(2),
         width: "90%",
-        height: "55%",
+        height: "100%",
         borderRadius: 20,
     },
     nameStyle: {
         fontSize: wp(4),
         color: '#333333',
         fontWeight: 'bold',
-        alignSelf: 'center'
+        paddingStart: wp(2),
     },
     priceRow: {
         flexDirection: 'row',
@@ -92,6 +93,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     starContainer:{
+        justifyContent:'center',
+        alignItems: 'center',
         position:'absolute',
         top: 0,
         right: 0,
