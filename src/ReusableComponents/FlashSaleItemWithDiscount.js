@@ -2,8 +2,9 @@ import React from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import CustomColors from '../styles/CustomColors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onCallPress, onCardPress }) => {
+const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, offPercentage, duration, onCallPress, onCardPress }) => {
     return (
         <Pressable style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
@@ -20,6 +21,11 @@ const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onCa
                         <Image style={styles.callIconStyle} source={require('../../assets/img/phone.png')} />
                     </TouchableOpacity>
                 </View>
+            </View>
+            <View style={styles.starContainer}>
+                <Icon name='decagram' color='#c3a186' size={wp(8)}>
+                    <Text color='white'>{offPercentage}</Text>
+                </Icon>
             </View>
         </Pressable>
     );
@@ -85,6 +91,11 @@ const styles = StyleSheet.create({
         height: wp(9),
         resizeMode: 'contain',
     },
+    starContainer:{
+        position:'absolute',
+        top: 0,
+        right: 0,
+    },
 });
 
-export default FlashSaleItem;
+export default FlashSaleItemWithDiscount;

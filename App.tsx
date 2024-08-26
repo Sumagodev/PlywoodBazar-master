@@ -16,10 +16,40 @@ import BlogsItem from './src/ReusableComponents/BlogsItem';
 import ShopListItem from './src/ReusableComponents/ShopListItem';
 import MySubscriptionItem from './src/ReusableComponents/MySubscriptionItem';
 import MyTopUpItem from './src/ReusableComponents/MyTopUpItem';
+import FlashSaleItemWithDiscount from './src/ReusableComponents/FlashSaleItemWithDiscount';
 
 function App(): JSX.Element {
   return (
-    <ScrollView style={styles.container}>      
+    <ScrollView style={styles.container}>
+      <View style={{ height: 20 }} />
+      <FlashSaleItemWithDiscount 
+        offPercentage={20}
+        imagePath={require('./assets/img/category.png')}
+        name='Royal Forest Plywood'
+        actualPrice='300'
+        salePrice='245'
+        duration='10'
+        onCallPress={() => {
+          console.log('onCallPressed');
+        }}
+        onCardPress={() => {
+          console.log('onCardPressed');
+        }}
+      />
+      <View style={{ height: 20 }} />
+      <FlashSaleItem
+        imagePath={require('./assets/img/category.png')}
+        name='Royal Forest Plywood'
+        actualPrice='300'
+        salePrice='245'
+        duration='10'
+        onCallPress={() => {
+          console.log('onCallPressed');
+        }}
+        onCardPress={() => {
+          console.log('onCardPressed');
+        }}
+      />
       <View style={{ height: 20 }} />
       <MySubscriptionItem subscriptionItem={{ 
         name: 'Distributer', 
@@ -104,20 +134,6 @@ function App(): JSX.Element {
           { imagePath: require('./assets/img/product6.png'), name: 'a' },
         ]
       } />
-      <View style={{ height: 20 }} />
-      <FlashSaleItem
-        imagePath={require('./assets/img/category.png')}
-        name='Royal Forest Plywood'
-        actualPrice='300'
-        salePrice='245'
-        duration='10'
-        onCallPress={() => {
-          console.log('onCallPressed');
-        }}
-        onCardPress={() => {
-          console.log('onCardPressed');
-        }}
-      />
       <View style={{ height: 20 }} />
     </ScrollView>
   );
