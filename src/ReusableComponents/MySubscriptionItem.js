@@ -8,7 +8,7 @@ const MySubscriptionItem = ({ subscriptionItem }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <FadeRibbonText paddingHorizontal={wp(20)} text={subscriptionItem.name} fontSize={wp(5)} colorStart='#c28e70' colorEnd="#fff" />
+                <FadeRibbonText paddingHorizontal={wp(20)} text={subscriptionItem.name} fontSize={wp(5)} colorStart='#926139' colorEnd="#e1cebd" />
 
                 <View style={styles.table}>
                     <View style={styles.row}>
@@ -24,7 +24,7 @@ const MySubscriptionItem = ({ subscriptionItem }) => {
                             <Text style={styles.textKeyStyle}>PRICE:</Text>
                         </View>
                         <View style={styles.cell}>
-                            <Text style={styles.textValueStyle}>{subscriptionItem.price}</Text>
+                            <Text style={styles.textValueStyle}>₹ {subscriptionItem.price}</Text>
                         </View>
                     </View>
                     <View style={styles.row}>
@@ -50,7 +50,9 @@ const MySubscriptionItem = ({ subscriptionItem }) => {
                 <Text style={[styles.textKeyStyle, { textAlign: 'center' }]}>NO. OF SALES</Text>
                 <Text style={[styles.textValueStyle, { textAlign: 'center' }]}>{subscriptionItem.numberOfSale} FOR {subscriptionItem.daysOfSale}</Text>
 
-                <FadeRibbonText paddingHorizontal={wp(10)} style={{ marginVertical: wp(2) }} text={'Purchased on: ' + subscriptionItem.purchaseDate} fontSize={wp(4)} textColor="black" colorStart="#f8e0cd" colorEnd="#FFF" />
+                <View style={{marginVertical: wp(2)}}>
+                    <FadeRibbonText paddingHorizontal={wp(10)} text={'Purchased on: ' + subscriptionItem.purchaseDate} fontSize={wp(4)} textColor="black" colorStart="#f8e0cd" colorEnd="#FFF" />
+                </View>
             </View>
             <View style={styles.buttonStyle}>
                 <CustomButton
@@ -69,13 +71,14 @@ const styles = StyleSheet.create({
         width: wp(80),
     },
     mainContainer: {
+        paddingTop: wp(3),
         borderRadius: 25,
         elevation: 5,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
         paddingVertical: wp(2),
-        paddingBottom: wp(10),
+        paddingBottom: wp(7),
     },
     buttonStyle: {
         position: 'absolute',
