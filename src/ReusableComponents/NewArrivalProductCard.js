@@ -49,11 +49,12 @@ const NewArrivalProductCard = ({imagePath, name, price, location, isVerified = f
 
 const styles = StyleSheet.create({
   container: {
-    margin: 2,
+    margin: screenWidth * 0.02,
     backgroundColor:'#FFFFFF',
     borderRadius: 25,
     overflow: 'hidden',
     margin: screenWidth * 0.02,
+    height:screenWidth * 0.38,
     elevation: 5,
   },
   elevatedContainer: {

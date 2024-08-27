@@ -1,6 +1,6 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SliderBox} from 'react-native-image-slider-box';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {LinearTextGradient} from 'react-native-text-gradient';
@@ -17,6 +17,8 @@ import CustomButton from '../ReusableComponents/CustomButton';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
+import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
 export default function Productdetails(props) {
   const [productObj, setProductObj] = useState(null);
   const [imageArr, setImagesArr] = useState([]);
@@ -203,6 +205,25 @@ export default function Productdetails(props) {
       </Pressable>
     );
   };
+  
+  const renderSimilarProducts = ({item, index}) => {
+    console.log('***********=>',item)
+    return (
+        <NewArrivalProductCard 
+        imagePath={{ uri: generateImageUrl(item?.mainImage) }}
+        price={item?.price}
+        name={item?.name}
+        location="Location"
+        isVerified={true}
+        onCallPressed={() => {}}
+        onGetQuotePressed={() => {}}
+        onCardPressed={() => navigation.navigate('Productdetails', { data: item?.slug })}        
+        ></NewArrivalProductCard>
+      
+    );
+  };
+
+ 
 
   const ListHeader = () => {
     // View to set in Header
@@ -349,26 +370,33 @@ export default function Productdetails(props) {
               </View>
             </View>
           </View> */}
-          <ImageBackground source={require('../../assets/img/bg_similar_products.png')}>
-            <View style={similarProductsStyle.container}>
-            <Text>Similar Products</Text>
-            </View>
-            
-
-          </ImageBackground>
+          <ImageBackground source={require('../../assets/img/bg_similar_products.png')} style={{ height: '40%' }}>
+  <View style={similarProductsStyle.container}>
+    <Text style={similarProductsStyle.title}>Similar Products</Text>
+    <View style={similarProductsStyle.scrollContainer}>
+      <FlatList
+        data={similarProductsArr}
+        renderItem={renderSimilarProducts}
+        keyExtractor={(item, index) => `${index}`}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
+  </View>
+</ImageBackground>
           {authorized && (
             <TouchableOpacity onPress={() => handleContactSupplier()} style={[styles.btnbg, {marginBottom: 15}]}>
               <Text style={styles.textbtn}>Contact Supplier</Text>
             </TouchableOpacity>
           )}
 
-          <View style={styles1.flexbetwen}>
+          <StartBusinessBanner></StartBusinessBanner>
+          {/* <View style={styles1.flexbetwen}>
             <Text style={styles1.headingmain}>Similar Products</Text>
             <Pressable onPress={() => navigation.navigate('AllProducts')}>
               <Text style={styles1.viewall}>View All</Text>
             </Pressable>
           </View>
-          <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={similarProductsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} />
+          <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={similarProductsArr} horizontal renderItem={renderSimilarProducts} keyExtractor={(item, index) => `${index}`} /> */}
         </View>
       </>
     );
@@ -711,10 +739,18 @@ const gradientStyle = StyleSheet.create({
 });
 
 const similarProductsStyle = StyleSheet.create({
-  container:{
-
-    paddingHorizontal:wp(5),
-    paddingVertical:wp(5),
-
-  }
+  container: {
+    paddingHorizontal: wp(5),
+    paddingVertical: wp(5),
+  },
+  title: {
+    fontSize: wp(5),
+    fontWeight: 'bold',
+    paddingVertical: wp(3),
+  },
+  scrollContainer: {
+    backgroundColor: 'red',
+    height: wp(125), // Set your fixed height here
+    flex: 1,
+  },
 });
