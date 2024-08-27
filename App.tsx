@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native'
 import CustomColors from './src/styles/CustomColors';
-import TopProfilesCard from './src/ReusableComponents/TopProfilesCard';
+import TopProfilesVerticalCard from './src/ReusableComponents/TopProfilesVerticalCard';
 import CategorySlider from './src/ReusableComponents/CategorySlider';
 import StartBusinessBanner from './src/ReusableComponents/StartBusinessBanner';
 import FlashSaleItem from './src/ReusableComponents/FlashSaleItem';
@@ -24,12 +24,24 @@ function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
       <View style={{ height: 20 }} />
-      <SearchProductPageItem product={{
+      <TopProfilesVerticalCard onPress={()=>{}}
+        userProfile={{
+          imagePath:require('./assets/img/userimg.png'),
+          name:'Hari',
+          products: 'N.A.',
+          rating: 4.4,
+          address:'opp B. ed college , new akole road sangamner - 42205'
+        }}
+      />
+      <View style={{ height: 20 }} />
+      <SearchProductPageItem onPress={()=>{}}
+      product={{
         name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:true, status: 'Dummy Status',
         imagePath: require('./assets/img/category.png')
       }} />
       <View style={{ height: 20 }} />
-      <SearchProductPageItem product={{
+      <SearchProductPageItem onPress={()=>{}}
+      product={{
         name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:false, status: 'Dummy Status',
         imagePath: require('./assets/img/category.png')
       }} />
@@ -125,11 +137,6 @@ function App(): JSX.Element {
       <FlashSaleAnimatedCard gifSource={require('./assets/anim/flashSale1.gif')} />
       <View style={{ height: 20 }} />
       <StartBusinessBanner />
-      <View style={{ height: 20 }} /><TopProfilesCard imagePath={require('./assets/img/user.png')} name={'Hari'}
-        onCallPressed={() => { }}
-        onCardPressed={() => { }}
-        onVisitPressed={() => { }}
-      />
       <View style={{ height: 20 }} />
       <BlogsItem
         blog={{ imagePath: require('./assets/img/imgtre.png'), title: 'long title of the image', description: 'small description' }}

@@ -1,13 +1,14 @@
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { View, StyleSheet, Text, Image } from "react-native"
+import { View, StyleSheet, Text, Image, Pressable } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomColors from "../styles/CustomColors";
 
-const SearchProductPageItem = ({ product }) => {
+const SearchProductPageItem = ({ product, onPress }) => {
     return (
-        <View style={styles.container}>
+        <Pressable style={styles.container} onPress={onPress}>
             <Image style={styles.imageStyle} source={product.imagePath} />
             <View style={styles.table}>
+                <Text style={styles.headStyle} ellipsizeMode="tail">{product.name}</Text>
                 <View style={styles.tableRow}>
                     <Text style={styles.keyTextStyle}>Selling Price:</Text>
                     <Text style={styles.valueTextStyle}>{product.sellingPrice}</Text>
@@ -34,7 +35,7 @@ const SearchProductPageItem = ({ product }) => {
                     <Text style={styles.valueTextStyle}>{product.status}</Text>
                 </View>
             </View>
-        </View>
+        </Pressable>
     )
 }
 
@@ -54,8 +55,16 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     table: {
-        margin: wp(4),
+        marginTop: wp(1),
+        marginStart: wp(2),
         width: '60%'
+    },
+    headStyle:{
+        color: '#5a432f',
+        textAlign: 'center',
+        fontSize: wp(5),
+        fontWeight: 'bold',
+        marginBottom: wp(1)
     },
     tableRow: {
         flexDirection: 'row',
