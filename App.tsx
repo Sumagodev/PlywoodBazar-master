@@ -17,10 +17,19 @@ import ShopListItem from './src/ReusableComponents/ShopListItem';
 import MySubscriptionItem from './src/ReusableComponents/MySubscriptionItem';
 import MyTopUpItem from './src/ReusableComponents/MyTopUpItem';
 import FlashSaleItemWithDiscount from './src/ReusableComponents/FlashSaleItemWithDiscount';
+import ReviewsItem from './src/ReusableComponents/ReviewsItem';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={{ height: 20 }} />
+      <ReviewsItem reviewItem=
+      {{
+        imagePath:require("./assets/img/category.png"),
+        name:'Sakshi Malik',
+        rating:4.5,
+        description:'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
+      }} />
       <View style={{ height: 20 }} />
       <FlashSaleItemWithDiscount 
         offPercentage={20}
