@@ -18,11 +18,26 @@ import MySubscriptionItem from './src/ReusableComponents/MySubscriptionItem';
 import MyTopUpItem from './src/ReusableComponents/MyTopUpItem';
 import FlashSaleItemWithDiscount from './src/ReusableComponents/FlashSaleItemWithDiscount';
 import ReviewsItem from './src/ReusableComponents/ReviewsItem';
-import SearchProductPageItem from './src/ReusableComponents/SearchProductPageItem';
+import ProductItemHorizontal from './src/ReusableComponents/ProductItemHorizontal';
+import ProductItemVertical from './src/ReusableComponents/ProductItemVertical';
+import MyLeadItem from './src/ReusableComponents/MyLeadItem';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.spacer} />
+      <MyLeadItem leadItem={{name: 'Shree Chhatrapati Plywood Hardware', date: '18-04-2024'}} />
+      <View style={{flexDirection:'row', width:'100%', justifyContent: 'space-evenly', marginVertical: 8}}>
+      <ProductItemVertical onPress={()=>{}}
+      product={{
+        name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:true, status: 'Dummy Status',
+        imagePath: require('./assets/img/category.png')
+      }} />
+      <ProductItemVertical onPress={()=>{}}
+      product={{
+        name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:false, status: 'Dummy Status',
+        imagePath: require('./assets/img/category.png')
+      }} /></View>
       <View style={{ height: 20 }} />
       <TopProfilesVerticalCard onPress={()=>{}}
         userProfile={{
@@ -34,13 +49,13 @@ function App(): JSX.Element {
         }}
       />
       <View style={{ height: 20 }} />
-      <SearchProductPageItem onPress={()=>{}}
+      <ProductItemHorizontal onPress={()=>{}}
       product={{
         name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:true, status: 'Dummy Status',
         imagePath: require('./assets/img/category.png')
       }} />
       <View style={{ height: 20 }} />
-      <SearchProductPageItem onPress={()=>{}}
+      <ProductItemHorizontal onPress={()=>{}}
       product={{
         name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:false, status: 'Dummy Status',
         imagePath: require('./assets/img/category.png')

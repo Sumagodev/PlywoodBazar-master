@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Pressable } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomColors from "../styles/CustomColors";
 
-const SearchProductPageItem = ({ product, onPress }) => {
+const ProductItemHorizontal = ({ product, onPress }) => {
     return (
         <Pressable style={styles.container} onPress={onPress}>
             <Image style={styles.imageStyle} source={product.imagePath} />
@@ -11,16 +11,16 @@ const SearchProductPageItem = ({ product, onPress }) => {
                 <Text style={styles.headStyle} ellipsizeMode="tail">{product.name}</Text>
                 <View style={styles.tableRow}>
                     <Text style={styles.keyTextStyle}>Selling Price:</Text>
-                    <Text style={styles.valueTextStyle}>{product.sellingPrice}</Text>
+                    <Text style={styles.valueTextStyle} ellipsizeMode="tail" numberOfLines={1}>{product.sellingPrice}</Text>
                 </View>
                 <View style={styles.tableRow}>
                     <Text style={styles.keyTextStyle}>Price:</Text>
                     <Text style={styles.valueTextStyle}>{product.price}</Text>
                 </View>
                 <View style={styles.tableRow}>
-                <Text style={styles.keyTextStyle}>Approved:</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1, paddingRight: wp(4) }}>
-                        <Text style={{ fontSize: wp(4), flex: 1 }}>
+                    <Text style={styles.keyTextStyle}>Approved:</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1, paddingRight: wp(4) }}>
+                        <Text style={{ fontSize: wp(4), flex: 1 }} ellipsizeMode="tail" numberOfLines={1}>
                             {product.approval ? 'Approved' : 'Not Approved'}
                         </Text>
                         <Icon
@@ -32,7 +32,7 @@ const SearchProductPageItem = ({ product, onPress }) => {
                 </View>
                 <View style={styles.tableRow}>
                     <Text style={styles.keyTextStyle}>Status:</Text>
-                    <Text style={styles.valueTextStyle}>{product.status}</Text>
+                    <Text style={styles.valueTextStyle} ellipsizeMode="tail" numberOfLines={1}>{product.status}</Text>
                 </View>
             </View>
         </Pressable>
@@ -59,12 +59,13 @@ const styles = StyleSheet.create({
         marginStart: wp(2),
         width: '60%'
     },
-    headStyle:{
+    headStyle: {
         color: '#5a432f',
         textAlign: 'center',
         fontSize: wp(5),
         fontWeight: 'bold',
-        marginBottom: wp(1)
+        marginBottom: wp(1),
+        marginStart: wp(-2),
     },
     tableRow: {
         flexDirection: 'row',
@@ -88,4 +89,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SearchProductPageItem
+export default ProductItemHorizontal

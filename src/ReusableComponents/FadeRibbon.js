@@ -5,20 +5,23 @@ import CustomColors from '../styles/CustomColors.js';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const FadeRibbonText = ({ 
-  text, textColor='white', colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint, reverseDirection=false,
-  fontSize=wp(4), paddingHorizontal, ...rest
+  text, textColor='white', itemsAlignment='center', textAlignment='center', colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint, reverseDirection=false,
+  fontSize=wp(4), paddingHorizontal, paddingVertical, ...rest
 }) => {
   const styles = StyleSheet.create({
     gradientContainer: {
-      padding: 10,
       borderRadius: 50,
-      rest,
+      justifyContent: 'flex-start',
+      alignItems: itemsAlignment,
+      paddingStart: wp(5),
+      ...rest,
     },
     text: {
       color: textColor,
-      textAlign: 'center',
+      textAlign: textAlignment,
       fontSize: fontSize,
-      paddingHorizontal: paddingHorizontal
+      paddingHorizontal: paddingHorizontal,
+      paddingVertical: paddingVertical,
     },
   });
 
