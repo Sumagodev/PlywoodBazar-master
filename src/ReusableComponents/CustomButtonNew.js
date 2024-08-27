@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     textAlign: 'center',
+    fontFamily:'Poppins-Bold',
     paddingHorizontal: wp(5),
     paddingVertical: wp(1),
   },

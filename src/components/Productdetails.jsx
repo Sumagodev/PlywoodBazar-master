@@ -1,17 +1,22 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SliderBox } from 'react-native-image-slider-box';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { LinearTextGradient } from 'react-native-text-gradient';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useContext, useEffect, useState} from 'react';
+import {FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {SliderBox} from 'react-native-image-slider-box';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {LinearTextGradient} from 'react-native-text-gradient';
 import styles from '../../assets/stylecomponents/Style';
-import { isAuthorisedContext } from '../navigation/Stack/Root';
-import { createLead } from '../services/leads.service';
-import { getProductById, getSimilarProducts } from '../services/Product.service';
-import { generateImageUrl } from '../services/url.service';
-import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken } from '../services/User.service';
-import { errorToast, toastSuccess } from '../utils/toastutill';
+import {isAuthorisedContext} from '../navigation/Stack/Root';
+import {createLead} from '../services/leads.service';
+import {getProductById, getSimilarProducts} from '../services/Product.service';
+import {generateImageUrl} from '../services/url.service';
+import {checkForValidSubscriptionAndReturnBoolean, getDecodedToken} from '../services/User.service';
+import {errorToast, toastSuccess} from '../utils/toastutill';
 import Header from '../navigation/customheader/Header';
+import CustomColors from '../styles/CustomColors';
+import CustomButton from '../ReusableComponents/CustomButton';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default function Productdetails(props) {
   const [productObj, setProductObj] = useState(null);
   const [imageArr, setImagesArr] = useState([]);
@@ -27,20 +32,21 @@ export default function Productdetails(props) {
 
   const getProductObj = async () => {
     try {
-      const { data: res } = await getProductById(props?.route?.params?.data);
+      const {data: res} = await getProductById(props?.route?.params?.data);
       if (res) {
         console.log(JSON.stringify(res.data, null, 2), 'data');
-        let tempObj = res.data
-        tempObj.imageArr = tempObj.imageArr.filter(el => el.image != "")
-
+        let tempObj = res.data;
+        tempObj.imageArr = tempObj.imageArr.filter(el => el.image != '');
 
         setProductObj(res.data);
-        let imaArr = [{
-          image:res.data.mainImage
-        }]
-        imaArr =[...imaArr,...res.data.imageArr];
-        setImagesArr(imaArr)
-        
+        let imaArr = [
+          {
+            image: res.data.mainImage,
+          },
+        ];
+        imaArr = [...imaArr, ...res.data.imageArr];
+        setImagesArr(imaArr);
+
         getAllSimilarProducts(res.data.categoryId);
 
         let tempArr = [
@@ -91,7 +97,7 @@ export default function Productdetails(props) {
   const getAllSimilarProducts = async id => {
     try {
       console.log('getting all similar');
-      const { data: res } = await getSimilarProducts(id);
+      const {data: res} = await getSimilarProducts(id);
       if (res) {
         setSimilarProductsArr(res.data);
       }
@@ -119,7 +125,7 @@ export default function Productdetails(props) {
         productId: productObj?._id,
         createdById: productObj?.createdById,
       };
-      let { data: res } = await createLead(obj);
+      let {data: res} = await createLead(obj);
       if (res.message) {
         toastSuccess(res.message);
       }
@@ -128,49 +134,49 @@ export default function Productdetails(props) {
     }
   };
 
-
-
-
   const HandleCheckValidSubscription = async () => {
     try {
-      let decoded = await getDecodedToken()
+      let decoded = await getDecodedToken();
       if (decoded) {
-
-        let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId)
+        let {data: res} = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
         if (res.data) {
-          console.log("setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription", res.data, "setCurrentUserHasActiveSubscription,setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription")
-          setCurrentUserHasActiveSubscription(res.data)
+          console.log(
+            'setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+            res.data,
+            'setCurrentUserHasActiveSubscription,setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+          );
+          setCurrentUserHasActiveSubscription(res.data);
         }
       }
+    } catch (err) {
+      errorToast(err);
     }
-    catch (err) {
-      errorToast(err)
-    }
-  }
-
-
-
-
+  };
 
   const [productinfo, setproductinfo] = useState([
     {
       categoryname1: 'Product Specification',
     },
+
     {
       categoryname1: 'Product Description',
     },
   ]);
   const [categoryname1, setcategoryname1] = useState([]);
 
-  const renderproductinfo = ({ item, index }) => {
-    return (
-      <Pressable onPress={() => setActiveclass(item.categoryname1)}>
-        <Text style={[item.categoryname1 == activeclass ? styles1.activeproduct : styles1.card_main]}>{item.categoryname1}</Text>
-      </Pressable>
-    );
+  const renderproductinfo = ({item, index}) => {
+    if (item.categoryname1 == 'line') {
+      return <View style={{width: wp(0.5), backgroundColor: CustomColors.mattBrownDark, marginHorizontal: wp(3)}}></View>;
+    } else {
+      return (
+        <Pressable onPress={() => setActiveclass(item.categoryname1)}>
+          <Text style={[item.categoryname1 == activeclass ? styles1.activeproduct : styles1.card_main]}>{item.categoryname1}</Text>
+        </Pressable>
+      );
+    }
   };
 
-  const rendercategoryname1 = ({ item, index }) => {
+  const rendercategoryname1 = ({item, index}) => {
     return (
       <View style={styles1.prdutspacef}>
         <Text style={styles1.heding}>{item.name}</Text>
@@ -179,11 +185,11 @@ export default function Productdetails(props) {
     );
   };
 
-  const renderHighlights = ({ item, index }) => {
+  const renderHighlights = ({item, index}) => {
     return (
-      <Pressable style={styles1.boxproduct} onPress={() => navigation.navigate('Productdetails', { data: item?.slug })}>
+      <Pressable style={styles1.boxproduct} onPress={() => navigation.navigate('Productdetails', {data: item?.slug})}>
         <Image source={require('../../assets/img/call.png')} style={styles1.imgphone} />
-        <Image source={{ uri: generateImageUrl(item.mainImage) }} style={styles1.imgfluid} />
+        <Image source={{uri: generateImageUrl(item.mainImage)}} style={styles1.imgfluid} />
         <View style={styles1.infoproduct}>
           <Text style={styles1.producthead}>{item.name}</Text>
           <Text style={styles1.sizeprod}>
@@ -199,12 +205,11 @@ export default function Productdetails(props) {
   };
 
   const ListHeader = () => {
-    //View to set in Header
+    // View to set in Header
     return (
       <>
-      
-      
-      <Header stackHeader={true} screenName={productObj?.name ? productObj?.name : '' } rootProps={props} />
+        {/*       <Header stackHeader={true} screenName={productObj?.name ? productObj?.name : '' } rootProps={props} />
+         */}
         {/* <View style={styles1.flexbetween}>
           <Pressable onPress={() => navigation.goBack()}>
             <Image source={require('../../assets/img/backbtn.png')} style={styles1.imgsmall} resizeMode="contain" />
@@ -219,100 +224,158 @@ export default function Productdetails(props) {
     //View to set in Header
     return (
       <>
-      {
-        imageArr.length === 0 ? 
-        <View style={{height:250, display:"flex", justifyContent:"center", alignItems:"center"}}>
-          <Text>No images uploaded</Text>
-        </View>
-        :
-        <SliderBox
-          images={imageArr.map(el => generateImageUrl(el.image))}
-          sliderBoxHeight={200}
-          dotColor="#B08218"
-          inactiveDotColor="#D9D9D9"
-          //   autoplay
-          circleLoop
-          resizeMethod={'resize'}
-          resizeMode={'cover'}
-          onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
-          currentImageEmitter={index => console.warn(`current pos is: ${index}`)}
-          ImageComponentStyle={{
-            borderRadius: 15,
-            width: '94%',
-            marginTop: 5,
-            marginLeft: -20,
-          }}
-          imageLoadingColor="#2196F3"
-        />
-      }
-        <View>
-          <Text style={styles1.productname}>{productObj?.name}</Text>
-        </View>
-        <View style={{ marginTop: 15 }}>
-          <FlatList data={productinfo} keyExtractor={(item, index) => `${index}`} renderItem={renderproductinfo} horizontal contentContainerStyle={{ paddingVertical: 5 }} />
-        </View>
-        {activeclass == 'Product Specification' ? (
-          <FlatList data={categoryname1} keyExtractor={(item, index) => `${index}`} renderItem={rendercategoryname1} scrollEnabled style={{ maxHeight: hp(93), width: '100%' }} contentContainerStyle={{ paddingVertical: 5, marginBottom: 30 }} />
-        ) : (
-          <Text style={styles1.descpriionttext}>
-            {productObj?.longDescription}
-          </Text>
-        )}
-        <View style={[styles1.flexrow, { position: "relative", width: wp(95), paddingVertical: 10, marginTop: 10 }]}>
-          <Pressable onPress={() => currentUserHasActiveSubscription && navigation.navigate("Supplier", { data: productObj?.createdByObj })}>
-            <LinearTextGradient style={styles1.gradentcolor} locations={[0, 1]} colors={['#F74D57', '#6D4EE9']} start={{ x: 1, y: 1 }} end={{ x: 0, y: 0 }}>
-              <Text>
-                {currentUserHasActiveSubscription ? `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `Plywood Bazar (${productObj?.brandObj?.name})`}` : `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name}` : "Plywood Bazar"}`.slice(0, 4) + "***"}
-              </Text>
-            </LinearTextGradient>
-          </Pressable>
-          {
-            productObj?.createdByObj?.userObj?.isVerified &&
-            <Image source={require('../../assets/img/verified.png')} resizeMode='contain' style={{ width: 70, height: 70, position: "absolute", right: 10 }} />
-          }
-        </View>
-        <View style={[styles1.ratingsection, ]}>
-
-          <Image source={{ uri: generateImageUrl(productObj?.brandObj?.image) }} style={styles1.imgsmall1} resizeMode="contain" />
-          
-          <View style={styles1.ratingarea}>
-            <View style={styles1.flexrow}>
-              <Image source={require('../../assets/img/notification.png')} style={styles1.imgsmall} />
-              <Text style={styles1.textmainlogo}>
-                {`${currentUserHasActiveSubscription ? (productObj?.createdByObj?.userObj?.companyObj?.address ? productObj?.createdByObj?.userObj?.companyObj?.address : "NA") : (productObj?.createdByObj?.userObj?.companyObj?.address ? `${productObj?.createdByObj?.userObj?.companyObj?.address}` : "NA").slice(0, 2) + "***"}`}
-              </Text>
-            </View>
-              
-            <View style={styles1.flexrowq1}>
-              <Image source={require('../../assets/img/check.png')} style={{ width: 20, height: 20 }} />
-              <Text style={{ color: '#000', fontSize: 12, fontFamily: 'Manrope-Bold' }}>
-                GST - <Text style={{ color: '#333333', fontSize: 12, fontFamily: 'Manrope-Regular' }}>
-                  {currentUserHasActiveSubscription ? (productObj?.createdByObj?.userObj?.companyObj?.gstNumber ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber : "NA") : ((productObj?.createdByObj?.userObj?.companyObj?.gstNumber ? `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}` : "NA").slice(0, 2) + "***")}
-                </Text>
-              </Text>
-            </View>
-
+        {imageArr.length === 0 ? (
+          <View style={{height: wp(30), display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Text>No images uploaded</Text>
           </View>
-        </View>
-        {authorized && (
-          <TouchableOpacity onPress={() => handleContactSupplier()} style={[styles.btnbg, { marginBottom: 15 }]}>
-            <Text style={styles.textbtn}>Contact Supplier</Text>
-          </TouchableOpacity>
+        ) : (
+          <SliderBox
+            images={imageArr.map(el => generateImageUrl(el.image))}
+            sliderBoxHeight={hp(30)}
+            dotColor="#B08218"
+            inactiveDotColor="#D9D9D9"
+            //   autoplay
+            circleLoop
+            resizeMethod={'resize'}
+            resizeMode={'cover'}
+            onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
+            currentImageEmitter={index => console.warn(`current pos is: ${index}`)}
+            ImageComponentStyle={{
+              width: '100%',
+              borderRadius: 5,
+            }}
+            imageLoadingColor="#2196F3"
+          />
         )}
+        <View style={styles1.detailsContainer}>
+          <View>
+            <Text style={styles1.productname}>{productObj?.name}</Text>
+          </View>
+          <View style={[styles1.infoHeaderStyle]}>
+            <FlatList data={productinfo} keyExtractor={(item, index) => `${index}`} renderItem={renderproductinfo} horizontal contentContainerStyle={{justifyContent: 'space-between'}} />
+            <View style={{width: wp(1), height: '100%', position: 'absolute', backgroundColor: CustomColors.mattBrownDark}}></View>
+          </View>
+          {activeclass == 'Product Specification' ? (
+            <View style={{marginVertical: wp(5)}}>
+              <FlatList data={categoryname1} keyExtractor={(item, index) => `${index}`} renderItem={rendercategoryname1} scrollEnabled style={{maxHeight: hp(93), width: '100%'}} contentContainerStyle={{marginVertical: wp(5)}} />
+            </View>
+          ) : (
+            <Text style={styles1.descpriionttext}>{productObj?.longDescription}</Text>
+          )}
 
-        <View style={styles1.flexbetwen}>
-          <Text style={styles1.headingmain}>Similar Products</Text>
-          <Pressable onPress={() => navigation.navigate('AllProducts')}>
-            <Text style={styles1.viewall}>View All</Text>
-          </Pressable>
+          <View style={{alignSelf: 'center'}}>
+            <CustomButtonNew text={'Get Latest Price'} paddingHorizontal={wp(5)} />
+          </View>
+
+          <View style={styles1.gradientDetailsCard}></View>
+          <LinearGradient colors={['#5a432f','#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
+            <View style={gradientStyle.card}>
+              <View style={{flexDirection: 'row'}}>
+                <View>{productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{width: wp(15), height: wp(15)}} />}</View>
+                <Text style={gradientStyle.title}>
+                  {currentUserHasActiveSubscription
+                    ? `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `Plywood Bazar (${productObj?.brandObj?.name})`}`
+                    : `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name}` : 'Plywood Bazar'}`.slice(0, 4) + '***'}
+                </Text>
+                
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Icon name='map-marker-radius' color='white' size={wp(8)} />
+                <View>
+                  <Text style={{color:'white',marginLeft:wp(1)}}>
+                {`${
+                    currentUserHasActiveSubscription
+                      ? productObj?.createdByObj?.userObj?.companyObj?.address
+                        ? productObj?.createdByObj?.userObj?.companyObj?.address
+                        : 'NA'
+                      : (productObj?.createdByObj?.userObj?.companyObj?.address ? `${productObj?.createdByObj?.userObj?.companyObj?.address}` : 'NA').slice(0, 2) + '***'
+                  }`}</Text>
+                </View>
+                </View>
+                <View style={{flexDirection: 'row',alignItems:'center'}}>
+                <Icon name='check-circle-outline' color='white' size={wp(8)} />
+                <View>
+                  <Text style={{color:'white',marginLeft:wp(1)}}>
+                  {currentUserHasActiveSubscription
+                      ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
+                        ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
+                        : 'NA'
+                      : (productObj?.createdByObj?.userObj?.companyObj?.gstNumber ? `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}` : 'NA').slice(0, 2) + '***'}</Text>
+                </View>
+                </View>             
+            </View>
+          </LinearGradient>
+          {/* <View style={[styles1.flexrow, {position: 'relative', width: wp(95), paddingVertical: 10, marginTop: 10}]}>
+            <Pressable onPress={() => currentUserHasActiveSubscription && navigation.navigate('Supplier', {data: productObj?.createdByObj})}>
+              <LinearTextGradient style={styles1.gradentcolor} locations={[0, 1]} colors={['#F74D57', '#6D4EE9']} start={{x: 1, y: 1}} end={{x: 0, y: 0}}>
+                <Text>
+                  {currentUserHasActiveSubscription
+                    ? `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `Plywood Bazar (${productObj?.brandObj?.name})`}`
+                    : `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name}` : 'Plywood Bazar'}`.slice(0, 4) + '***'}
+                </Text>
+              </LinearTextGradient>
+            </Pressable>
+            {productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{width: 70, height: 70, position: 'absolute', right: 10}} />}
+          </View>
+          <View style={[styles1.ratingsection]}>
+            <Image source={{uri: generateImageUrl(productObj?.brandObj?.image)}} style={styles1.imgsmall1} resizeMode="contain" />
+
+            <View style={styles1.ratingarea}>
+              <View style={styles1.flexrow}>
+                <Image source={require('../../assets/img/notification.png')} style={styles1.imgsmall} />
+                <Text style={styles1.textmainlogo}>
+                  {`${
+                    currentUserHasActiveSubscription
+                      ? productObj?.createdByObj?.userObj?.companyObj?.address
+                        ? productObj?.createdByObj?.userObj?.companyObj?.address
+                        : 'NA'
+                      : (productObj?.createdByObj?.userObj?.companyObj?.address ? `${productObj?.createdByObj?.userObj?.companyObj?.address}` : 'NA').slice(0, 2) + '***'
+                  }`}
+                </Text>
+              </View>
+
+              <View style={styles1.flexrowq1}>
+                <Image source={require('../../assets/img/check.png')} style={{width: 20, height: 20}} />
+                <Text style={{color: '#000', fontSize: 12, fontFamily: 'Manrope-Bold'}}>
+                  GST -{' '}
+                  <Text style={{color: '#333333', fontSize: 12, fontFamily: 'Manrope-Regular'}}>
+                    {currentUserHasActiveSubscription
+                      ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
+                        ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
+                        : 'NA'
+                      : (productObj?.createdByObj?.userObj?.companyObj?.gstNumber ? `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}` : 'NA').slice(0, 2) + '***'}
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View> */}
+          <ImageBackground source={require('../../assets/img/bg_similar_products.png')}>
+            <View style={similarProductsStyle.container}>
+            <Text>Similar Products</Text>
+            </View>
+            
+
+          </ImageBackground>
+          {authorized && (
+            <TouchableOpacity onPress={() => handleContactSupplier()} style={[styles.btnbg, {marginBottom: 15}]}>
+              <Text style={styles.textbtn}>Contact Supplier</Text>
+            </TouchableOpacity>
+          )}
+
+          <View style={styles1.flexbetwen}>
+            <Text style={styles1.headingmain}>Similar Products</Text>
+            <Pressable onPress={() => navigation.navigate('AllProducts')}>
+              <Text style={styles1.viewall}>View All</Text>
+            </Pressable>
+          </View>
+          <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={similarProductsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} />
         </View>
-        <FlatList style={styles.mttop10} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={similarProductsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} />
       </>
     );
   };
 
   return (
-    <View style={[styles.padinghr, styles.bgwhite, styles.flex1]}>
+    <View style={[styles.bgwhite, styles.flex1]}>
       {productObj && productObj?._id && (
         <FlatList
           keyExtractor={(item, index) => index.toString()}
@@ -320,8 +383,8 @@ export default function Productdetails(props) {
           ListHeaderComponent={ListHeader}
           //Footer to show below listview
           ListFooterComponent={ListFooter}
-        // renderItem={ItemView}
-        // ListEmptyComponent={EmptyListMessage}
+          // renderItem={ItemView}
+          // ListEmptyComponent={EmptyListMessage}
         />
       )}
     </View>
@@ -435,11 +498,13 @@ const styles1 = StyleSheet.create({
   },
   heding: {
     width: '40%',
-    fontSize: 12,
+    color: '#613A19',
+    fontWeight: 800,
+    fontSize: wp(4),
     fontFamily: 'Manrope-Medium',
   },
   prdutspacef: {
-    // marginTop:20,
+    paddingHorizontal: wp(10),
     paddingBottom: 10,
     display: 'flex',
     flexDirection: 'row',
@@ -469,38 +534,39 @@ const styles1 = StyleSheet.create({
     fontFamily: 'Manrope-Medium',
   },
   productname: {
-    marginVertical: 10,
-    color: '#000',
-    fontSize: 18,
-    lineHeight: 25,
+    marginVertical: wp(4),
+    color: '#000000',
+    fontSize: wp(6),
+    fontWeight: 800,
+    alignItems: 'center',
+    alignSelf: 'center',
     fontFamily: 'Manrope-Medium',
   },
   descpriionttext: {
-    fontSize: 12,
+    fontSize: wp(4),
+    paddingVertical: wp(6),
+    paddingHorizontal: wp(10),
     fontFamily: 'Manrope-Regular',
   },
   textmore: {
     color: '#B08218',
     fontSize: 12,
     fontFamily: 'Manrope-Regular',
+
     // paddingTop:13
   },
   card_main: {
+    marginLeft: wp(2),
     color: '#8E8E8E',
     fontFamily: 'Manrope-Medium',
-    fontSize: 12,
-    marginRight: 12,
+    fontSize: wp(3.5),
+    width: '80%',
   },
   activeproduct: {
     fontFamily: 'Manrope-Medium',
-    color: '#B08218',
-    fontSize: 12,
-    marginRight: 12,
-    marginBottom: 1,
-    paddingBottom: 1,
-    borderBottomColor: '#B08218',
-    borderBottomWidth: 0.8,
-    paddingBottom: 5,
+    color: '#000000',
+    fontSize: wp(3.5),
+    width: '80%',
   },
   boxproduct: {
     backgroundColor: '#fff',
@@ -587,4 +653,68 @@ const styles1 = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Manrope-Medium',
   },
+
+  detailsContainer: {
+    backgroundColor: '#FFFFFF',
+    elevation: wp(3),
+    borderRadius: wp(10),
+    marginTop: -wp(7),
+  },
+  infoHeaderStyle: {
+    flexDirection: 'column',
+    alignSelf: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: wp(80),
+    padding: wp(3),
+    backgroundColor: '#F5F1E8',
+    elevation: wp(7),
+    borderTopEndRadius: wp(5),
+    borderBottomStartRadius: wp(5),
+  },
+  gradientDetailsCard: {},
+});
+
+const gradientStyle = StyleSheet.create({
+  container: {
+    alignItems:'center',
+    width: wp(90),
+    marginVertical: wp(5),
+    flex: 1,
+    borderRadius: wp(5),
+    marginHorizontal: wp(5),
+    elevation: 5,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    paddingHorizontal: wp(3),
+    paddingVertical: wp(3),
+  },
+
+  title: {
+    width:'87%',
+    marginLeft:wp(2),
+    fontSize: wp(5),
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  description: {
+    fontSize: 16,
+    color: '#666',
+  },
+  card: {
+    width: '87%',
+  },
+});
+
+const similarProductsStyle = StyleSheet.create({
+  container:{
+
+    paddingHorizontal:wp(5),
+    paddingVertical:wp(5),
+
+  }
 });
