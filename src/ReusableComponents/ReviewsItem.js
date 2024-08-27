@@ -10,7 +10,7 @@ const ReviewsItem =({reviewItem})=>{
                     <Text style={styles.headingStyle} ellipsizeMode="tail" numberOfLines={1}>{reviewItem.name}</Text>
                     <Rating imageSize={wp(5)} readonly={true} startingValue={reviewItem.rating}/>
                 </View>
-                <Text ellipsizeMode="tail" numberOfLines={4}>{reviewItem.description}</Text>
+                <Text ellipsizeMode="tail" numberOfLines={3}>{reviewItem.description}</Text>
             </View>
             <View style={styles.imageContainer}>
                 <Image style={styles.image} source={reviewItem.imagePath}/>
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         paddingVertical: wp(1),
         backgroundColor: 'white',
         alignItems: 'flex-start',
+        paddingBottom: wp(8)
     },
     rowStyle:{
         flexDirection: 'row',

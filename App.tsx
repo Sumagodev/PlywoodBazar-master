@@ -18,10 +18,21 @@ import MySubscriptionItem from './src/ReusableComponents/MySubscriptionItem';
 import MyTopUpItem from './src/ReusableComponents/MyTopUpItem';
 import FlashSaleItemWithDiscount from './src/ReusableComponents/FlashSaleItemWithDiscount';
 import ReviewsItem from './src/ReusableComponents/ReviewsItem';
+import SearchProductPageItem from './src/ReusableComponents/SearchProductPageItem';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={{ height: 20 }} />
+      <SearchProductPageItem product={{
+        name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:true, status: 'Dummy Status',
+        imagePath: require('./assets/img/category.png')
+      }} />
+      <View style={{ height: 20 }} />
+      <SearchProductPageItem product={{
+        name: 'Plywood', sellingPrice: '20 Per Nos / Sheet', price:3360, approval:false, status: 'Dummy Status',
+        imagePath: require('./assets/img/category.png')
+      }} />
       <View style={{ height: 20 }} />
       <ReviewsItem reviewItem=
       {{
