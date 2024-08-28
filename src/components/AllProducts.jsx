@@ -58,7 +58,7 @@ export default function AllProducts(props) {
               Size (Sq ft): <Text style={styles1.sizelenth}>{item?.specification?.size ? item?.specification?.size : 'N.A.'}</Text>
             </Text>
             <Text style={[styles1.priceproce, {marginRight:10}]}>
-              ₹ {item?. }
+              ₹ {item?.price}
               <Text style={styles1?.sqirft}>Sq ft</Text>
             </Text>
           </View>

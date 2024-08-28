@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CustomColors from '../styles/CustomColors';
 
@@ -16,10 +15,11 @@ const CustomButton = ({
   fontWeight = 'bold',
   paddingHorizontal = wp(2),
   paddingVertical = wp(2),
+  hasBorder = false,
   ...rest
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }, rest]} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }, hasBorder && { borderWidth: 2, borderColor: '#bc9b80' }, rest]} onPress={onPress}>
         <View style={styles.container}>
         {leftIconPath && (
           <View style={[styles.iconContainer, { backgroundColor: leftIconBgColor }]}>

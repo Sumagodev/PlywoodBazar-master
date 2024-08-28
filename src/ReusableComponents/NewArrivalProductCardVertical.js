@@ -1,11 +1,11 @@
-import { StyleSheet, View, Image, Text } from "react-native"
+import { StyleSheet, View, Image, Text, Pressable } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import CustomButton from "./CustomButton"
 
-export default NewArrivalProductCardVertical = ({ newProductItem }) => {
+export default NewArrivalProductCardVertical = ({ newProductItem, onPress }) => {
     return (
-        <View style={styles.container}>
+        <Pressable style={styles.container} onPress={onPress}>
             <Image style={styles.imageStyle} source={newProductItem.imagePath} />
             <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{newProductItem.name}</Text>
             <View style={styles.rowStyle}>
@@ -25,7 +25,7 @@ export default NewArrivalProductCardVertical = ({ newProductItem }) => {
                     textSize={wp(4)}
                 />
             </View>
-        </View>
+        </Pressable>
     )
 }
 
