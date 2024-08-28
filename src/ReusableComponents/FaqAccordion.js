@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import CustomColors from '../styles/CustomColors';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const FaqAccordion = ({ item }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <View >
-      <ListItem.Accordion style={styles.container}
+    <View style={{margin: wp(2), backgroundColor: '#6c4f37', borderRadius: wp(10), overflow:'hidden', elevation: 10,}}>
+      <ListItem.Accordion style={styles.bgContainer}
         content={
-          <ListItem.Content style={styles.headerContainer}>
-            <ListItem.Title style={styles.headerText}>{item.question}</ListItem.Title>
+          <ListItem.Content>
+            <ListItem.Title style={styles.headerText} numberOfLines={1} ellipsizeMode='tail'>{item.question}</ListItem.Title>
           </ListItem.Content>
         }
         containerStyle={styles.container} // Apply rounded corners
         isExpanded={expanded}
         onPress={() => setExpanded(!expanded)}
+        icon={{name: 'chevron-down', type: 'font-awesome', color:'white', size: wp(4)}}
       >
-        <ListItem containerStyle={styles.contentContainer} bottomDivider>
+        <ListItem containerStyle={styles.contentContainer}>
           <ListItem.Content>
             <Text style={styles.contentText}>{item.answer}</Text>
           </ListItem.Content>
@@ -31,26 +31,23 @@ const FaqAccordion = ({ item }) => {
 };
 
 const styles = StyleSheet.create({
+  bgContainer:{
+    backgroundColor: '#6c4f37',
+  },
   container: {
-    marginBottom: 5,
-    borderRadius: wp(5),
     backgroundColor: '#6c4f37',
     overflow: 'hidden',
-    elevation: 10,
   },
   headerText: {
     color: 'white',
     fontWeight: 'bold',
-  },
-  headerContainer: {
-    backgroundColor: 'brown',
-    borderRadius: wp(5),
+    fontSize: wp(5),
   },
   contentContainer: {
-    backgroundColor: 'white', // Content background color
-    padding: 10, // Adjust padding as needed
-    borderBottomLeftRadius: 10, // Rounded corners on the bottom-left
-    borderBottomRightRadius: 10, // Rounded corners on the bottom-right
+    backgroundColor: 'white',
+    paddingVertical: wp(2),
+    paddingHorizontal: wp(6),
+    borderRadius: wp(10),
   },
 });
 
