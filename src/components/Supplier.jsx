@@ -26,7 +26,7 @@ export default function Supplier(props) {
   const navigate = useNavigation();
   const focused = useIsFocused();
   const [productReviewArr, setProductReviewArr] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [infolist, setInfolist] = useState([
 
@@ -601,14 +601,17 @@ export default function Supplier(props) {
         }}>
         <View style={styles1.centeredView}>
           <View style={styles1.modalView}>
-            <Text style={styles1.modalText}>Add a review here</Text>
+          <View style={{padding:20}}>
+            <Text style={styles1.modalText}>Add Review</Text>
             <TextInput style={styles1.modalTextInput} onChangeText={e => setName(e)} value={name} placeholder="Please Enter name" placeholderTextColor={'#000'} />
             <TextInput multiline={true} style={styles1.modalTextInput} onChangeText={e => setMessage(e)} value={message} placeholder="Please Enter message" placeholderTextColor={'#000'} />
-            <Rating imageSize={20} onFinishRating={e => setRating(e)} style={{ paddingVertical: 10 }} />
+            <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6}} />
+           </View>
             <TouchableOpacity style={styles1.yellowButton} onPress={() => handleSubmitReview()}>
-              <Text style={{ color: 'white' }}>Submit</Text>
+              <Text style={{ color: 'white',fontSize:wp(5),fontWeight:"bold" ,alignSelf:"center"}}>Submit</Text>
             </TouchableOpacity>
-          </View>
+            </View>
+          
 
           <TouchableOpacity onPress={() => setModalVisible(false)} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
@@ -653,23 +656,29 @@ const styles1 = StyleSheet.create({
   modalText: {
     // fontWeight: "bold",
     fontFamily: 'Manrope-ExtraBold',
-    fontSize: 18,
+    fontSize: 22,
     marginBottom: 25,
+    alignSelf:'center'
   },
   modalTextInput: {
     borderColor: 'rgba(0,0,0,0.2)',
     borderWidth: 1,
     width: '100%',
-    borderRadius: 10,
+    borderRadius: 30,
     marginVertical: 15,
-    paddingHorizontal: 15,
+    padding: 16,
+    color:"black"
   },
   yellowButton: {
-    backgroundColor: '#E7B84E',
-    paddingVertical: 10,
+  
+    backgroundColor: '#6C4F37',
+    paddingVertical: 13,
     paddingHorizontal: 40,
-    borderRadius: 10,
+    
     marginTop: 15,
+    width:"100%",
+    borderBottomRightRadius:30,
+    borderBottomLeftRadius:30,
   },
   centeredView: {
     flex: 1,
@@ -679,12 +688,12 @@ const styles1 = StyleSheet.create({
   },
   modalView: {
     // margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 30,
-    width: wp(95),
-    alignItems: 'center',
+    backgroundColor: '#F4EDDB',
+    borderRadius: 30,
+    // paddingHorizontal: 15,
+    // paddingVertical: 30,
+    width: wp(80),
+    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -702,7 +711,7 @@ const styles1 = StyleSheet.create({
   },
 
   boxproduct: {
-    backgroundColor: '#fff',
+    backgroundColor: '#F4EDDB',
     padding: 10,
     position: 'relative',
     borderRadius: 10,
