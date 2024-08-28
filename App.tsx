@@ -23,10 +23,17 @@ import ProductItemVertical from './src/ReusableComponents/ProductItemVertical';
 import MyLeadItem from './src/ReusableComponents/MyLeadItem';
 import MyActivityItem from './src/ReusableComponents/MyActivityItem';
 import FaqAccordion from './src/ReusableComponents/FaqAccordion';
+import TicketItem from './src/ReusableComponents/TicketItem';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.spacer} />
+      <TicketItem 
+        ticketItem={{name: 'PLYWOOoooooooooooooooooooooooooooooooooooooooooooooooooD', date: '12-07-2024'}}
+        onViewPress={()=>{}}
+        onDeletePress={()=>{}}
+      />
       <View style={styles.spacer} />
       <FaqAccordion item={{question:'What is plywoodbazar.com ?', 
         answer:"Plywood bazar. com is India's largest online B2B market place brought a platform to interact with Manufacturers, Distributors, Dealers, Wholesalers and Retailers of Furniture, Plywood"
