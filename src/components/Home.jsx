@@ -47,6 +47,7 @@ import FadeRibbonText from '../ReusableComponents/FadeRibbon';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import CustomColors from '../styles/CustomColors';
 import FlashSaleItemWithDiscount from '../ReusableComponents/FlashSaleItemWithDiscount';
+import NewArrivalProductCardVertical from '../ReusableComponents/NewArrivalProductCardVertical';
 
 export default function Home() {
   const navigate = useNavigation();
@@ -374,7 +375,7 @@ export default function Home() {
   };
 
   const renderNewArrivals = ({item, index}) => {
-     return <NewArrivalProductCard onCardPressed={() => navigate.navigate('Productdetails', {data: item.productSlug})} imagePath={require('../../assets/img/ply_sample.png')} isVerified={true} name={item.productSlug} location={'Nahsik'}></NewArrivalProductCard>;
+     return <NewArrivalProductCardVertical newProductItem={{imagePath:require('../../assets/img/ply_sample.png'),isVerified:true, name:item.productSlug ,location:'NahsikQQQQQQQQQQQQ'}} ></NewArrivalProductCardVertical>;
   };
 
   const renderProduct = ({item, index}) => {
