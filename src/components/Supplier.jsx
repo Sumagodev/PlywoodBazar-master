@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, ImageBackground, Linking, Pressable, StyleSheet, Text, View, Modal, TextInput, TouchableOpacity, LinearGradient ,Button} from 'react-native';
+import { FlatList, Image, ImageBackground, Linking, Pressable, StyleSheet, Text, View, Modal, TextInput, TouchableOpacity, LinearGradient, Button } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Video from 'react-native-video';
 import Header from '../navigation/customheader/Header';
@@ -17,6 +17,11 @@ import { addReview, getReviewForProduct } from '../services/ProductReview.servic
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { createLead } from '../services/leads.service';
 import ReviewsItem from '../ReusableComponents/ReviewsItem';
+import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
+import ProductsYouMayLike from '../ReusableComponents/ProductsYouMayLike';
+import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
+import TopProfilesVerticalCard from '../ReusableComponents/TopProfilesVerticalCard';
+
 export default function Supplier(props) {
   const navigate = useNavigation();
   const focused = useIsFocused();
@@ -231,50 +236,17 @@ export default function Supplier(props) {
     return <ImageBackground source={{ uri: generateImageUrl(item.image) }} imageStyle={{ borderRadius: 10 }} style={styles1.category} resizeMode="cover"></ImageBackground>;
   };
 
-  const renderourproduct = ({ item, index }) => {
-
-    return (
-      <>
-        <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.slug })} style={styles1.boxproduct}>
-          {item?.mainImage ? (
-            <>
-              <Image source={require('../../assets/img/call.png')} style={styles1.imgphone} />
-              <Image source={{ uri: generateImageUrl(item.mainImage) }} style={[styles1.imgfluid, { width: '100%' }]} />
-              <View style={styles1.infoproduct}>
-                <Text style={styles1.producthead}>{item.name}</Text>
-                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                  {item?.price && <Text style={[styles1.producthead, { textDecorationLine: 'line-through' }]}>₹{item?.price}</Text>}
-                  <Text style={[styles1.producthead, { color: '#B08218', paddingLeft: 5 }]}>₹{item?.sellingprice}</Text>
-                </View>
-              </View>
-            </>
-          ) : (
-            <Text style={{ color: '#000' }}>No Images</Text>
-          )}
-        </Pressable>
-      </>
-    );
-  };
-
-  const renderReviews = ({ item, index }) => {
-    return (
-      <>
-        <Pressable style={[styles1.boxproduct, { width: wp(95), marginBottom: 20, justifyContent: 'flex-start' }]}>
-          <View>
-            <Text style={[styles1.producthead, { textAlign: 'left', marginBottom: 10, fontSize: 16, fontWeight: 'bold' }]}>{item.name}</Text>
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <Text style={[styles1.producthead, { textAlign: 'left' }]}>{item?.message}</Text>
-              <Text style={[styles1.producthead, { color: '#B08218', textAlign: 'left', paddingLeft: 5 }]}>
-                ({item?.rating} <AntDesign name="star" size={9} color="#b08218" />){' '}
-              </Text>
-            </View>
-          </View>
-        </Pressable>
-      </>
-    );
-  };
-  const ReviewsItem1 =({item,index})=>{
-      return <ReviewsItem  reviewItem={item}/>
+  const ReviewsItem1 = ({ item, index }) => {
+    return <ReviewsItem reviewItem={item} />
+  }
+  const ProductsYouMayLike1 = ({ item, index }) => {
+    return <NewArrivalProductCard onCardPressed={() => navigate.navigate('Productdetails', { data: item.productSlug })} imagePath={require("../../assets/img/g1.png")} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price}></NewArrivalProductCard>;
+  }
+  const Products1 = ({ item, index }) => {
+    return <NewArrivalProductCard onPress={() => navigate.navigate('Productdetails', { data: item.slug })} mainImage={item.mainImage} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice}></NewArrivalProductCard>;
+  }
+  const Topprofiles = ({ item, index }) => {
+    return <TopProfilesVerticalCard imagePath={item.imagePath} name={item.name} products={item.products} rating={item.rating} address={'Nashik'} />
   }
   const handlePauseAndUnpause = index => {
     let tempArr = videoArr;
@@ -344,36 +316,11 @@ export default function Supplier(props) {
       errorToast(err);
     }
   };
-const datadata=[
-  {
-    imagePath: require("../../assets/img/g1.png"),
-    name: 'Sakshi Malik',
-    rating: 4.5,
-    description: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
-  },
-  {
-    imagePath: require("../../assets/img/g1.png"),
-    name: 'dsds Malik',
-    rating: 4.5,
-    description: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
-  },
-  {
-    imagePath: require("../../assets/img/g1.png"),
-    name: 'dsds Malik',
-    rating: 4.5,
-    description: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
-  },
-  {
-    imagePath: require("../../assets/img/g1.png"),
-    name: 'asdsa Malik',
-    rating: 4.5,
-    description: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
-  },
-]
+
   const ListHeader = () => {
     return (
 
-      <View style={{ backgroundColor: '', flex: 1 }}>
+      <View style={{ backgroundColor: '#FFF8EC', flex: 1 }}>
 
         <View style={[styles1.positionrelative, { position: 'relative', height: hp(21) }]}>
           {showEditIcon && userid == supplerid && (
@@ -516,19 +463,34 @@ const datadata=[
                 </View>
               </View>
               <View >
-               <View style={{alignItems:'center',flexDirection:'row',justifyContent:'center'}}>
-               <View>
-               <Text style={styles1.headertext}>Reviews</Text> 
-               </View>
-               <View style={{alignSelf:"flex-end",right:wp(-23)}}><Button title='Add Review' onPress={() => handleModelshow()} /></View>
-               </View>
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                  <View>
+                    <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
+                  </View>
+                  <View style={{ alignSelf: "flex-end", right: wp(-23) }}><CustomRoundedTextButton buttonText={'Add Reviews'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                </View>
                 {productReviewArr && productReviewArr.length > 0 ? (
-                  <FlatList data={productReviewArr} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+                    <View style={{ alignSelf: "center" }}><CustomRoundedTextButton buttonText={'Show More'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                  </View>
                 ) : (
-                  <View style={{ height: hp(20), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <View style={{ height: hp(20),backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: wp(4), color: '#000' }}>No Reviews Founds</Text>
                   </View>
                 )}
+              </View>
+
+              <View >
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                  <View>
+                    <Text style={styles1.headertext}>Products may you like</Text>
+                  </View>
+                </View>
+                <View style={{ marginVertical: wp(2) }}>
+                  <FlatList data={dataArray.slice(0, 2)} renderItem={ProductsYouMayLike1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+                </View>
+
               </View>
             </>
 
@@ -536,18 +498,53 @@ const datadata=[
           {checkActiveSection() == 'Our Products' && (
             <>
               <View style={styles1.flexbetwen}>
-                <Text style={styles1.headingmain}>Our Products </Text>
+
                 {/* <Pressable onPress={() => navigate.navigate('AllProducts')}>
                   <Text style={styles1.viewall}>View All</Text>
                 </Pressable> */}
               </View>
               {productsArr && productsArr?.length > 0 ? (
-                <FlatList data={productsArr} renderItem={renderourproduct} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} numColumns={2} />
+                <FlatList data={productsArr} renderItem={Products1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
               ) : (
-                <View style={{ height: hp(20), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ height: hp(20),backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Text style={{ fontSize: wp(4), color: '#000' }}>No Products Founds</Text>
                 </View>
               )}
+              <View >
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                  <View>
+                    <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
+                  </View>
+                  <View style={{ alignSelf: "flex-end", right: wp(-23) }}><CustomRoundedTextButton buttonText={'Add Reviews'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                </View>
+                {productReviewArr && productReviewArr.length > 0 ? (
+                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+                    <View style={{ alignSelf: "center" }}><CustomRoundedTextButton buttonText={'Show More'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                  </View>
+                ) : (
+                  <View style={{ height: hp(20),backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: wp(4), color: '#000' }}>No Reviews Founds</Text>
+                  </View>
+                )}
+              </View>
+              <View >
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                  <View>
+                    <Text style={styles1.headertext}>Top Profile</Text>
+                  </View>
+                </View>
+                {dataArray && dataArray.length > 0 ? (
+                <View style={{ marginVertical: wp(2) }}>
+                  <FlatList data={dataArray1} renderItem={Topprofiles} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} numColumns={2} />
+                </View>
+    ): (
+                  <View style={{ height: hp(20), backgroundColor: 'FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: wp(4), color: '#000' }}>No Profile Founds</Text>
+                  </View>
+                )}
+              </View>
+
             </>
           )}
         </View>
@@ -804,7 +801,8 @@ const styles1 = StyleSheet.create({
   },
   activtext: {
     color: '#000',
-    fontWeight: "bold"
+    fontWeight: "bold",
+   
   },
   activemain: {
     borderBottomColor: '#000',
@@ -901,7 +899,7 @@ const styles1 = StyleSheet.create({
     zIndex: 999,
   },
   cardwrap: {
-    backgroundColor: '#FFF7EE',
+    backgroundColor: '#FFFFFF',
     padding: 5,
     borderRadius: 20,
     flexDirection: 'row',
@@ -965,12 +963,99 @@ const styles1 = StyleSheet.create({
     width: wp(22),
     borderRadius: wp(25),
   },
-  headertext:{
-  fontSize:wp(5),
-  fontWeight:"bold"
+  headertext: {
+    fontSize: wp(5),
+    fontWeight: "bold"
   }
 });
 
+
+  const datadata = [
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'Sakshi Malik',
+      rating: 4.5,
+      message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
+    },
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'dsds Malik',
+      rating: 4.5,
+      message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
+    },
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'dsds Malik',
+      rating: 4.5,
+      message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
+    },
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'asdsa Malik',
+      rating: 4.5,
+      message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.'
+    },
+  ]
+
+  const dataArray = [
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'Product 1',
+      price: 100,
+      location: 'New York',
+      isVerified: true,
+      onCallPressed: () => console.log('Call pressed for Product 1'),
+      onGetQuotePressed: () => console.log('Get Quote pressed for Product 1'),
+      onCardPressed: () => console.log('Card pressed for Product 1'),
+    },
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'Product 2',
+      price: 150,
+      location: 'Los Angeles',
+      isVerified: false,
+      onCallPressed: () => console.log('Call pressed for Product 2'),
+      onGetQuotePressed: () => console.log('Get Quote pressed for Product 2'),
+      onCardPressed: () => console.log('Card pressed for Product 2'),
+    },
+    {
+      imagePath: require("../../assets/img/g1.png"),
+      name: 'Product 3',
+      price: 200,
+      location: 'Chicago',
+      isVerified: true,
+      onCallPressed: () => console.log('Call pressed for Product 3'),
+      onGetQuotePressed: () => console.log('Get Quote pressed for Product 3'),
+      onCardPressed: () => console.log('Card pressed for Product 3'),
+    },
+    // Add more objects as needed
+  ];
+
+  const dataArray1 = [
+  {
+    imagePath: require("../../assets/img/g1.png"),
+    products: 4,
+    rating: 4.5,
+    address: '123 Main St, New York, NY',
+    name:"Ravi"
+
+  },
+  {
+    imagePath: require("../../assets/img/g1.png"),
+    products: 10,
+    rating: 4.0,
+    address: '456 Oak St, Los Angeles, CA',
+    name:"Ravi"
+  },
+  {
+    imagePath: require("../../assets/img/g1.png"),
+    products: 23,
+    rating: 5.0,
+    address: '789 Pine St, Chicago, IL',
+    name:"Ravi"
+  },
+  // Add more objects as needed
+];
 
 
 // import {useIsFocused, useNavigation} from '@react-navigation/native';
