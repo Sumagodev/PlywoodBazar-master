@@ -6,10 +6,10 @@ const ReviewsItem =({reviewItem})=>{
     return(
         <View style={styles.container}>
             <View style={styles.contentContainer}>
-                <View style={styles.rowStyle}>
-                    <Text style={styles.headingStyle} ellipsizeMode="tail" numberOfLines={1}>{reviewItem.name}</Text>
-                    <Rating imageSize={wp(5)} readonly={true} startingValue={reviewItem.rating}/>
-                </View>
+                    <View style={styles.rowStyle}>
+                        <Text style={styles.headingStyle} ellipsizeMode="tail" numberOfLines={1}>{reviewItem.name}</Text>
+                        <Rating imageSize={wp(5)} readonly={true} startingValue={reviewItem.rating}/>
+                    </View>
                 <Text ellipsizeMode="tail" numberOfLines={3}>{reviewItem.description}</Text>
             </View>
             <View style={styles.imageContainer}>
@@ -23,30 +23,32 @@ const styles = StyleSheet.create({
     container:{
         padding: wp(2),
         width: wp(100),
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     contentContainer:{
         elevation: 5,
         borderRadius: wp(25),
         width: '90%',
-        paddingStart: wp(14),
-        paddingVertical: wp(1),
         backgroundColor: 'white',
-        alignItems: 'flex-start',
-        paddingBottom: wp(8)
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: wp(4),
+        paddingStart: wp(14)
     },
     rowStyle:{
         flexDirection: 'row',
-        marginBottom: wp(2),
-        marginTop: wp(6),
-        alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        marginStart: wp(-4),
+        marginBottom: wp(2.5),
     },
     headingStyle:{
         color: '#000',
         fontSize: wp(5),
         fontWeight: 'bold',
-        marginRight: wp(3)
+        marginRight: wp(3),
     },
     imageContainer:{
         elevation: 5,
@@ -55,7 +57,6 @@ const styles = StyleSheet.create({
         height: wp(22),
         width: wp(22),
         position: 'absolute',
-        backgroundColor: 'blue',
         top: 0, left: 0,
     },
     image:{

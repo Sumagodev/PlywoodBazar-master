@@ -13,7 +13,7 @@ const FadeRibbonText = ({
       borderRadius: 50,
       justifyContent: 'flex-start',
       alignItems: itemsAlignment,
-      paddingStart: wp(5),
+      paddingStart: wp(2),
       ...rest,
     },
     text: {

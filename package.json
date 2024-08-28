@@ -29,6 +29,7 @@
     "react-native": "0.71.3",
     "react-native-a11y-slider": "^1.2.0",
     "react-native-autoheight-webview": "^1.6.5",
+    "react-native-collapsible": "^1.6.2",
     "react-native-countdown-component": "^2.7.1",
     "react-native-curved-bottom-bar": "^3.2.6",
     "react-native-date-picker": "^4.2.14",
