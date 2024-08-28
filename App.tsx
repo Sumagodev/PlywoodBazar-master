@@ -24,13 +24,20 @@ import MyLeadItem from './src/ReusableComponents/MyLeadItem';
 import MyActivityItem from './src/ReusableComponents/MyActivityItem';
 import FaqAccordion from './src/ReusableComponents/FaqAccordion';
 import TicketItem from './src/ReusableComponents/TicketItem';
+import NewArrivalProductCardVertical from './src/ReusableComponents/NewArrivalProductCardVertical';
 
 function App(): JSX.Element {
   return (
     <ScrollView style={styles.container}>
+      <NewArrivalProductCardVertical newProductItem={{
+        imagePath:require('./assets/img/category.png'),
+        name: 'Ghana Teak Wood',
+        location: 'Chennaaaaaaaaaaaaaaaaaaaaaaaaaaaaaai',
+        isVerified: true,
+      }} />
       <View style={styles.spacer} />
       <TicketItem 
-        ticketItem={{name: 'PLYWOOoooooooooooooooooooooooooooooooooooooooooooooooooD', date: '12-07-2024'}}
+        ticketItem={{name: 'PLYWOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOD', date: '12-07-2024'}}
         onViewPress={()=>{}}
         onDeletePress={()=>{}}
       />
