@@ -7,7 +7,7 @@ export default PopularActivityItem = ({popularActivityItem, onPress, onReadMePre
             <Image style={styles.imageStyle} source={popularActivityItem.imagePath} />
             <Text style={{fontSize:wp(4), fontWeight: 'bold', marginVertical: wp(1)}} numberOfLines={1} ellipsizeMode="tail">{popularActivityItem.title}</Text>
             <Text style={{fontSize:wp(3.5), width: '100%', paddingHorizontal: wp(2), marginBottom: wp(1)}} numberOfLines={3} ellipsizeMode="tail">{popularActivityItem.description}</Text>
-            <TouchableOpacity onReadMePress>
+            <TouchableOpacity onPress={onReadMePress}>
                 <Text style={{fontSize:wp(3.5), marginBottom: wp(2), color: '#624832', fontWeight: 'bold'}}>Read More</Text>
             </TouchableOpacity>
         </Pressable>

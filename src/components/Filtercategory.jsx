@@ -800,7 +800,7 @@ const [role, setRole] = useState("");
 
 
       }
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFF8EC' }}>
         <RBSheet
           ref={ref => {
             this.RBSheet = ref;
@@ -811,45 +811,22 @@ const [role, setRole] = useState("");
             container: {
               marginHorizontal: 10,
               width: wp(95),
-              padding: 10,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
+              backgroundColor:'#FFF8EC'
             },
           }}>
-          <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Bold', fontSize: 18, marginBottom: 20 }}>Filters</Text>
+            <View style={{backgroundColor:'#6B4E37', borderRadius:wp(2)}}>
+              <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding:wp(3) }}>Filters</Text>
+            </View>
+          <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>User Types</Text>
-
             <FlatList data={usertypes.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `UserType${index}`} renderItem={renderUserTypes} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Category</Text>
-
             <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-
-
-
-
-            {/* <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Manufacturers</Text>
-            <FlatList data={manufacturersArr} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderManufacturersFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Dealer</Text>
-            <FlatList data={dealersArr} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderDealerFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Distributor</Text>
-            <FlatList data={distributorArr} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderDistributorFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} /> */}
-
-
-
-
-
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>State</Text>
-
             <TextInput onChangeText={(val) => handleSearchState(val)} value={searchState} style={[styles1.textInput, {height:hp(6),}]} placeholder='Search State Here' />
-
             <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-
-
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>City</Text>
             <TextInput onChangeText={(val) => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, {height:hp(6)}]} placeholder='Search City Here' />
             {
@@ -858,80 +835,7 @@ const [role, setRole] = useState("");
                 :
                 <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
             }
-
-
-
-
-
-
-
-
-
-            {/* <div className="box">
-              <h5 className="title">Dealers</h5>
-              <ul className="list comm-list">
-                {dealersArr &&
-                  dealersArr.length > 0 &&
-                  dealersArr.map((el, index) => {
-                    return (
-                      <li key={el._id}>
-                        <label>
-                          <input type="checkbox" onChange={(e) => toggleSelected(el?._id)} checked={isChecked(el._id)} className="form-check-input" />
-                          {el?.name}
-                        </label>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </div>
-
-            <div className="box">
-              <h5 className="title">Distributors</h5>
-              <ul className="list comm-list">
-                {distributorArr &&
-                  distributorArr.length > 0 &&
-                  distributorArr.map((el, index) => {
-                    return (
-                      <li key={el._id}>
-                        <label>
-                          <input type="checkbox" onChange={(e) => toggleSelected(el?._id)} checked={isChecked(el._id)} className="form-check-input" />
-                          {el?.name}
-                        </label>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Brands</Text>
-
-            <FlatList data={brandArr}  nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderVendorFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} /> */}
-
-            {/* <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Price Range</Text>
-            <View style={{ paddingHorizontal: 15 }}>
-              <Slider
-                min={1}
-                max={100}
-                onChange={value => {
-                  setMinPrice(value[0]);
-                  setMaxPrice(value[1]);
-                }}
-                values={[0, 89]}
-              />
-            </View> */}
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Rating</Text>
-           
             <Pressable onPress={() => setRating(4)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
             <Checkbox.Android
             status={rating ==4 ? 'checked' : 'unchecked'}
@@ -1033,17 +937,17 @@ const [role, setRole] = useState("");
             <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop:hp(5) }}>
 
               <TouchableOpacity
-                style={{ backgroundColor: "#B08218", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                 onPress={() => HandleClearFilter()}
               >
-                <Text style={{ color: "white" }}>Clear Filters</Text>
+                <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
               </TouchableOpacity>
               
               <TouchableOpacity
-                style={{ backgroundColor: "#B08218", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                 onPress={() => this.RBSheet.close()}
               >
-                <Text style={{ color: "white" }}>Close</Text>
+                <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4)  }}>Close</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
