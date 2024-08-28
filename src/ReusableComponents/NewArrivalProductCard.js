@@ -4,6 +4,7 @@ import {Dimensions} from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
 import CustomRoundedTextButton from './CustomRoundedTextButton.js';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -16,7 +17,7 @@ const NewArrivalProductCard = ({imagePath, name, price, location, isVerified = f
           <Image source={imagePath} style={styles.imageStyle} />
           <View style={[{flexDirection: 'column',flex:1,marginEnd:10}]}>
             <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View style={{flexDirection: 'row', marginTop: screenWidth*0.01}}>
               <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
               <Text style={styles.locationText}numberOfLines={1} ellipsizeMode='tail'>{location}</Text>
             </View>
@@ -53,8 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor:'#FFFFFF',
     borderRadius: 25,
     overflow: 'hidden',
-    margin: screenWidth * 0.02,
-    height:screenWidth * 0.38,
+    margin: screenWidth * 0.01,
+    
     elevation: 5,
   },
   elevatedContainer: {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     margin: 5,
-    width: screenWidth * 0.35,
+    width: screenWidth * 0.30,
     height:'auto',
     borderRadius: 25,
   },
@@ -90,24 +91,26 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   nameText: {
-    marginTop: 20,
+    marginTop: screenWidth * 0.04,
     fontWeight: 'bold',
     color: CustomColors.textGrey,
-    fontSize: screenWidth * 0.055,
+    fontSize: screenWidth * 0.045,
   },
   locationRow: {
     flexDirection: 'row',
+    alignContent:'center',
     
   },
   locationImageStyle: {
-    height: screenWidth * 0.055,
-    width: screenWidth * 0.055,
+    alignSelf: 'center',
+    height: screenWidth * 0.035,
+    width: screenWidth * 0.035,
     marginRight: 5,
   },
   locationText: {
     alignSelf: 'center',
     color: CustomColors.textGrey,
-    fontSize: screenWidth * 0.045,
+    fontSize: screenWidth * 0.035,
   },
   priceText: {
     alignSelf: 'center',
@@ -121,13 +124,13 @@ const styles = StyleSheet.create({
     paddingBottom:screenWidth * 0.01,
     borderRadius: 25,
     alignSelf: 'flex-end',
-    marginBottom:screenWidth * 0.01,
+    marginBottom:screenWidth * 0.02,
   },
   textQuote:{
     color:'white',
     paddingLeft: screenWidth * 0.02,
     paddingRight: screenWidth * 0.02,
-    fontSize: screenWidth * 0.045,
+    fontSize: screenWidth * 0.040,
   },
   textPrice:{
     color:'#3D3B3B',

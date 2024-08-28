@@ -19,10 +19,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
+import {addReview, getReviewForProduct} from '../services/ProductReview.service';
+import ReviewsItem from '../ReusableComponents/ReviewsItem';
+
 export default function Productdetails(props) {
   const [productObj, setProductObj] = useState(null);
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
+  const [productReviewArr, setProductReviewArr] = useState([]);
 
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
 
@@ -36,10 +40,11 @@ export default function Productdetails(props) {
     try {
       const {data: res} = await getProductById(props?.route?.params?.data);
       if (res) {
-        console.log(JSON.stringify(res.data, null, 2), 'data');
+        console.log(JSON.stringify(res.data, null, 2), 'dataxxx');
         let tempObj = res.data;
         tempObj.imageArr = tempObj.imageArr.filter(el => el.image != '');
 
+        handleGetProductReview(res.data._id);
         setProductObj(res.data);
         let imaArr = [
           {
@@ -105,6 +110,20 @@ export default function Productdetails(props) {
       }
     } catch (error) {
       errorToast(error);
+    }
+  };
+
+  const handleGetProductReview = async id => {
+    console.log('', id);
+    try {
+      let {data: res} = await getReviewForProduct(`userId=${id}`);
+
+      console.log('@@@@@@@@@@@@@', res.data);
+      if (res.message) {
+        setProductReviewArr(res.data);
+      }
+    } catch (err) {
+      console.log('Errrrrrr>>>>>>>>>>>>>>>>>>>', err);
     }
   };
 
@@ -205,25 +224,36 @@ export default function Productdetails(props) {
       </Pressable>
     );
   };
-  
+
   const renderSimilarProducts = ({item, index}) => {
-    console.log('***********=>',item)
+    console.log('***********=>', item);
     return (
-        <NewArrivalProductCard 
-        imagePath={{ uri: generateImageUrl(item?.mainImage) }}
+      <NewArrivalProductCard
+        imagePath={{uri: generateImageUrl(item?.mainImage)}}
         price={item?.price}
         name={item?.name}
         location="Location"
         isVerified={true}
         onCallPressed={() => {}}
         onGetQuotePressed={() => {}}
-        onCardPressed={() => navigation.navigate('Productdetails', { data: item?.slug })}        
-        ></NewArrivalProductCard>
-      
+        onCardPressed={() => navigation.navigate('Productdetails', {data: item?.slug})}></NewArrivalProductCard>
     );
   };
+  const renderReviews = ({item, index}) => {
+    console.log('***********=>', item);
+    return (
+      <ReviewsItem
+        reviewItem={{ imagePath:{uri: generateImageUrl(item?.mainImage)},
+          message:item.name,
+          name:item.name,
+          rating:4
+        }
+      
+      }
 
- 
+        ></ReviewsItem>
+    );
+  };
 
   const ListHeader = () => {
     // View to set in Header
@@ -242,44 +272,35 @@ export default function Productdetails(props) {
   };
 
   const ListFooter = () => {
-    //View to set in Header
     return (
-      <>
+      <View>
         {imageArr.length === 0 ? (
-          <View style={{height: wp(30), display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{height: wp(30), justifyContent: 'center', alignItems: 'center'}}>
             <Text>No images uploaded</Text>
           </View>
         ) : (
-          <SliderBox
-            images={imageArr.map(el => generateImageUrl(el.image))}
-            sliderBoxHeight={hp(30)}
-            dotColor="#B08218"
-            inactiveDotColor="#D9D9D9"
-            //   autoplay
-            circleLoop
-            resizeMethod={'resize'}
-            resizeMode={'cover'}
-            onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
-            currentImageEmitter={index => console.warn(`current pos is: ${index}`)}
-            ImageComponentStyle={{
-              width: '100%',
-              borderRadius: 5,
-            }}
-            imageLoadingColor="#2196F3"
-          />
+          <SliderBox images={imageArr.map(el => generateImageUrl(el.image))} sliderBoxHeight={hp(30)} dotColor="#B08218" inactiveDotColor="#D9D9D9" circleLoop resizeMethod={'resize'} resizeMode={'cover'} ImageComponentStyle={{width: '100%', borderRadius: 5}} imageLoadingColor="#2196F3" />
         )}
+
         <View style={styles1.detailsContainer}>
           <View>
             <Text style={styles1.productname}>{productObj?.name}</Text>
           </View>
-          <View style={[styles1.infoHeaderStyle]}>
+
+          <View style={styles1.infoHeaderStyle}>
             <FlatList data={productinfo} keyExtractor={(item, index) => `${index}`} renderItem={renderproductinfo} horizontal contentContainerStyle={{justifyContent: 'space-between'}} />
             <View style={{width: wp(1), height: '100%', position: 'absolute', backgroundColor: CustomColors.mattBrownDark}}></View>
           </View>
-          {activeclass == 'Product Specification' ? (
-            <View style={{marginVertical: wp(5)}}>
-              <FlatList data={categoryname1} keyExtractor={(item, index) => `${index}`} renderItem={rendercategoryname1} scrollEnabled style={{maxHeight: hp(93), width: '100%'}} contentContainerStyle={{marginVertical: wp(5)}} />
-            </View>
+
+          {activeclass === 'Product Specification' ? (
+            <FlatList
+              data={categoryname1}
+              keyExtractor={(item, index) => `${index}`}
+              renderItem={rendercategoryname1}
+              style={{maxHeight: hp(93), width: '100%'}}
+              contentContainerStyle={{marginVertical: wp(5)}}
+              nestedScrollEnabled={true} // Added for nested scrolling
+            />
           ) : (
             <Text style={styles1.descpriionttext}>{productObj?.longDescription}</Text>
           )}
@@ -288,117 +309,72 @@ export default function Productdetails(props) {
             <CustomButtonNew text={'Get Latest Price'} paddingHorizontal={wp(5)} />
           </View>
 
-          <View style={styles1.gradientDetailsCard}></View>
-          <LinearGradient colors={['#5a432f','#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
+          <LinearGradient colors={['#5a432f', '#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
             <View style={gradientStyle.card}>
               <View style={{flexDirection: 'row'}}>
-                <View>{productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{width: wp(15), height: wp(15)}} />}</View>
-                <Text style={gradientStyle.title}>
-                  {currentUserHasActiveSubscription
-                    ? `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `Plywood Bazar (${productObj?.brandObj?.name})`}`
-                    : `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name}` : 'Plywood Bazar'}`.slice(0, 4) + '***'}
-                </Text>
-                
+                {productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{width: wp(15), height: wp(15)}} />}
+                <Text style={gradientStyle.title}>{currentUserHasActiveSubscription ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `${productObj?.createdByObj?.userObj?.companyObj?.name}`.slice(0, 4) + '***'}</Text>
               </View>
-              <View style={{flexDirection: 'row'}}>
-                <Icon name='map-marker-radius' color='white' size={wp(8)} />
-                <View>
-                  <Text style={{color:'white',marginLeft:wp(1)}}>
-                {`${
-                    currentUserHasActiveSubscription
-                      ? productObj?.createdByObj?.userObj?.companyObj?.address
-                        ? productObj?.createdByObj?.userObj?.companyObj?.address
-                        : 'NA'
-                      : (productObj?.createdByObj?.userObj?.companyObj?.address ? `${productObj?.createdByObj?.userObj?.companyObj?.address}` : 'NA').slice(0, 2) + '***'
-                  }`}</Text>
-                </View>
-                </View>
-                <View style={{flexDirection: 'row',alignItems:'center'}}>
-                <Icon name='check-circle-outline' color='white' size={wp(8)} />
-                <View>
-                  <Text style={{color:'white',marginLeft:wp(1)}}>
-                  {currentUserHasActiveSubscription
-                      ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
-                        ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
-                        : 'NA'
-                      : (productObj?.createdByObj?.userObj?.companyObj?.gstNumber ? `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}` : 'NA').slice(0, 2) + '***'}</Text>
-                </View>
-                </View>             
+
+              <View style={{flexDirection: 'row',marginTop:wp(1)}}>
+                <Icon name="map-marker-radius" color="white" size={wp(8)} />
+                <Text style={{color: 'white', marginLeft: wp(1)}}>{currentUserHasActiveSubscription ? productObj?.createdByObj?.userObj?.companyObj?.address || 'NA' : `${productObj?.createdByObj?.userObj?.companyObj?.address}`.slice(0, 2) + '***'}</Text>
+              </View>
+
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Icon name="check-circle-outline" color="white" size={wp(8)} />
+                <Text style={{color: 'white', marginLeft: wp(1)}}>{currentUserHasActiveSubscription ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber || 'NA' : `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}`.slice(0, 2) + '***'}</Text>
+              </View>
             </View>
           </LinearGradient>
-          {/* <View style={[styles1.flexrow, {position: 'relative', width: wp(95), paddingVertical: 10, marginTop: 10}]}>
-            <Pressable onPress={() => currentUserHasActiveSubscription && navigation.navigate('Supplier', {data: productObj?.createdByObj})}>
-              <LinearTextGradient style={styles1.gradentcolor} locations={[0, 1]} colors={['#F74D57', '#6D4EE9']} start={{x: 1, y: 1}} end={{x: 0, y: 0}}>
-                <Text>
-                  {currentUserHasActiveSubscription
-                    ? `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `Plywood Bazar (${productObj?.brandObj?.name})`}`
-                    : `${productObj?.createdByObj?.userObj?.companyObj?.name ? `${productObj?.createdByObj?.userObj?.companyObj?.name}` : 'Plywood Bazar'}`.slice(0, 4) + '***'}
-                </Text>
-              </LinearTextGradient>
-            </Pressable>
-            {productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{width: 70, height: 70, position: 'absolute', right: 10}} />}
-          </View>
-          <View style={[styles1.ratingsection]}>
-            <Image source={{uri: generateImageUrl(productObj?.brandObj?.image)}} style={styles1.imgsmall1} resizeMode="contain" />
 
-            <View style={styles1.ratingarea}>
-              <View style={styles1.flexrow}>
-                <Image source={require('../../assets/img/notification.png')} style={styles1.imgsmall} />
-                <Text style={styles1.textmainlogo}>
-                  {`${
-                    currentUserHasActiveSubscription
-                      ? productObj?.createdByObj?.userObj?.companyObj?.address
-                        ? productObj?.createdByObj?.userObj?.companyObj?.address
-                        : 'NA'
-                      : (productObj?.createdByObj?.userObj?.companyObj?.address ? `${productObj?.createdByObj?.userObj?.companyObj?.address}` : 'NA').slice(0, 2) + '***'
-                  }`}
-                </Text>
-              </View>
-
-              <View style={styles1.flexrowq1}>
-                <Image source={require('../../assets/img/check.png')} style={{width: 20, height: 20}} />
-                <Text style={{color: '#000', fontSize: 12, fontFamily: 'Manrope-Bold'}}>
-                  GST -{' '}
-                  <Text style={{color: '#333333', fontSize: 12, fontFamily: 'Manrope-Regular'}}>
-                    {currentUserHasActiveSubscription
-                      ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
-                        ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber
-                        : 'NA'
-                      : (productObj?.createdByObj?.userObj?.companyObj?.gstNumber ? `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}` : 'NA').slice(0, 2) + '***'}
-                  </Text>
-                </Text>
-              </View>
+          {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}
+            <View style={similarProductsStyle.container}>
+              <Text style={similarProductsStyle.title}>Similar Products</Text>
+              <ScrollView
+                style={{height: wp(85)} } // Set the fixed height for the scrollable area
+               nestedScrollEnabled={true} // Enable nested scrolling
+              >
+                <FlatList
+              
+                  data={similarProductsArr}
+                  renderItem={renderSimilarProducts}
+                  keyExtractor={(item, index) => `${index}`}
+                  showsVerticalScrollIndicator={false}
+                 scrollEnabled={false} // Disable FlatList's internal scrolling
+                />
+              </ScrollView>
             </View>
-          </View> */}
-          <ImageBackground source={require('../../assets/img/bg_similar_products.png')} style={{ height: '40%' }}>
-  <View style={similarProductsStyle.container}>
-    <Text style={similarProductsStyle.title}>Similar Products</Text>
-    <View style={similarProductsStyle.scrollContainer}>
-      <FlatList
-        data={similarProductsArr}
-        renderItem={renderSimilarProducts}
-        keyExtractor={(item, index) => `${index}`}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  </View>
-</ImageBackground>
-          {authorized && (
-            <TouchableOpacity onPress={() => handleContactSupplier()} style={[styles.btnbg, {marginBottom: 15}]}>
-              <Text style={styles.textbtn}>Contact Supplier</Text>
-            </TouchableOpacity>
-          )}
-
-          <StartBusinessBanner></StartBusinessBanner>
-          {/* <View style={styles1.flexbetwen}>
-            <Text style={styles1.headingmain}>Similar Products</Text>
-            <Pressable onPress={() => navigation.navigate('AllProducts')}>
-              <Text style={styles1.viewall}>View All</Text>
-            </Pressable>
-          </View>
-          <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={similarProductsArr} horizontal renderItem={renderSimilarProducts} keyExtractor={(item, index) => `${index}`} /> */}
+          {/* </ImageBackground> */}
         </View>
-      </>
+      
+        <StartBusinessBanner />
+        <View style={reviewStyle.container}>
+          <Text style={reviewStyle.title}>Review</Text>
+          <View style={reviewStyle.addBtn}><CustomButton text={"Add"}></CustomButton></View>
+        </View>
+        <ScrollView
+                style={{height: wp(85),marginVertical:wp(5)}} // Set the fixed height for the scrollable area
+                nestedScrollEnabled={true} // Enable nested scrolling
+              >
+               
+                <FlatList
+                  data={similarProductsArr}
+                  renderItem={renderReviews}
+                  keyExtractor={(item, index) => `${index}`}
+                  showsVerticalScrollIndicator={false}
+                  scrollEnabled={false} // Disable FlatList's internal scrolling
+                />
+              </ScrollView>
+
+        {authorized && (
+          <TouchableOpacity onPress={() => handleContactSupplier()} style={[styles.btnbg, {marginBottom: 15}]}>
+            <Text style={styles.textbtn}>Contact Supplier</Text>
+          </TouchableOpacity>
+        )}
+
+        
+      </View>
     );
   };
 
@@ -411,6 +387,9 @@ export default function Productdetails(props) {
           ListHeaderComponent={ListHeader}
           //Footer to show below listview
           ListFooterComponent={ListFooter}
+          scrollEnabled={true}
+          nestedScrollEnabled={true}
+          data={[]} // Empty data, as you're only using it for header and footer
           // renderItem={ItemView}
           // ListEmptyComponent={EmptyListMessage}
         />
@@ -685,7 +664,9 @@ const styles1 = StyleSheet.create({
   detailsContainer: {
     backgroundColor: '#FFFFFF',
     elevation: wp(3),
-    borderRadius: wp(10),
+    
+    borderTopLeftRadius:wp(10),
+    borderTopRightRadius:wp(10),
     marginTop: -wp(7),
   },
   infoHeaderStyle: {
@@ -707,7 +688,7 @@ const styles1 = StyleSheet.create({
 
 const gradientStyle = StyleSheet.create({
   container: {
-    alignItems:'center',
+    alignItems: 'center',
     width: wp(90),
     marginVertical: wp(5),
     flex: 1,
@@ -723,8 +704,8 @@ const gradientStyle = StyleSheet.create({
   },
 
   title: {
-    width:'87%',
-    marginLeft:wp(2),
+    width: '87%',
+    marginLeft: wp(2),
     fontSize: wp(5),
     fontWeight: 'bold',
     color: '#FFFFFF',
@@ -740,7 +721,7 @@ const gradientStyle = StyleSheet.create({
 
 const similarProductsStyle = StyleSheet.create({
   container: {
-    paddingHorizontal: wp(5),
+    paddingHorizontal: wp(1),
     paddingVertical: wp(5),
   },
   title: {
@@ -750,7 +731,26 @@ const similarProductsStyle = StyleSheet.create({
   },
   scrollContainer: {
     backgroundColor: 'red',
-    height: wp(125), // Set your fixed height here
     flex: 1,
+  },
+});
+const reviewStyle = StyleSheet.create({
+  container: {
+    alignSelf:'center',
+    marginVertical: wp(5),
+    width:wp(85),
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  title: {
+    fontSize: wp(6),
+    fontWeight: 'bold',
+   
+  },
+  addBtn: {
+    borderRadius:50,borderColor:'#BC9B80',
+    borderWidth:wp(1),
+    position:'absolute',
+    right:0
   },
 });
