@@ -1,7 +1,7 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions} from 'react-native';
+import {FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Video from 'react-native-video';
@@ -41,7 +41,6 @@ import ZoomInfiniteScrollImplementation from '../ReusableComponents/ZoomInfinite
 import Carousel from 'react-native-snap-carousel';
 import StateItem from '../ReusableComponents/StateItem';
 import FlashSaleComponent from '../ReusableComponents/FlashSaleComponent';
-import FlashSaleItem from '../ReusableComponents/FlashSaleItem';
 import AddOpportunitiesHomeBanner from '../ReusableComponents/AddOpportunitiesHomeBanner';
 import FadeRibbonText from '../ReusableComponents/FadeRibbon';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
@@ -64,6 +63,7 @@ export default function Home() {
   const [productName, setProductName] = useState('');
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const {height, width} = useWindowDimensions();
+  const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
 
   const focused = useIsFocused();
 
@@ -178,6 +178,15 @@ export default function Home() {
     } catch (err) {
       errorToast(err);
     }
+  };
+
+  const handelcallbtn = (phone) => {
+    if (!currentUserHasActiveSubscription) {
+      errorToast('You do not have a valid subscription to perform this action');
+      return 0;
+    }
+
+    Linking.openURL(`tel:${phone}`);
   };
 
   const handleGetSubscriptions = async () => {
@@ -399,11 +408,13 @@ export default function Home() {
   const renderFlashSale = ({item, index}) => {
     return (
         <View style={{marginHorizontal:wp(1)}}>
-          <FlashSaleItemWithDiscount imagePath={{uri: generateImageUrl("Asdadas.png")}}
-        actualPrice={10}
-        name={"Name"}
-        salePrice={155}
+          <FlashSaleItemWithDiscount imagePath={{uri: generateImageUrl(item?.productId?.mainImage)}}
+        actualPrice={item?.price}
+        name={item?.productId?.name}
+        salePrice={item?.salePrice}
         duration={10}
+        offPercentage={item?.discountValue}
+        onCallPress={()=>{handelcallbtn(item?.whatsapp)}}
         ></FlashSaleItemWithDiscount>
         </View>
     );
@@ -676,7 +687,7 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
               <View style={{flexDirection:'row',paddingHorizontal:wp(2),}}
               >
                 <FlashSaleComponent style={[styles.padinghr,{position:'absolute'}]}></FlashSaleComponent>
-                <FlatList style={[styles.mttop10,{paddingHorizontal:wp(4)}]} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSaleData} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
+                <FlatList style={[styles.mttop10,{paddingHorizontal:wp(4)}]} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
               </View>
               
 

@@ -21,13 +21,15 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={styles.starContainer}>
-                <Icon name='decagram' color='#c3a186' size={wp(15)} />
-                <View style={{flexDirection:'column', position: 'absolute'}}>
-                    <Text style={{color:'white', textAlign:'center', fontSize:wp(4)}}>{offPercentage}%</Text>
-                    <Text style={{color:'white', textAlign:'center', fontSize:wp(3)}}>OFF</Text>
-                </View>
-            </View>
+            {offPercentage && (
+  <View style={styles.starContainer}>
+    <Icon name='decagram' color='#c3a186' size={wp(15)} />
+    <View style={{flexDirection: 'column', position: 'absolute', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
+      <Text style={{color: 'white', textAlign: 'center', fontSize: wp(4)}}>{offPercentage}%</Text>
+      <Text style={{color: 'white', textAlign: 'center', fontSize: wp(3)}}>OFF</Text>
+    </View>
+  </View>
+)}
         </Pressable>
     );
 };
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
         width: wp(45),
         height: wp(50),
         backgroundColor: '#FFFFFF',
-        borderRadius: 25,
+        borderRadius: 10,
         elevation: 5,
     },
     container: {

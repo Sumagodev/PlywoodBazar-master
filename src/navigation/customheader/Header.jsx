@@ -2,65 +2,51 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomColors from '../../styles/CustomColors';
 
 export default function Header(props) {
   const navigation = useNavigation();
   return (
-    <>
-      {props.backbtnshowpage && (
-        <View style={[styles1.flexbetween, {backgroundColor:'#fff'}]}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{paddingHorizontal:10}}>
-            <Image source={require('../../../assets/img/backbtn.png')} style={styles1.imgsmall} resizeMode="contain" />
-          </TouchableOpacity>
-          <View>
-            <Text style={styles1.categry}>Product Name</Text>
-          </View>
-          <View></View>
-          {/* <Image source={require('../../assets/img/notification.png')} style={styles1.imgsmall} /> */}
-        </View>
+    <View style={styles.rowStyle}>
+      {props.normal && (
+        <Image style={styles.logoStyle} source={require('../../../assets/img/logo.png')}/>
       )}
 
       {props.stackHeader && (
-      <View style={[styles1.flexbetween, {position:'relative'}]}>
-          <TouchableOpacity onPress={() => props.rootProps.navigation.goBack()} style={{position:'absolute', top:10, left:0}}>
-            <Image source={require('../../../assets/img/backbtn.png')} style={styles1.imgsmall} resizeMode="contain" />
-          </TouchableOpacity>
-          <Text style={styles1.categry}>{props.screenName}</Text>
-          {/* <Image source={require('../../../assets/img/notification.png')} style={styles1.imgsmall} /> */}
-        </View>
+        <Text style={styles.categry}>{props.screenName}</Text>
       )}
 
-
-      {props.normal && (
-        <View style={[styles1.flexbetween, {paddingHorizontal: wp(2), alignItems: 'center', backgroundColor: '#fff'}]}>
-          <TouchableOpacity onPress={() => props.rootProps.navigation.goBack()}>
-            <Image source={require('../../../assets/img/logo.png')} style={{width: wp(50), height: wp(10)}} resizeMode="contain" />
-          </TouchableOpacity>
-          <Text style={styles1.categry}>{props.screenName}</Text>
-
-          <View></View>
-          {/* <Image source={require('../../../assets/img/notification.png')} style={styles1.imgsmall} /> */}
-        </View>
+      {props.backbtnshowpage && (
+        <Text style={styles.categry}>Product Name</Text>
       )}
-    </>
+
+      <Icon onPress={()=>navigation.goBack()} style={styles.iconStyle} name='arrow-left' color={CustomColors.glossBrownDark} size={wp(8)}/>
+    </View>
   );
 }
-const styles1 = StyleSheet.create({
-  flexbetween: {
+const styles = StyleSheet.create({
+  rowStyle:{
+    backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 10,
+    paddingVertical: '2%',
     justifyContent: 'center',
-    // borderColor: '#ccc',
-    // borderBottomWidth: 1,
-    // borderStyle: 'solid',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: '10%',
   },
-  imgsmall: {
-    width: wp(6),
-    height: hp(3),
+  iconStyle:{
+    position: 'absolute',
+    margin: wp(1),
+    left: 0,
+  },
+  logoStyle: {
+    width: '100%',
+    height: wp(15),
   },
   categry: {
-    fontSize: 18,
+    fontSize: wp(6),
     color: '#000',
     fontFamily: 'Manrope-Medium',
   },

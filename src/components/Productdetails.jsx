@@ -1,6 +1,6 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList,Linking, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SliderBox} from 'react-native-image-slider-box';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {LinearTextGradient} from 'react-native-text-gradient';
@@ -100,7 +100,14 @@ export default function Productdetails(props) {
       console.error(error);
     }
   };
+  const handelcallbtn = (phone) => {
+    if (!currentUserHasActiveSubscription) {
+      errorToast('You do not have a valid subscription to perform this action');
+      return 0;
+    }
 
+    Linking.openURL(`tel:${phone}`);
+  };
   const getAllSimilarProducts = async id => {
     try {
       console.log('getting all similar');
@@ -232,8 +239,8 @@ export default function Productdetails(props) {
         price={item?.price}
         name={item?.name}
         location="Location"
-        isVerified={true}
-        onCallPressed={() => {}}
+        isVerified={item?.approved === "APPROVED"} // Check if item.approved is "APPROVED"
+        onCallPressed={() => {handelcallbtn(item?.createdByObj?.companyObj?.phone)}}
         onGetQuotePressed={() => {}}
         onCardPressed={() => navigation.navigate('Productdetails', {data: item?.slug})}></NewArrivalProductCard>
     );
@@ -304,9 +311,9 @@ export default function Productdetails(props) {
             <Text style={styles1.descpriionttext}>{productObj?.longDescription}</Text>
           )}
 
-          <View style={{alignSelf: 'center'}}>
+          <TouchableOpacity style={{alignSelf: 'center' ,marginVertical:wp(6)}}>
             <CustomButtonNew text={'Get Latest Price'} paddingHorizontal={wp(5)} />
-          </View>
+          </TouchableOpacity>
 
           <LinearGradient colors={['#5a432f', '#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
             <View style={gradientStyle.card}>
@@ -329,14 +336,18 @@ export default function Productdetails(props) {
 
           {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}
             <View style={similarProductsStyle.container}>
-              <Text style={similarProductsStyle.title}>Similar Products</Text>
+             
+            <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row',  marginTop: wp(7),marginBottom: 10}]}>
+                <Text style={[styles1.headingmain]}>Similar Products</Text>
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigation.navigate('AllProducts', {type: ''})}/>
+              </View>
               <ScrollView
-                style={{height: wp(85)} } // Set the fixed height for the scrollable area
+                  // Set the fixed height for the scrollable area
                nestedScrollEnabled={true} // Enable nested scrolling
               >
                 <FlatList
               
-                  data={similarProductsArr}
+                  data={similarProductsArr.slice(0,2)}
                   renderItem={renderSimilarProducts}
                   keyExtractor={(item, index) => `${index}`}
                   showsVerticalScrollIndicator={false}
@@ -353,12 +364,12 @@ export default function Productdetails(props) {
           <View style={reviewStyle.addBtn}><CustomButtonOld  textSize={wp(4)} text={"Add"}></CustomButtonOld></View>
         </View>
         <ScrollView
-                style={{height: wp(85),marginVertical:wp(5)}} // Set the fixed height for the scrollable area
+                style={{marginVertical:wp(5)}} // Set the fixed height for the scrollable area
                 nestedScrollEnabled={true} // Enable nested scrolling
               >
                
                 <FlatList
-                  data={similarProductsArr}
+                  data={similarProductsArr.slice(0,2)}
                   renderItem={renderReviews}
                   keyExtractor={(item, index) => `${index}`}
                   showsVerticalScrollIndicator={false}
@@ -366,11 +377,15 @@ export default function Productdetails(props) {
                 />
               </ScrollView>
 
-        {authorized && (
+              <View style={{alignSelf:'center',marginBottom:wp(5)}}>
+              <CustomButton text={'Show More'} textSize={wp(3.5)}></CustomButton>
+              </View>
+
+        {/* {authorized && (
           <TouchableOpacity onPress={() => handleContactSupplier()} style={[styles.btnbg, {marginBottom: 15}]}>
             <Text style={styles.textbtn}>Contact Supplier</Text>
           </TouchableOpacity>
-        )}
+        )} */}
 
         
       </View>

@@ -1,7 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import styles from '../../assets/stylecomponents/Style';
@@ -11,10 +11,6 @@ import { getDecodedToken, getUserById } from '../services/User.service';
 import { generateImageUrl } from '../services/url.service';
 import { PRIMARY_COLOR } from '../utils/constants';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-import FlashSaleItemWithDiscount from '../ReusableComponents/FlashSaleItemWithDiscount';
-import FlashSaleItem from '../ReusableComponents/FlashSaleItem';
-import FadeRibbonText from '../ReusableComponents/FadeRibbon';
-import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 
 export default function MyFlashSales(props) {
   const navigation = useNavigation();
@@ -100,23 +96,6 @@ export default function MyFlashSales(props) {
       </View>
     );
   };
-  const renderFlashItem = ({ item, index }) => {
-    return (
-      <View  style={{paddingVertical:wp(1)}}>
-       <FlashSaleItem 
-      
-      imagePath={{uri: generateImageUrl(item?.productId?.mainImage)}}
-        actualPrice={item?.price}
-        name={item?.productId?.name}
-        salePrice={item?.salePrice}
-        offPercentage={item?.discountValue}
-        id={item?._id}
-     />
-     
-      </View>
-      
-    );
-  };
 
   useEffect(() => {
     if (focused) {
@@ -125,30 +104,14 @@ export default function MyFlashSales(props) {
     }
   }, [focused]);
 
-
-
-
   return (
     <>
-      <Header normal={true} screenName={'Your Flash Sales'} rootProps={props} />
+      <Header stackHeader={true} screenName={'Your Flash Sales'} rootProps={props} />
       <View style={{backgroundColor:'#fff', flex:1}}>
-    <View style={{flexDirection:'row',justifyContent:'center',marginTop:wp(3)}}>
 
-    <Text style={{fontSize:wp(8),fontWeight:800,}}>MY FLASH SALE</Text>
-    <View style={{borderRadius:50,borderColor:'#BC9B80',borderWidth:wp(1),marginLeft:wp(5)} }><CustomButtonOld text={"ADD"} onPress={()=>{navigation.navigate('AddFlashSales')}}/></View>
-    </View>
     
-     <View style={{height:wp(20),justifyContent:'center', marginHorizontal:wp(2)}}>
-     <FadeRibbonText reverseDirection={true}></FadeRibbonText>
-     <Image source={require('../../assets/img/flash_sale.png')}  style={{width:wp(30),height:wp(18),position:'absolute',resizeMode:'contain'}} ></Image>
-     <View style={{ flexDirection:'row', position:'absolute',justifyContent:'flex-start' ,alignItems:'baseline',marginStart:wp(32)}}>
-     <Text style={{fontSize:wp(5.5),fontWeight:800,color:'black'}}>Dont Miss Out</Text>
-     <Text style={{fontSize:wp(3.5),fontWeight:800,color:'white',marginStart:wp(2)}}> Our Flash Sale</Text>
-     </View>
-     </View>
-
       {
-        saleArr.length > 0 ?  <FlatList data={saleArr} renderItem={renderFlashItem} numColumns={2} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
+        saleArr.length > 0 ?  <FlatList data={saleArr} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
         :
           <View style={{height:hp(80), display:'flex', alignItems:'center', justifyContent:'center'}}>
             <Text style={{fontSize:16, alignSelf:'center', color:'#000', marginVertical:20}}>No Flash sales</Text>
@@ -156,7 +119,8 @@ export default function MyFlashSales(props) {
           </View>
       }
 
-
+      
+      
       
       {
         (userSubscriptionExpired || userDataObj?.numberOfSales <= 0) &&
@@ -172,12 +136,12 @@ export default function MyFlashSales(props) {
       }
     
       </View>
-      {/* {
+      {
         (userDataObj?.numberOfSales > 0 && !userSubscriptionExpired && !userDataObj?.isBlocked) &&
         <Pressable onPress={() => navigation.navigate('AddFlashSales')} style={[styles.btnbg, { width: wp(90), marginHorizontal: 20, marginBottom: 15 }]}>
           <Text style={styles.textbtn}>Create a Flash Sale</Text>
         </Pressable>
-      } */}
+      }
     </>
   );
 }
