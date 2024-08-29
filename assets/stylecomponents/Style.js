@@ -18,8 +18,7 @@ const styles = StyleSheet.create({
     },
     btnbg:{
         backgroundColor:'#B08218',
-        borderRadius:5,
-        
+        borderRadius:wp(100),
     },
     textbtn:{
         textAlign:'center',
