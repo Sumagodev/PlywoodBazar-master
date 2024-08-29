@@ -9,8 +9,10 @@ export default NewArrivalProductCardVertical = ({ newProductItem, onPress }) => 
             <Image style={styles.imageStyle} source={newProductItem.imagePath} />
             <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{newProductItem.name}</Text>
             <View style={styles.rowStyle}>
+                <View style={{ width:'90%',padding:wp(1),flexDirection:'row',alignSelf:'center',justifyContent:'center',alignItems:'center',alignContent:'center' }}>
                 <Icon size={wp(5)} name='map-marker' color='gray' />
-                <Text style={{alignSelf:'center',justifyContent:'center',alignContent:'center',alignItems:'center'}} numberOfLines={1} ellipsizeMode="tail">{newProductItem.location}</Text>
+                <Text style={{}} numberOfLines={1} ellipsizeMode="tail">{newProductItem.location}</Text>
+                </View>
             </View>
             <View style={styles.rowStyle}>
                 <Icon size={wp(5)} 
@@ -31,7 +33,6 @@ export default NewArrivalProductCardVertical = ({ newProductItem, onPress }) => 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'red',
         borderRadius: wp(5),
         width: wp(45),
         height: wp(70),
@@ -52,9 +53,7 @@ const styles = StyleSheet.create({
         fontSize: wp(5),
         marginVertical: wp(2),
     },
-    rowStyle: {
-        
-        backgroundColor:'yellow',
+    rowStyle: {        
         flexDirection: 'row',
         alignItems:'center',
         alignContent:'center',

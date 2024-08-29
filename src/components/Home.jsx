@@ -48,6 +48,8 @@ import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import CustomColors from '../styles/CustomColors';
 import FlashSaleItemWithDiscount from '../ReusableComponents/FlashSaleItemWithDiscount';
 import NewArrivalProductCardVertical from '../ReusableComponents/NewArrivalProductCardVertical';
+import OpportunitiesItem from '../ReusableComponents/OpportunitiesItem';
+import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 
 export default function Home() {
   const navigate = useNavigation();
@@ -375,7 +377,7 @@ export default function Home() {
   };
 
   const renderNewArrivals = ({item, index}) => {
-     return <NewArrivalProductCardVertical newProductItem={{imagePath:require('../../assets/img/ply_sample.png'),isVerified:true, name:item.productSlug ,location:'NahsikQQQQQQQQQQQQ'}} ></NewArrivalProductCardVertical>;
+     return <NewArrivalProductCardVertical  horizontal newProductItem={{imagePath:require('../../assets/img/ply_sample.png'),isVerified:true, name:item.productSlug ,location:'Nashik'}} ></NewArrivalProductCardVertical>;
   };
 
   const renderProduct = ({item, index}) => {
@@ -448,6 +450,14 @@ export default function Home() {
       </>
     );
   };
+  const renderOpportunities = ({item, index}) => {
+    return (
+      <OpportunitiesItem opportunityItem={{imagePath:{uri: generateImageUrl(item.image)},title:item.name,isExclusive:true}}></OpportunitiesItem>
+    );
+  };
+
+
+  
 
   // const flatlistref = useRef(null);
 
@@ -541,7 +551,7 @@ export default function Home() {
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Products You May Like</Text>
-                  <CustomButton textSize={wp(4)} text="View All" onPress={() => navigate.navigate('AllProducts', {type: ''})}/>
+                  <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('AllProducts', {type: ''})}/>
               </View>
               <FlatList
                 style={styles.mttop10}
@@ -553,28 +563,43 @@ export default function Home() {
                 keyExtractor={(item, index) => `${index}`}
               />
 
-              <View style={[styles.padinghr, styles1.flexbetwen]}>
-                <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText>
+              
+
+<LinearGradient 
+
+colors={['#6C4F37','#E0C7AD','#F1E8D1','#FFFFFF']}
+start={{x:0,y:1}}
+end={{x:1,y:1}}
+style={{marginTop:wp(5),paddingBottom:wp(5)}}
+>
+<View style={[styles.padinghr, styles1.flexbetwen,{marginBottom:wp(6)}]}>
+                {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
+                <Text style={{fontSize:wp(6),fontWeight:800,color:'white'}}>New Arrivals</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
                   <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)}/>
                 </Pressable>
               </View>
+<Carousel
+            data={dummyNewArrivalData}            
+            renderItem={renderNewArrivals}
+            sliderWidth={wp(100)}
+            itemWidth={wp(45)}
+            loop={true}
+            autoplay={true}
+            autoplayDelay={1000}
+            autoplayInterval={3000}
+            layout={'default'}
+            inactiveSlideScale={0.78}
+            inactiveSlideOpacity={1}
+            contentContainerStyle={{}
+          
+          }            
+        />
+</LinearGradient>
+              
 
-              <View style={[styles.padinghr, styles1.flexbetwen]}>
-                <Text style={styles1.headingmain}>New Arrivals</Text>
-                <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButton textSize={wp(4)} text="View All" />
-                </Pressable>
-              </View>
+          
 
-              <FlatList
-                style={styles.mttop10}
-                contentContainerStyle={{paddingTop: 5, paddingBottom: 10}}
-                data={advertisementsArr}
-                columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
-                renderItem={renderNewArrivals}
-                keyExtractor={(item, index) => `${index}`}
-              />
               <View style={{marginVertical: wp(5)}}>
                 <StartBusinessBanner></StartBusinessBanner>
               </View>
@@ -645,12 +670,12 @@ export default function Home() {
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={[styles1.headingmain,{fontWeight:800,color:'black',marginBottom:wp(5)}]}>Flash Sales</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts')}>
-                  <Text style={styles1.viewall}><CustomButton text={"Add"}></CustomButton></Text>
+                  <CustomButtonOld  textSize={wp(4)}text={"Add"}></CustomButtonOld>
                 </Pressable>
               </View>
               <View style={{flexDirection:'row',paddingHorizontal:wp(2),}}
               >
-                <FlashSaleComponent style={styles.padinghr}></FlashSaleComponent>
+                <FlashSaleComponent style={[styles.padinghr,{position:'absolute'}]}></FlashSaleComponent>
                 <FlatList style={[styles.mttop10,{paddingHorizontal:wp(4)}]} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={flashSaleData} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
               </View>
               
@@ -678,29 +703,31 @@ export default function Home() {
         />
                </View>
 
-               <View style={[styles.padinghr, { alignSelf:'center',alignItems: 'center', justifyContent: 'space-between', marginBottom: wp(5),paddingBottom:wp(10)}]}>
+               <View style={[styles.padinghr, { alignSelf:'center',alignItems: 'center', justifyContent: 'space-between', marginBottom: wp(2),paddingBottom:wp(2.5)}]}>
                 <Text style={[styles1.headingmain,{marginBottom:wp(5)}]}>Dealership Opportunities</Text>              
                 <AddOpportunitiesHomeBanner style={{marginTop:wp(5)}}></AddOpportunitiesHomeBanner>
               </View>
 
+
+              <FlatList  data={blogsArr} horizontal renderItem={renderOpportunities} keyExtractor={(item, index) => `${index}`} />
               
 
 
                 
-              <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 10}]}>
-                <Text style={[styles1.headingmain]}>Blogs</Text>
-                <CustomButton textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
-              </View>
-
-              <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
+              
 
               <View style={[styles.padinghr, styles1.videoCardHome]}>
                 <Text style={[styles1.headingmain]}>Videos</Text>
-                <CustomButton textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
               </View>
               <FlatList  data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
-             
+              <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row',  marginTop: wp(7),marginBottom: 10}]}>
+                <Text style={[styles1.headingmain]}>Blogs</Text>
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
+              </View>
+
+              <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
 
 
               
@@ -985,7 +1012,7 @@ const styles1 = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop:wp(10)  },
+    marginTop:wp(5)  },
   imgsize: {
     width: wp(100),
     height: wp(40),
@@ -1081,7 +1108,7 @@ const styles1 = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: wp(7),
     borderRadius:50
   },
   tableimagewrap: {
@@ -1213,5 +1240,23 @@ const flashSaleData = [
     image: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
   },
   // Add more items as needed
+];
+
+
+const dummyNewArrivalData=[
+  
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},    
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"},
+    {"__v": 0, "_id": "66068293dab9276daca9279a", "createdAt": "2024-03-29T08:57:55.419Z", "endDate": "2024-04-09T23:59:59.059Z", "image": "1711703286896.png", "isVideo": false, "message": "Best Quality Product Made In very High Standard Wood ", "productId": "65ded48f4052bcfbe3438127", "productSlug": "royal-forest-plywood", "startDate": "2024-03-29T00:00:00.000Z", "updatedAt": "2024-03-29T09:08:06.899Z", "userId": "64f07c1522ee5f347112f95f"}    
+    
 ];
 

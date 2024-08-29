@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dimensions } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
+import CustomButtonOld from './CustomButtonOld.js';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -30,7 +31,7 @@ const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }
             </View>
         </View>
         <View style={styles.buttonContainer}>
-        <CustomButton text='Get Quote' textSize={screenWidth*0.045} style={styles.button} onPress={onGetQuotePress}/>
+        <CustomButtonOld text='Get Quote' textSize={screenWidth*0.045} style={styles.button} onPress={onGetQuotePress}/>
     </View>
     </View>
     );

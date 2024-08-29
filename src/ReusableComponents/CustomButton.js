@@ -1,28 +1,35 @@
-// CustomButton.js
-
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import CustomColors from '../styles/CustomColors';
+import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-
+import CustomColors from '../styles/CustomColors';
 
 const CustomButton = ({
   text,
   rightIcon = false,
+  leftIconPath = null,
   buttonBgColor = CustomColors.mattBrownDark,
   rightIconBgColor = CustomColors.accentGreen,
+  leftIconBgColor = CustomColors.accentGreen,
   onPress,
-  textSize = wp(5),
-  paddingHorizontal=0
+  textSize = 16,
+  fontWeight = 'bold',
+  paddingHorizontal = wp(2),
+  paddingVertical = wp(2),
+  hasBorder = false,
+  ...rest
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor,paddingHorizontal:paddingHorizontal }]} onPress={onPress}>
-      <View style={styles.container}>
-        <Text style={[styles.text, { fontSize: textSize }]}>{text}</Text>
+    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }, hasBorder && { borderWidth: 2, borderColor: '#bc9b80' }, rest]} onPress={onPress}>
+        <View style={styles.container}>
+        {leftIconPath && (
+          <View style={[styles.iconContainer, { backgroundColor: leftIconBgColor }]}>
+            <Image source={leftIconPath} style={styles.leftIcon} size={50} />
+          </View>
+        )}
+        <Text style={[styles.text, { fontSize: textSize, fontWeight: fontWeight, paddingHorizontal: paddingHorizontal, paddingVertical: paddingVertical }]}>{text}</Text>
         {rightIcon && (
           <View style={[styles.iconContainer, { backgroundColor: rightIconBgColor }]}>
-            <MaterialCommunityIcons name="chevron-right" size={40} color='white' />
+            <Image source={rightIcon} style={styles.leftIcon} size={50} />
           </View>
         )}
       </View>
@@ -34,27 +41,30 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     elevation: 5,
-    paddingVertical: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'flex-start', // This will make the button wrap its content
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   text: {
-    fontWeight:500,
     color: 'white',
     textAlign: 'center',
-    paddingHorizontal:wp(4),
-    paddingVertical:wp(1)
+    paddingHorizontal: wp(5),
+    paddingVertical: wp(1),
   },
   iconContainer: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 50,
+    margin: 2,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  leftIcon: {
+    width: 35,
+    height: 35,
+    resizeMode: 'contain',
   },
 });
 

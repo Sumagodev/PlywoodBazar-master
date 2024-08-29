@@ -15,7 +15,7 @@ const BlogsItem = ({ item }) => {
                 <CustomButton
                     onPress={() => { /* Button Action */ }} 
                     text="Read more" 
-                    textSize={wp(4)}
+                    textSize={wp(2.5)}
                     fontWeight='bold'
                     buttonBgColor='#624832'
                 />
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     container:{
         width: wp(45),
         height: wp(50),
-        borderRadius: 25,
-        marginHorizontal:wp(2),
+        borderRadius: 15,
+        marginHorizontal:wp(1),
         elevation: 5,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         height: "50%",
         marginTop: wp(1),
         alignSelf: 'center',
-        borderRadius: 20,
+        borderRadius: 12,
     },
     titleStyle:{
         paddingStart: wp(2),
