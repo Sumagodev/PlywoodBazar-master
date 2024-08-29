@@ -39,8 +39,6 @@ function App(): JSX.Element {
           title: 'Lorem Ipsum',
           description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
         }}
-        onPress={()=>{}}
-        onReadMePress={()=>{}}
       />
       <View style={styles.spacer} />
       <UpcomingEventItem
@@ -50,7 +48,6 @@ function App(): JSX.Element {
           title: 'Lorem Ipsum',
           description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
         }}
-        onPress={()=>{}}
       />
       <View style={styles.spacer} />
       <OpportunitiesItem opportunityItem={{

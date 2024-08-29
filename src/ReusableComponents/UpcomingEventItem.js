@@ -1,9 +1,9 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
-export default UpcomingEventItem = ({eventItem, onPress})=>{
+export default UpcomingEventItem = ({eventItem})=>{
     return(
-        <Pressable style={styles.container} onPress={onPress}>
+        <Pressable style={styles.container} onPress={()=>{}}>
             <Image style={styles.imageStyle} source={eventItem.imagePath} />
             <View style={styles.contentContainer}>
                 <Text style={{fontSize:wp(3.5)}}>{eventItem.date}</Text>
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         padding: wp(2),
         borderRadius: wp(5),
         width: wp(75),
+        height: wp(30),
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems:'center',

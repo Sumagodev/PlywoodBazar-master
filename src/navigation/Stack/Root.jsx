@@ -51,6 +51,7 @@ import LegalAbouts from '../../components/LegalAbouts';
 import Chkdropdown from '../../components/Chkdropdown';
 import Login from '../../components/Login';
 import VerifyOtp from '../../components/VerifyOtp';
+import EventsOrActivitiesPage from '../../../EventsOrActivitiesPage';
 
 
 export const isAuthorisedContext = createContext({});
@@ -468,7 +469,7 @@ export default function RootStack() {
               name="Aboutus"
               component={Aboutus}
             />
-               <Stack.Screen
+              <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -493,6 +494,16 @@ export default function RootStack() {
               name="VerifyOtp"
               component={VerifyOtp}
             />
+{/*
+              <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="EventsOrActivitiesPage"
+              component={EventsOrActivitiesPage}
+            />
+*/}
 
           </Stack.Navigator>
         </NavigationContainer>
