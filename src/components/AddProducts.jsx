@@ -500,36 +500,23 @@ export default function AddProducts(props) {
             <Pressable style={[styles1.button, styles1.buttonClose]} onPress={() => setBrandModal(!brandModal)}>
               <TextInput
                 style={{ width: wp(90) }}
-
                 onChangeText={e => setBrandName(e)}
                 value={brandName}
                 multiline={true}
                 placeholder="Brand Name"
-                outlineStyle={{
-                  borderWidth: 0.8,
-                  borderRadius: 16,
-                  borderColor: '#B08218',
-                  marginBottom: 15,
-                  height: '100%',
-                }}
-                theme={{
-                  colors: {
-                    text: '#f5f5f5',
-                    accent: '#ffffff',
-                    primary: '#666666',
-                    placeholder: '#f5f5f5',
-                    background: '#fff',
-                    borderWidth: '1',
-                    fontSize: 8,
-                  },
-                }}
-                underlineColor="#E7E7E8"
-                underlineColorAndroid="#E7E7E8"
+                mode='outlined'
+                activeOutlineColor='transparent'
+                outlineColor='white'
+                outlineStyle={{borderRadius: 50}}
+                underlineColor='transparent'
+                backgroundColor='white'
+                borderRadius={50}
               />
 
-              <Pressable onPress={() => handleCreateBrand()} style={[styles.btnbg, { marginHorizontal: 20, marginBottom: 15, marginTop: 20 }]}>
-                <Text style={styles.textbtn}>Submit</Text>
-              </Pressable>
+            <View style={{alignSelf: 'center', marginVertical:wp(5)}}>
+              <CustomButton onPress={() => handleCreateBrand()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)}  paddingVertical={wp(3)}/>
+            </View>
+              
             </Pressable>
           </View>
         </View>
@@ -549,9 +536,9 @@ const styles1 = StyleSheet.create({
   modalView: {
     margin: 20,
     width: wp(95),
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+    backgroundColor: '#fff8ec',
+    borderRadius: wp(10),
+    padding: 15,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -564,7 +551,7 @@ const styles1 = StyleSheet.create({
   },
   modalText: {
     fontSize: 20,
-    marginBottom: 30,
+    marginBottom: 20,
     color: 'black',
     fontWeight: '700',
   },
