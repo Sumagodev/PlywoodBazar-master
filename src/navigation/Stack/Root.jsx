@@ -51,7 +51,7 @@ import LegalAbouts from '../../components/LegalAbouts';
 import Chkdropdown from '../../components/Chkdropdown';
 import Login from '../../components/Login';
 import VerifyOtp from '../../components/VerifyOtp';
-import EventsOrActivitiesPage from '../../../EventsOrActivitiesPage';
+//import EventsOrActivitiesPage from '../../../EventsOrActivitiesPage';
 
 
 export const isAuthorisedContext = createContext({});

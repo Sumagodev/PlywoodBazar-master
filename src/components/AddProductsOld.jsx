@@ -1,9 +1,11 @@
 import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Alert, Pressable, ScrollView, StyleSheet, Text, View, Modal} from 'react-native';
+import {Alert, Image, Pressable, ScrollView, StyleSheet, Text, View, Modal} from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
 import {TextInput} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import RNFetchBlob from 'rn-fetch-blob';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
 import {addBrandApi, getBrandApi} from '../services/brand.service';
@@ -11,11 +13,13 @@ import {getAllCategories} from '../services/Category.service';
 import {AddProduct} from '../services/Product.service';
 import {errorToast, toastSuccess} from '../utils/toastutill';
 import ImagePicker from 'react-native-image-crop-picker';
-
 export default function AddProducts(props) {
   const navigation = useNavigation();
+
   const [price, setPrice] = useState(0);
+
   const [brandModal, setBrandModal] = useState(false);
+
   const [brandName, setBrandName] = useState('');
   const [brand, setbrand] = useState('');
   const [category, setcategory] = useState('');
@@ -33,10 +37,16 @@ export default function AddProducts(props) {
   const [file, setFile] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
   const [status, setstatus] = useState(false);
-  const [imageArr, setimageArr] = useState([{ image: '',},]);
+  const [imageArr, setimageArr] = useState([
+    {
+      image: '',
+    },
+  ]);
   const [categoryArr, setCategoryArr] = useState([]);
   const [pricetype, setpricetype] = useState("per Nos/sheet");
+
   const [brandArr, setBrandArr] = useState([]);
+
   const handleGetBrands = async () => {
     try {
       let {data: res} = await getBrandApi('status=true&page=1&perPage=1000');
@@ -260,9 +270,11 @@ export default function AddProducts(props) {
   return (
     <ScrollView>
       <Header stackHeader={true} screenName={'Add Products'} rootProps={props} />
+
       <View style={{backgroundColor: '#fff', flex: 1, paddingHorizontal: 10}}>
         <View style={styles1.card_main}>
           <Text style={styles1.nameheading}>Enter Name </Text>
+
           <TextInput
             style={styles1.mbboot}
             mode="outlined"
