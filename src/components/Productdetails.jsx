@@ -21,6 +21,7 @@ import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
 import {addReview, getReviewForProduct} from '../services/ProductReview.service';
 import ReviewsItem from '../ReusableComponents/ReviewsItem';
+import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 
 export default function Productdetails(props) {
   const [productObj, setProductObj] = useState(null);
@@ -29,7 +30,6 @@ export default function Productdetails(props) {
   const [productReviewArr, setProductReviewArr] = useState([]);
 
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
-
   const [similarProductsArr, setSimilarProductsArr] = useState([]);
   const focused = useIsFocused();
   const [readmore, setReadmore] = useState(false);
@@ -118,7 +118,6 @@ export default function Productdetails(props) {
     try {
       let {data: res} = await getReviewForProduct(`userId=${id}`);
 
-      console.log('@@@@@@@@@@@@@', res.data);
       if (res.message) {
         setProductReviewArr(res.data);
       }
@@ -351,7 +350,7 @@ export default function Productdetails(props) {
         <StartBusinessBanner />
         <View style={reviewStyle.container}>
           <Text style={reviewStyle.title}>Review</Text>
-          <View style={reviewStyle.addBtn}><CustomButton text={"Add"}></CustomButton></View>
+          <View style={reviewStyle.addBtn}><CustomButtonOld  textSize={wp(4)} text={"Add"}></CustomButtonOld></View>
         </View>
         <ScrollView
                 style={{height: wp(85),marginVertical:wp(5)}} // Set the fixed height for the scrollable area

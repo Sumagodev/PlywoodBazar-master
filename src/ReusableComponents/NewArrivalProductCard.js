@@ -19,7 +19,7 @@ const NewArrivalProductCard = ({imagePath, name, price, location, isVerified = f
             <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
             <View style={{flexDirection: 'row', marginTop: screenWidth*0.01}}>
               <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
-              <Text style={styles.locationText}numberOfLines={1} ellipsizeMode='tail'>{location} AAAAAAAAAAA</Text>
+              <Text style={styles.locationText}numberOfLines={1} ellipsizeMode='tail'>{location}</Text>
             </View>
             <View style={styles.locationRow}>
               {isVerified && (

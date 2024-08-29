@@ -1,4 +1,4 @@
-import {ScrollView, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
+import {ScrollView,Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import {TextInput, useTheme} from 'react-native-paper';
@@ -11,11 +11,15 @@ import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
+import {errorToast, toastSuccess} from '../utils/toastutill';
+import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken } from '../services/User.service';
 
 export default function AllProducts(props) {
   const navigate = useNavigation();
   const [productArr, setProductArr] = useState([]);
   const [categoryid, setCategoryid] = useState('');
+  const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
+
   const getProducts = async () => {
     try {
       let query = '';
@@ -25,6 +29,7 @@ export default function AllProducts(props) {
       const {data: res} = await getAllProducts(query);
       if (res) {
         setProductArr(res.data);
+        console.log('Allproducts',res.data)
       }
     } catch (error) {
       console.error(error);
@@ -33,6 +38,7 @@ export default function AllProducts(props) {
 
   useEffect(() => {
     getProducts();
+    HandleCheckValidSubscription();
   }, []);
 
   useEffect(() => {
@@ -40,7 +46,36 @@ export default function AllProducts(props) {
       setCategoryid(props?.route.params?.data);
     }
   }, [props]);
+  const handelcallbtn = (phone) => {
+    if (!currentUserHasActiveSubscription) {
+      errorToast('You do not have a valid subscription to perform this action');
+      return 0;
+    }
 
+    Linking.openURL(`tel:${phone}`);
+  };
+  const HandleCheckValidSubscription = async () => {
+    try {
+      let decoded = await getDecodedToken();
+      if (decoded) {
+        if (decoded?.user?.name) {
+          //setName(decoded?.user?.name);
+        }
+
+        let {data: res} = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        if (res.data) {
+          console.log(
+            'XX',
+            res.data,
+            'XX',
+          );
+          setCurrentUserHasActiveSubscription(res.data);
+        }
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
   return (
     <View style={styles.container}>
       {/* <Header /> */}
@@ -58,6 +93,7 @@ export default function AllProducts(props) {
   keyExtractor={(item, index) => `${index}`}
   renderItem={({ item, index }) => {
     // Check if it's a banner placeholder
+    console.log(item,'AllItem')
     if (item === 'banner-placeholder' || ((index + 1) % 8 === 0)) {
       return (
         <View>
@@ -66,8 +102,8 @@ export default function AllProducts(props) {
             price={item?.price}
             name={item?.name}
             location="Location"
-            isVerified={true}
-            onCallPressed={() => {}}
+            isVerified={item?.approved === "APPROVED"} // Check if item.approved is "APPROVED"
+            onCallPressed={() => {handelcallbtn(item?.createdByObj?.companyObj?.phone)}}
             onGetQuotePressed={() => {}}
             onCardPressed={() => navigate.navigate('Productdetails', { data: item?.slug })}
           />
@@ -81,9 +117,9 @@ export default function AllProducts(props) {
           price={item?.price}
           name={item.name}
           location="Location"
-          isVerified={true}
-          onCallPressed={() => {}}
+          isVerified={item?.approved === "APPROVED"} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
           onGetQuotePressed={() => {}}
+          onCallPressed={() => {handelcallbtn(item?.createdByObj?.companyObj?.phone)}}
           onCardPressed={() => navigate.navigate('Productdetails', { data: item?.slug })}
         />
       );
