@@ -22,7 +22,6 @@ import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import Header from '../navigation/customheader/Header';
-import ShopListItem from '../ReusableComponents/ShopListItem';
  const  Filtercategory = (props) =>  {
 
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
@@ -363,7 +362,8 @@ const [role, setRole] = useState("");
       // setSelected([])
     }
   }, [focused]);
-  const renderproductOld = ({ item, index }) => {
+
+  const renderproduct = ({ item, index }) => {
 
     // if (!isFirstPageReceived && isloding) {
     //   // Show loader at the end of list when fetching next page data.
@@ -393,36 +393,6 @@ const [role, setRole] = useState("");
             </Text>
           </View>
         </TouchableOpacity>
-      }
-      </>
-    );
-  };
-
-  const renderproduct = ({ item, index }) => {
-
-    // if (!isFirstPageReceived && isloding) {
-    //   // Show loader at the end of list when fetching next page data.
-    // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
-    // }
-
-    const someShopData = {
-      name:item.companyName,
-      imagePath:item.bannerImage && item.bannerImage!="" ?   { uri: generateImageUrl(item.bannerImage) }: require('../../assets/img/profile1.png'),
-      products: item?.productsCount ? item?.productsCount : 'N.A.',
-      rating: item.rating ? item.rating : 0,
-      address: item.bannerImage
-    };
-
-  if (!isFirstPageReceived && isloding) {
-    // Show loader when fetching first page data.
-    return <ActivityIndicator size={'small'} />;
-  }
-    return (
-      <>
-
-    {
-      
-       <ShopListItem vendorItem={someShopData} onItemPress={()=>{navigation.navigate('Supplier', { data: item })}}></ShopListItem>
       }
       </>
     );
@@ -807,10 +777,11 @@ const [role, setRole] = useState("");
       <FlatList
       data={productsArr}
       keyExtractor={(item, index) => `${index}`}
-      
+      numColumns={2}
       renderItem={renderproduct}
       onEndReached={fetchNextPage}
       onEndReachedThreshold={0.1}
+      columnWrapperStyle={{ justifyContent: 'space-between' }}
       scrollEnabled={true}
       style={{ width: '100%' }}
       contentContainerStyle={[{ paddingVertical: 5, paddingBottom: 5, paddingTop: 5 }]}
