@@ -23,6 +23,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import Header from '../navigation/customheader/Header';
 import ShopListItem from '../ReusableComponents/ShopListItem';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
  const  Filtercategory = (props) =>  {
 
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
@@ -41,8 +43,8 @@ import ShopListItem from '../ReusableComponents/ShopListItem';
   const [cityLoading, setCityLoading] = useState(false);
 
   let rbsheefRef = useRef();
-const [userObj, setUserObj] = useState({});
-const [role, setRole] = useState("");
+ const [userObj, setUserObj] = useState({});
+ const [role, setRole] = useState("");
   const [manufacturersArr, setManufacturersArr] = useState([]);
   const [dealersArr, setDealersArr] = useState([]);
   const [distributorArr, setDistributorArr] = useState([]);
@@ -60,10 +62,10 @@ const [role, setRole] = useState("");
 
   const [searchState, setSearchState] = useState("");
   const [searchCity, setSearchCity] = useState("");
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(25);
   const [page, setPage] = useState(1);
   const [totalPages, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const nextPageIdentifierRef = useRef();
   const [isFirstPageReceived, setIsFirstPageReceived] = useState(false);
 
@@ -83,7 +85,6 @@ const [role, setRole] = useState("");
 
           query = `${query}&userTypes=${tempArr.map(el => el.name)}`;
         }
-        // console.log(query, "queryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryqueryquery")
       }
       if (categoryData && categoryData.filter(el => el.checked == true).length > 0) {
         let tempArr = categoryData.filter(el => el.checked == true);
@@ -153,9 +154,11 @@ const [role, setRole] = useState("");
           query = `${query}&rating=${rating}`;
         }
       }
-      console.log(query,'Request canceled');
       
-      let { data: res } = await getAllUsers(query,source);
+      let response = await getAllUsers(query,source);
+      //let { data: res } = await getAllUsers(query,source);
+      res=response.data
+      //console.log('AllDataX=>',response)
       if (res.data && res?.data?.length > 0) {
         Promise.resolve()
           .then(() => {
@@ -187,7 +190,7 @@ const [role, setRole] = useState("");
       }
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log(error, "errorerrorerror");
+        console.log("Axios Error=>Cancelled ",error);
       } else {
         setIsLoading(false);
         errorToast(error);
@@ -250,29 +253,11 @@ const [role, setRole] = useState("");
         setStatesDisplayArr(res.data.map(el => ({ ...el, checked: false })));
       }
     } catch (error) {
-      console.log(error);
+      console.log('handleGetStateError',error);
     }
   };
 
-  // useEffect(() => {
-  //   if (statesArr && statesArr.filter(el => el.checked == true).length > 0) {
-  //     let tempArr = statesArr.filter(el => el.checked == true).map((elx) =>elx._id);
-  //     let stateCityArr = citiesArr.filter((el) =>  tempArr.includes(el.stateId))
-  //     // console.log(stateCityArr,"stateCityArrstateCityArrstateCityArr")
-  //      setCitiesDisplayArr(stateCityArr);
-
-  //     // let stateCityArr = mainCitiesArr.map((el) => {
-  //     //   if(selectedStateArr.includes(el.stateId)){
-  //     //     return el
-  //     //   }
-  //     // })
-
-  //     // console.log(stateCityArr,"stateCityArrstateCityArrstateCityArr")
-  //     //  setCitiesArr(stateCityArr)
-  //   }
-
-
-  // }, [statesArr]);
+  
   const handleGetCities = async (queryString) => {
     try {
       setCityLoading(true)
@@ -291,7 +276,7 @@ const [role, setRole] = useState("");
         setCityLoading(false)
       }
     } catch (error) {
-      console.log(error);
+      console.log('handleGetCities',error);
       setCityLoading(false)
     }
   };
@@ -299,6 +284,7 @@ const [role, setRole] = useState("");
   const handlegetUser =async() => {
     try{
 
+      console.log('handlegetUser() Called.')
       let userArr =[
         {
           name:ROLES_CONSTANT.MANUFACTURER,
@@ -315,7 +301,7 @@ const [role, setRole] = useState("");
       ]
     
       let decoded =await getDecodedToken();
-      console.log(decoded,"decodeddecodeddecoded")
+      console.log(decoded,"handlegetUser() Called. Token ")
       if(decoded && decoded.role){
         setUserObj(decoded)
         setRole(decoded?.role);
@@ -336,7 +322,6 @@ const [role, setRole] = useState("");
   useEffect(() => {
     if (focused) {
       handlegetUser()
-
       getCategory();
       getBrands();
       handleGetStates();
@@ -355,14 +340,14 @@ const [role, setRole] = useState("");
     setSelected(arr);
   };
 
-  useEffect(() => {
-    if (focused) {
-      // let categoryArr = searchParams.get('categories').split(',')
-      // setSelected(categoryArr)
-    } else {
-      // setSelected([])
-    }
-  }, [focused]);
+  // useEffect(() => {
+  //   if (focused) {
+  //     // let categoryArr = searchParams.get('categories').split(',')
+  //     // setSelected(categoryArr)
+  //   } else {
+  //     // setSelected([])
+  //   }
+  // }, [focused]);
   const renderproductOld = ({ item, index }) => {
 
     // if (!isFirstPageReceived && isloding) {
@@ -370,9 +355,10 @@ const [role, setRole] = useState("");
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
     // }
 
-  if (!isFirstPageReceived && isloding) {
+  if (!isFirstPageReceived && isLoading) {
     // Show loader when fetching first page data.
-    return <ActivityIndicator size={'small'} />;
+    console.log('loading.................')
+    return <ActivityIndicator size={'small'} color={'red'} width={wp(50)}/>;
   }
     return (
       <>
@@ -410,12 +396,15 @@ const [role, setRole] = useState("");
       imagePath:item.bannerImage && item.bannerImage!="" ?   { uri: generateImageUrl(item.bannerImage) }: require('../../assets/img/profile1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
-      address: item.bannerImage
+      address: item.message
     };
 
-  if (!isFirstPageReceived && isloding) {
+
+
+  if (!isFirstPageReceived && isLoading) {
     // Show loader when fetching first page data.
-    return <ActivityIndicator size={'small'} />;
+   
+    return <ActivityIndicator size={'small'} color={'red'} width={wp(50)}/>;
   }
     return (
       <>
@@ -782,23 +771,31 @@ const [role, setRole] = useState("");
 
 
 
-    <Header stackHeader={true} screenName={'Shop'} rootProps={props} />
+    <Header normal ={true} screenName={'Shop'} rootProps={props} />
     <View style={[styles.padinghr, styles.bgwhite, {flex:1}]}>
       <View style={{ paddingBottom: 20 }}>
         <View style={{ display: 'flex', flexDirection: 'row', gap: 5, marginTop:hp(2), justifyContent: 'space-between' }}>
-          <View style={styles1.col8}>
           {/* <TypeWriter typing={1}> asdf asdf asdfa sdf asdfadffa asdf asdfaf</TypeWriter> */}
-            <View style={styles1.serachborder}>
-              <AntDesign name="search1" color="#B08218" size={20} />
-              <TextInput onChangeText={e => setQuery(e)} value={qry} placeholder="Search Product" style={{ width: wp(65), height:hp(6), color:'#000', }} />
-            </View>
-          </View>
-          <View style={[styles1.col2, {}]}>
-            <TouchableOpacity onPress={() => this.RBSheet.open()}>
-              <Image source={require('../../assets/img/filters.png')} style={{ width: wp(13), height: hp(6.5) }} />
-            </TouchableOpacity>
-          </View>
+          <View style={[stylesSearch.mainContainer]}>
+        <View style={stylesSearch.iconContainer}>
+                <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
         </View>
+      <TextInput
+        style={stylesSearch.input}
+        placeholder={'Search..'}       
+        onChangeText={e => setQuery(e)}      
+      />
+    </View>
+            
+          
+            <TouchableOpacity onPress={() => this.RBSheet.open()}>
+            <View style={[styles1.col2, {}]}>              
+              <Icon name="tune" size={wp(7)} color={'white'}  />
+              </View>
+            </TouchableOpacity>
+          
+        </View>
+        
       </View>
 
 
@@ -842,40 +839,17 @@ const [role, setRole] = useState("");
               borderTopLeftRadius: 10,
             },
           }}>
-          <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Bold', fontSize: 18, marginBottom: 20 }}>Filters</Text>
+          <View style={{backgroundColor:'#6B4E37', borderRadius:wp(2)}}>
+              <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding:wp(3) }}>Filters</Text>
+            </View>
+          <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>User Types</Text>
-
             <FlatList data={usertypes.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `UserType${index}`} renderItem={renderUserTypes} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Category</Text>
-
             <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-
-
-
-
-            {/* <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Manufacturers</Text>
-            <FlatList data={manufacturersArr} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderManufacturersFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Dealer</Text>
-            <FlatList data={dealersArr} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderDealerFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Distributor</Text>
-            <FlatList data={distributorArr} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderDistributorFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} /> */}
-
-
-
-
-
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>State</Text>
-
             <TextInput onChangeText={(val) => handleSearchState(val)} value={searchState} style={[styles1.textInput, {height:hp(6),}]} placeholder='Search State Here' />
-
             <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-
-
-
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>City</Text>
             <TextInput onChangeText={(val) => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, {height:hp(6)}]} placeholder='Search City Here' />
             {
@@ -884,80 +858,7 @@ const [role, setRole] = useState("");
                 :
                 <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
             }
-
-
-
-
-
-
-
-
-
-            {/* <div className="box">
-              <h5 className="title">Dealers</h5>
-              <ul className="list comm-list">
-                {dealersArr &&
-                  dealersArr.length > 0 &&
-                  dealersArr.map((el, index) => {
-                    return (
-                      <li key={el._id}>
-                        <label>
-                          <input type="checkbox" onChange={(e) => toggleSelected(el?._id)} checked={isChecked(el._id)} className="form-check-input" />
-                          {el?.name}
-                        </label>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </div>
-
-            <div className="box">
-              <h5 className="title">Distributors</h5>
-              <ul className="list comm-list">
-                {distributorArr &&
-                  distributorArr.length > 0 &&
-                  distributorArr.map((el, index) => {
-                    return (
-                      <li key={el._id}>
-                        <label>
-                          <input type="checkbox" onChange={(e) => toggleSelected(el?._id)} checked={isChecked(el._id)} className="form-check-input" />
-                          {el?.name}
-                        </label>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Brands</Text>
-
-            <FlatList data={brandArr}  nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `${index}`} renderItem={renderVendorFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} /> */}
-
-            {/* <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Price Range</Text>
-            <View style={{ paddingHorizontal: 15 }}>
-              <Slider
-                min={1}
-                max={100}
-                onChange={value => {
-                  setMinPrice(value[0]);
-                  setMaxPrice(value[1]);
-                }}
-                values={[0, 89]}
-              />
-            </View> */}
             <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Rating</Text>
-           
             <Pressable onPress={() => setRating(4)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
             <Checkbox.Android
             status={rating ==4 ? 'checked' : 'unchecked'}
@@ -1059,17 +960,17 @@ const [role, setRole] = useState("");
             <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop:hp(5) }}>
 
               <TouchableOpacity
-                style={{ backgroundColor: "#B08218", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                 onPress={() => HandleClearFilter()}
               >
-                <Text style={{ color: "white" }}>Clear Filters</Text>
+                <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
               </TouchableOpacity>
               
               <TouchableOpacity
-                style={{ backgroundColor: "#B08218", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                 onPress={() => this.RBSheet.close()}
               >
-                <Text style={{ color: "white" }}>Close</Text>
+                <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4)  }}>Close</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -1141,7 +1042,12 @@ const styles1 = StyleSheet.create({
   },
   col2: {
     width: wp(14),
-    // backgroundColor:'green',
+    height:wp(14),
+    backgroundColor:'#6B4E37',
+    borderRadius:wp(5),
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center'
   },
   serachborder: {
     display: 'flex',
@@ -1225,6 +1131,38 @@ const styles1 = StyleSheet.create({
     shadowRadius: 4.41,
     elevation: 2,
   },
+});
+
+const stylesSearch = StyleSheet.create({
+
+  mainContainer:{
+      backgroundColor:CustomColors.searchBackground,
+      borderRadius:wp(10),
+      flexDirection:'row',
+      width:wp(80),     
+      padding:wp(0.5),
+      borderColor:'#CDC2A1',
+      borderWidth:wp(0.3)    
+  },
+  iconContainer:{      
+      backgroundColor:CustomColors.mattBrownDark,
+      width:wp(12),
+      height:wp(12),
+      justifyContent:'center',
+      alignItems:'center',
+      alignSelf:'center',
+      borderRadius:wp(10),
+  },
+  iconImageStyle:{
+      width:wp(8),
+      height:wp(8),
+      justifyContent:'center',
+      alignItems:'center',
+  },
+  input:{
+    flex:1,
+    
+  }
 });
 
 export default Filtercategory;
