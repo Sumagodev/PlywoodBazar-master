@@ -1,13 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {FlatList, ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
 import {getLeadsById} from '../services/leads.service';
 import {getDecodedToken} from '../services/User.service';
 import {errorToast} from '../utils/toastutill';
-import MyActivityItem from '../ReusableComponents/MyActivityItem';
 export default function RecentActivity(props) {
   const navigation = useNavigation();
 
@@ -49,18 +48,6 @@ export default function RecentActivity(props) {
       </Pressable>
     );
   };
-  const renderRecentActivityItem= ({item, index}) => {
-    console.log('=====>',item.name)
-    const activityItem={
-      name:item.name,
-      productName:item?.productObj?.name,
-      price:item?.productObj?.sellingprice,
-      date:moment(item?.createdAt).format('DD-MM-YYYY')
-    }
-    return (
-      <MyActivityItem activityItem={activityItem}></MyActivityItem>
-    );
-  };
 
   useEffect(() => {
     getSubscriptions();
@@ -68,17 +55,13 @@ export default function RecentActivity(props) {
 
   return (
     <>
-      <Header normal={true} screenName={'Recent Activity'} rootProps={props}  />
-      <View style={{backgroundColor: '#fff', flex: 1}}>
-            <ImageBackground  source={require('../../assets/img/leads_bg.png')} style={{flex:1}}>
-
-      <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Activity</Text>
-
+      <Header stackHeader={true} screenName={'Recent Activity'} rootProps={props}  />
+      <View style={{backgroundColor: '#fff', flex: 1, paddingHorizontal:10,}}>
 
     {/* <Text style={{marginTop:5}}></Text> */}
         {
           subscriptionArr.length > 0 ? 
-          <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderRecentActivityItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 10,alignSelf:'center'}} />
+          <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 10}} />
           
           :
           <View style={{height:hp(80), display:'flex', alignItems:'center', justifyContent:'center'}}>
@@ -86,7 +69,7 @@ export default function RecentActivity(props) {
             <Text style={{fontSize:19, color:'#000', alignSelf:'center'}}>No  Recent Activity</Text> 
           </View>
         }
-       </ImageBackground>
+       
       </View>
     </>
   );
@@ -117,7 +100,7 @@ const styles1 = StyleSheet.create({
     borderColor: '#D9D9D9',
     borderStyle: 'solid',
     paddingHorizontal: 10,
-    paddingVertical: wp(1),
+    paddingVertical: 12,
     borderRadius: 5,
     // width: wp(90),
     // marginHorizontal: 20,

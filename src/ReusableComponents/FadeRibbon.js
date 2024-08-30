@@ -14,10 +14,10 @@ const FadeRibbonText = ({
       padding: 10,
       borderRadius: 50,
       rest,
+      flex:1
     },
     text: {
       color: textColor,
-      textAlign: 'center',
       fontSize: fontSize,
       fontWeight:fontWeight,
       paddingHorizontal: paddingHorizontal

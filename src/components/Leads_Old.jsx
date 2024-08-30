@@ -1,13 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
 import { getDecodedToken, getUserById } from '../services/User.service';
 import { getLeadsBycreatedById } from '../services/leads.service';
 import { errorToast } from '../utils/toastutill';
-import MyLeadItem from '../ReusableComponents/MyLeadItem';
 export default function Leads(props) {
   const navigation = useNavigation();
 
@@ -73,17 +72,6 @@ export default function Leads(props) {
     );
   };
 
-  const renderMyLeadsItem = ({ item, index }) => {
-    const leadItem={
-      name:item?.name,
-      
-      date:moment(item?.createdAt).format('DD-MM-YYYY')
-    }
-    return (
-      <MyLeadItem leadItem={leadItem}></MyLeadItem>
-    );
-  };
-
   useEffect(() => {
     getSubscriptions();
     handleGetUser();
@@ -91,17 +79,15 @@ export default function Leads(props) {
 
   return (
     <>
-      <Header normal={true} screenName={'Leads'} rootProps={props} />
-    <ImageBackground  source={require('../../assets/img/leads_bg.png')} style={{flex:1}}>
-    <View style={{flex:1, paddingHorizontal:10}}>
-
-      <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Leads</Text>
+      <Header stackHeader={true} screenName={'Leads'} rootProps={props} />
+    
+    <View style={{backgroundColor:'#fff',flex:1, paddingHorizontal:10}}>
       {
         (userSubscriptionExpired == false) && (userSubscriptionBlocked == false) ?
           <FlatList
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={<Text style={{ paddingVertical: 15 , textAlign:'center', color:'#000'}}>No Leads found</Text>}
-            data={leadsArr} renderItem={renderMyLeadsItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 50 }} />
+            data={leadsArr} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 50 }} />
           :
           userSubscriptionBlocked ?
             <>
@@ -119,7 +105,6 @@ export default function Leads(props) {
 
       }
       </View>
-      </ImageBackground>
     </>
   );
 }

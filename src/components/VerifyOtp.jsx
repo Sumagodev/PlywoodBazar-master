@@ -129,7 +129,7 @@ export default VerifyOtp = ({route}) => {
               ></CustomRoundedTextButton>
             </View>
             <View style={{alignSelf:'center',marginTop:20}}>
-                <Text style={{fontFamily:'Poppins-Light',color:'#000000'}}>Didn't receive the code ?
+                
                 <Text
                   style={{
                     lineHeight: 36,
@@ -139,14 +139,13 @@ export default VerifyOtp = ({route}) => {
                   }}
                   onPress={handleResendOtp}
                   disabled={!canResend} // Disable interaction if canResend is false
-                >    Resend
+                >    Resend {!canResend && (
+                  <Text style={{ fontFamily: 'Poppins-Light', color: '#000000', marginTop: 10 }}>
+                     in {timer} seconds
+                  </Text>
+                )}
                 </Text>
-                </Text>
-                {!canResend && (
-                <Text style={{ fontFamily: 'Poppins-Light', color: '#000000', marginTop: 10 }}>
-                  You can resend OTP in {timer} seconds
-                </Text>
-              )}
+                
             </View>
             <View style={{width:'100%',height:'100%'}}>
             <Image resizeMode='stretch' source={require('../images/login_image_1.png')}   style={{width:'100%',height:'100%'}}></Image>
