@@ -16,13 +16,13 @@ export default function Aboutus(props: any) {
     return (
         <>
             <Header normal={true} screenName={'About Us'} rootProps={props} />
-            <ScrollView style={[internalcss.bgwhite]}>
-                <LinearGradient colors={['#FFFFFF',  '#FBE8D8', '#E4C1A3']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
-                    <View style={{ marginTop:0}}>
-                        <View style={[internalcss.aboutCard,{width:'97%' }]}>
+            <ScrollView style={internalcss.bgwhite}>
+                <LinearGradient colors={['#FBE8D8', '#E4C1A3']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
+                    <View style={internalcss.container}>
+                        <View style={internalcss.aboutCard}>
                             <Text style={internalcss.heading}>About Us</Text>
                             <Text style={internalcss.content}>
-                                Plywoodbazar. com is India's largest online B2B market place brought a platform to interact with Manufacturers, Distributors, Dealers, Wholesalers and Retailers of Furniture, Plywood, Hardware & Interior-Exterior Industries.
+                                Plywoodbazar.com is India's largest online B2B market place brought a platform to interact with Manufacturers, Distributors, Dealers, Wholesalers and Retailers of Furniture, Plywood, Hardware & Interior-Exterior Industries.
                             </Text>
                         </View>
                         <View style={internalcss.aboutCard}>
@@ -31,7 +31,8 @@ export default function Aboutus(props: any) {
                                 Plywood Bazar.com is a startup that is working to improve this unorganized furniture, interior and exterior industry by coordinating between them. Providing large potential market exposure for business expansion.
                             </Text>
                         </View>
-                        <View style={[internalcss.aboutCardVision, isExpanded ? { height: 'auto' } : { height:wp(75)}]}>
+                        
+                        <View style={[internalcss.aboutCard, internalcss.aboutCardVision, isExpanded ? { height: 'auto' } : { height: wp(68) }]}>
                             <Text style={internalcss.heading}>Company Vision</Text>
                             <Text style={internalcss.content}>
                                 Plywood Bazar.com is a startup that is working to improve this unorganized furniture, interior and exterior industry by coordinating between them. Providing large potential market exposure for business expansion.
@@ -63,17 +64,22 @@ export default function Aboutus(props: any) {
 }
 
 const internalcss = StyleSheet.create({
+    container: {
+        width: '96%',
+        alignSelf: 'center',
+    },
     heading: {
         marginVertical: wp(2),
         fontSize: wp(5),
         fontFamily: 'Poppins-Medium',
         alignSelf: 'center'
     },
-    content: {
+    content: {        
         fontSize: wp(3.2),
         fontFamily: 'Poppins-Regular',
         color: '#797979',
-        marginBottom: 5
+        marginBottom: 5,
+        textAlign: 'justify'
     },
     bgwhite: {
         flex: 1,
@@ -81,21 +87,13 @@ const internalcss = StyleSheet.create({
     aboutCard: {
         borderColor: '#FBE8D8',
         borderWidth: wp(0.5),
-        margin: wp(2),
-        padding: wp(2),
+        marginVertical: wp(2),
+        padding: wp(5),
         backgroundColor: '#FFF',
         borderRadius: wp(5),
-        alignSelf: 'center'
     },
     aboutCardVision: {
-        overflow:'hidden',
-        borderColor: '#FBE8D8',
-        borderWidth: wp(0.5),
-        margin: wp(2),
-        padding: wp(2),
-        backgroundColor: '#FFF',
-        borderRadius: wp(5),
-        alignSelf: 'center'
+        overflow: 'hidden',
     },
     readMoreBtn: {
         alignSelf: 'center',
@@ -113,7 +111,8 @@ const stylesGradient = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+        width: '100%',
     },
     text: {
         color: 'white',
