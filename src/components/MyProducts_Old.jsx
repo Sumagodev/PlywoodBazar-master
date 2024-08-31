@@ -10,8 +10,6 @@ import {getDecodedToken} from '../services/User.service';
 import {errorToast, toastSuccess} from '../utils/toastutill';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {PRIMARY_COLOR, WHITE_COLOR} from '../utils/constants';
-import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
-import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 
 export default function MyProducts(props) {
   const focused=useIsFocused()
@@ -88,22 +86,6 @@ export default function MyProducts(props) {
       </View>
     );
   };
-  const renderMyProductItem = ({item, index}) => {
-
-  console.log('&&&&&&',item);
-  
-    const productItem={
-      name:item?.name,
-      imagePath:{uri: generateImageUrl(item?.mainImage)},
-      sellingPrice:item?.sellingprice,
-      price:item?.price,
-      approval:item?.approved==='APPROVED'?true:false,
-
-    }
-    return (
-      <ProductItemVertical product={productItem} onPress={()=>navigation.navigate("EditProduct",{data:item?._id})} ></ProductItemVertical>
-    );
-  };
 
   useEffect(() => {
     if(focused){
@@ -114,14 +96,9 @@ export default function MyProducts(props) {
 
   return (
     <View style={styles1.mainContainer}>
-      <Header normal={true} screenName={'Your Products'} rootProps={props} />
-      <View style={reviewStyle.container}>
-          <Text style={reviewStyle.title}>Your Products</Text>
-          <View style={reviewStyle.addBtn} ><CustomButtonOld onPress={() => navigation.navigate('AddProducts')}  textSize={wp(4)} text={"Add"}></CustomButtonOld></View>
-        </View>
-
+      <Header stackHeader={true} screenName={'Your Products'} rootProps={props} />
       {
-        subscriptionArr.length > 0 ?  <FlatList data={subscriptionArr}   numColumns={2} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: hp(10)}} />
+        subscriptionArr.length > 0 ?  <FlatList data={subscriptionArr} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: hp(10)}} />
         :
         <View style={{height:hp(80), display:'flex', alignItems:'center', justifyContent:'center'}}>
         <Text style={{fontSize:16, alignSelf:'center', color:'#000', marginVertical:20}}>No Product </Text>
@@ -130,15 +107,15 @@ export default function MyProducts(props) {
 
       }
          
-      {/* <TouchableOpacity onPress={() => navigation.navigate('AddProducts')} style={[styles.btnbg, {width: wp(90), marginHorizontal: 20, marginBottom: 15}]}>
+      <TouchableOpacity onPress={() => navigation.navigate('AddProducts')} style={[styles.btnbg, {width: wp(90), marginHorizontal: 20, marginBottom: 15}]}>
         <Text style={styles.textbtn}>Add New Product</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 }
 const styles1 = StyleSheet.create({
   mainContainer: {
-    backgroundColor: '#FFF4EC',
+    backgroundColor: WHITE_COLOR,
     flex: 1,
   },
 
@@ -184,25 +161,5 @@ const styles1 = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     width: wp(95),
-  },
-});
-const reviewStyle = StyleSheet.create({
-  container: {
-    alignSelf:'center',
-    marginVertical: wp(5),
-    width:wp(85),
-    justifyContent:'center',
-    alignItems:'center'
-  },
-  title: {
-    fontSize: wp(6),
-    fontWeight: 'bold',
-   
-  },
-  addBtn: {
-    borderRadius:50,borderColor:'#BC9B80',
-    borderWidth:wp(1),
-    position:'absolute',
-    right:0
   },
 });
