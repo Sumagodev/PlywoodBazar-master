@@ -1,17 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {FlatList, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {getAllSubscriptionbyUserId, usersubscriptionMailId} from '../services/UserSubscription.service';
 import {errorToast, toastSuccess} from '../utils/toastutill';
-import MyActivityItem from '../ReusableComponents/MyActivityItem';
-import MySubscriptionItem from '../ReusableComponents/MySubscriptionItem';
-import LinearGradient from 'react-native-linear-gradient';
-import {Icon} from 'react-native-elements';
 export default function MySubscriptions(props) {
   const navigation = useNavigation();
 
@@ -91,56 +87,27 @@ export default function MySubscriptions(props) {
       </View>
     );
   };
-  const renderMySubscriptionItem = ({item, index}) => {
-    const myItem = {
-      description: item?.description,
-      name: item?.name,
-      price: item?.price,
-      startDate: item?.startDate,
-      endDate: item?.endDate,
-      numberOfAdvertisement: item?.numberOfAdvertisement,
-      daysOfAdvertisement: item?.advertisementDays,
-      daysOfSale: item?.saleDays,
-      numberOfSale: item?.numberOfSales,
-      purchaseDate: moment(item?.createdAt).format('DD-MM-YYYY'),
-    };
-    return <MySubscriptionItem subscriptionItem={myItem} onPress={() => handlemailUserSubscription(item._id)}></MySubscriptionItem>;
-  };
 
   useEffect(() => {
     getSubscriptions();
   }, []);
 
-  const gradientDirection = {start: {x: 1, y: 0}, end: {x: 0, y: 0}};
   return (
     <>
-      <Header normal={true} screenName={'My Subscriptions'} rootProps={props} />
-      <ImageBackground  source={require('../../assets/img/leads_bg.png')} style={{flex:1,overflow:'hidden'}}>
-      <Pressable style={{alignItems: 'center', justifyContent: 'center', width: '100%'}} onPress={() => navigation.navigate('Subscriptions', {register: false})} >
-          <LinearGradient colors={['#B1784A', '#B1784A', '#624832', '#B1784A']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
-            <Text style={stylesGradient.text} numberOfLines={1} ellipsizeMode="tail">
-              Buy Subscription
-            </Text>
-            <Icon name="notifications" size={wp(7)} color={'white'} />
-          </LinearGradient>
-        </Pressable>
-      <ScrollView style={{flex: 1, paddingHorizontal: 10}}>
-        
-        <Text style={{fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>My Subscriptions</Text>
-
+      <Header stackHeader={true} screenName={'My Subscriptions'} rootProps={props} />
+      <View style={{backgroundColor: '#fff', flex: 1, paddingHorizontal:10}}>
         {subscriptionArr.length > 0 ? (
-          <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderMySubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 10}} />
+          <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 10}} />
         ) : (
           <View style={{height: hp(85), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20}}>You have No Subscription</Text>
           </View>
         )}
 
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Subscriptions', {register: false})} style={[styles.btnbg, {marginBottom: 15}]}>
+        <TouchableOpacity onPress={() => navigation.navigate('Subscriptions',{register:false})} style={[styles.btnbg, { marginBottom: 15}]}>
           <Text style={styles.textbtn}>Buy Subscription</Text>
-        </TouchableOpacity> */}
-      </ScrollView>
-      </ImageBackground>
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
@@ -179,25 +146,5 @@ const styles1 = StyleSheet.create({
     color: '#000000',
     fontSize: 16,
     fontFamily: 'Manrope-Bold',
-  },
-});
-const stylesGradient = StyleSheet.create({
-  gradientContainer: {
-    marginVertical:wp(2),
-    paddingVertical: 10,
-    paddingHorizontal: 20, // Adjust this value to change horizontal padding
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderWidth: wp(1),
-    borderColor: 'white',
-  },
-  text: {
-    color: 'white',
-    fontSize: wp(5),
-    fontWeight: '800',
-    paddingHorizontal: 10,
   },
 });

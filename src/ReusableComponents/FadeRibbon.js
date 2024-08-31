@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const FadeRibbonText = ({ 
   text, textColor='white', colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint, reverseDirection=false,
-  fontWeight=0,
+  fontWeight=100,
   fontSize=wp(4), paddingHorizontal, ...rest
 }) => {
   const styles = StyleSheet.create({
@@ -14,7 +14,6 @@ const FadeRibbonText = ({
       padding: 10,
       borderRadius: 50,
       rest,
-      flex:1
     },
     text: {
       color: textColor,

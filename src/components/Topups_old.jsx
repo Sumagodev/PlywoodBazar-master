@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList, ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -8,8 +8,6 @@ import {getAllTopup} from '../services/Topup.service';
 import {getDecodedToken} from '../services/User.service';
 import {buyTopup} from '../services/UserTopup.service';
 import {errorToast, toastSuccess} from '../utils/toastutill';
-import MyTopUpItem from '../ReusableComponents/MyTopUpItem';
-import CustomColors from '../styles/CustomColors';
 export default function Topups(props) {
   const navigation = useNavigation();
 
@@ -82,20 +80,6 @@ export default function Topups(props) {
       </Pressable>
     );
   };
-  const renderMyTopupItem = ({item, index}) => {
-    const myItem = {
-      description: item?.description,
-      validity: 'No Validity',
-      price: item?.price,
-      numberOfAdvertisement: item?.numberOfAdvertisement,
-      daysOfAdvertisement: item?.advertisementDays,
-      daysOfSale: item?.saleDays,
-      numberOfSale: item?.numberOfSales ? item?.numberOfSales : 0,
-    };
-    return (
-      <MyTopUpItem topUpItem={myItem} onPress={() => handleSubmit()}></MyTopUpItem>
-    );
-  };
 
   useEffect(() => {
     getSubscriptions();
@@ -103,12 +87,10 @@ export default function Topups(props) {
 
   return (
     <>
-      <Header normal={true} screenName={'Topups'} rootProps={props} />
-      <ImageBackground  source={require('../../assets/img/leads_bg.png')} style={{flex:1,overflow:'hidden'}}>
-      <View style={{flex: 1}}>
-      <Text style={{fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>My Subscriptions</Text>
+      <Header stackHeader={true} screenName={'Topups'} rootProps={props} />
+      <View style={{backgroundColor: '#fff', flex: 1}}>
         {subscriptionArr.length > 0 ? (
-          <FlatList data={subscriptionArr} renderItem={renderMyTopupItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 50,alignSelf:'center'}} />
+          <FlatList data={subscriptionArr} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 50}} />
         ) : (
           <View style={{height: hp(70), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20}}>No Topups</Text>
@@ -121,7 +103,6 @@ export default function Topups(props) {
           </Pressable>
         )}
       </View>
-      </ImageBackground>
     </>
   );
 }

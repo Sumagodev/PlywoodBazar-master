@@ -3,7 +3,11 @@ import {StyleSheet, View, Text, Image, TouchableOpacity, ScrollView} from 'react
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import styles1 from '../../assets/stylecomponents/Style';
 import Orientation from 'react-native-orientation-locker';
+import { useNavigation } from '@react-navigation/native';
+
+
 const LegalAbouts = () => {
+  const navigation=useNavigation();
   useEffect(() => {
     // Lock orientation to portrait when the screen is focused
     Orientation.lockToPortrait();
@@ -37,21 +41,21 @@ const LegalAbouts = () => {
         </View>
         <View style={styles.footer}>
           <View style={{backgroundColor: '#FFFFFF', padding: wp(7), borderRadius: 40, elevation: 30, top: wp(-35)}}>
-            <TouchableOpacity style={styles.footerButton}>
+            <TouchableOpacity style={styles.footerButton} onPress={()=> navigation.navigate('Privacy')}>
               <Text style={styles.footerButtonText}>Privacy Policy</Text>
-              <Text style={[styles.footerButtonText, {fontWeight: '400'}]}> {'>'} </Text>
+              
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerButton}>
+            <TouchableOpacity style={styles.footerButton} onPress={()=> navigation.navigate('TermsAndConditions')}>
               <Text style={styles.footerButtonText}>Terms & Condition</Text>
-              <Text style={[styles.footerButtonText, {fontWeight: '400'}]}> {'>'} </Text>
+              
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerButton}>
+            <TouchableOpacity style={styles.footerButton} onPress={()=> navigation.navigate('Aboutus')}>
               <Text style={styles.footerButtonText}>About us</Text>
-              <Text style={[styles.footerButtonText, {fontWeight: '400'}]}> {'>'} </Text>
+              
             </TouchableOpacity>
             <TouchableOpacity style={styles.footerButton}>
               <Text style={styles.footerButtonText}>Activities</Text>
-              <Text style={[styles.footerButtonText, {fontWeight: '400'}]}> {'>'} </Text>
+              
             </TouchableOpacity>
           </View>
 
