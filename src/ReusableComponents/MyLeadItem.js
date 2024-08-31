@@ -3,6 +3,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import FadeRibbonText from "./FadeRibbon"
 import CustomColors from "../styles/CustomColors"
+import FabeRibbonFlex from "./FabeRibbonFlex"
 
 export default MyLeadItem = ({leadItem})=>{
     return (
@@ -11,8 +12,8 @@ export default MyLeadItem = ({leadItem})=>{
                 <Icon name='record-circle' size={wp(4.5)} color={CustomColors.glossBrownDark}/>
                 <Text style={styles.textStyle} numberOfLines={2} ellipsizeMode='tail'>{leadItem.name}</Text>
             </View>
-            <View style={{alignItems:'flex-start',flex:1,flexDirection:'row'}}>
-                <FadeRibbonText style={{flex:1}} text={['Contacted On: ', leadItem.date]} itemsAlignment='flex-start' paddingVertical={wp(1)}/>
+            <View style={{flex:1,flexDirection:'row'}}>
+                <FabeRibbonFlex style={{flex:1}} text={['Contacted On: ', leadItem.date]} itemsAlignment='flex-start' paddingVertical={wp(1)}/>
             </View>
         </View>
     )
