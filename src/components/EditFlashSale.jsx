@@ -138,7 +138,7 @@ export default function EditFlashSale(props) {
     <>
       <Header normal={true} screenName={'Edit Flash Sale'} rootProps={props} />
 
-      <ImageBackground source={require('../../assets/img/temp_bg.png')} style={{flex: 1,borderTopLeftRadius:wp(10),borderTopRightRadius:wp(10),marginTop:wp(0), width:wp(100),overflow:'hidden'}}>
+      <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{flex: 1,borderTopLeftRadius:wp(10),borderTopRightRadius:wp(10),marginTop:wp(0), width:wp(100),overflow:'hidden'}}>
         <ScrollView style={styles1.card_main}>
         <Text style={{fontSize:wp(5),fontWeight:800,alignSelf:'center'}}>Update Flash Sale</Text>
           <Text style={styles1.nameheading}>Product</Text>
@@ -399,7 +399,7 @@ const styles1 = StyleSheet.create({
   // },
   nameheading: {
     color: '#000000',
-    fontSize: wp(3),
+    fontSize: wp(4),
     fontFamily: 'Manrope-Bold',
     // marginHorizontal: 10,
     marginVertical: hp(1),

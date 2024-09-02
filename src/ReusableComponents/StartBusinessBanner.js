@@ -2,8 +2,11 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CustomButton from './CustomButton';
+import { useNavigation } from '@react-navigation/native';
+
 
 const StartBusinessBanner = () => {
+  const navigation=useNavigation();
   return (
     <View style={styles.wrapper}>
       <View style={{ flexDirection: 'column', justifyContent: 'flex-start'}}>
@@ -16,7 +19,7 @@ const StartBusinessBanner = () => {
       <View style={{ width: wp(3) }} />
       <View style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
       <Text style={[styles.freeStyle, {backgroundColor: '#9d7b5f'} ]}/>
-        <CustomButton text="Start now" buttonBgColor="#67462A" textSize={wp(4)} onPress={() => {}} />
+        <CustomButton text="Start now" buttonBgColor="#67462A" textSize={wp(4)} onPress={() => {navigation.navigate('Register')}} />
       </View>
     </View>
   );
