@@ -26,7 +26,7 @@ export default function Supplier(props) {
   const navigate = useNavigation();
   const focused = useIsFocused();
   const [productReviewArr, setProductReviewArr] = useState([]);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [infolist, setInfolist] = useState([
 

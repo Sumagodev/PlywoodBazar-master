@@ -434,10 +434,12 @@ export default function Home() {
 
             ListFooterComponent={
               <>
-
-
-                <Pressable Pressable onPress={() => navigate.navigate('Categories')}>
+   <Pressable Pressable onPress={() => navigate.navigate('Categories')}>
                   <Text style={[styles1.headingmain, { marginBottom: 15, marginTop: 40 }]}> Product Categories</Text>
+                </Pressable>
+
+                <Pressable Pressable onPress={() => navigate.navigate('Register')}>
+                  <Text style={[styles1.headingmain, { marginBottom: 15, marginTop: 40 }]}>Register</Text>
                 </Pressable>
 
                 <FlatList

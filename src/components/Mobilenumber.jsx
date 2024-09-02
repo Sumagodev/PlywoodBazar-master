@@ -9,7 +9,7 @@ import { sentOtp } from '../services/User.service';
 import Header from '../navigation/customheader/Header';
 export default function Mobilenumber(props) {
   const phoneInput = useRef()
-
+ 
 
   const navigation = useNavigation()
   const [phone, setPhone] = useState("");
