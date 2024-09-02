@@ -5,7 +5,7 @@ import CustomColors from '../styles/CustomColors';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onCallPress, onCardPress,id}) => {
+const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onDeletePress, onCardPress,id}) => {
     const navigation = useNavigation();
 
     return (
@@ -17,7 +17,7 @@ const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onCa
             <Text style={styles.actualPriceStyle}>₹{actualPrice}/-</Text>
             <Text style={styles.salePriceStyle}>₹{salePrice}/-</Text>
             <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight:wp(3)}}>
-            <TouchableOpacity style={{marginHorizontal: 10, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'red', marginVertical: 2}} onPress={() => handleDeleteFlashSale(id)}>
+            <TouchableOpacity style={{marginHorizontal: 10, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'red', marginVertical: 2}} onPress={onDeletePress}>
             <FontAwesomeIcon name="trash-o" size={wp(6)}  color='#fff' />
           </TouchableOpacity>
           <TouchableOpacity style={{marginHorizontal: 1, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'green'}} onPress={() => navigation.navigate("EditFlashSale", { data: id })}>

@@ -1,20 +1,23 @@
 import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
-import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet, Text, TouchableOpacity, View,TextInput} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import {TextInput} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
-import {createFlashSales, getFlashSalebyId, updateFlashSalebyId} from '../services/FlashSales.service';
 import {getAllProducts} from '../services/Product.service';
 import {getDecodedToken} from '../services/User.service';
 import {errorToast, toastSuccess} from '../utils/toastutill';
-export default function EditFlashSale(props) {
+import moment from 'moment';
+import {createFlashSales} from '../services/FlashSales.service';
+import {SuccessToast} from 'react-native-toast-message';
+export default function AddFlashSale(props) {
   const navigation = useNavigation();
 
   const [discountType, setDiscountType] = useState('Percentage');
+  const [pricetype, setpricetype] = useState("per Nos/sheet");
   const [productArr, setProductArr] = useState([]);
   const [discountValue, setDiscountValue] = useState(0);
   const [price, setPrice] = useState(0);
@@ -39,27 +42,8 @@ export default function EditFlashSale(props) {
     }
   };
 
-  const getExistingFlashSale = async () => {
-    try {
-      const {data: res} = await getFlashSalebyId(props?.route?.params?.data);
-      if (res) {
-        console.log(JSON.stringify(res.data, null, 2));
-        setPrice(`${res.data.price}`);
-        setSalePrice(`${res.data.salePrice}`);
-        setDiscountType(`${res.data.discountType}`);
-        setDiscountValue(`${res.data.discountValue}`);
-        setStartDate(new Date(res.data.startDate));
-        setEndDate(new Date(res.data.endDate));
-        setSelectedProductId(res?.data?.productId?._id);
-      }
-    } catch (error) {
-      errorToast(error);
-    }
-  };
-
   useEffect(() => {
     handleGetProducts();
-    getExistingFlashSale();
   }, []);
 
   const handleProductSelections = value => {
@@ -67,8 +51,9 @@ export default function EditFlashSale(props) {
     let tempObj = tempArr.find(el => el._id == value);
     if (tempObj) {
       setSelectedProductId(value);
+      console.log(JSON.stringify(tempObj, null, 2), 'TEMPOBJ CEC');
       setSelectedProductObj(tempObj);
-      // setPrice(`${tempObj?.price}`);
+      setPrice(`${tempObj?.price}`);
     }
   };
 
@@ -100,11 +85,11 @@ export default function EditFlashSale(props) {
         errorToast({message: 'Please Fill Price'});
         return 0;
       }
-      if (discountType == 'Percentage' && parseInt(discountValue) > 100) {
+      if (discountType == 'Percentage' && discountValue > 100) {
         errorToast({message: 'Percentage discount cannot be more than 100%'});
         return 0;
       }
-      if (discountType == 'Amount' && parseInt(discountValue) >= parseInt(price)) {
+      if (discountType == 'Amount' && parseInt(discountValue) > parseInt(price)) {
         errorToast({message: 'Amount discount cannot be more than price of the product'});
         return 0;
       }
@@ -117,15 +102,14 @@ export default function EditFlashSale(props) {
         discountType,
         discountValue,
         salePrice: `${salePrice}`,
+        pricetype,
         endDate,
         startDate,
       };
-      let {data: res} = await updateFlashSalebyId(props.route.params.data, obj);
+      let {data: res} = await createFlashSales(obj);
       if (res) {
         toastSuccess(res.message);
-        navigation.navigate('MyFlashSales')
-
-
+        navigation.navigate('MyFlashSales');
       }
     } catch (error) {
       errorToast(error);
@@ -134,13 +118,17 @@ export default function EditFlashSale(props) {
 
   return (
     <>
-      <Header stackHeader={true} screenName={'Edit Flash Sale'} rootProps={props} />
+      <Header stackHeader={true} screenName={'Create Flash Sales'} rootProps={props} />
 
-      <View style={{backgroundColor: '#fff', flex: 1, paddingHorizontal: 10}}>
+<ScrollView>
+
+
+
+      <View style={{backgroundColor: '#fff', flex: 1}}>
         <View style={styles1.card_main}>
           <Text style={styles1.nameheading}>Product</Text>
 
-          <View style={{borderColor: '#B08218', borderWidth: 1, borderStyle: 'solid', borderRadius: 18}}>
+          <View style={{borderColor: '#B08218', borderWidth: 1, borderRadius: 18,  height: 50,}}>
             {productArr && productArr.length > 0 && (
               <Picker selectedValue={selectedProductId} onValueChange={(itemValue, itemIndex) => handleProductSelections(itemValue)}>
                 <Picker.Item label="Select Product" value="" />
@@ -150,7 +138,6 @@ export default function EditFlashSale(props) {
               </Picker>
             )}
           </View>
-
           <Text style={styles1.nameheading}>Discount Type</Text>
 
           <View style={{borderColor: '#B08218', borderWidth: 1, borderStyle: 'solid', borderRadius: 18}}>
@@ -254,13 +241,25 @@ export default function EditFlashSale(props) {
             underlineColorAndroid="#E7E7E8"
           />
 
+          <Text style={styles1.nameheading}>Select Type</Text>
+          <View style={{borderColor: '#B08218', borderWidth: 1, borderStyle: 'solid', borderRadius: 18}}>
+            <Picker selectedValue={pricetype} onValueChange={(itemValue, itemIndex) => setPrice(itemValue)}>
+              <Picker.Item label="per Nos/sheet" value="per Nos/sheet" />
+              <Picker.Item label="per sq.ft" value="per sq.ft" />
+              <Picker.Item label="per sq.mt" value="per sq.mt" />
+              <Picker.Item label=" per Rn.ft" value=" per Rn.ft" />
+              <Picker.Item label="per Cu.ft" value="per Cu.ft" />
+              <Picker.Item label="p per Cu.mt" value="p per Cu.mt" />
+            </Picker>
+          </View>
+
           <Pressable onPress={() => setOpen(true)}>
             <Text style={styles1.nameheading}>Enter Start Date </Text>
 
             <TextInput
               style={styles1.mbboot}
               mode="outlined"
-              // disabled
+              disabled
               value={moment(startDate).format('DD-MM-YYYY')}
               label="Start Date "
               outlineStyle={{
@@ -291,7 +290,7 @@ export default function EditFlashSale(props) {
             <TextInput
               style={styles1.mbboot}
               mode="outlined"
-              // disabled
+              disabled
               value={moment(endDate).format('DD-MM-YYYY')}
               label="End Date "
               outlineStyle={{
@@ -317,8 +316,8 @@ export default function EditFlashSale(props) {
             />
           </Pressable>
 
-          <TouchableOpacity onPress={() => handleCreateFlashSale()} style={[styles.btnbg, { marginBottom: 15, marginTop: 20}]}>
-            <Text style={styles.textbtn}>Update</Text>
+          <TouchableOpacity onPress={() => handleCreateFlashSale()} style={[styles.btnbg, {marginBottom: 15, marginTop: 20}]}>
+            <Text style={styles.textbtn}>Create a Flash Sale</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -330,7 +329,6 @@ export default function EditFlashSale(props) {
         open={open}
         date={startDate}
         onConfirm={date => {
-          console.log(date);
           setOpen(false);
           setStartDate(date);
         }}
@@ -352,6 +350,8 @@ export default function EditFlashSale(props) {
           setEndDatePickerModal(false);
         }}
       />
+
+</ScrollView>
     </>
   );
 }
@@ -376,16 +376,17 @@ const styles1 = StyleSheet.create({
     height: hp(3),
     marginRight: 10,
   },
-  // card_main: {
-  //     borderWidth: 1,
-  //     borderColor: '#D9D9D9',
-  //     borderStyle: 'solid',
-  //     paddingHorizontal: 10,
-  //     paddingVertical: 12,
-  //     borderRadius: 5,
-  //     width: wp(90),
-  //     marginHorizontal: 20,
-  // },
+  card_main: {
+    // borderWidth: 1,
+    // borderColor: '#D9D9D9',
+    // borderStyle: 'solid',
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    borderRadius: 5,
+    // width: wp(100),
+    // marginHorizontal: 20,
+    backgroundColor: '#fff',
+  },
   nameheading: {
     color: '#000000',
     fontSize: wp(3),

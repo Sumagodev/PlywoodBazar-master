@@ -19,9 +19,11 @@ axios.interceptors.response.use((response) => {
 });
 export const axiosApiInstance = axios.create();
 import {SafeAreaView} from 'react-native'
+import { OrientationLocker } from 'react-native-orientation-locker';
 function App(): JSX.Element {
   return (
     <SafeAreaView style={{flex:1}}>
+      <OrientationLocker orientation="PORTRAIT" />
       <RootStack />
       <Toast />
     </SafeAreaView>

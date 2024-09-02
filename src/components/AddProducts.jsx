@@ -13,6 +13,7 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 import ImagePicker from 'react-native-image-crop-picker';
 import CustomColors from '../styles/CustomColors';
 import CustomButton from '../ReusableComponents/CustomButton';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function AddProducts(props) {
 
@@ -268,7 +269,7 @@ export default function AddProducts(props) {
       <View style={{ backgroundColor: '#fff', flex: 1, }}>
         <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/leads_bg.png')}>
           <View style={styles1.card_main}>
-            <Text style={{ textAlign: 'center', fontSize: wp(6.5), fontWeight: 'bold' }}>Add Product</Text>
+            <Text style={{ textAlign: 'center', fontSize: wp(6.0), fontWeight: 'bold' }}>Add Product</Text>
             <Text style={styles1.nameheading}>Enter Name </Text>
             <TextInput
               onChangeText={e => setname(e)}
@@ -338,6 +339,8 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
+
             />
 
             <Text style={styles1.nameheading}>Enter Selling Price </Text>
@@ -465,20 +468,23 @@ export default function AddProducts(props) {
 
             <Text style={styles1.nameheading}>Product Image </Text>
             <Pressable
-              style={[styles1.dropdownStyle, {paddingVertical: wp(4), paddingStart: wp(2)}]}
+              style={[styles1.dropdownStyle, {paddingVertical: wp(3), paddingStart: wp(2),flexDirection:'row',flex:1,justifyContent:'space-between'}]}
               onPress={() => {
                 handleDocumentPicker();
               }}>
               <Text style={styles.borderedPressableText}>{file && file.name ? file?.name : 'Please Upload Image'}</Text>
+              <FontAwesome5Icon style={{right:wp(5)}} name="caret-square-up" size={wp(6)} color="black" />
+              
             </Pressable>
             <Text style={styles1.nameheading}>Product Multiple Images </Text>
 
             <Pressable
-              style={[styles1.dropdownStyle, {paddingVertical: wp(4), paddingStart: wp(2)}]}
+              style={[styles1.dropdownStyle, {paddingVertical: wp(3), paddingStart: wp(2),flexDirection:'row',flex:1,justifyContent:'space-between'}]}
               onPress={() => {
                 handleDocumentMultiplePicker();
               }}>
               <Text style={styles.borderedPressableText}>{imageArr && imageArr.length > 0 ? `${imageArr.length} Files Selected` : 'Please Upload Multiple Image'}</Text>
+              <FontAwesome5Icon style={{right:wp(5)}} name="caret-square-up" size={wp(6)} color="black" />
             </Pressable>
             <View style={{alignSelf: 'center', marginVertical:wp(5)}}>
               <CustomButton onPress={() => handleCreateFlashSale()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)}  paddingVertical={wp(3)}/>
@@ -556,7 +562,7 @@ const styles1 = StyleSheet.create({
     fontWeight: '700',
   },
   cardContainer: {
-    marginTop: wp(5),
+    marginTop: wp(0),
     borderTopRightRadius: wp(10),
     borderTopLeftRadius: wp(10),
     overflow: 'hidden',

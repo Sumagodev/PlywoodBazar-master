@@ -1,9 +1,8 @@
 import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, Pressable, ScrollView, StyleSheet,TextInput, Text, TouchableOpacity, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {TextInput} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -13,6 +12,9 @@ import {errorToast, toastSuccess} from '../utils/toastutill';
 import moment from 'moment';
 import {createFlashSales} from '../services/FlashSales.service';
 import {SuccessToast} from 'react-native-toast-message';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import { color } from '@rneui/base';
+import CustomColors from '../styles/CustomColors';
 export default function AddFlashSale(props) {
   const navigation = useNavigation();
 
@@ -118,19 +120,23 @@ export default function AddFlashSale(props) {
 
   return (
     <>
-      <Header stackHeader={true} screenName={'Create Flash Sales'} rootProps={props} />
+      <Header normal={true} screenName={'Create Flash Sales'} rootProps={props} />
 
-<ScrollView>
+<ScrollView style={{backgroundColor:'#FFFFFF'}}>
 
 
 
-      <View style={{backgroundColor: '#fff', flex: 1}}>
+
+      <View style={{flex: 1,borderTopLeftRadius:wp(10),borderTopRightRadius:wp(10),marginTop:wp(0), width:wp(100),overflow:'hidden'}}>
+      <ImageBackground style={{flex: 1,borderRadius:wp(15)}} source={require('../../assets/img/temp_bg.png')}>
+      <Text style={{fontSize:wp(5),fontWeight:800,alignSelf:'center',marginTop:wp(5)}}>Create a Flash Sale</Text>
+
         <View style={styles1.card_main}>
           <Text style={styles1.nameheading}>Product</Text>
 
-          <View style={{borderColor: '#B08218', borderWidth: 1, borderRadius: 18,  height: 50,}}>
-            {productArr && productArr.length > 0 && (
-              <Picker selectedValue={selectedProductId} onValueChange={(itemValue, itemIndex) => handleProductSelections(itemValue)}>
+          <View style={{backgroundColor:'white',height: 50,borderRadius:wp(5)}}>
+            {productArr && productArr.length > 0 && ( 
+              <Picker  style={{}} selectedValue={selectedProductId} onValueChange={(itemValue, itemIndex) => handleProductSelections(itemValue)}>
                 <Picker.Item label="Select Product" value="" />
                 {productArr.map((el, index) => {
                   return <Picker.Item key={index} label={el?.name} value={el?._id} />;
@@ -140,7 +146,7 @@ export default function AddFlashSale(props) {
           </View>
           <Text style={styles1.nameheading}>Discount Type</Text>
 
-          <View style={{borderColor: '#B08218', borderWidth: 1, borderStyle: 'solid', borderRadius: 18}}>
+          <View style={{backgroundColor:'white',height: 50,borderRadius:wp(5)}}>
             <Picker selectedValue={discountType} onValueChange={(itemValue, itemIndex) => setDiscountType(itemValue)}>
               <Picker.Item label="Percentage" value="Percentage" />
               <Picker.Item label="Amount" value="Amount" />
@@ -152,15 +158,15 @@ export default function AddFlashSale(props) {
           <TextInput
             style={styles1.mbboot}
             keyboardType="number-pad"
-            mode="outlined"
+            mode="flat"
+            selectionColor={CustomColors.mattBrownDark}
             onChangeText={e => setDiscountValue(e)}
             value={discountValue}
-            label="Discount Value "
+            placeholder="Discount Value "
             outlineStyle={{
-              borderWidth: 0.8,
               borderRadius: 16,
-              borderColor: '#B08218',
               marginBottom: 15,
+              borderColor:'white',
               height: 50,
             }}
             theme={{
@@ -168,14 +174,14 @@ export default function AddFlashSale(props) {
                 text: '#f5f5f5',
                 accent: '#ffffff',
                 primary: '#666666',
-                placeholder: '#f5f5f5',
+                placeholder: '#000000',
                 background: '#fff',
-                borderWidth: '1',
                 fontSize: 8,
+                color:'#000000'
               },
             }}
-            underlineColor="#E7E7E8"
-            underlineColorAndroid="#E7E7E8"
+            underlineColor="#FFFFFF"
+            underlineColorAndroid="#FFFFFF"
           />
           <Text style={styles1.nameheading}>Enter Price </Text>
 
@@ -185,28 +191,31 @@ export default function AddFlashSale(props) {
             onChangeText={e => setPrice(e)}
             keyboardType="number-pad"
             value={price}
-            label="Price "
+            placeholder="Price "
+            selectionColor={CustomColors.mattBrownDark}
+
             // disabled
             outlineStyle={{
-              borderWidth: 0.8,
-              borderRadius: 16,
-              borderColor: '#B08218',
-              marginBottom: 15,
+              
+              borderColor:'white',
+              backgroundColor:'white',
               height: 50,
+              borderRadius:wp(5),
+              marginBottom: 15,
+              
             }}
             theme={{
               colors: {
                 text: '#f5f5f5',
                 accent: '#ffffff',
                 primary: '#666666',
-                placeholder: '#f5f5f5',
+                placeholder: '#000000',
                 background: '#fff',
-                borderWidth: '1',
                 fontSize: 8,
               },
             }}
-            underlineColor="#E7E7E8"
-            underlineColorAndroid="#E7E7E8"
+            underlineColor="#FFFFFF"
+            underlineColorAndroid="#FFFFFF"
           />
 
           <Text style={styles1.nameheading}>Enter Sale Price </Text>
@@ -215,34 +224,36 @@ export default function AddFlashSale(props) {
             style={styles1.mbboot}
             mode="outlined"
             keyboardType="numeric"
+            selectionColor={CustomColors.mattBrownDark}
+
             // disabled
             onChangeText={e => setSalePrice(e)}
             value={salePrice}
-            label="Sale Price "
+            placeholder="Sale Price "
             outlineStyle={{
-              borderWidth: 0.8,
-              borderRadius: 16,
-              borderColor: '#B08218',
-              marginBottom: 15,
+              backgroundColor:'white',
               height: 50,
+              borderRadius:wp(5),
+              marginBottom: 15,
+              borderColor:'white',
             }}
             theme={{
               colors: {
                 text: '#f5f5f5',
                 accent: '#ffffff',
                 primary: '#666666',
-                placeholder: '#f5f5f5',
+                placeholder: '#000000',
                 background: '#fff',
                 borderWidth: '1',
                 fontSize: 8,
               },
             }}
-            underlineColor="#E7E7E8"
-            underlineColorAndroid="#E7E7E8"
+            underlineColor="#FFFFFF"
+            underlineColorAndroid="#FFFFFF"
           />
 
           <Text style={styles1.nameheading}>Select Type</Text>
-          <View style={{borderColor: '#B08218', borderWidth: 1, borderStyle: 'solid', borderRadius: 18}}>
+          <View style={{borderRadius: 18,backgroundColor:'white'}}>
             <Picker selectedValue={pricetype} onValueChange={(itemValue, itemIndex) => setPrice(itemValue)}>
               <Picker.Item label="per Nos/sheet" value="per Nos/sheet" />
               <Picker.Item label="per sq.ft" value="per sq.ft" />
@@ -259,29 +270,30 @@ export default function AddFlashSale(props) {
             <TextInput
               style={styles1.mbboot}
               mode="outlined"
+              selectionColor={CustomColors.mattBrownDark}
+
               disabled
               value={moment(startDate).format('DD-MM-YYYY')}
-              label="Start Date "
+              placeholder="Start Date "
               outlineStyle={{
-                borderWidth: 0.8,
-                borderRadius: 16,
-                borderColor: '#B08218',
-                marginBottom: 15,
+                backgroundColor:'white',
                 height: 50,
+                borderRadius:wp(5),
+                marginBottom: 15,
               }}
               theme={{
                 colors: {
                   text: '#f5f5f5',
                   accent: '#ffffff',
                   primary: '#666666',
-                  placeholder: '#f5f5f5',
+                  placeholder: '#000000',
                   background: '#fff',
                   borderWidth: '1',
                   fontSize: 8,
                 },
               }}
-              underlineColor="#E7E7E8"
-              underlineColorAndroid="#E7E7E8"
+              underlineColor="#FFFFFF"
+              underlineColorAndroid="#FFFFFF"
             />
           </Pressable>
           <Pressable onPress={() => setEndDatePickerModal(true)}>
@@ -290,38 +302,40 @@ export default function AddFlashSale(props) {
             <TextInput
               style={styles1.mbboot}
               mode="outlined"
+              selectionColor={CustomColors.mattBrownDark}
+
               disabled
               value={moment(endDate).format('DD-MM-YYYY')}
-              label="End Date "
+              placeholder="End Date "
               outlineStyle={{
-                borderWidth: 0.8,
-                borderRadius: 16,
-                borderColor: '#B08218',
-                marginBottom: 15,
-                height: 50,
+                backgroundColor:'white',
+              height: 50,
+              borderRadius:wp(5),
+              marginBottom: 15,
               }}
               theme={{
                 colors: {
                   text: '#f5f5f5',
                   accent: '#ffffff',
                   primary: '#666666',
-                  placeholder: '#f5f5f5',
+                  placeholder: '#000000',
                   background: '#fff',
                   borderWidth: '1',
                   fontSize: 8,
                 },
               }}
-              underlineColor="#E7E7E8"
-              underlineColorAndroid="#E7E7E8"
+              underlineColor="#FFFFFF"
+              underlineColorAndroid="#FFFFFF"
             />
           </Pressable>
 
-          <TouchableOpacity onPress={() => handleCreateFlashSale()} style={[styles.btnbg, {marginBottom: 15, marginTop: 20}]}>
-            <Text style={styles.textbtn}>Create a Flash Sale</Text>
-          </TouchableOpacity>
+          <View style={{marginTop:wp(5),marginBottom:wp(7),alignSelf:'center'}}>
+            <CustomButtonNew  paddingHorizontal={wp(5)} paddingVertical={wp(3.5)} buttonBgColor='#58402C' onPress={() => handleCreateFlashSale()} text={"Create a Flash Sale"}></CustomButtonNew>
+          </View>
         </View>
-      </View>
+      </ImageBackground>
 
+      </View>
       <DatePicker
         modal
         minimumDate={new Date()}
@@ -377,21 +391,31 @@ const styles1 = StyleSheet.create({
     marginRight: 10,
   },
   card_main: {
-    // borderWidth: 1,
-    // borderColor: '#D9D9D9',
-    // borderStyle: 'solid',
     paddingHorizontal: 10,
     paddingVertical: 12,
-    borderRadius: 5,
-    // width: wp(100),
-    // marginHorizontal: 20,
-    backgroundColor: '#fff',
+    borderRadius: 5,    
+    borderRadius:wp(15),
+    
   },
   nameheading: {
     color: '#000000',
     fontSize: wp(3),
     fontFamily: 'Manrope-Bold',
+    
     // marginHorizontal: 10,
     marginVertical: hp(1),
+  },
+  mbboot:{
+    color:'#000000',
+    backgroundColor:'white',
+    borderRadius:18,
+    paddingLeft:10,
+
+  },
+  pickerContainer: {
+    backgroundColor: 'red', // Red background color
+    borderRadius: 10,       // Rounded corners
+    overflow: 'hidden',     // Ensures the picker stays within rounded corners
+    padding: 10,            // Padding inside the container
   },
 });

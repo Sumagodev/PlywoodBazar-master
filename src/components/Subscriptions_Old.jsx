@@ -11,9 +11,6 @@ import {errorToast, toastSuccess} from '../utils/toastutill';
 import {getDecodedToken, getToken} from '../services/User.service';
 import {adminUrl} from '../services/url.service';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import SubscriptionCard from '../ReusableComponents/SubscriptionCard';
-import LinearGradient from 'react-native-linear-gradient';
-import GradientRibbon from '../ReusableComponents/GradientRibbon';
 export default function Subscriptions(props) {
   const navigation = useNavigation();
 console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
@@ -143,37 +140,6 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
       </>
     );
   };
-  const renderNewSubscriptionItem = ({item, index}) => {
-    const durationText = item?.noOfMonth
-    ? `${item?.noOfMonth} ${item?.noOfMonth > 1 ? 'months' : 'month'}`
-    : 'No Validity';
-  
-    return (
-      <>
-        <View style={stylesCard.cardContainer}>
-      <LinearGradient         colors={['#5A432F', '#C08F64'] } // Adjust gradient colors
-      
-  style={stylesCard.periodContainer}>
-        <Text style={stylesCard.periodText}>{durationText}</Text>
-      </LinearGradient>
-      <View style={stylesCard.contentContainer}>
-        <Text style={stylesCard.titleText} numberOfLines={2} ellipsizeMode='tail'>{item?.description}</Text>
-        <Text style={stylesCard.priceText}>
-          ₹ {item?.price} + <Text style={stylesCard.gstText}>18% GST</Text></Text>
-
-          
-              <Text style={stylesCard.durationText}>
-              For {item?.advertisementDays > 1 ? `${item?.advertisementDays} Days` : `${item?.advertisementDays} Day`}
-              </Text>
-         
-        <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'}>
-        
-        </GradientRibbon>
-      </View>
-    </View>
-      </>
-    );
-  };
 
   useEffect(() => {
     getSubscriptions();
@@ -181,16 +147,14 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
 
   return (
     <>
-      <Header normal={true} screenName={'Subscriptions'} rootProps={props} />
+      <Header stackHeader={true} screenName={'Subscriptions'} rootProps={props} />
       <View style={{backgroundColor: '#fff', flex: 1, paddingHorizontal: 10}}>
-        <FlatList data={subscriptionArr} renderItem={renderNewSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 50}} />
+        <FlatList data={subscriptionArr} renderItem={renderSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 50}} />
         {/* {selectedSubscriptionObj && selectedSubscriptionObj?._id && (
           <TouchableOpacity onPress={() => handleSubmit()} style={[styles.btnbg, {width: wp(90), marginHorizontal: 20, marginBottom: 15}]}>
             <Text style={styles.textbtn}>Skip</Text>
           </TouchableOpacity>
         )} */}
-
-
         {props.route?.params?.register  && props.route?.params?.register ==true ? (
             <TouchableOpacity onPress={() => navigation.navigate('BottomBar', {screen: 'Home'})} style={[{width: wp(90), display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end'}]}>
             <Text style={[styles.textbtn, {color: '#ddc99b'}]}>
@@ -250,72 +214,3 @@ const styles1 = StyleSheet.create({
     fontFamily: 'Manrope-Bold',
   },
 });
-
-
- 
-
-
-const stylesCard = StyleSheet.create({
-    cardContainer: {
-      margin:wp(2),
-      flexDirection: 'row',
-      padding: 16,
-      backgroundColor: '#FFFFFF',
-      borderRadius: 10,
-      elevation: 2,
-      marginLeft: 40, // Space for the floating circle
-    },
-    periodContainer: {
-      width:wp(25),
-      height:wp(25),
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#5A432F',
-      padding: wp(1),
-      borderRadius: wp(25),
-      position: 'absolute',
-      left: -wp(11), // Half the width of the circle
-      top: '50%', // Center vertically based on the height of the card
-      transform: [{ translateY: -32 }], // Half the height of the circle to offset it upwards
-    },
-    periodText: {
-      color: '#fff',
-      fontSize: wp(4),
-      fontWeight: 'bold',
-    },
-    contentContainer: {
-      marginLeft: wp(12), // Adjust to match the position of the text
-      justifyContent: 'center',
-    },
-    titleText: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    priceText: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: '#5A432F',
-    },
-    gstText: {
-      fontSize: 14,
-      fontWeight: 'normal',
-      color: '#5A432F',
-    },
-    durationText: {
-      fontSize: wp(3),
-      color: '#000',
-      fontWeight:600,
-      marginTop: wp(1),
-    },
-    featuresContainer: {
-      flexDirection: 'row',
-      marginTop: 8,
-      flex:1
-
-    },
-    featureText: {
-      fontSize: 14,
-      color: '#666',
-      marginRight: 8,
-    },
-  });

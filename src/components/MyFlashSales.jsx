@@ -15,6 +15,7 @@ import FlashSaleItemWithDiscount from '../ReusableComponents/FlashSaleItemWithDi
 import FlashSaleItem from '../ReusableComponents/FlashSaleItem';
 import FadeRibbonText from '../ReusableComponents/FadeRibbon';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 
 export default function MyFlashSales(props) {
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ export default function MyFlashSales(props) {
     }
   }
   const getSubscriptions = async () => {
+    console
     try {
       let decodedObj = await getDecodedToken();
 
@@ -104,7 +106,7 @@ export default function MyFlashSales(props) {
     return (
       <View  style={{paddingVertical:wp(1)}}>
        <FlashSaleItem 
-      
+      onDeletePress={()=>{handleDeleteFlashSale(item?._id)}}
       imagePath={{uri: generateImageUrl(item?.productId?.mainImage)}}
         actualPrice={item?.price}
         name={item?.productId?.name}
@@ -134,13 +136,13 @@ export default function MyFlashSales(props) {
       <View style={{backgroundColor:'#fff', flex:1}}>
     <View style={{flexDirection:'row',justifyContent:'center',marginTop:wp(3)}}>
 
-    <Text style={{fontSize:wp(8),fontWeight:800,}}>MY FLASH SALE</Text>
-    <View style={{borderRadius:50,borderColor:'#BC9B80',borderWidth:wp(1),marginLeft:wp(5)} }><CustomButtonOld text={"ADD"} onPress={()=>{navigation.navigate('AddFlashSales')}}/></View>
+    <Text style={{fontSize:wp(6),fontWeight:800,}}>My Flash Sale</Text>
+    <View style={{borderRadius:50,borderColor:'#BC9B80',borderWidth:wp(1),marginLeft:wp(5)} }><CustomButtonNew  textSize={wp(3)} paddingHorizontal={wp(7)} text={"ADD"} onPress={()=>{navigation.navigate('AddFlashSales')}}/></View>
     </View>
     
-     <View style={{height:wp(20),justifyContent:'center', marginHorizontal:wp(2)}}>
+     <View style={{height:wp(15),justifyContent:'center', marginHorizontal:wp(2)}}>
      <FadeRibbonText reverseDirection={true}></FadeRibbonText>
-     <Image source={require('../../assets/img/flash_sale.png')}  style={{width:wp(30),height:wp(18),position:'absolute',resizeMode:'contain'}} ></Image>
+     <Image source={require('../../assets/img/flash_sale.png')}  style={{width:wp(30),height:wp(15),position:'absolute',resizeMode:'contain'}} ></Image>
      <View style={{ flexDirection:'row', position:'absolute',justifyContent:'flex-start' ,alignItems:'baseline',marginStart:wp(32)}}>
      <Text style={{fontSize:wp(5.5),fontWeight:800,color:'black'}}>Dont Miss Out</Text>
      <Text style={{fontSize:wp(3.5),fontWeight:800,color:'white',marginStart:wp(2)}}> Our Flash Sale</Text>
