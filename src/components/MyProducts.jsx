@@ -101,7 +101,7 @@ export default function MyProducts(props) {
 
     }
     return (
-      <ProductItemVertical product={productItem} onPress={()=>navigation.navigate("EditProduct",{data:item?._id})} ></ProductItemVertical>
+      <ProductItemVertical onDeletePress={()=>handleDeleteProduct(item?._id)} product={productItem} onEditPress={()=>navigation.navigate("EditProduct",{data:item?._id})} ></ProductItemVertical>
     );
   };
 

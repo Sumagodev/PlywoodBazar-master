@@ -27,7 +27,7 @@ export default function AddProducts(props) {
   const [thickness, setthickness] = useState('');
   const [application, setapplication] = useState('');
   const [grade, setgrade] = useState('');
-  // const [color, setcolor] = useState('');
+  const [color, setcolor] = useState('');
   const [wood, setwood] = useState('');
   const [glue, setglue] = useState('');
   const [sellingprice, setsellingprice] = useState('');
@@ -92,10 +92,10 @@ export default function AddProducts(props) {
         return 0;
       }
 
-      // if (`${color}` === '') {
-      //   errorToast('Please Fill Color');
-      //   return 0;
-      // }
+      if (`${color}` === '') {
+        errorToast('Please Fill Color');
+        return 0;
+      }
 
       // if (`${shortDescription}` === '') {
       //   errorToast('Please Fill shortDescription');
@@ -124,7 +124,7 @@ export default function AddProducts(props) {
           thickness,
           application,
           grade,
-          color: 'red',
+          color: color,
           wood,
           glue,
           warranty,
@@ -275,6 +275,7 @@ export default function AddProducts(props) {
               onChangeText={e => setname(e)}
               value={name}
               placeholder="Name"
+              selectionColor={CustomColors.mattBrownDark}
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
@@ -333,6 +334,7 @@ export default function AddProducts(props) {
               value={price}
               placeholder="Price "
               mode='outlined'
+              
               activeOutlineColor='transparent'
               outlineColor='white'
               outlineStyle={{borderRadius: 50}}
@@ -357,6 +359,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Enter Thickness </Text>
@@ -372,6 +375,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Enter Usage/Application </Text>
@@ -387,6 +391,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Enter Grade </Text>
@@ -402,8 +407,24 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
+<Text style={styles1.nameheading}>Enter Color </Text>
+
+<TextInput
+              onChangeText={e => setcolor(e)}
+              value={color}
+              placeholder="Color"
+              mode='outlined'
+              activeOutlineColor='transparent'
+              outlineColor='white'
+              outlineStyle={{borderRadius: 50}}
+              underlineColor='transparent'
+              backgroundColor='white'
+              borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
+            />
             <Text style={styles1.nameheading}>Enter Wood Type </Text>
 
             <TextInput
@@ -417,6 +438,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Enter Glue Used </Text>
@@ -432,6 +454,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Enter Warranty </Text>
@@ -447,6 +470,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Enter Long Description </Text>
@@ -464,6 +488,7 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              selectionColor={CustomColors.mattBrownDark}
             />
 
             <Text style={styles1.nameheading}>Product Image </Text>

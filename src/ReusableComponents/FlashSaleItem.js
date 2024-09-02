@@ -17,11 +17,11 @@ const FlashSaleItem = ({ imagePath, name, actualPrice, salePrice, duration, onDe
             <Text style={styles.actualPriceStyle}>₹{actualPrice}/-</Text>
             <Text style={styles.salePriceStyle}>₹{salePrice}/-</Text>
             <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight:wp(3)}}>
-            <TouchableOpacity style={{marginHorizontal: 10, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'red', marginVertical: 2}} onPress={onDeletePress}>
-            <FontAwesomeIcon name="trash-o" size={wp(6)}  color='#fff' />
+            <TouchableOpacity style={{marginHorizontal: 10, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'#674c35', marginVertical: 2}} onPress={onDeletePress}>
+            <FontAwesomeIcon name="trash-o" size={wp(5)}  color='#fff' />
           </TouchableOpacity>
-          <TouchableOpacity style={{marginHorizontal: 1, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'green'}} onPress={() => navigation.navigate("EditFlashSale", { data: id })}>
-            <FontAwesomeIcon name="edit" size={wp(6)} color='#fff' />
+          <TouchableOpacity style={{marginHorizontal: 1, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'#674c35'}} onPress={() => navigation.navigate("EditFlashSale", { data: id })}>
+            <FontAwesomeIcon name="edit" size={wp(5)} color='#fff' />
           </TouchableOpacity>
           
         </View>
