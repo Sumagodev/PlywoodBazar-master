@@ -473,7 +473,7 @@ export default function Supplier(props) {
                 {productReviewArr && productReviewArr.length > 0 ? (
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-                    <View style={{ alignSelf: "center" }}><CustomRoundedTextButton buttonText={'Show More'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                    <View style={{ alignSelf: "center" }}><CustomButtonNew text={"Show more.."}  paddingHorizontal={wp(5)} textSize={wp(4)}  buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
                   </View>
                 ) : (
                   <View style={{ height: hp(20),backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -485,10 +485,10 @@ export default function Supplier(props) {
               <View >
                 <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
                   <View>
-                    <Text style={styles1.headertext}>Products may you like</Text>
+                    <Text style={styles1.headertext}>Products  You May Like</Text>
                   </View>
                 </View>
-                <View style={{ marginVertical: wp(2) }}>
+                <View style={{ marginVertical: wp(1) }}>
                   <FlatList data={dataArray.slice(0, 2)} renderItem={ProductsYouMayLike1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
                 </View>
 
@@ -516,12 +516,12 @@ export default function Supplier(props) {
                   <View>
                     <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
                   </View>
-                  <View style={{ alignSelf: "flex-end", right: wp(-23) }}><CustomRoundedTextButton buttonText={'Add Reviews'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                  <View style={{ alignSelf: "flex-end", right: wp(-23) }}><CustomButtonNew text={"Add Reviews"}  paddingHorizontal={wp(5)} textSize={wp(4)}  buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
                 </View>
                 {productReviewArr && productReviewArr.length > 0 ? (
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-                    <View style={{ alignSelf: "center" }}><CustomRoundedTextButton buttonText={'Show More'} buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                    <View style={{ alignSelf: "center" }}><CustomButtonNew text={"Show more.."}  paddingHorizontal={wp(5)} textSize={wp(4)}  buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
                   </View>
                 ) : (
                   <View style={{ height: hp(20),backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -976,6 +976,7 @@ const styles1 = StyleSheet.create({
     borderRadius: wp(25),
   },
   headertext: {
+    marginVertical:wp(4),
     fontSize: wp(5),
     fontWeight: "bold"
   }

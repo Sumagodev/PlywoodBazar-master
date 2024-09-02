@@ -4,6 +4,7 @@ import { Rating } from 'react-native-ratings';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from './CustomButton';
+import CustomButtonNew from './CustomButtonNew';
 
 const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
 
@@ -27,7 +28,7 @@ const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
                 <Text style={[styles.textStyle]}>{address}</Text>
             </View>
             <View style={{paddingTop: wp(2)}}>
-                <CustomButton onPress={()=>console.log('function called')} text={'View Profile'} paddingHorizontal={wp(4)} paddingVertical={wp(3)}/>
+                <CustomButtonNew  textSize={wp(4)} onPress={()=>console.log('function called')} text={'View Profile'} paddingHorizontal={wp(4)} paddingVertical={wp(3)}/>
             </View>
         </View>
     );
