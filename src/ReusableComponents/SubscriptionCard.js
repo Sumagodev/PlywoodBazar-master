@@ -27,10 +27,10 @@ const SubscriptionCard = ({
           {price} <Text style={ststylesCardyles.gstText}>{gst}</Text>
         </Text>
         <Text style={stylesCard.durationText}>{duration}</Text>
-        <GradientRibbon feature1={featureText1} feature2={featureText2}>
-        
+        <GradientRibbon feature1={featureText1} feature2={featureText2}>        
         </GradientRibbon>
       </View>
+      
     </View>
   );
 };
@@ -98,6 +98,11 @@ const stylesCard = StyleSheet.create({
       color: '#666',
       marginRight: 8,
     },
+    buttonStyle: {
+      position: 'absolute',
+      bottom: wp(-6),
+      alignSelf: 'center'
+  },
   });
   
 export default SubscriptionCard;

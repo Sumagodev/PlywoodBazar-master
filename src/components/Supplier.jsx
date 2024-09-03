@@ -473,7 +473,7 @@ export default function Supplier(props) {
                 {productReviewArr && productReviewArr.length > 0 ? (
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-                    <View style={{ alignSelf: "center" }}><CustomButtonNew text={"Show more.."}  paddingHorizontal={wp(5)} textSize={wp(4)}  buttonColor={'#573C26'} onPress={() => handleModelshow()} /></View>
+                    <View style={{ alignSelf: "center" }}><CustomButtonNew text={"Show more.."}  paddingHorizontal={wp(5)} textSize={wp(4)}  buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage',{data:supplierObj._id})} /></View>
                   </View>
                 ) : (
                   <View style={{ height: hp(20),backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

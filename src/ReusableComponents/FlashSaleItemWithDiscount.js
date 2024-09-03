@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'reac
 import CustomColors from '../styles/CustomColors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, offPercentage, onCallPress, onCardPress }) => {
+const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, offPercentage, onCallPress, onCardPress,discountType }) => {
     return (
         <Pressable style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
@@ -25,7 +25,9 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
   <View style={styles.starContainer}>
     <Icon name='decagram' color='#c3a186' size={wp(15)} />
     <View style={{flexDirection: 'column', position: 'absolute', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
-      <Text style={{color: 'white', textAlign: 'center', fontSize: wp(4)}}>{offPercentage}%</Text>
+    <Text style={{color: 'white', textAlign: 'center', fontSize: wp(3)}}>
+  {discountType === 'Amount' ? `₹ ${offPercentage}` : `${offPercentage} %`}
+</Text>
       <Text style={{color: 'white', textAlign: 'center', fontSize: wp(3)}}>OFF</Text>
     </View>
   </View>

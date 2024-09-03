@@ -406,6 +406,7 @@ export default function Home() {
   };
 
   const renderFlashSale = ({item, index}) => {
+    console.log('itemssss',item)
     return (
         <View style={{marginHorizontal:wp(1)}}>
           <FlashSaleItemWithDiscount imagePath={{uri: generateImageUrl(item?.productId?.mainImage)}}
@@ -414,6 +415,7 @@ export default function Home() {
         salePrice={item?.salePrice}
         duration={10}
         offPercentage={item?.discountValue}
+        discountType={item?.discountType}
         onCallPress={()=>{handelcallbtn(item?.whatsapp)}}
         ></FlashSaleItemWithDiscount>
         </View>

@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SubscriptionCard from '../ReusableComponents/SubscriptionCard';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientRibbon from '../ReusableComponents/GradientRibbon';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 export default function Subscriptions(props) {
   const navigation = useNavigation();
 console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
@@ -166,10 +167,21 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
               For {item?.advertisementDays > 1 ? `${item?.advertisementDays} Days` : `${item?.advertisementDays} Day`}
               </Text>
          
-        <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'}>
+          <View style={{marginBottom:wp(5)}}>
+          <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'}/>
+          </View>
         
-        </GradientRibbon>
+        
+        <View style={stylesCard.buttonStyle} >
+                <CustomButtonNew
+                    paddingHorizontal={wp(8)}
+                    paddingVertical={wp(3)}
+                    text='Buy Now'
+                    onPress={()=> {setSelectedSubscriptionObj(item); handleSubmit(); console.log('**************')}}
+                />
+            </View>
       </View>
+
     </View>
       </>
     );
@@ -198,15 +210,7 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
             </Text>
           </TouchableOpacity>
         ) : (
-          <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingVertical: 20}}>
-          <View style={{width: wp(50)}}>
-            {selectedSubscriptionObj && selectedSubscriptionObj?._id && (
-              <TouchableOpacity onPress={() => handleSubmit()} style={[styles.btnbg, {width: '100%', marginHorizontal: 20, marginBottom: 15}]}>
-                <Text style={[styles.textbtn, {fontSize: wp(4)}]}>Buy Subscription</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
+          <></>
         )}
       
       </View>
@@ -318,4 +322,10 @@ const stylesCard = StyleSheet.create({
       color: '#666',
       marginRight: 8,
     },
+    buttonStyle: {
+      marginTop:wp(3),
+      position: 'absolute',
+      bottom: wp(-10),
+      alignSelf: 'flex-end'
+  },
   });

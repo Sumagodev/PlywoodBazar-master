@@ -102,6 +102,52 @@ export default function MyFlashSales(props) {
       </View>
     );
   };
+
+  const renderItem = ({item, index}) => {
+    return (
+      <Pressable style={stylesCard.container}>
+       
+        <Image style={{width:'100%',height:'50%',borderRadius:wp(5)}} source={{uri: generateImageUrl(item?.productId?.mainImage)}} />
+        <View style={stylesCard.imageStyle}>       
+        <Pressable
+          style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35', marginVertical: 2}}
+          onPress={() => {
+            handleDeleteFlashSale(item?._id)
+          }}>
+          <FontAwesomeIcon name="trash-o" size={wp(5)} color="#fff" />
+        </Pressable>
+        <Pressable style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35'}} onPress={() => navigation.navigate('EditFlashSale', {data: item?._id})}>
+          <FontAwesomeIcon name="edit" size={wp(5)} color="#fff" />
+        </Pressable>
+        </View>
+      
+
+        <Text style={stylesCard.headStyle}>{item?.productId?.name}</Text>
+        <View style={stylesCard.table}>
+          <View style={stylesCard.tableRow}>
+            <Text style={stylesCard.valueTextStyle} ellipsizeMode="tail" numberOfLines={2}>
+              {'\u20B9'} {item?.salePrice}
+            </Text>
+          </View>
+          <View style={stylesCard.tableRow}>
+            <Text style={[stylesCard.valueTextStyleLight, {textDecorationLine: 'line-through'}]} ellipsizeMode="tail" numberOfLines={1}>
+              {'\u20B9'}
+              {item?.price}
+            </Text>
+          </View>
+        </View>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2)}}>
+          <Text style={{fontSize:wp(3)}}>From : </Text>
+          <Text style={{fontSize:wp(3)}}>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
+        </View>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2)}}>
+          <Text style={{fontSize:wp(3)}}>To      : </Text>
+          <Text style={{fontSize:wp(3)}}>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
+        </View>
+      </Pressable>
+    );
+  };
+
   const renderFlashItem = ({ item, index }) => {
     return (
       <View  style={{paddingVertical:wp(1)}}>
@@ -150,7 +196,7 @@ export default function MyFlashSales(props) {
      </View>
 
       {
-        saleArr.length > 0 ?  <FlatList data={saleArr} renderItem={renderFlashItem} numColumns={2} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
+        saleArr.length > 0 ?  <FlatList data={saleArr} renderItem={renderItem} numColumns={2} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
         :
           <View style={{height:hp(80), display:'flex', alignItems:'center', justifyContent:'center'}}>
             <Text style={{fontSize:16, alignSelf:'center', color:'#000', marginVertical:20}}>No Flash sales</Text>
@@ -228,5 +274,67 @@ const styles1 = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     width: wp(95),
+  },
+});
+const stylesCard = StyleSheet.create({
+  container: {
+    margin: wp(2),
+    width: wp(46),
+    height: wp(60),
+    elevation: 10,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    backgroundColor: 'white',
+    borderRadius: wp(5),
+  },
+  imageStyle: {
+    borderRadius: wp(5),
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    paddingHorizontal:wp(2),
+    paddingVertical:wp(2)
+    
+  },
+  table: {
+    marginHorizontal: wp(2),
+    width: '100%',
+  },
+  headStyle: {
+    color: '#5a432f',
+    textAlign: 'center',
+    fontSize: wp(4),
+    fontWeight: 'bold',
+    marginVertical: wp(2),
+    marginStart: wp(2),
+  },
+  tableRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: wp(0.3),
+  },
+  nameStyle: {
+    color: CustomColors.mattBrownDark,
+    fontSize: wp(3.5),
+    fontWeight: 'bold',
+  },
+  keyTextStyle: {
+    color: 'black',
+    flex: 1,
+  },
+  valueTextStyle: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: wp(3.5),
+    flex: 1,
+    paddingRight: wp(4),
+  },
+  valueTextStyleLight: {
+    color: 'gray',
+    fontSize: wp(3.5),
+    flex: 1,
+    paddingRight: wp(4),
   },
 });

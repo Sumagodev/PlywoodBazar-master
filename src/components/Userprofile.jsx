@@ -130,7 +130,7 @@ export default function Userprofile(props) {
           <View style={profileStyle.iconContainer}>
             <FontAwesome5Icon style={profileStyle.icon} name="bullhorn" size={wp(6)} color="white" />
           </View>
-          <Text style={profileStyle.title}>My Promotions</Text>
+          <Text style={profileStyle.title}>My Promotions ( New Arrival )</Text>
         </Pressable>
 
         <Pressable onPress={() => navigate.navigate('AllChats')} style={profileStyle.container}>
