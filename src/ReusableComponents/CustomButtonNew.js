@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CustomColors from '../styles/CustomColors';
@@ -19,7 +19,7 @@ const CustomButtonNew = ({
   ...rest
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: buttonBgColor }, rest]} onPress={onPress}>
+    <Pressable style={[styles.button, { backgroundColor: buttonBgColor }, rest]} onPress={onPress}>
         <View style={styles.container}>
         {leftIconPath && (
           <View style={[styles.iconContainer, { backgroundColor: leftIconBgColor }]}>
@@ -33,7 +33,7 @@ const CustomButtonNew = ({
           </View>
         )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

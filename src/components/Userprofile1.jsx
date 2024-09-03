@@ -14,6 +14,10 @@ import {generateImageUrl} from '../services/url.service';
 import Video from 'react-native-video';
 import Header from '../navigation/customheader/Header';
 import moment from 'moment';
+import CustomColors from '../styles/CustomColors';
+import CustomButton from '../ReusableComponents/CustomButton';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function Userprofile1(props) {
   const [userObj, setUserObj] = useState(null);
@@ -65,10 +69,10 @@ export default function Userprofile1(props) {
 
   return (
     <>
-      <ScrollView style={[styles.padinghr, styles.bgwhite, {paddingBottom: 50}]}  showsVerticalScrollIndicator={false}
+      <ScrollView style={[ styles.bgwhite, {paddingBottom: 50}]}  showsVerticalScrollIndicator={false}
   showsHorizontalScrollIndicator={false}
 >
-      <Header stackHeader={true} screenName={'User'} rootProps={props} />
+      <Header normal={true} rootProps={props} />
         {/* <View style={styles1.flexbetween}>
           <Pressable onPress={() => navigation.goBack()}>
             <Image source={require('../../assets/img/backbtn.png')} style={styles1.imgsmall} resizeMode="contain" />
@@ -79,63 +83,71 @@ export default function Userprofile1(props) {
 
         {/* <ImageBackground source={{uri: generateImageUrl(userObj?.bannerImage)}} style={[styles1.paddinghor10, {height: hp(20), borderRadius:20, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center',}]} resizeMode='stretch'></ImageBackground> */}
 
-        <View>
-          <Image source={{uri: generateImageUrl(userObj?.bannerImage)}} style={{height: hp(20), borderRadius: 10}} resizeMode="cover" />
-          <View style={{display: 'flex', flexDirection: 'row', gap: 10, paddingHorizontal: 5}}>
-            <TouchableOpacity style={{marginTop: hp(-3), flex: 1}}>
-              <Image source={userObj && userObj.profileImage ? {uri: generateImageUrl(userObj?.profileImage)} : require('../../assets/img/userpic.png')} style={styles1.imgfluid} resizeMode='stretch' />
-            </TouchableOpacity>
-
-            <View style={[{flex: 3, paddingTop: 5}]}>
-              <View style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
-              <View style={{display: 'flex',justifyContent: 'space-between',}}>
-                <Text style={styles1.namehd}>{userObj?.name}</Text>
-                <Text style={styles1.namehdemail}>{userObj?.email} </Text>
-              </View>
-
-                {userObj?.isVerified && (
-                  <View style={{display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', marginTop: 10}}>
-                    <Image source={require('../../assets/img/Business.png')} style={{width: wp(13), height: hp(6)}} />
-                    <Text style={styles1.verfied}>Verified by plywood Bazar</Text>
-                  </View>
-                )}
-                <TouchableOpacity onPress={() => navigate.navigate('Editprofile')}>
-                  <Text style={[styles1.verfied, {color: '#b08218'}]}>Edit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+        <View style={{flex:1,zIndex:1}}>
+          <Image source={{uri: generateImageUrl(userObj?.bannerImage)}} style={{height: hp(22), borderRadius:0}} resizeMode="cover" />
+          <View style={{flex:1,  gap: 10, alignSelf:'center',marginTop:wp(15),zIndex:1,position:'absolute'}}>
+          <TouchableOpacity style={{marginTop: wp(0),alignSelf:'center'}}>
+            <Image source={userObj && userObj.profileImage ? {uri: generateImageUrl(userObj?.profileImage)} : require('../../assets/img/userpic.png')} style={styles1.imgfluid} resizeMode='stretch' />
+            <TouchableOpacity onPress={() => navigate.navigate('Editprofile')} style={{alignSelf:'flex-end',top:wp(-10),height:wp(7),width:wp(7),backgroundColor:'#FFFFFF',alignItems:'center',justifyContent:'center',borderRadius:22,borderWidth:3,borderColor:'#603200'}}>
+            <FontAwesome name='pencil' size={22} color='#603200'  />
+          </TouchableOpacity>
+          </TouchableOpacity>
           </View>
+          </View>
+       
+
+        <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/leads_bg.png')}>
+       
+        <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{justifyContent: 'center',alignItems:'center'}}>
+         <Text style={styles1.namehd}>{userObj?.name}</Text>
+         <Text style={styles1.namehdemail}>{userObj?.email} </Text>
         </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Supplier', {data: userObj})} style={[styles.btnbg, {marginTop: hp(5)}]}>
-          <Text style={[styles.textbtn, {fontFamily: 'Manrope-Medium'}]}>View Public Profile</Text>
-        </TouchableOpacity>
-            
-
-        <Text style={{color: '#b08229', fontSize: 15, paddingLeft: 7, marginTop: 10, fontFamily:'Poppins-Medium', }}>Personal Details</Text>  
-        <View style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-          <Text style={[styles1.nameheading, {color:'#797979'}]}>User Name</Text>
+{/*
+      {userObj?.isVerified && (
+        <View style={{display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', marginTop: 10}}>
+          <Image source={require('../../assets/img/Business.png')} style={{width: wp(13), height: hp(6)}} />
+          <Text style={styles1.verfied}>Verified by plywood Bazar</Text>
+        </View>
+      )}
+        */}
+    
+    </View>
+    
+    <TouchableOpacity  style={[ {marginTop: wp(3),alignSelf:'center'}]}>
+    <CustomButtonNew onPress={() => navigation.navigate('Supplier', {data: userObj})} text={'View Public Profile'} textSize={wp(3)} paddingHorizontal={wp(10)}  paddingVertical={wp(2)}/>
+  </TouchableOpacity>
+<View style={{paddingHorizontal:wp(3)}}>
+        <Text style={{color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily:'Poppins-Medium', }}>Personal Details</Text>  
+        
+          <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>User Name</Text>
+          <View style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
           <Text style={styles1.nameheading}>{userObj?.name}</Text>
         </View>
+     
+        <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Phone </Text>
         <View style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-        <Text style={[styles1.nameheading, {color:'#797979'}]}>Phone </Text>
           <Text style={styles1.nameheading}>{userObj?.phone}</Text>
         </View>
+        
+        <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Role </Text>
         <View style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-        <Text style={[styles1.nameheading, {color:'#797979'}]}>Role </Text>
           <Text style={styles1.nameheading}> {userObj?.role}</Text>
         </View>
       
+        <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Country</Text>
         <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-        <Text style={[styles1.nameheading, {color:'#797979'}]}>Country</Text>
+
           <Text style={styles1.nameheading}>{userObj?.countryObj?.name}</Text>
         </Pressable>
+        <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>State</Text>
         <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-        <Text style={[styles1.nameheading, {color:'#797979'}]}>State</Text>
+
           <Text style={styles1.nameheading}>{userObj?.stateObj?.name}</Text>
         </Pressable>
+        <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>City</Text>
         <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-        <Text style={[styles1.nameheading, {color:'#797979'}]}>City</Text>
+
           <Text style={styles1.nameheading}>{userObj?.cityObj?.name}</Text>
         </Pressable>
         {/* <View style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
@@ -145,10 +157,11 @@ export default function Userprofile1(props) {
 
         {userObj?.role != ROLES_CONSTANT.USER && (
           <>
-            <Text style={{color: '#b08229', fontSize: 15, paddingLeft: 7, marginTop: 10, fontFamily:'Poppins-Medium', }}>Company Details</Text>
+            <Text style={{color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily:'Poppins-Medium', }}>Company Details</Text>
 
+               <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Company Name</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-               <Text style={[styles1.nameheading, {color:'#797979'}]}>Company Name</Text>
+
               <Text style={styles1.nameheading}>{userObj?.companyObj?.name}</Text>
             </Pressable>
 
@@ -157,34 +170,40 @@ export default function Userprofile1(props) {
               <Text style={styles1.nameheading}>{userObj?.companyObj?.name}</Text>
             </Pressable> */}
 
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Company Email:</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-            <Text style={[styles1.nameheading, {color:'#797979'}]}>Company Email:</Text>
+
               <Text style={styles1.nameheading}>{userObj?.companyObj?.email}</Text>
             </Pressable>
 
+               <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Company Phone:</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-               <Text style={[styles1.nameheading, {color:'#797979'}]}>Company Phone:</Text>
+
               <Text style={styles1.nameheading}>{userObj?.companyObj?.phone}</Text>
             </Pressable>
 
+               <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Dealing With Brand Names:</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-               <Text style={[styles1.nameheading, {color:'#797979'}]}>Dealing With Brand Names:</Text>
+
               <Text style={styles1.nameheading}>{userObj?.brandNames}</Text>
             </Pressable>
 
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>GST number</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-            <Text style={[styles1.nameheading, {color:'#797979'}]}>GST number</Text>
+
               <Text style={styles1.nameheading}>{userObj?.companyObj?.gstNumber}</Text>
             </Pressable>
 
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Company address</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-            <Text style={[styles1.nameheading, {color:'#797979'}]}>Company address</Text>
+
               <Text style={[styles1.nameheading, {maxWidth: '50%'}]}>{userObj?.companyObj?.address}</Text>
             </Pressable>
           
 
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Year of Establishment:</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-            <Text style={[styles1.nameheading, {color:'#797979'}]}>Year of Establishment:</Text>
+
               <Text style={styles1.nameheading}>{userObj?.companyObj?.yearOfEstablishment}</Text>
             </Pressable>
 
@@ -192,11 +211,12 @@ export default function Userprofile1(props) {
             <Text style={[styles1.nameheading, {color:'#797979'}]}>Established in Year</Text>
               <Text style={styles1.nameheading}>{userObj?.companyObj?.yearOfEstablishment}</Text>
             </Pressable> */}
-            <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
-            <Text style={[styles1.nameheading, {color:'#797979'}]}>Google Maps Link</Text>
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Google Maps Link</Text>
+            <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15, borderRadius:25}]}>
+
               <Text style={styles1.nameheading}>{userObj?.companyObj?.googleMapsLink}</Text>
             </Pressable>
-            <Text style={{color: 'black', fontSize: 18, paddingLeft: 7, marginVertical: 10}}>Your Images</Text>
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Your Images</Text>
             {
               userObj?.imagesArr && userObj?.imagesArr.length > 0 ?
               <FlatList
@@ -209,7 +229,7 @@ export default function Userprofile1(props) {
                :
                <Text>No Images</Text>
             }
-            <Text style={{color: 'black', fontSize: 18, paddingLeft: 7, marginVertical: 10}}>Your Videos </Text>
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Your Videos </Text>
 
             {
               userObj?.videoArr && userObj?.videoArr.length > 0 ?
@@ -231,6 +251,8 @@ export default function Userprofile1(props) {
           <Text style={styles1.nameheading}>Logout</Text>
           <Image source={require('../../assets/img/logout.png')} style={styles1.imgfluid1} />
         </Pressable> */}
+        </View>
+         </ImageBackground>
       </ScrollView>
     </>
   );
@@ -241,31 +263,33 @@ const styles1 = StyleSheet.create({
     height: hp(8),
   },
   card_main: {
-    borderWidth: 1,
-    borderColor: '#D9D9D9',
     borderStyle: 'solid',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 16,
+   
+    paddingVertical: wp(2),
+    borderRadius: 50,
     marginBottom: 10,
     fontFamily: 'Manrope-Medium',
     color: '#000',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+paddingHorizontal:wp(1),
+backgroundColor:"#FFFFFF",
+elevation:10,
+overflow:'hidden'
+
   },
   verfied: {
     fontFamily: 'Manrope-Medium',
     color: '#000',
   },
   namehdemail: {
-    color: '#323142',
-    fontSize: 13,
+    color: '#000',
+    fontSize: wp(2.7),
     fontFamily: 'Manrope-Regular',
   },
   namehd: {
-    fontSize: 15,
+    fontSize: wp(5),
     fontFamily: 'Manrope-Bold',
     color: '#000',
   },
@@ -337,12 +361,13 @@ const styles1 = StyleSheet.create({
     justifyContent: 'center',
   },
   imgfluid: {
-    width: wp(20),
-    height: wp(20),
-    borderColor: '#B08218',
-    borderWidth: 2,
+    width: wp(28),
+    height: wp(28),
+    borderColor: '#FFFFFF',
+    borderWidth: 5,
     borderStyle: 'solid',
-    borderRadius: 50,
+    borderRadius: 100,
+    elevation:5
   },
   abosoluicon: {
     position: 'absolute',
@@ -417,6 +442,16 @@ const styles1 = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     color: '#000',
+  },
+  nameheading:{
+  fontSize:wp(3),
+  paddingLeft:wp(2),
+  color:'#000'
+  },
+  cardContainer: {
+    paddingTop: wp(12),
+
+    overflow: 'hidden',
   },
 });
 // import {useIsFocused, useNavigation} from '@react-navigation/native';
