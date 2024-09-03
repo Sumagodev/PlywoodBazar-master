@@ -16,7 +16,7 @@ const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
             </View>
             <Text style={styles.nameStyle}>{name}</Text>
             <View style={styles.rowStyle}>
-                <Text style={[styles.textStyle, {fontWeight: '100'}]}>PRODUCTS: </Text>
+                <Text style={[styles.textStyle, {fontWeight: '400'}]}>Products: </Text>
                 <Text style={[styles.textStyle, {fontWeight: 'bold'}]}>{products}</Text>
             </View>
             <View style={styles.rowStyle}>
@@ -25,10 +25,10 @@ const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
             </View>
             <View style={[styles.rowStyle, {width: '80%'}]}>
                 <Icon name='map-marker' color='gray' size={wp(5)} />
-                <Text style={[styles.textStyle]}>{address}</Text>
+                <Text style={[styles.textStyle,{marginHorizontal:wp(1)}]} numberOfLines={1} ellipsizeMode='tail'>{address}</Text>
             </View>
-            <View style={{paddingTop: wp(2)}}>
-                <CustomButtonNew  textSize={wp(4)} onPress={()=>console.log('function called')} text={'View Profile'} paddingHorizontal={wp(4)} paddingVertical={wp(3)}/>
+            <View style={{paddingTop: wp(1)}}>
+                <CustomButtonNew  textSize={wp(3.5)} onPress={()=>console.log('function called')} text={'View Profile'} paddingHorizontal={wp(4)} paddingVertical={wp(2)}/>
             </View>
         </View>
     );
@@ -36,12 +36,14 @@ const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
 
 const styles = StyleSheet.create({
     container:{
-        width: wp(45),
-        height: wp(75),
+        paddingTop:wp(7),
+        paddingBottom:wp(3),
+        backgroundColor:'red',
+        width: wp(46),
         backgroundColor: 'white',
         borderRadius: wp(5),
         elevation: 10,
-        margin: wp(2),
+        margin: wp(1),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -54,10 +56,10 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     imageStyle:{
-        width: wp(19), height: wp(19),
+        width: wp(30), height: wp(30),
     },
     nameStyle:{
-        marginTop: wp(2),
+        marginTop: wp(5),
         fontSize: wp(5),
         fontWeight: 'bold',
     },
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
         width:wp(30)
     },
     textStyle:{
-        fontSize: wp(4),
+        fontSize: wp(3),
     }
 });
 

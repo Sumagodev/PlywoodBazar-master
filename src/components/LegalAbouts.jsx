@@ -53,7 +53,7 @@ const LegalAbouts = () => {
               <Text style={styles.footerButtonText}>About us</Text>
               
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerButton}>
+            <TouchableOpacity style={styles.footerButton} onPress={()=> navigation.navigate('EventsOrActivitiesPage')}>
               <Text style={styles.footerButtonText}>Activities</Text>
               
             </TouchableOpacity>

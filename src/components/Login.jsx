@@ -86,7 +86,7 @@ export default Login = () => {
                 <View style={styles.imageContainer}>
                   <Image
                     resizeMode="stretch"
-                    source={require('../images/login_image_1.png')}
+                    source={require('../../assets/img/hero1.png')}
                     style={styles.bottomImage}
                   />
                 </View>

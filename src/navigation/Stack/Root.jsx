@@ -52,6 +52,7 @@ import Chkdropdown from '../../components/Chkdropdown';
 import Login from '../../components/Login';
 import VerifyOtp from '../../components/VerifyOtp';
 import ReviewsPage from '../../components/ReviewsPage';
+import EventsOrActivitiesPage from '../../ReusableComponents/EventsOrActivitiesPage';
 
 
 export const isAuthorisedContext = createContext({});
@@ -501,6 +502,14 @@ export default function RootStack() {
               }}
               name="ReviewsPage"
               component={ReviewsPage}
+            />
+             <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="EventsOrActivitiesPage"
+              component={EventsOrActivitiesPage}
             />
 
           </Stack.Navigator>

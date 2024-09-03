@@ -148,7 +148,7 @@ export default VerifyOtp = ({route}) => {
                 
             </View>
             <View style={{width:'100%',height:'100%'}}>
-            <Image resizeMode='stretch' source={require('../images/login_image_1.png')}   style={{width:'100%',height:'100%'}}></Image>
+            <Image resizeMode='stretch' source={require('../../assets/img/hero2.png')}  style={{width:'100%',height:'100%'}}></Image>
             </View>
           </ImageBackground>
         </View>
