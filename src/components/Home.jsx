@@ -140,7 +140,7 @@ export default function Home() {
     }
   };
   const handleApplySubmitRequirement = async () => {
-    setApplyFromModal(false)
+    setApplyFromModal(true)
     try {
       if (name == '') {
         errorToast('Name cannot be empty');
@@ -465,7 +465,7 @@ export default function Home() {
   };
   const renderOpportunities = ({item, index}) => {
     return (
-      <OpportunitiesItem opportunityItem={{imagePath:{uri: generateImageUrl(item.image)},title:item.name,isExclusive:true}}></OpportunitiesItem>
+      <OpportunitiesItem opportunityItem={{imagePath:{uri: generateImageUrl(item.image)},title:item.name,isExclusive:true}} onApplyPress={()=>setApplyFromModal(true)} ></OpportunitiesItem>
     );
   };
 
@@ -799,7 +799,11 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
                 </TouchableOpacity>
             </View>
            </View>
+           <TouchableOpacity onPress={() => setApplyFromModal(false)} style={{width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Image source={require('../../assets/img/close.png')} style={{width: wp(3), height: hp(3)}} resizeMode="contain" />
+          </TouchableOpacity>
         </View>
+        
       </Modal>
 
             </>
@@ -1164,6 +1168,13 @@ const styles1 = StyleSheet.create({
     marginHorizontal: 15,
     width: wp(60),
 
+  },
+  centeredView:{
+
+    alignItems:'center',
+    justifyContent:'center',
+    flex:1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
   },
   containerForm: {
     elevation: 5,

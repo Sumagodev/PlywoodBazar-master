@@ -783,7 +783,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
       <TextInput
         style={stylesSearch.input}
         placeholder={'Search..'}       
-        onChangeText={e => setQuery(e)}      
+        
+        onChangeText={e => setQuery(e)} value={qry}   
       />
     </View>
             
