@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, ImageBackground, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -194,7 +194,8 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
   return (
     <>
       <Header normal={true} screenName={'Subscriptions'} rootProps={props} />
-      <View style={{backgroundColor: '#fff', flex: 1, paddingHorizontal: 10}}>
+      <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1,overflow:'hidden'}}>
+      <View style={{ flex: 1, paddingHorizontal: 10}}>
         <FlatList data={subscriptionArr} renderItem={renderNewSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 50}} />
         {/* {selectedSubscriptionObj && selectedSubscriptionObj?._id && (
           <TouchableOpacity onPress={() => handleSubmit()} style={[styles.btnbg, {width: wp(90), marginHorizontal: 20, marginBottom: 15}]}>
@@ -214,6 +215,7 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
         )}
       
       </View>
+      </ImageBackground>
     </>
   );
 }

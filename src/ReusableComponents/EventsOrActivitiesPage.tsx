@@ -5,14 +5,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomColors from '../styles/CustomColors';
 import UpcomingEventItem from './UpcomingEventItem';
 import PopularActivityItem from './PopularActivityItem';
+import Header from '../navigation/customheader/Header';
 
 export default function EventsOrActivitiesPage(props: any) {
     return (
+        <>
+        <Header normal={true} screenName={'Activities'} rootProps={props} />
         <LinearGradient style={styles.rootContainer}
             colors={['white', CustomColors.mattBrownFaint, CustomColors.mattBrownFaint]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}>
-            <Image style={styles.logoStyle} source={require('../../assets/img/profile.png')} />
+            
             <Text style={styles.headingTextStyle}>Activities</Text>
             <Text style={styles.subHeadingTextStyle}>Upcoming Event</Text>
             <View style={{paddingVertical: wp(1), justifyContent: 'center',}}>
@@ -34,14 +37,16 @@ export default function EventsOrActivitiesPage(props: any) {
                 keyExtractor={(item, index) => index.toString()}
             />
         </LinearGradient>
+        </>
     )
+
 }
 
 const styles = StyleSheet.create({
     rootContainer: {
         height: '100%',
         width: '100%',
-        padding: wp(3),
+        padding: wp(2),
     },
     logoStyle: {
         paddingVertical: wp(4),
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
         height: wp(15),
     },
     headingTextStyle: {
-        marginTop: wp(8),
+        marginTop: wp(1),
         fontSize: wp(8),
         fontWeight: 'bold',
         marginBottom: wp(6),
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
 
 const upcomingEventItemsList = [
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         date: '23-02-2024',
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
@@ -74,42 +79,42 @@ const upcomingEventItemsList = [
 
 const popularActivityItemsList = [
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     },
     {
-        imagePath: require('../../assets/img/pune.png'),
+        imagePath: require('../../assets/img/logo_1.png'),
         title: 'Lorem Ipsum',
         description: "Lorem Ipsum has been the industry's standard dummy,Lorem Ipsum has been the industry's standard dummy",
     }

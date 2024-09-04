@@ -7,6 +7,7 @@ import CustomColors from '../styles/CustomColors';
 import CustomInputWithLeftIcon from '../ReusableComponents/CustomInputWithLeftIcon';
 import { sendOtpService } from '../services/User.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
+import { heightPercentageToDP,widthPercentageToDP } from 'react-native-responsive-screen';
 
 export default Login = () => {
   const navigation = useNavigation();
@@ -37,11 +38,11 @@ export default Login = () => {
   };
 
   return (
-  <KeyboardAvoidingView 
-      style={{ flex: 1 }} 
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <KeyboardAvoidingView 
+    style={{ flex: 1 }} 
+    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+  >
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={styles.container}>
           <View style={styles.logoContainer}>
             <Image
@@ -54,41 +55,36 @@ export default Login = () => {
           <View style={styles.cardContainer}>
             <View style={styles.card}>
               <ImageBackground
-                source={require('../images/card_bg_login.png')}
+                source={require('../../assets/img/main_bg.jpg')}
                 style={styles.cardImage}
                 imageStyle={styles.cardImageRounded}
               >
-                <CustomInputWithLeftIcon
-                  placeholderText="Enter your phone number"
-                  maxLength={10}
-                  keyboardType="numeric"
-                  onValueChange={value => setMobileNumber(value)}
-                  containerStyle={{ backgroundColor: '#F0F0F0' }}
-                  iconContainerStyle={{ backgroundColor: CustomColors.mattBrownDark }}
-                  inputStyle={{ color: '#000' }}
-                />
-                {error && <Text style={styles.errorText}>Please enter a valid 10-digit mobile number.</Text>}
-                <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                  <CustomRoundedTextButton
-                    buttonText="SEND OTP"
-                    buttonColor={CustomColors.mattBrownDark}
-                    onPress={handleSendOTP}
+                <View style={styles.contentContainer}>
+                  <CustomInputWithLeftIcon
+                    placeholderText="Enter your phone number"
+                    maxLength={10}
+                    keyboardType="numeric"
+                    onValueChange={value => setMobileNumber(value)}
+                    containerStyle={{ backgroundColor: '#F0F0F0' }}
+                    iconContainerStyle={{ backgroundColor: CustomColors.mattBrownDark }}
+                    inputStyle={{ color: '#000' }}
                   />
-                </View>
-                <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                  <Text
-                    style={styles.registerText}
-                    onPress={() => navigation.navigate('VerifyOtp', mobileNumber)}
-                  >
-                    REGISTER
-                  </Text>
-                </View>
-                <View style={styles.imageContainer}>
-                  <Image
-                    resizeMode="stretch"
-                    source={require('../../assets/img/hero1.png')}
-                    style={styles.bottomImage}
-                  />
+                  {error && <Text style={styles.errorText}>Please enter a valid 10-digit mobile number.</Text>}
+                  <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                    <CustomRoundedTextButton
+                      buttonText="SEND OTP"
+                      buttonColor={CustomColors.mattBrownDark}
+                      onPress={handleSendOTP}
+                    />
+                  </View>
+                  <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                    <Text
+                      style={styles.registerText}
+                      onPress={() => navigation.navigate("Register")}
+                    >REGISTER
+                    </Text>
+                  </View>
+                  <Image  resizeMode='contain' style={{backgroundColor:'transparent',width:widthPercentageToDP(100),height:heightPercentageToDP(35)}} source={require('../../assets/img/hero1.png')}></Image>
                 </View>
               </ImageBackground>
             </View>
@@ -123,14 +119,13 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   cardContainer: {
-    flex: 1,
     width: '100%',
-    justifyContent: 'flex-end',
+    height:'100%',
     alignItems: 'center',
+    flex: 1,
   },
   card: {
     width: '100%',
-    height: '100%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 60,
     borderTopRightRadius: 60,
@@ -140,6 +135,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
+    flex: 1,
   },
   cardImage: {
     flex: 1,
@@ -149,6 +145,11 @@ const styles = StyleSheet.create({
   cardImageRounded: {
     borderTopLeftRadius: 60,
     borderTopRightRadius: 60,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
   },
   errorText: {
     color: 'red',
@@ -163,15 +164,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     lineHeight: 50,
-  },
-  imageContainer: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'flex-end', // Ensures the image stays at the bottom
-  },
-  bottomImage: {
-    width: '100%',
-    height: '100%',
   },
 });

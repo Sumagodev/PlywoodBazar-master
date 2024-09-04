@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   logoStyle: {
     width: '100%',
-    height: wp(15),
+    height: wp(12),
   },
   categry: {
     fontSize: wp(6),

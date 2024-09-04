@@ -16,6 +16,7 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { loginUser, sendOtpService, setToken } from '../services/User.service';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
 export default VerifyOtp = ({route}) => {
   const [otp, setOtp] = useState('');
@@ -113,7 +114,7 @@ export default VerifyOtp = ({route}) => {
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <ImageBackground
-            source={require('../images/card_bg_login.png')} // Your card background image
+            source={require('../../assets/img/main_bg.jpg')} // Your card background image
             style={styles.cardImage}
             imageStyle={styles.cardImageRounded} // Apply rounded corners only to the top
           >
@@ -147,9 +148,13 @@ export default VerifyOtp = ({route}) => {
                 </Text>
                 
             </View>
-            <View style={{width:'100%',height:'100%'}}>
-            <Image resizeMode='stretch' source={require('../../assets/img/hero2.png')}  style={{width:'100%',height:'100%'}}></Image>
-            </View>
+            <View style={{height:heightPercentageToDP(40),width:widthPercentageToDP(100) }}>
+  <Image
+    resizeMode='contain' // You can also try 'contain' depending on your needs
+    source={require('../../assets/img/hero2.png')}
+    style={{width: '100%',height:'100%' }}
+  />
+</View>
           </ImageBackground>
         </View>
       </View>
@@ -188,6 +193,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     width: '100%',
+    height:'100%',
     justifyContent: 'flex-end', // Align the card to the bottom
     alignItems: 'center',
   },

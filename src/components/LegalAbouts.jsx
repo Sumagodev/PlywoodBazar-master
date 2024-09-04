@@ -4,9 +4,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import styles1 from '../../assets/stylecomponents/Style';
 import Orientation from 'react-native-orientation-locker';
 import { useNavigation } from '@react-navigation/native';
+import Header from '../navigation/customheader/Header';
 
 
-const LegalAbouts = () => {
+
+const LegalAbouts = (props) => {
   const navigation=useNavigation();
   useEffect(() => {
     // Lock orientation to portrait when the screen is focused
@@ -19,10 +21,8 @@ const LegalAbouts = () => {
   }, []);
   return (
     <View style={[styles.container, styles1.bgwhite]}>
-      <ScrollView>
-        <View style={styles.header}>
-          <Image source={require('../../assets/img/logoheader.png')} style={styles.logo} />
-        </View>
+      <ScrollView>    
+        <Header normal={true} screenName={'Legal & About Us'} rootProps={props} />
         <View style={{backgroundColor: '#FFFFFF'}}>
           <View style={styles.profile}>
             <View style={styles.profileImageContainer}>

@@ -70,7 +70,7 @@ export default function RecentActivity(props) {
     <>
       <Header normal={true} screenName={'Recent Activity'} rootProps={props}  />
       <View style={{backgroundColor: '#fff', flex: 1}}>
-            <ImageBackground  source={require('../../assets/img/leads_bg.png')} style={{flex:1}}>
+            <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1}}>
 
       <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Activity</Text>
 

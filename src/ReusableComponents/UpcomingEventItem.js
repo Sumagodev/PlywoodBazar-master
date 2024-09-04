@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
         backgroundColor: 'white'
     },
-    imageStyle:{
-        height: '100%',
+    imageStyle:{        
+        height: '80%',
         width: '40%',
-        borderRadius: wp(5),
+        borderRadius: wp(2),
     },
     contentContainer:{
         paddingHorizontal: wp(2),

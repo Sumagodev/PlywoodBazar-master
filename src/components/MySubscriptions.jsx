@@ -115,7 +115,7 @@ export default function MySubscriptions(props) {
   return (
     <>
       <Header normal={true} screenName={'My Subscriptions'} rootProps={props} />
-      <ImageBackground  source={require('../../assets/img/leads_bg.png')} style={{flex:1,overflow:'hidden'}}>
+      <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1,overflow:'hidden'}}>
       <Pressable style={{alignItems: 'center', justifyContent: 'center', width: '100%'}} onPress={() => navigation.navigate('Subscriptions', {register: false})} >
           <LinearGradient colors={['#B1784A', '#B1784A', '#624832', '#B1784A']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
             <Text style={stylesGradient.text} numberOfLines={1} ellipsizeMode="tail">

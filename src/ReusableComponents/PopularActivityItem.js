@@ -5,8 +5,8 @@ export default PopularActivityItem = ({popularActivityItem}) => {
     return(
         <Pressable style={styles.container} onPress={()=>{}}>
             <Image style={styles.imageStyle} source={popularActivityItem.imagePath} />
-            <Text style={{fontSize:wp(4), fontWeight: 'bold', marginVertical: wp(1)}} numberOfLines={1} ellipsizeMode="tail">{popularActivityItem.title}</Text>
-            <Text style={{fontSize:wp(3.5), width: '100%', paddingHorizontal: wp(2), marginBottom: wp(1)}} numberOfLines={3} ellipsizeMode="tail">{popularActivityItem.description}</Text>
+            <Text style={{fontSize:wp(4), justifyContent:'flex-start',alignSelf:'flex-start', fontWeight: 'bold', marginVertical: wp(1)}} numberOfLines={1} ellipsizeMode="tail">{popularActivityItem.title}</Text>
+            <Text style={{fontSize:wp(3.5), width: '100%', justifyContent:'flex-start',alignSelf:'flex-start', paddingHorizontal: wp(1), marginBottom: wp(1)}} numberOfLines={3} ellipsizeMode="tail">{popularActivityItem.description}</Text>
             <TouchableOpacity onPress={()=>{}} style={{marginBottom: wp(2)}}>
                 <Text style={{fontSize:wp(3.5), color: '#624832', fontWeight: 'bold'}}>Read More</Text>
             </TouchableOpacity>
@@ -16,9 +16,9 @@ export default PopularActivityItem = ({popularActivityItem}) => {
 
 const styles = StyleSheet.create({
     container:{
-        margin: wp(3),
+        margin: wp(1.5),
         height: wp(55),
-        width: wp(40),
+        width: wp(45),
         backgroundColor: 'white',
         borderRadius: wp(3),
         elevation: 5,

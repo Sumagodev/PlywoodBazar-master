@@ -267,7 +267,7 @@ export default function AddProducts(props) {
       <Header normal={true} screenName={'Add Products'} rootProps={props} />
 
       <View style={{ backgroundColor: '#fff', flex: 1, }}>
-        <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/leads_bg.png')}>
+        <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
           <View style={styles1.card_main}>
             <Text style={{ textAlign: 'center', fontSize: wp(6.0), fontWeight: 'bold' }}>Add Product</Text>
             <Text style={styles1.nameheading}>Enter Name </Text>
