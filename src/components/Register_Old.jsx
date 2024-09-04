@@ -142,7 +142,11 @@ export default function Register() {
         errorToast('Mobile is Required');
         return 0;
       }
-
+      if (`${name}` === '') {
+        errorToast('Name is Required');
+        return 0;
+      }
+      
 
       // console.log(countryId,"countryIdcountryIdcountryIdcountryId",stateId,cityId)
 

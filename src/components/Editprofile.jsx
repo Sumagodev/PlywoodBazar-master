@@ -21,6 +21,7 @@ import Video from 'react-native-video';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
+import CustomColors from '../styles/CustomColors';
 
 export default function Editprofile(props) {
   const navigation = useNavigation();
@@ -364,78 +365,57 @@ export default function Editprofile(props) {
 
   return (
     <>
-      <Header stackHeader={true} screenName={'Edit Profile'} rootProps={props} />
+    
 
-      <ScrollView style={[styles.padinghr, styles.bgwhite, {paddingTop: 2, paddingBottom: 180}]}>
-        {/* <Pressable style={styles1.userinfo}>
-          <Image source={require('../../assets/img/userpic.png')} style={styles1.imgfluid} />
-        </Pressable> */}
-        {/* <View style={styles1.textcenter}>
-          <Text style={styles1.namehd}>Edit image</Text>
-        </View> */}
-
-        {/* <Text>asd {profileImage}</Text> */}
-
-        {/* <ImageBackground source={{ uri: ((bannerImage && `${bannerImage}`.includes("base64")) ? bannerImage : generateImageUrl(bannerImage)) }} style={{height: hp(20), borderRadius: 10}} resizeMode="stretch">
-          <Pressable style={[{
-            position: "absolute",
-            right: 10,
-            top: 10
-          }]} onPress={() => handlePickBannerImage()}>
-            <AntDesign name="edit" size={17} color="#848993" style={{
-              backgroundColor: "white",
-              textAlign: 'center',
-              borderRadius: 50,
-              backgroundColor: '#fff',
-              width: 25,
-              height: 25,
-              lineHeight: 25,
-            }} />
-          </Pressable>
-          <Pressable style={[styles1.userinfo, { borderRadius: 250 }]} onPress={() => handlePickProfileImage()}>
-            {
-
-              profileImage && `${profileImage}`.includes("base64") ?
-                <Image style={{ height: 150, width: 150, borderRadius: 150 }} resizeMode='cover' source={{ uri: profileImage }} />
-                :
-                <Image style={{ height: 150, width: 150, borderRadius: 150 }} resizeMode='contain' source={{ uri: generateImageUrl(profileImage) }} />
-            }
-            <AntDesign name="edit" size={17} color="#848993" style={styles1.abosoluicon} />
-          </Pressable>
-          <View style={styles1.textcenter}>
-          </View>
-        </ImageBackground> */}
-
-        <View style={{position: 'relative'}}>
-          <Image source={{uri: bannerImage && `${bannerImage}`.includes('base64') ? bannerImage : generateImageUrl(bannerImage)}} style={{height: hp(20), borderRadius: 10}} resizeMode="stretch" />
-          <TouchableOpacity style={[{position: 'absolute', right: 10, top: 10}]} onPress={() => handlePickBannerImage()}>
-            <AntDesign name="edit" size={17} color="#fff" style={{textAlign: 'center', borderRadius: 50, backgroundColor: '#b76c3c', width: 35, height: 35, display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 30}} />
+      <ScrollView style={[ styles.bgwhite, {paddingTop: 2, paddingBottom: 180}]}>
+       
+      <Header normal={true} rootProps={props} />
+        <View style={{position: 'relative',zIndex:1}}>
+          <Image source={{uri: bannerImage && `${bannerImage}`.includes('base64') ? bannerImage : generateImageUrl(bannerImage)}} style={{height: wp(50), borderRadius:0}} resizeMode="stretch" />
+          <TouchableOpacity style={[{position: 'absolute', right: 10, top: 10,height:wp(10),width:wp(10),backgroundColor:'#FFFFFF',alignItems:'center',justifyContent:'center',borderRadius:22,borderWidth:3,borderColor:'#603200'}]} onPress={() => handlePickBannerImage()}>
+          <FontAwesome name='pencil' size={wp(5)} color='#603200'  />
           </TouchableOpacity>
-
-          <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: wp(50), position: 'relative', marginTop: -hp(6)}}>
-              <TouchableOpacity onPress={() => handlePickProfileImage()} style={{position: 'relative'}}>
+{/*
+          <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center',zIndex:1}}>
+            <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: wp(50), position: 'relative', marginTop: -hp(6),zIndex:1}}>
+             
+            <TouchableOpacity onPress={() => handlePickProfileImage()} style={{position: 'absolute',zIndex:1}}>
                 {profileImage && `${profileImage}`.includes('base64') ? (
-                  <Image style={{height: 90, width: 90, borderColor: '#b76c3c', borderWidth: 2, borderRadius: 150}} resizeMode="cover" source={{uri: profileImage}} />
+                  <Image style={styles1.imgfluid}  resizeMode="cover" source={{uri: profileImage}} />
                 ) : (
-                  <Image style={{height: 90, width: 90, borderColor: '#b76c3c', borderWidth: 2, borderRadius: 150}} resizeMode="contain" source={{uri: generateImageUrl(profileImage)}} />
+                  <Image style={styles1.imgfluid} resizeMode="contain" source={{uri: generateImageUrl(profileImage)}} />
                 )}
                 <AntDesign name="edit" size={17} color="#fff" style={{position: 'absolute', bottom: 0, right: 0, textAlign: 'center', borderRadius: 50, backgroundColor: '#b76c3c', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 30}} />
               </TouchableOpacity>
             </View>
           </View>
-        </View>
-
-        <Text style={{color: '#b08229', fontSize: 15, paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium'}}>Company Details</Text>
-        <View style={[styles1.card_main, {marginTop: 5}]}>
-          <Image source={require('../../assets/img/usernameicon.png')} style={{width: wp(6), height: hp(3), marginRight: 5}} />
-          <View>
-            <View style={{width: wp(80)}}>
-              <Text style={styles1.labelname}>Name of Organization</Text>
-              <TextInput style={styles1.inputborder} onChangeText={e => setcompanyName(e)} value={companyName} />
-            </View>
+          */}
+          <View style={{flex:1,  gap: 10, alignSelf:'center',marginTop:wp(15),zIndex:1,position:'absolute'}}>
+          <TouchableOpacity style={{bottom: wp(-14),alignSelf:'center'}} >
+          {profileImage && `${profileImage}`.includes('base64') ? (
+            <Image style={styles1.imgfluid}  resizeMode="cover" source={{uri: profileImage}} />
+          ) : (
+            <Image style={styles1.imgfluid} resizeMode="contain" source={{uri: generateImageUrl(profileImage)}} />
+          )}
+           
+            <TouchableOpacity onPress={() => handlePickProfileImage()} style={{alignSelf:'flex-end',top:wp(-10),height:wp(9),width:wp(9),backgroundColor:'#FFFFFF',alignItems:'center',justifyContent:'center',borderRadius:22,borderWidth:3,borderColor:'#603200'}}>
+            <FontAwesome name='pencil' size={wp(4)} color='#603200'  />
+          </TouchableOpacity>
+          </TouchableOpacity>
           </View>
         </View>
+        <ImageBackground style={[styles1.cardContainer,{}]} source={require('../../assets/img/main_bg.jpg')}>
+        <View style={{paddingHorizontal:wp(3),backgroundColor:CustomColors.mattBrownFaint}}>
+        <Text style={{color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily:'Poppins-Medium', }}>Company Details</Text>
+      
+         
+        <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Name of Organization</Text>
+ 
+            <View style={[{marginTop: 5, paddingVertical: 1}]}>
+              <TextInput style={styles1.card_main}  placeholder={'Organization Name'} onChangeText={e => setcompanyName(e)} value={companyName} />
+            </View>
+       
+     
         {/* <View style={[styles1.card_main, {marginTop: 5}]}>
           <Image source={require('../../assets/img/usernameicon.png')} style={{width: wp(6), height: hp(3), marginRight: 5}} />
           <View>
@@ -445,28 +425,23 @@ export default function Editprofile(props) {
             </View>
           </View>
         </View> */}
-        <View style={[styles1.card_main, {marginTop: 10}]}>
-          <Image source={require('../../assets/img/Unlock.png')} style={{width: wp(6), height: hp(3), marginRight: 5}} />
-          <View>
-            <View style={{width: wp(80)}}>
-              <Text style={styles1.labelname}>Organization Phone</Text>
-              <TextInput style={styles1.inputborder}  onChangeText={setphone} value={phone}  />
+
+     
+            
+              <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Organization Phone</Text>
+              <View style={[{marginTop: 5, paddingVertical: 1}]}>
+              <TextInput style={styles1.card_main}  placeholder={'Organization Phone'} onChangeText={setphone} value={phone}  />
             </View>
-          </View>
-        </View>
+     
 
         
-        <View style={[styles1.card_main, {marginTop: 10}]}>
-          <Image source={require('../../assets/img/Calendar.png')} style={{width: wp(5), height: hp(2.5), marginRight: 5}} />
-          <View>
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Birth Date</Text>
             <Pressable onPress={() => setAniversaryDateModal(true)}>
-              <View style={{width: wp(80)}}>
-                <Text style={styles1.labelname}>Birth Date</Text>
-                <TextInput style={styles1.inputborder} onChangeText={e => setAniversaryDate(e)} value={moment(aniversaryDate).format('YYYY-MM-DD')} editable={false} placeholder="DD - MM - YYYY" />
+              <View  style={[{marginTop: 5}]}>
+                <TextInput style={styles1.card_main} onChangeText={e => setAniversaryDate(e)} value={moment(aniversaryDate).format('YYYY-MM-DD')} editable={false} placeholder="DD - MM - YYYY" />
               </View>
             </Pressable>
-          </View>
-        </View>
+      
 
         {userObj?.role != ROLES_CONSTANT.USER && (
           <>
@@ -495,106 +470,66 @@ export default function Editprofile(props) {
             </View> */}
 
 
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              <View style={{marginRight: 5}}>
-                <FontAwesome name="address-book-o" color="#000" size={16} />
-              </View>
-
-              <View>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}> Address</Text>
-                  <TextInput style={styles1.inputborder} value={address} onChangeText={setaddress} placeholder="Address" />
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}> Address</Text>
+                <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                <TextInput style={styles1.card_main}  value={address} onChangeText={setaddress} placeholder="Address" />
                 </View>
-              </View>
-            </View>
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              {/* <Image source={require('../../assets/img/Calendar.png')} style={{ width: wp(5), height: hp(2.5), marginRight: 5 }} /> */}
-              <View style={{marginRight: 5}}>
-                <Feather name="phone-call" color="#000" size={16} />
-              </View>
-              <View>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}>Landline</Text>
-                  <TextInput style={styles1.inputborder} value={companyPhone} onChangeText={setcompanyPhone} placeholder="Company Phone" />
+          
+                <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Landline</Text>
+                <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                <TextInput style={styles1.card_main}   value={companyPhone} onChangeText={setcompanyPhone} placeholder="Company Phone" />
                 </View>
-              </View>
-            </View>
+       
 
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              <View style={{marginRight: 5}}>
-                <FontAwesome5 name="handshake" color="#000" size={16} />
-              </View>
-              <View>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}>Brand Names:</Text>
-                  <TextInput style={styles1.inputborder} value={brandNames} onChangeText={setBrandNames} placeholder="Nature Of Business" />
+                <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Brand Names:</Text>
+         
+                <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                   <TextInput style={styles1.card_main}   value={brandNames} onChangeText={setBrandNames} placeholder="Nature Of Business" />
                 </View>
-              </View>
-            </View>
-            <View style={[styles1.card_main, {marginTop: 10, backgroundColor:'#e9ecef'} ]}>
-              <View style={{marginRight: 5}}>
-                <FontAwesome name="user-o" color="#000" size={18} />
-              </View>
-              <View>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}>Role</Text>
-                  <TextInput style={styles1.inputborder} value={natureOfBusiness} onChangeText={setNatureOfBusiness} placeholder="Nature Of Business" editable={false} />
+          
+                <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Role</Text>
+                <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                   <TextInput style={styles1.card_main}   value={natureOfBusiness} onChangeText={setNatureOfBusiness} placeholder="Nature Of Business" editable={false} />
                 </View>
-              </View>
-            </View>
+         
 
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              {/* <Image source={require('../../assets/img/Calendar.png')} style={{ width: wp(5), height: hp(2.5), marginRight: 5 }} /> */}
-
-              <View style={{marginRight: 5}}>
-                <FontAwesome name="map-marker" color="#000" size={16} />
-              </View>
-
-              <View>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}>Google Maps Link</Text>
-                  <TextInput style={styles1.inputborder} value={googleMapsLink} onChangeText={setGoogleMapsLink} placeholder="Google Maps `Link" />
+                <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Google Maps Link</Text>
+                <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                   <TextInput style={styles1.card_main}   value={googleMapsLink} onChangeText={setGoogleMapsLink} placeholder="Google Maps `Link" />
                 </View>
+       
+                <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>GST Number</Text>
+                <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                   <TextInput style={styles1.card_main}   value={gstNumber} placeholder="GST Number"  />
               </View>
-            </View>
-            <View style={[styles1.card_main, {marginTop: 10,}]}>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}>GST Number</Text>
-                  <TextInput style={styles1.inputborder} value={gstNumber} placeholder="GST Number"  />
-              </View>
-            </View>
+      
 
-            <Text style={{color: '#b08229', fontSize: 15, paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium'}}>Personal Details</Text>
+            <Text style={{color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily:'Poppins-Medium', }}>Personal Details</Text>
 
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              <View style={{width: wp(80)}}>
-                <Text style={styles1.labelname}>Name of Authorised person</Text>
-                <TextInput style={styles1.inputborder} onChangeText={e => setName(e)} value={name} />
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Name of Authorised person</Text>
+              <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                 <TextInput style={styles1.card_main}   onChangeText={e => setName(e)} value={name} />
               </View>
+           
+    
+              <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Email</Text>
+            <View style={[{marginTop: 5, paddingVertical: 1}]}>
+               <TextInput style={styles1.card_main}    onChangeText={setemail} value={email} />
             </View>
-      <View style={[styles1.card_main, { marginTop: 10 }]}>
-          {/* <Image source={require('../../assets/img/Message.png')} style={{ width: wp(4), height: hp(1.9), marginRight: 5 }} /> */}
-          <View>
-            <View style={{ width: wp(80) }}>
-              <Text style={styles1.labelname}>Email</Text>
-              <TextInput style={styles1.inputborder}  onChangeText={setemail} value={email} />
-            </View>
-          </View>
-        </View>
+     
 
-            <View style={[styles1.card_main, {marginTop: 10, backgroundColor:'#e9ecef'}]}>
-              <View style={{width: wp(80)}}>
-                <Text style={styles1.labelname}>Mobile No.</Text>
-                <TextInput style={styles1.inputborder} onChangeText={e => setphone(e)} value={phone} editable={false} />
+          
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Mobile No.</Text>
+            <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                 <TextInput style={styles1.card_main}   onChangeText={e => setphone(e)} value={phone} editable={false} />
               </View>
-            </View>
+      
 
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              <View style={{width: wp(80)}}>
-                <Text style={styles1.labelname}>Whatsapp No.</Text>
-                <TextInput style={styles1.inputborder} onChangeText={e => setwhatsapp(e)} value={whatsapp} />
+              <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Whatsapp No.</Text>
+              <View style={[{marginTop: 5, paddingVertical: 1}]}>
+                 <TextInput style={styles1.card_main}   onChangeText={e => setwhatsapp(e)} value={whatsapp} />
               </View>
-            </View>
+           
 
          
 
@@ -605,22 +540,21 @@ export default function Editprofile(props) {
               </View>
             </View> */}
 
-            <View style={[styles1.card_main, {marginTop: 10}]}>
-              <View style={{width: wp(80)}}>
-                <Text style={styles1.labelname}>Year of Establishment</Text>
-                <TextInput style={styles1.inputborder} value={yearOfEstablishment} onChangeText={setYearOfEstablishment} placeholder="Year of Establishment" />
+            <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Year of Establishment</Text>
+              <View style={[ {marginTop: 5, paddingVertical: 1}]}>
+                <TextInput style={styles1.card_main} value={yearOfEstablishment} onChangeText={setYearOfEstablishment} placeholder="Year of Establishment" />
               </View>
-            </View>
+            
           
 
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-              <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>Images</Text>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <Pressable onPress={() => handleAddImage()} style={[styles.btnbg, {paddingVertical: 7, paddingHorizontal: 15, marginRight: 10}]}>
-                  <Text style={{color: 'white', fontSize: 18}}>+</Text>
+              <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Images</Text>
+              <View style={{display: 'flex', flexDirection: 'row',paddingVertical:wp(2)}}>
+                <Pressable onPress={() => handleAddImage()} style={[styles.btnbg, {paddingVertical: 10, paddingHorizontal: 12, marginRight: 10}]}>
+                <FontAwesome name='plus' size={wp(5)} color='#FFFFFF'  />
                 </Pressable>
-                <Pressable onPress={() => handleRemoveImage()} style={[styles.btnbg, {paddingVertical: 7, paddingHorizontal: 17, marginRight: 10}]}>
-                  <Text style={{color: 'white', fontSize: 18}}>-</Text>
+                <Pressable onPress={() => handleRemoveImage()} style={[styles.btnbg, {paddingVertical: 10, paddingHorizontal: 12, marginRight: 10}]}>
+                <FontAwesome name='minus' size={wp(5)} color='#FFFFFF'  />
                 </Pressable>
               </View>
             </View>
@@ -631,27 +565,27 @@ export default function Editprofile(props) {
                 return (
                   <Pressable
                     key={index}
-                    style={styles1.BorderedPressable}
+                    style={styles1.card_main}
                     onPress={() => {
                       handleDocumentPicker(index);
                     }}>
                     {el && el.image ? (
                       <>{`${el.image}`.includes('base64') ? <Image style={{height: 200}} resizeMode="contain" source={{uri: el.image}} /> : <Image style={{height: 200}} resizeMode="contain" source={{uri: generateImageUrl(el.image)}} />}</>
                     ) : (
-                      <Text style={styles.borderedPressableText}>Please Upload Image</Text>
+                      <Text style={{}}>Please Upload Image</Text>
                     )}
                   </Pressable>
                 );
               })}
 
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20}}>
-              <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>Video</Text>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <Pressable onPress={() => handleAddVideo()} style={[styles.btnbg, {paddingVertical: 7, paddingHorizontal: 15, marginRight: 10}]}>
-                  <Text style={{color: 'white', fontSize: 18}}>+</Text>
+              <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Video</Text>
+              <View style={{display: 'flex', flexDirection: 'row',paddingVertical:wp(2)}}>
+                <Pressable onPress={() => handleAddVideo()} style={[styles.btnbg, {paddingVertical: 10, paddingHorizontal: 12, marginRight: 10}]}>
+                  <FontAwesome name='plus' size={wp(5)} color='#FFFFFF'  />
                 </Pressable>
-                <Pressable onPress={() => handleRemoveVideo()} style={[styles.btnbg, {paddingVertical: 7, paddingHorizontal: 17, marginRight: 10}]}>
-                  <Text style={{color: 'white', fontSize: 18}}>-</Text>
+                <Pressable onPress={() => handleRemoveVideo()} style={[styles.btnbg, {paddingVertical: 10, paddingHorizontal: 12, marginRight: 10}]}>
+                <FontAwesome name='minus' size={wp(5)} color='#FFFFFF'  />
                 </Pressable>
               </View>
             </View>
@@ -662,7 +596,7 @@ export default function Editprofile(props) {
                 return (
                   <Pressable
                     key={index}
-                    style={styles1.BorderedPressable}
+                    style={styles1.card_main}
                     onPress={() => {
                       handleDocumentPickerVideo(index);
                     }}>
@@ -680,7 +614,7 @@ export default function Editprofile(props) {
                         {/* <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: el.image }} /> */}
                       </>
                     ) : (
-                      <Text style={styles.borderedPressableText}>Please Upload Video</Text>
+                      <Text style={{}}>Please Upload Video</Text>
                     )}
                   </Pressable>
                 );
@@ -709,6 +643,8 @@ export default function Editprofile(props) {
         <TouchableOpacity onPress={() => handleSubmit()} style={[styles.btnbg, {marginTop: 30, marginBottom: hp(5)}]}>
           <Text style={[styles.textbtn, {fontFamily: 'Manrope-Medium'}]}>Save</Text>
         </TouchableOpacity>
+        </View>
+        </ImageBackground>
       </ScrollView>
     </>
   );
@@ -742,8 +678,9 @@ const styles1 = StyleSheet.create({
     fontSize: 12,
   },
   labelname: {
-    fontSize: 12,
-    color: '#9299A0',
+    fontSize:wp(3),
+  paddingLeft:wp(2),
+  color:'#000'
   },
   inputborder: {
     paddingBottom: 0,
@@ -755,21 +692,7 @@ const styles1 = StyleSheet.create({
     borderColor: '#D9D9D9',
     borderStyle: 'solid',
   },
-  card_main: {
-    borderWidth: 1,
-    borderColor: '#D9D9D9',
-    borderStyle: 'solid',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 16,
-    marginBottom: 10,
-    fontFamily: 'Manrope-Medium',
-    color: '#000',
-    display: 'flex',
-    alignItems: 'center',
-    // justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
+
   textcenter: {
     display: 'flex',
     alignItems: 'center',
@@ -782,22 +705,29 @@ const styles1 = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  imgfluid: {
-    width: wp(24),
-    height: hp(12),
-    borderColor: '#B08218',
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderRadius: 50,
-  },
+  // imgfluid: {
+  //   width: wp(36),
+  //   height: wp(36),
+  //   borderColor: '#B08218',
+  //   borderWidth: 2,
+  //   borderStyle: 'solid',
+  //   borderRadius: 50,
+  // },
   BorderedPressable: {
-    backgroundColor: 'white',
-    borderColor: '#B08218',
-    borderWidth: 1,
-    paddingVertical: 15,
-    paddingLeft: 15,
-    marginTop: 15,
-    borderRadius: 15,
+    borderStyle: 'solid',
+   
+    paddingVertical: wp(2.5),
+    borderRadius: 50,
+    marginBottom: 10,
+    fontFamily: 'Manrope-Medium',
+    color: '#000',
+
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+paddingHorizontal:wp(3),
+backgroundColor:"#FFFFFF",
+elevation:10,
+overflow:'hidden'
   },
   backgroundVideo: {
     height: 100,
@@ -836,4 +766,43 @@ const styles1 = StyleSheet.create({
     height: 25,
     lineHeight: 25,
   },
+  imgfluid: {
+    width: wp(30),
+    height: wp(30),
+    borderColor: '#FFFFFF',
+    borderWidth: 5,
+    borderStyle: 'solid',
+    borderRadius: 100,
+    elevation:5
+  },
+  cardContainer: {
+    paddingTop: wp(8),
+
+    overflow: 'hidden',
+  },
+  nameheading:{
+    fontSize:wp(3),
+    paddingLeft:wp(1),
+    color:'#000'
+    },
+    card_main: {
+      borderStyle: 'solid',
+    
+      paddingVertical: wp(2),
+      borderRadius: 50,
+      marginBottom: 10,
+      fontFamily: 'Manrope-Medium',
+    
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+  paddingHorizontal:wp(1),
+  backgroundColor:"#FFFFFF",
+  height:wp(15),
+  elevation:10,
+  overflow:'hidden',
+    fontSize:wp(3.5),
+    paddingLeft:wp(4),
+    color:'#000'
+  
+    },
 });

@@ -24,7 +24,7 @@ const BottomBanner = ()=>{
                     <Text style={styles.textStyle}>RECEIVE FREE QUOTES</Text>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.imageStyle} source={require('../../assets/img/bottomBannerImg.png')} />
+                    <Image style={styles.imageStyle} source={require('../../assets/img/hero3.png')} />
                 </View>
             </LinearGradient>
         </View>
@@ -36,13 +36,12 @@ const styles = StyleSheet.create({
         width: wp(100),
         height: wp(30),
         alignItems: 'center',
-        marginBottom: wp(1),
         justifyContent: 'center',
     },
     mainContainer:{
         flexDirection: 'row',
-        width: '95%',
-        height: '90%',
+        width: '97%',
+        height: '95%',
         borderRadius: 25,
         backgroundColor: '#d2b99f',
         alignItems: 'center',
