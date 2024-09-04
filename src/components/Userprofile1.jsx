@@ -93,7 +93,7 @@ export default function Userprofile1(props) {
           </TouchableOpacity>
           </TouchableOpacity>
           </View>
-          </View>
+        </View>
        
 
         <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/leads_bg.png')}>
@@ -216,6 +216,9 @@ export default function Userprofile1(props) {
 
               <Text style={styles1.nameheading}>{userObj?.companyObj?.googleMapsLink}</Text>
             </Pressable>
+
+
+            
             <Text style={[styles1.nameheading, {color:'#000',fontSize:wp(4),paddingLeft:wp(5)}]}>Your Images</Text>
             {
               userObj?.imagesArr && userObj?.imagesArr.length > 0 ?
