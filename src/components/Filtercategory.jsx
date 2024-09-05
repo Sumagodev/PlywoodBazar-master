@@ -24,6 +24,8 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import Header from '../navigation/customheader/Header';
 import ShopListItem from '../ReusableComponents/ShopListItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
+import CustomColors from '../styles/CustomColors';
 
  const  Filtercategory = (props) =>  {
 
@@ -62,15 +64,17 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
   const [searchState, setSearchState] = useState("");
   const [searchCity, setSearchCity] = useState("");
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(30);
   const [page, setPage] = useState(1);
   const [totalPages, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading1, setIsLoading1] = useState(false);
   const nextPageIdentifierRef = useRef();
   const [isFirstPageReceived, setIsFirstPageReceived] = useState(false);
 
   const handleGetProducts = async (source) => {
     setIsloding(true)
+    setIsLoading1(true)
     try {
 
       let query = `role=${role}&perPage=${limit}`;
@@ -164,28 +168,32 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
           .then(() => {
             // setProductsArr(res?.data);
             setTotal(res?.total);
+            setIsLoading1(false)
              if(page > 1 && res?.data?.length > 0){
              nextPageIdentifierRef.current = page;
             setProductsArr([...productsArr, ...res?.data])
 
             } else {
             setProductsArr(res?.data)
-              
+            setIsLoading1(false)
             }
             setIsLoading(false);
+            setIsLoading1(false)
             page == 1 && setIsFirstPageReceived(true);
           })
           .then(() => {
-            setIsloding(false);
+           
           });
       } else {
         Promise.resolve()
           .then(() => {
             setProductsArr([]);
+            setIsLoading(false)
             setTotal(0);
           })
           .then(() => {
             setIsloding(false);
+            
           });
       }
     } catch (error) {
@@ -194,18 +202,19 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
       } else {
         setIsLoading(false);
         errorToast(error);
+        setIsLoading1(false)
       }
     }
   };
   const fetchNextPage = () => {
 
     console.log("================================end===============================================",nextPageIdentifierRef)
-    if (nextPageIdentifierRef.current == null) {
-      // End of data.
-      return;
-    }
+    // if (nextPageIdentifierRef.current == null) {
+    //   // End of data.
+    //   return;
+    // }
 
-    setPage(pre => pre+1)
+    setPage(page+1)
     // fetchData();
   };
 
@@ -358,7 +367,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
   if (!isFirstPageReceived && isLoading) {
     // Show loader when fetching first page data.
     console.log('loading.................')
-    return <ActivityIndicator size={'small'} color={'red'} width={wp(50)}/>;
+    return <ActivityIndicator size={'large'} color={'red'} width={wp(50)}/>;
   }
     return (
       <>
@@ -782,16 +791,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
         </View>
       <TextInput
         style={stylesSearch.input}
-        placeholder={'Search..'}       
+        placeholder={'Search by category, company, vendor'}       
         
-        onChangeText={e => setQuery(e)} value={qry}   
+        onChangeText={e =>{setQuery(e) ,setProductsArr(null),setIsLoading(true),setPage(1)} } value={qry}   
       />
     </View>
             
           
             <TouchableOpacity onPress={() => this.RBSheet.open()}>
             <View style={[styles1.col2, {}]}>              
-              <Icon name="tune" size={wp(7)} color={'white'}  />
+              <Icon name="tune" size={wp(6)} color={'white'}  />
               </View>
             </TouchableOpacity>
           
@@ -807,22 +816,37 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
       keyExtractor={(item, index) => `${index}`}
       
       renderItem={renderproduct}
-      onEndReached={fetchNextPage}
+      //onEndReached={fetchNextPage}
       onEndReachedThreshold={0.1}
       scrollEnabled={true}
       style={{ width: '100%' }}
       contentContainerStyle={[{ paddingVertical: 5, paddingBottom: 5, paddingTop: 5 }]}
-      />
-      
-      :
-      <>{
-        qry !== "" && <View style={{height:wp(80), backgroundColor:'#fff', display:'flex', alignItems:'center', justifyContent:'center'}}>
-        <Text>No Shop Found</Text>
+      ListFooterComponent={<View>
+        {
+          isLoading1?
+            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)}/>
+          : <LoadMoreButton onPress={()=>{ fetchNextPage()}}/>
+        }
       </View>
-      }</>
       
-
-
+    }
+      />
+     
+      :
+      (
+        isLoading ? null : (
+         (
+            <View style={{ height: wp(80), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Text>No Shop Found</Text>
+            </View>
+          )
+        )
+      )
+    }
+      {
+        isLoading? 
+        <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)}/>
+        :null
       }
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <RBSheet
@@ -1042,10 +1066,10 @@ const styles1 = StyleSheet.create({
     zIndex: 5,
   },
   col2: {
-    width: wp(14),
-    height:wp(14),
+    width: wp(12),
+    height:wp(12),
     backgroundColor:'#6B4E37',
-    borderRadius:wp(5),
+    borderRadius:wp(9),
     justifyContent:'center',
     alignContent:'center',
     alignItems:'center'
@@ -1140,15 +1164,16 @@ const stylesSearch = StyleSheet.create({
       backgroundColor:CustomColors.searchBackground,
       borderRadius:wp(10),
       flexDirection:'row',
-      width:wp(80),     
+      width:wp(80),
+      height:wp(12),     
       padding:wp(0.5),
       borderColor:'#CDC2A1',
       borderWidth:wp(0.3)    
   },
   iconContainer:{      
       backgroundColor:CustomColors.mattBrownDark,
-      width:wp(12),
-      height:wp(12),
+      width:wp(10),
+      height:wp(10),
       justifyContent:'center',
       alignItems:'center',
       alignSelf:'center',
