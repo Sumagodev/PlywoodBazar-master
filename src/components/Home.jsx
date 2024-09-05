@@ -708,6 +708,7 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
             loop={true}
             autoplay={true}
             autoplayDelay={1000}
+
             autoplayInterval={3000}
             layout={'default'}
             inactiveSlideScale={0.80}
@@ -730,14 +731,15 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
               
 
               <View style={[styles.padinghr, styles1.videoCardHome]}>
+                
                 <Text style={[styles1.headingmain]}>Videos</Text>
-                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs',{data:false})}/>
               </View>
               <FlatList  data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
               <View style={[styles.padinghr, {alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row',  marginTop: wp(7),marginBottom: 10}]}>
                 <Text style={[styles1.headingmain]}>Blogs</Text>
-                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs')}/>
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => navigate.navigate('Blogs',{data:true})}/>
               </View>
 
               <FlatList contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />

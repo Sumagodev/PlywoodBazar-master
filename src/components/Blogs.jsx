@@ -16,6 +16,9 @@ export default function Blogs(props) {
   const [blogsArr, setBlogsArr] = useState([]);
   const [blogVideoArr, setBlogVideoArr] = useState([]);
 
+  
+      
+
   const navigate = useNavigation();
   const handleGetBlogs = async () => {
     try {
@@ -23,6 +26,7 @@ export default function Blogs(props) {
       if (res.data) {
         console.log(res.data, 'res.data');
         setBlogsArr(res.data);
+        setShowBlogs(props?.route?.params?.data)
       }
     } catch (err) {
       console.log(err);
@@ -35,6 +39,7 @@ export default function Blogs(props) {
       if (res.data) {
         console.log('data',res.data)
         setBlogVideoArr(res.data);
+        setShowBlogs(props?.route?.params?.data)
       }
     } catch (err) {
       console.log(err);
@@ -44,9 +49,11 @@ export default function Blogs(props) {
   useEffect(() => {
     handleGetBlogs();
     handleGetBlogVideo();
+
   }, []);
 
   const renderBlogs = ({item, index}) => {
+    
     return (
       <Pressable onPress={() => navigate.navigate('BlogDetails', {data: item._id})}>
       <View style={{backgroundColor:'white', marginRight: 10, borderRadius: 10, marginBottom: 10,elevation:2}}>

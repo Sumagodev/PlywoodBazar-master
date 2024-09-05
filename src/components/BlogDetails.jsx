@@ -39,12 +39,12 @@ export default function BlogDetails(props) {
         {/* <Header stackHeader={true} rootProps={props} sscreenName={'l'}  /> */}
         
         
-          <Header stackHeader={true} rootProps={props} screenName={'Blog Details'} />
+          <Header normal={true} rootProps={props} screenName={'Blog Details'} />
         
 
 
         <View style={styles.container}>
-            <Image style={{ width: wp(95), height:hp(28), borderRadius: 10 }} source={{ uri: generateImageUrl(blogDetails.image) }} resizeMode='stretch' />
+            <Image style={{ width: wp(95), height:hp(25), borderRadius: 10 }} source={{ uri: generateImageUrl(blogDetails.image) }} resizeMode='stretch' />
             <Text style={{ fontSize: wp(4.6), lineHeight:20, marginTop: 15, marginBottom:10, fontFamily: "Poppins-Medium" }}>{blogDetails.name}</Text>
 
             <AutoHeightWebView 

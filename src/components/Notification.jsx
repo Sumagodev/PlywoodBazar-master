@@ -1,10 +1,11 @@
 import {View, Text, ScrollView, Pressable, Image, StyleSheet, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useCallback} from 'react';
 import styles from '../../assets/stylecomponents/Style';
 import {Switch} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+
 import Header from '../navigation/customheader/Header';
 import { getDecodedToken, getUserNotifications } from '../services/User.service';
 import { errorToast } from '../utils/toastutill';
@@ -28,8 +29,10 @@ export default function Notification(props) {
 
         let query = `?page=${skipValue}&perPage=${limitValue}&userId=${decodedToken?.user?._id}`
 
+        console.log(query)
+
         let { data: res } = await getUserNotifications(query)
-        console.log("start notifaction", res.data , "end notifaction===========================",)
+        console.log("start notifaction", res.data , "end notifaction===========================",res.data.length)
         if (res.data) {
             // setTotalElements(res.totalElements)
             setNotification(res.data)
@@ -40,12 +43,15 @@ export default function Notification(props) {
     }
 }
 
-useEffect(() => {
-  handleGetProducts()
-  
-}, [])
+// useEffect(() => {
+//   handleGetProducts()
+// }, [])
 
-
+useFocusEffect(
+  useCallback(() => {
+    handleGetProducts(); // Fetch data every time the screen is focused
+  }, [])
+);
 
   return (
     <View style={[styles.padinghr, styles.bgwhite, {flex:1,}]}>
