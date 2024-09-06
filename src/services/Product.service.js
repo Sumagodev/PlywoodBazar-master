@@ -9,7 +9,8 @@ export const AddProduct = async obj => {
   return /*apiinstance*/ axiosApiInstance.post(`${serverUrl}/`, obj);
 };
 
-export const getAllProducts = async query => {
+export const getAllProducts = async query => 
+  {
   console.log(query, 'query');
   return /*apiinstance*/ axios.get(`${serverUrl}/?${query}`);
 };

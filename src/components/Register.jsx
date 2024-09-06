@@ -1,24 +1,24 @@
-import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View,TextInput, ImageBackground } from 'react-native';
-import DocumentPicker, { isInProgress } from 'react-native-document-picker';
-import { Checkbox } from 'react-native-paper';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import {DarkTheme, useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useContext, useEffect, useState} from 'react';
+import {FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground} from 'react-native';
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
+import {Checkbox} from 'react-native-paper';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RNFetchBlob from 'rn-fetch-blob';
 import styles from '../../assets/stylecomponents/Style';
-import { registerUser, setToken } from '../services/User.service';
-import { getCityByStateApi, getCountriesApi, getStateByCountryApi } from '../services/location.service';
-import { ROLES_CONSTANT } from '../utils/constants';
-import { errorToast, toastSuccess } from '../utils/toastutill';
-import { getAllCategories } from '../services/Category.service';
-import { Appearance } from 'react-native';
-import { isAuthorisedContext } from '../navigation/Stack/Root';
+import {registerUser, setToken} from '../services/User.service';
+import {getCityByStateApi, getCountriesApi, getStateByCountryApi} from '../services/location.service';
+import {ROLES_CONSTANT} from '../utils/constants';
+import {errorToast, toastSuccess} from '../utils/toastutill';
+import {getAllCategories} from '../services/Category.service';
+import {Appearance} from 'react-native';
+import {isAuthorisedContext} from '../navigation/Stack/Root';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
-import DatePicker from 'react-native-date-picker' 
+import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-import { Dropdown } from 'react-native-element-dropdown';
-import Entypo from 'react-native-vector-icons/Entypo'
-import { MultiSelect } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {MultiSelect} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import CustomColors from '../styles/CustomColors';
@@ -26,18 +26,17 @@ import CustomColors from '../styles/CustomColors';
 export default function Register() {
   const [value, setValue] = useState(null);
 
-  const focused = useIsFocused()
+  const focused = useIsFocused();
   const navigation = useNavigation();
   const [aniversaryDate, setAniversaryDate] = useState(new Date());
 
   const [aniversaryDateModal, setAniversaryDateModal] = useState(false);
 
-
   const [categoryModal, setCategoryModal] = useState(false);
-  const [categorydata, setcategorydata] = useState([]); // for dropdown 
+  const [categorydata, setcategorydata] = useState([]); // for dropdown
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [categoryArr, setcategoryArr] = useState([])
-  const [category, setcategory] = useState("")
+  const [categoryArr, setcategoryArr] = useState([]);
+  const [category, setcategory] = useState('');
   const [productName, setProductName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
@@ -56,18 +55,13 @@ export default function Register() {
     },
   ]);
 
-
-
-
-
   const handleSetRole = selectedbusitype => {
     let tempRoleArr = rolesArr.map(el => {
       if (el.name === selectedbusitype) {
         el.checked = true;
-        
+
         setRole(el.name);
         settype(el.name);
-
       } else {
         el.checked = false;
       }
@@ -101,7 +95,7 @@ export default function Register() {
   const [countryId, setcountryId] = useState(null);
   const [stateId, setstateId] = useState(null);
   const [cityId, setcityId] = useState(null);
-  const [brandNames, setBrandNames] = useState("")
+  const [brandNames, setBrandNames] = useState('');
   const [natureOfBusiness, setNatureOfBusiness] = useState();
   const [annualTurnover, setAnnualTurnover] = useState();
   const [legalStatus, setLegalStatus] = useState();
@@ -109,19 +103,19 @@ export default function Register() {
   const [googleMapsLink, setGoogleMapsLink] = useState();
 
   const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
-  
+
   const handleSubmit = async () => {
-    console.log( "chek btn")
+    console.log('chek btn');
     // if (`${name}` === '') {
     //   errorToast('Name is Required');
     //   return;
     // }
 
     let selectedCategories = [];
-   
+
     if (`${type}` !== 'USER') {
-      if (`${companyName}` === "") {
-        errorToast("Company Name is Required");
+      if (`${companyName}` === '') {
+        errorToast('Company Name is Required');
         return 0;
       }
       // if (`${companyPhone}` === "") {
@@ -132,10 +126,10 @@ export default function Register() {
       //   errorToast("Gst is Required");
       //   return 0;
       // };
-      if (!yearOfEstablishment || `${yearOfEstablishment}` === "") {
-        errorToast("Year of Establishment is Required");
+      if (!yearOfEstablishment || `${yearOfEstablishment}` === '') {
+        errorToast('Year of Establishment is Required');
         return 0;
-      };
+      }
 
       if (`${email}` === '') {
         errorToast('Email is Required');
@@ -150,69 +144,61 @@ export default function Register() {
         return 0;
       }
 
-
       // console.log(countryId,"countryIdcountryIdcountryIdcountryId",stateId,cityId)
 
-
       if (!countryId || !countryId?.value) {
-        errorToast("Country is Required");
+        errorToast('Country is Required');
         return 0;
-      };
+      }
       if (!stateId || !stateId?.value) {
-        errorToast("State is Required");
+        errorToast('State is Required');
         return 0;
-      };
+      }
       if (!cityId || !cityId?.value) {
-        errorToast("City is Required");
+        errorToast('City is Required');
         return 0;
-      };
+      }
 
-
-
-      console.log(categoryArr,"categoryArr")
-      console.log("categoryArrObj", categoryArr[0],"categoryObj")
+      console.log(categoryArr, 'categoryArr');
+      console.log('categoryArrObj', categoryArr[0], 'categoryObj');
 
       // let checked =categoryArr.filter(el => el.checked)
 
-      let tempArr = categoryArr?.map((el) => {
-        if(selected.includes(el?._id)){
-          el = {...el, checked: true}
+      let tempArr = categoryArr?.map(el => {
+        if (selected.includes(el?._id)) {
+          el = {...el, checked: true};
         }
-        return el
-      })
+        return el;
+      });
 
-
-
-      console.log("tempArr=======", tempArr, "===== tempArr")
+      console.log('tempArr=======', tempArr, '===== tempArr');
       // console.log("tempArr", tempArr[], "tempArr")
-       selectedCategories =tempArr.filter(el => el.checked).map(el => ({ categoryId: el._id }));
+      selectedCategories = tempArr.filter(el => el.checked).map(el => ({categoryId: el._id}));
 
       // console.log("temcattemcattemcat", temcat,"temcattemcattemcat")
       if (!selectedCategories || selectedCategories?.length == 0) {
-        errorToast("Category is Required");
+        errorToast('Category is Required');
         return 0;
-      };
-     
-      if (`${address}` === "") {
-        errorToast("Address is Required");
-        return 0;
-      };
+      }
 
-      if (`${companyCeo}` === "") {
-        errorToast("Company Ceo Name is Required");
+      if (`${address}` === '') {
+        errorToast('Address is Required');
         return 0;
-      };
+      }
+
+      if (`${companyCeo}` === '') {
+        errorToast('Company Ceo Name is Required');
+        return 0;
+      }
       // if (`${googleMapsLink}` === "") {
       //   errorToast("Google Maps Link Name is Required");
       //   return 0;
       // };
-      
-      
     }
-   
+
     if (!termsAccepted) {
-      errorToast("Please Accept our terms and condition and privacy policy before registering !!!");
-      return
+      errorToast('Please Accept our terms and condition and privacy policy before registering !!!');
+      return;
     }
 
     let obj = {
@@ -247,22 +233,22 @@ export default function Register() {
       gstCertificate,
     };
 
-    console.log(JSON.stringify(obj, null, 2), ">>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    console.log(JSON.stringify(obj, null, 2), '>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 
     try {
-      let { data: res } = await registerUser(obj);
-      console.log(JSON.stringify(res,null,2), "register data ")
+      let {data: res} = await registerUser(obj);
+      console.log(JSON.stringify(res, null, 2), 'register data ');
 
       if (res) {
         // console.log(JSON.stringify(res.data,null,2), "register data ")
         toastSuccess(res.message);
         await setToken(res.token);
         setIsAuthorized(true);
-        
-        navigation.navigate('Subscriptions',{register:true});
+
+        navigation.navigate('Subscriptions', {register: true});
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       console.error(error);
       errorToast(error);
     }
@@ -270,7 +256,7 @@ export default function Register() {
 
   const handleGetCoutries = async () => {
     try {
-      let { data: res } = await getCountriesApi();
+      let {data: res} = await getCountriesApi();
       if (res.data) {
         setcountryArr(res.data);
       }
@@ -281,7 +267,7 @@ export default function Register() {
 
   const handleGetStates = async countrysId => {
     try {
-      let { data: res } = await getStateByCountryApi(`countryId=${countrysId}`);
+      let {data: res} = await getStateByCountryApi(`countryId=${countrysId}`);
       if (res.data) {
         console.log(res.data, 'asd');
         setstateArr(res.data);
@@ -295,7 +281,7 @@ export default function Register() {
 
   const handleGetCities = async stateId => {
     try {
-      let { data: res } = await getCityByStateApi(`stateId=${stateId}`);
+      let {data: res} = await getCityByStateApi(`stateId=${stateId}`);
       if (res.data) {
         setcityArr(res.data);
       } else {
@@ -346,17 +332,16 @@ export default function Register() {
 
   const handleNestedCategory = async () => {
     try {
-      const { data: res } = await getAllCategories()
+      const {data: res} = await getAllCategories();
       if (res.success && res.data.length) {
-        setcategoryArr(res.data.map(el => ({ ...el, checked: false })))
-        setcategorydata(res.data.map(el => ({ label:el.name,value:el._id })))
+        setcategoryArr(res.data.map(el => ({...el, checked: false})));
+        setcategorydata(res.data.map(el => ({label: el.name, value: el._id})));
       }
-
     } catch (error) {
-      console.error(error)
-      toastError(error)
+      console.error(error);
+      toastError(error);
     }
-  }
+  };
   const handleError = err => {
     if (DocumentPicker.isCancel(err)) {
       console.warn('cancelled');
@@ -370,26 +355,17 @@ export default function Register() {
     errorToast(err);
   };
 
-
-  const handleCheckCategory = (id) => {
+  const handleCheckCategory = id => {
     let tempCategoryObjIndex = categoryArr.findIndex(el => el._id == id);
-
 
     let tempCategoryArr = categoryArr;
 
-
     if (tempCategoryObjIndex != -1) {
-      tempCategoryArr[tempCategoryObjIndex].checked = !tempCategoryArr[tempCategoryObjIndex].checked
+      tempCategoryArr[tempCategoryObjIndex].checked = !tempCategoryArr[tempCategoryObjIndex].checked;
     }
 
-
-    setcategoryArr([...tempCategoryArr])
-
-  }
-
-
-
-
+    setcategoryArr([...tempCategoryArr]);
+  };
 
   // const data = [
   //   { label: 'Item 1', value: '1' },
@@ -403,8 +379,8 @@ export default function Register() {
   // ];
   const [selected, setSelected] = useState([]);
   const [selectedbusitype, setSelectedbusitype] = useState();
-  console.log('renderdataaaaaa',selectedbusitype);
-  
+  console.log('renderdataaaaaa', selectedbusitype);
+
   const renderItem = item => {
     return (
       <View style={styles1.item}>
@@ -422,18 +398,14 @@ export default function Register() {
     );
   };
 
-
-
-
-
-  const renderCategory = ({ item, index }) => {
+  const renderCategory = ({item, index}) => {
     return (
       <>
-        <Pressable style={{ display: "flex", flexDirection: "row", alignItems: "center" }} onPress={() => handleCheckCategory(item._id)}>
+        <Pressable style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} onPress={() => handleCheckCategory(item._id)}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
-              handleCheckCategory(item._id)
+              handleCheckCategory(item._id);
             }}
             color="#B08218"
             borderColor="red"
@@ -441,111 +413,84 @@ export default function Register() {
           <Text>{item.name}</Text>
         </Pressable>
       </>
-    )
-  }
-
+    );
+  };
 
   return (
-    <View style={{ backgroundColor: 'white'}}>
-      <View style={{alignSelf:'center'}}>
+    <View style={{backgroundColor: 'white'}}>
+      <View style={{alignSelf: 'center'}}>
         <Image source={require('../../assets/img/logo.png')} style={styles1.logosize} resizeMode="contain" />
       </View>
 
-      
-   
       <ScrollView contentContainerStyle={[styles.bgwhite]}>
-            <ImageBackground 
-      source={require('../../assets/img/main_bg.jpg')}
-      style={{borderRadius:30,flex:1, borderTopLeftRadius: 30, borderTopRightRadius: 30,overflow:'hidden'}}
-      >
-        <View style={{paddingHorizontal: wp(2.5), borderTopLeftRadius: 30, borderTopRightRadius: 30,paddingBottom:wp(20) }}>
-        <View style={[{flex:1, alignSelf: 'center', alignItems:'center' }]}>
-          <View>
-            <Text style={styles1.heading}>Organisation Details</Text>
-          </View>
-        </View>
-<Dropdown
-  style={styles1.dropdown}
-  placeholderStyle={styles1.placeholderStyle}
-  selectedTextStyle={styles1.selectedTextStyle}
-  inputSearchStyle={styles1.inputSearchStyle}
-  data={rolesArr}
-  maxHeight={300}
-  labelField="name"
-  valueField="name"  // Ensure this matches your data structure
-  placeholder="Business Type *"
-  search
-  searchPlaceholder="Search..."
-  value={selectedbusitype} // Make sure this is the correct format (string or object)
-  onChange={item => {
-    console.log(item,'uuuuu');
-    
-    setSelectedbusitype(item.name); // Use `item.value` to match the `valueField`
-  }}
-/>
-
-
-
-
-
-          <TextInput
-            style={styles1.mbboot}
-            mode="outlined"
-            onChangeText={e => setcompanyName(e)}
-            value={companyName}
-           placeholder='Business Name*'
-        placeholderTextColor="#000" 
-        selectionColor={CustomColors.mattBrownDark}
-          />
-
- <TextInput
-            style={styles1.mbboot}
-            mode="outlined"
-            onChangeText={e => setYearOfEstablishment(e)}
-            value={yearOfEstablishment}
-    selectionColor={CustomColors.mattBrownDark}
-                           placeholder='Year of Establishment *'
-        placeholderTextColor="#000" 
-          />
-          
-                <MultiSelect
-          style={styles1.dropdown}
-          placeholderStyle={styles1.placeholderStyle}
-          selectedTextStyle={styles1.selectedTextStyle}
-          inputSearchStyle={styles1.inputSearchStyle}
-          // iconStyle={styles1.iconStyle}
-          data={categorydata}
-          labelField="label"
-          valueField="value"
-          placeholder="Category *"
-          value={selected}
-          search
-          searchPlaceholder="Search..."
-          
-          onChange={item => {
-            console.log(item, " CAT ITEM");
-            // console.log(item.map((el) => ({...el, checked})))
-            setSelected(item);
-          }}
-          // renderLeftIcon={() => (
-          //   <AntDesign
-          //     style={styles.icon}
-          //     color="black"
-          //     name="Safety"
-          //     size={20}
-          //   />
-          // )}
-          renderItem={renderItem}
-          renderSelectedItem={(item, unSelect) => (
-            <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-              <View style={styles1.selectedStyle}>
-                <Text style={styles1.textSelectedStyle}>{item.label}</Text>
-                <AntDesign color="black" name="delete" size={12} />
+        <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{borderRadius: 30, flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden'}}>
+          <View style={{paddingHorizontal: wp(2.5), borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingBottom: wp(20)}}>
+            <View style={[{flex: 1, alignSelf: 'center', alignItems: 'center'}]}>
+              <View>
+                <Text style={styles1.heading}>Organisation Details</Text>
               </View>
-            </TouchableOpacity>
-          )}
-        />
-             {/* <TextInput
+            </View>
+            <Dropdown
+              style={styles1.dropdown}
+              placeholderStyle={styles1.placeholderStyle}
+              selectedTextStyle={styles1.selectedTextStyle}
+              inputSearchStyle={styles1.inputSearchStyle}
+              data={rolesArr}
+              maxHeight={300}
+              labelField="name"
+              valueField="name" // Ensure this matches your data structure
+              placeholder="Business Type *"
+              search
+              searchPlaceholder="Search..."
+              value={selectedbusitype} // Make sure this is the correct format (string or object)
+              onChange={item => {
+                console.log(item, 'uuuuu');
+
+                setSelectedbusitype(item.name); // Use `item.value` to match the `valueField`
+              }}
+            />
+
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setcompanyName(e)} value={companyName} placeholder="Business Name*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setYearOfEstablishment(e)} value={yearOfEstablishment} selectionColor={CustomColors.mattBrownDark} placeholder="Year of Establishment *" placeholderTextColor="#000" />
+
+            <MultiSelect
+              style={styles1.dropdown}
+              placeholderStyle={styles1.placeholderStyle}
+              selectedTextStyle={styles1.selectedTextStyle}
+              inputSearchStyle={styles1.inputSearchStyle}
+              // iconStyle={styles1.iconStyle}
+              data={categorydata}
+              labelField="label"
+              valueField="value"
+              placeholder="Category *"
+              value={selected}
+              search
+              searchPlaceholder="Search..."
+              onChange={item => {
+                console.log(item, ' CAT ITEM');
+                // console.log(item.map((el) => ({...el, checked})))
+                setSelected(item);
+              }}
+              // renderLeftIcon={() => (
+              //   <AntDesign
+              //     style={styles.icon}
+              //     color="black"
+              //     name="Safety"
+              //     size={20}
+              //   />
+              // )}
+              renderItem={renderItem}
+              renderSelectedItem={(item, unSelect) => (
+                <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                  <View style={styles1.selectedStyle}>
+                    <Text style={styles1.textSelectedStyle}>{item.label}</Text>
+                    <AntDesign color="black" name="delete" size={12} />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+            {/* <TextInput
             style={styles1.mbboot}
             mode="outlined"
          
@@ -572,11 +517,7 @@ export default function Register() {
             underlineColorAndroid="#E7E7E8"
           /> */}
 
-
-
-
-
-          {/* <TextInput
+            {/* <TextInput
             style={styles1.mbboot}
             mode="outlined"
             keyboardType="numeric"
@@ -606,7 +547,7 @@ export default function Register() {
             underlineColorAndroid="#E7E7E8"
           />*/}
 
-          {/* <TextInput
+            {/* <TextInput
             style={styles1.mbboot}
             mode="outlined"
             keyboardType="email-address"
@@ -635,21 +576,9 @@ export default function Register() {
             underlineColorAndroid="#E7E7E8"
           /> */}
 
+            {/* <Text style={{ marginBottom: 15, }}></Text> */}
 
-         
-
-
-{/* <Text style={{ marginBottom: 15, }}></Text> */}
-
-
-
-    
-
-
-
-
-
-          {/* <TextInput
+            {/* <TextInput
             style={styles1.mbboot}
             mode="outlined"
             onChangeText={e => setNatureOfBusiness(e)}
@@ -677,69 +606,38 @@ export default function Register() {
             underlineColorAndroid="#E7E7E8"
           /> */}
 
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setBrandNames(e)} value={brandNames} placeholder="Dealing With Brand Names*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
 
-         
-          <TextInput
-            style={styles1.mbboot}
-            mode="outlined"
-            onChangeText={e => setBrandNames(e)}
-            value={brandNames}
- placeholder='Dealing With Brand Names*'
-        placeholderTextColor="#000" 
-        selectionColor={CustomColors.mattBrownDark}
-          />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setgstNumber(e)} value={gstNumber} placeholder="GST NO.*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
 
-          <TextInput
-            style={styles1.mbboot}
-            mode="outlined"
-            onChangeText={e => setgstNumber(e)}
-            value={gstNumber}
-          placeholder='GST NO.*'
-        placeholderTextColor="#000" 
-        selectionColor={CustomColors.mattBrownDark}
-          />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setaddress(e)} value={address} selectionColor={CustomColors.mattBrownDark} placeholder="Address *" placeholderTextColor="#000" />
 
+            <Pressable
+              style={styles1.BorderedPressable}
+              onPress={() => {
+                setModalVisible(true);
+                setModalFor('Country');
+              }}>
+              <Text style={styles.borderedPressableText}>{countryId && countryId.value ? countryId.name : 'Country *'}</Text>
+            </Pressable>
+            <Pressable
+              style={styles1.BorderedPressable}
+              onPress={() => {
+                setModalVisible(true);
+                setModalFor('State');
+              }}>
+              <Text style={styles.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
+            </Pressable>
+            <Pressable
+              style={styles1.BorderedPressable}
+              onPress={() => {
+                setModalVisible(true);
+                setModalFor('City');
+              }}>
+              <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'City *'}</Text>
+            </Pressable>
 
-<TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                onChangeText={e => setaddress(e)}
-                value={address}
-              selectionColor={CustomColors.mattBrownDark}
-                         placeholder='Address *'
-        placeholderTextColor="#000" 
-              />
-
-       <Pressable
-                style={styles1.BorderedPressable}
-                onPress={() => {
-                  setModalVisible(true);
-                  setModalFor('Country');
-                }}>
-                <Text style={styles.borderedPressableText}>{countryId && countryId.value ? countryId.name : 'Country *'}</Text>
-              </Pressable>
-              <Pressable
-                style={styles1.BorderedPressable}
-                onPress={() => {
-                  setModalVisible(true);
-                  setModalFor('State');
-                }}>
-                <Text style={styles.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
-              </Pressable>
-              <Pressable
-                style={styles1.BorderedPressable}
-                onPress={() => {
-                  setModalVisible(true);
-                  setModalFor('City');
-                }}>
-                <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'City *'}</Text>
-              </Pressable>
-
-
-
-
-
-          {/* <TextInput
+            {/* <TextInput
             style={styles1.mbboot}
             mode="outlined"
             onChangeText={e => setdob(e)}
@@ -767,31 +665,14 @@ export default function Register() {
             underlineColorAndroid="#E7E7E8"
           /> */}
 
-        <Text style={{ fontSize: 17,  marginTop:15, fontWeight: "600", textAlign:'center' }}>Contact Person Details</Text>
-          {role !== ROLES_CONSTANT.USER && (
-            <>
-              {/* <Text style={{ marginTop: hp(4), color: "black", fontSize: 18, paddingLeft: 5 }}>Company Details</Text> */}
-              <TextInput
-                style={styles1.mbboot}
-           placeholderTextColor={'#000'}
-                onChangeText={e => setname(e)}
-                value={name}
-               placeholder='Name'
-      selectionColor={CustomColors.mattBrownDark}
-              />
+            <Text style={{fontSize: 17, marginTop: 15, fontWeight: '600', textAlign: 'center'}}>Contact Person Details</Text>
+            {role !== ROLES_CONSTANT.USER && (
+              <>
+                {/* <Text style={{ marginTop: hp(4), color: "black", fontSize: 18, paddingLeft: 5 }}>Company Details</Text> */}
+                <TextInput style={styles1.mbboot} placeholderTextColor={'#000'} onChangeText={e => setname(e)} value={name} placeholder="Name" selectionColor={CustomColors.mattBrownDark} />
 
-<TextInput
-            style={styles1.mbboot}
-            mode="outlined"
-            onChangeText={e => setemail(e)}
-            value={email}
-             label="Email Id *"
-            keyboardType="email-address"
-                         placeholder='Email Id *'
-        placeholderTextColor="#000" 
-        selectionColor={CustomColors.mattBrownDark}
-          />
-              {/* <TextInput
+                <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setemail(e)} value={email} label="Email Id *" keyboardType="email-address" placeholder="Email Id *" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+                {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
                 onChangeText={e => setcompanyEmail(e)}
@@ -818,30 +699,10 @@ export default function Register() {
                 underlineColor="#E7E7E8"
                 underlineColorAndroid="#E7E7E8"
               /> */}
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                maxLength={10}
-                onChangeText={e => setmobile(e)}
-                value={mobile}
-                keyboardType="number-pad"
-               selectionColor={CustomColors.mattBrownDark}
-                             placeholder='Mobile No. *'
-        placeholderTextColor="#000" 
-              />
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                onChangeText={e => setwhatsapp(e)}
-                value={whatsapp}
-                maxLength={10}
-                keyboardType="numeric"
-   selectionColor={CustomColors.mattBrownDark}
-                             placeholder='Whatsapp No.'
-        placeholderTextColor="#000" 
-              />
+                <TextInput style={styles1.mbboot} mode="outlined" maxLength={10} onChangeText={e => setmobile(e)} value={mobile} keyboardType="number-pad" selectionColor={CustomColors.mattBrownDark} placeholder="Mobile No. *" placeholderTextColor="#000" />
+                <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setwhatsapp(e)} value={whatsapp} maxLength={10} keyboardType="numeric" selectionColor={CustomColors.mattBrownDark} placeholder="Whatsapp No." placeholderTextColor="#000" />
 
-              {/* <TextInput
+                {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
                 onChangeText={e => setnoofepmployee(e)}
@@ -868,11 +729,10 @@ export default function Register() {
                 underlineColor="#E7E7E8"
                 underlineColorAndroid="#E7E7E8"
               /> */}
-            
-              {/* //////new Fields */}
 
+                {/* //////new Fields */}
 
-              {/* <TextInput
+                {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
                 onChangeText={e => setAnnualTurnover(e)}
@@ -900,38 +760,35 @@ export default function Register() {
                 underlineColorAndroid="#E7E7E8"
               /> */}
 
-
-              <Pressable onPress={() => setAniversaryDateModal(true)}>
-
-                <TextInput
-                  style={styles1.mbboot}
-                  mode="outlined"
-                  editable={false}
-                  onChangeText={e => setAniversaryDate(e)}
-                  value={moment(aniversaryDate).format("YYYY-MM-DD")}
-                  label="Birthday"
-                  outlineStyle={{
-                    borderWidth: 0,
-                    borderRadius: 25,
-                    borderColor: '#B08218',
-           elevation:3
-                  }}
-                  theme={{
-                    colors: {
-                      text: '#f5f5f5',
-                      accent: '#ffffff',
-                      primary: '#666666',
-                      placeholder: '#f5f5f5',
-                    
+                <Pressable onPress={() => setAniversaryDateModal(true)}>
+                  <TextInput
+                    style={styles1.mbboot}
+                    mode="outlined"
+                    editable={false}
+                    onChangeText={e => setAniversaryDate(e)}
+                    value={moment(aniversaryDate).format('YYYY-MM-DD')}
+                    label="Birthday"
+                    outlineStyle={{
                       borderWidth: 0,
-                      fontSize: 8,
-                    },
-                  }}
-             
-                />
-              </Pressable>
+                      borderRadius: 25,
+                      borderColor: '#B08218',
+                      elevation: 3,
+                    }}
+                    theme={{
+                      colors: {
+                        text: '#f5f5f5',
+                        accent: '#ffffff',
+                        primary: '#666666',
+                        placeholder: '#f5f5f5',
 
-              {/* <TextInput
+                        borderWidth: 0,
+                        fontSize: 8,
+                      },
+                    }}
+                  />
+                </Pressable>
+
+                {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
                 onChangeText={e => setLegalStatus(e)}
@@ -959,7 +816,7 @@ export default function Register() {
                 underlineColorAndroid="#E7E7E8"
               /> */}
 
-              {/* <TextInput
+                {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
                 onChangeText={e => setCompanyCeo(e)}
@@ -986,50 +843,27 @@ export default function Register() {
                 underlineColor="#E7E7E8"
                 underlineColorAndroid="#E7E7E8"
               /> */}
-              <TextInput
-                style={styles1.mbboot}
-                mode="outlined"
-                onChangeText={e => setGoogleMapsLink(e)}
-                value={googleMapsLink}
-            
-                            placeholder='Google Maps Link'
-        placeholderTextColor="#000" 
-        selectionColor={CustomColors.mattBrownDark}
-              />
-              {/* //////new Fields */}
+                <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setGoogleMapsLink(e)} value={googleMapsLink} placeholder="Google Maps Link" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+                {/* //////new Fields */}
 
-       
-
-
-
-
-              {/* <Pressable
+                {/* <Pressable
                 style={styles1.BorderedPressable}
                 onPress={() => {
                   handleDocumentPicker();
                 }}>
                 <Text style={styles.borderedPressableText}>{gstCertificate && gstCertificate.name ? gstCertificate?.name : 'Please Upload GST Certificate'}</Text>
               </Pressable> */}
-            </>
-          )}
+              </>
+            )}
 
-
-         
-
-
-          
-          
-
-
-
-          {/* <FlatList
+            {/* <FlatList
             data={categoryArr}
             scrollEnabled={false}
             nestedScrollEnabled={false}
             renderItem={renderCategory}
             keyExtractor={(item, index) => `${index}`}
           /> */}
-{/* 
+            {/* 
       <Dropdown
         style={styles1.dropdown}
         placeholderStyle={styles1.placeholderStyle}
@@ -1053,195 +887,172 @@ export default function Register() {
   <Entypo name='chevron-small-down' color='#000' size={16} />
 </View> */}
 
-{/* <View style={styles1.container}> */}
-      
-      {/* </View> */}
+            {/* <View style={styles1.container}> */}
 
+            {/* </View> */}
 
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <View style={styles1.centeredView}>
+                <View style={styles1.modalView}>
+                  {modalFor == 'Country' ? (
+                    <>
+                      <Text style={{fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold'}}>Country</Text>
+                      <FlatList
+                        data={countryArr}
+                        keyExtractor={(item, index) => index}
+                        renderItem={({item, index}) => {
+                          return (
+                            <Pressable
+                              onPress={() => {
+                                setcountryId({name: item.name, value: item._id});
+                                setModalVisible(false);
+                              }}
+                              style={[styles1.BorderedPressable, {width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5)}]}>
+                              <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                            </Pressable>
+                          );
+                        }}
+                      />
+                    </>
+                  ) : modalFor == 'State' ? (
+                    <>
+                      <Text style={{fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold'}}>State</Text>
+                      <FlatList
+                        data={stateArr}
+                        keyExtractor={(item, index) => index}
+                        renderItem={({item, index}) => {
+                          return (
+                            <Pressable
+                              onPress={() => {
+                                setstateId({name: item.name, value: item._id});
+                                setModalVisible(false);
+                                setcityId(null);
+                              }}
+                              style={[styles1.BorderedPressable, {width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5)}]}>
+                              <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                            </Pressable>
+                          );
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Text style={{fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold'}}>City</Text>
+                      <FlatList
+                        data={cityArr}
+                        keyExtractor={(item, index) => index}
+                        renderItem={({item, index}) => {
+                          return (
+                            <Pressable
+                              onPress={() => {
+                                setcityId({name: item.name, value: item._id});
+                                setModalVisible(false);
+                              }}
+                              style={[styles1.BorderedPressable, {width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5)}]}>
+                              <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                            </Pressable>
+                          );
+                        }}
+                      />
+                    </>
+                  )}
+                </View>
+              </View>
+            </Modal>
 
+            <View style={[{marginVertical: 20, alignItems: 'center'}]}>
+              <View style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginBottom: 10, justifyContent: 'center'}}>
+                <Checkbox.Android
+                  status={termsAccepted ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    setTermsAccepted(!termsAccepted);
+                  }}
+                  color="#B08218"
+                  borderColor="red"
+                />
 
-         
+                <Text> Please Accept our </Text>
+                <Pressable onPress={() => navigation.navigate('TermsAndConditions')}>
+                  <Text style={{color: 'red', fontFamily: 'Poppins-Medium', fontSize: wp(4), marginTop: 5}}> terms and condition </Text>
+                </Pressable>
+                <Text>and </Text>
+                <Pressable style={{marginBottom: 5}} onPress={() => navigation.navigate('Privacy')}>
+                  <Text style={{color: 'red', fontFamily: 'Poppins-Medium', marginTop: 5}}> privacy policy</Text>
+                </Pressable>
+                <Text style={{marginBottom: 5, marginLeft: 15}}>before registering</Text>
+              </View>
 
+              <View style={{alignSelf: 'center'}}>
+                <CustomButtonNew text={'Submit'} paddingHorizontal={wp(8)} buttonColor={'#573C26'} onPress={() => handleSubmit()} />
+              </View>
+
+              <Pressable onPress={() => navigation.navigate('Mobilenumber')} style={[{alignItems: 'center', justifyContent: 'center', width: wp(93), marginTop: 10, flexDirection: 'row'}]}>
+                <Text style={styles1.btnTxt}>Already a user ?</Text>
+                <Text style={[styles1.btnTxt, {color: '#C28C28', marginLeft: 10, fontSize: 15, fontFamily: 'Poppins-Medium'}]}>Login</Text>
+              </Pressable>
+
+              <TouchableOpacity onPress={() => navigation.navigate('LegalAbouts')} style={{alignSelf: 'center'}}>
+                <Text style={[styles1.btnTxt, {color: '#C28C28', marginLeft: 10, fontSize: 15, fontFamily: 'Poppins-Medium'}]}>Legal & About</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={aniversaryDateModal}
             onRequestClose={() => {
-              setModalVisible(!modalVisible);
+              setAniversaryDateModal(!aniversaryDateModal);
             }}>
             <View style={styles1.centeredView}>
               <View style={styles1.modalView}>
-                {modalFor == 'Country' ? (
-                  <>
-                    <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70),fontWeight:'bold' }}>Country</Text>
-                    <FlatList
-                      data={countryArr}
-                      keyExtractor={(item, index) => index}
-                      renderItem={({ item, index }) => {
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              setcountryId({ name: item.name, value: item._id });
-                              setModalVisible(false);
-                            }}
-                            style={[styles1.BorderedPressable, { width: wp(70),backgroundColor:'#F8E0CD' ,margin:wp(0.5)}]}>
-                            <Text style={styles1.BorderedPressableText}>{item.name}</Text>
-                          </Pressable>
-                        );
-                      }}
-                    />
-                  </>
-                ) : modalFor == 'State' ? (
-                  <>
-                    <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70),fontWeight:'bold' }}>State</Text>
-                    <FlatList
-                      data={stateArr}
-                      keyExtractor={(item, index) => index}
-                      renderItem={({ item, index }) => {
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              setstateId({ name: item.name, value: item._id });
-                              setModalVisible(false);
-                              setcityId(null );
-                            }}
-                            style={[styles1.BorderedPressable, { width: wp(70) ,backgroundColor:'#F8E0CD' , margin:wp(0.5)}]}>
-                            <Text style={styles1.BorderedPressableText}>{item.name}</Text>
-                          </Pressable>
-                        );
-                      }}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70),fontWeight:'bold' }}>City</Text>
-                    <FlatList
-                      data={cityArr}
-                      keyExtractor={(item, index) => index}
-                      renderItem={({ item, index }) => {
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              setcityId({ name: item.name, value: item._id });
-                              setModalVisible(false);
-                            }}
-                            style={[styles1.BorderedPressable, { width: wp(70),backgroundColor:'#F8E0CD' , margin:wp(0.5)}]}>
-                            <Text style={styles1.BorderedPressableText}>{item.name}</Text>
-                          </Pressable>
-                        );
-                      }}
-                    />
-                  </>
-                )}
+                <Text style={styles1.modalText}>Select Birthday</Text>
+                <DatePicker dividerColor={'red'} date={aniversaryDate} mode="date" onDateChange={setAniversaryDate} textColor={'#000000'} />
+                <Pressable style={[styles1.button, styles1.buttonClose]} onPress={() => setAniversaryDateModal(!aniversaryDateModal)}>
+                  <Text style={styles1.textStyle}>Close</Text>
+                </Pressable>
               </View>
             </View>
           </Modal>
 
-          <View style={[{ marginVertical: 20 ,alignItems: "center",}]}>
-            <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", marginBottom: 10 ,justifyContent:'center'}}>
-              <Checkbox.Android
-                status={termsAccepted ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  setTermsAccepted(!termsAccepted)
-                }}
-                color="#B08218"
-                borderColor="red"
-              />
-
-              <Text> Please Accept our </Text>
-              <Pressable
-               onPress={() => navigation.navigate("TermsAndConditions")}>
-                <Text style={{color:'red', fontFamily:'Poppins-Medium',fontSize:wp(4), marginTop:5}}> terms and condition {" "}</Text>
-              </Pressable>
-              <Text>
-                and{" "}
-              </Text>
-              <Pressable
-                style={{ marginBottom: 5 }}
-                onPress={() => navigation.navigate("Privacy")}>
-                <Text style={{color:'red', fontFamily:'Poppins-Medium', marginTop:5}}>{" "}privacy policy</Text>
-              </Pressable>
-              <Text style={{ marginBottom: 5 ,marginLeft:15}}>
-                before registering
-              </Text>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={categoryModal}
+            onRequestClose={() => {
+              setCategoryModal(!categoryModal);
+            }}>
+            0
+            <View style={styles1.centeredView}>
+              <View style={styles1.modalView}>
+                <Text style={styles1.modalText}>Category</Text>
+                <DatePicker date={aniversaryDate} mode="date" onDateChange={setAniversaryDate} />
+                <Pressable
+                  style={[styles1.button, styles1.buttonClose]}
+                  // onPress={() => setCategoryModal(!categoryModal)}
+                >
+                  <Text style={styles1.textStyle}>Close</Text>
+                </Pressable>
+              </View>
             </View>
-  
-            <View style={{ alignSelf: "center"}}><CustomButtonNew text={"Submit"} paddingHorizontal={wp(8)} buttonColor={'#573C26'} onPress={() => handleSubmit()} /></View>
-   
-             <Pressable onPress={() => navigation.navigate('Mobilenumber')} style={[{ alignItems: 'center', justifyContent: 'center', width: wp(93), marginTop: 10 ,flexDirection:'row'}]}>
-              <Text style={styles1.btnTxt}>Already a user ?</Text>
-              <Text style={[styles1.btnTxt, { color: '#C28C28', marginLeft: 10, fontSize: 15 , fontFamily:'Poppins-Medium',}]}>Login</Text>
-            </Pressable>
-
-            <TouchableOpacity onPress={() => navigation.navigate('LegalAbouts')} style={{alignSelf:'center'}}>
-              <Text  style={[styles1.btnTxt, { color: '#C28C28', marginLeft: 10, fontSize: 15 , fontFamily:'Poppins-Medium',}]}>Legal & About</Text>
-            </TouchableOpacity>
-       
-           
-          </View>
-        </View>
-
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={aniversaryDateModal}
-          onRequestClose={() => {
-            setAniversaryDateModal(!aniversaryDateModal);
-          }}>
-          <View style={styles1.centeredView}>
-            <View style={styles1.modalView}>
-              <Text style={styles1.modalText}>Select Birthday</Text>
-              <DatePicker
-              
-              dividerColor={'red'}
-              date={aniversaryDate} mode="date" onDateChange={setAniversaryDate} textColor={'#000000'} />
-              <Pressable
-                style={[styles1.button, styles1.buttonClose]}
-                onPress={() => setAniversaryDateModal(!aniversaryDateModal)}>
-                <Text style={styles1.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-
-
-
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={categoryModal}
-          onRequestClose={() => {
-            setCategoryModal(!categoryModal);
-          }}>0
-          <View style={styles1.centeredView}>
-            <View style={styles1.modalView}>
-              <Text style={styles1.modalText}>Category</Text>
-              <DatePicker date={aniversaryDate} mode="date" onDateChange={setAniversaryDate} />
-              <Pressable
-                style={[styles1.button, styles1.buttonClose]}
-              // onPress={() => setCategoryModal(!categoryModal)}
-              >
-                <Text style={styles1.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-</ImageBackground>
-      </ScrollView >
-         
+          </Modal>
+        </ImageBackground>
+      </ScrollView>
     </View>
   );
 }
 const styles1 = StyleSheet.create({
-
   // container: { padding: 16 },
   dropdown: {
-    marginTop:20,
+    marginTop: 20,
     borderWidth: 0,
-    
+
     borderColor: '#B08218',
 
     height: 50,
@@ -1257,17 +1068,15 @@ const styles1 = StyleSheet.create({
     // shadowRadius: 1.41,
 
     elevation: 3,
-    
   },
   placeholderStyle: {
     fontSize: 13,
-    color:'#000',
-     fontWeight:'bold'
+    color: '#000',
+    fontWeight: 'bold',
   },
   selectedTextStyle: {
     fontSize: 14,
- fontWeight:'bold'
-
+    fontWeight: 'bold',
   },
   iconStyle: {
     width: 20,
@@ -1311,47 +1120,11 @@ const styles1 = StyleSheet.create({
     fontSize: 12,
   },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "rgba(0,0,0,0.8)"
+    backgroundColor: 'rgba(0,0,0,0.8)',
   },
   modalView: {
     margin: 20,
@@ -1379,7 +1152,7 @@ const styles1 = StyleSheet.create({
   },
   buttonTxt: {
     fontSize: 11,
-    color:'#000'
+    color: '#000',
   },
   BorderedPressable: {
     backgroundColor: 'white',
@@ -1390,11 +1163,8 @@ const styles1 = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 25,
     elevation: 3,
-    
   },
-  BorderedPressableText: {
-
-  },
+  BorderedPressableText: {},
 
   centeredView: {
     height: hp(100),
@@ -1453,14 +1223,12 @@ const styles1 = StyleSheet.create({
     fontSize: 13,
     marginTop: 15,
     fontFamily: 'Outfit-Medium',
-fontWeight:'bold',
-backgroundColor:'#FFFFFF',
-borderRadius:25,
-elevation:3,
-color:'#000',
-paddingHorizontal:wp(3)
-
-
+    fontWeight: 'bold',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    elevation: 3,
+    color: '#000',
+    paddingHorizontal: wp(3),
   },
   logobox: {
     width: wp(95),
@@ -1522,7 +1290,7 @@ paddingHorizontal:wp(3)
 // import { Appearance } from 'react-native';
 // import { isAuthorisedContext } from '../navigation/Stack/Root';
 
-// import DatePicker from 'react-native-date-picker' 
+// import DatePicker from 'react-native-date-picker'
 // import moment from 'moment';
 // import { Dropdown } from 'react-native-element-dropdown';
 // import Entypo from 'react-native-vector-icons/Entypo'
@@ -1538,9 +1306,8 @@ paddingHorizontal:wp(3)
 
 //   const [aniversaryDateModal, setAniversaryDateModal] = useState(false);
 
-
 //   const [categoryModal, setCategoryModal] = useState(false);
-//   const [categorydata, setcategorydata] = useState([]); // for dropdown 
+//   const [categorydata, setcategorydata] = useState([]); // for dropdown
 //   const [termsAccepted, setTermsAccepted] = useState(false);
 //   const [categoryArr, setcategoryArr] = useState([])
 //   const [category, setcategory] = useState("")
@@ -1562,14 +1329,11 @@ paddingHorizontal:wp(3)
 //     },
 //   ]);
 
-
-
-
 //   const handleSetRole = name => {
 //     let tempRoleArr = rolesArr.map(el => {
 //       if (el.name === name) {
 //         el.checked = true;
-        
+
 //         setRole(el.name);
 //         settype(el.name);
 
@@ -1614,7 +1378,7 @@ paddingHorizontal:wp(3)
 //   const [googleMapsLink, setGoogleMapsLink] = useState();
 
 //   const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
-  
+
 //   const handleSubmit = async () => {
 //     console.log( "chek btn")
 //     // if (`${name}` === '') {
@@ -1623,7 +1387,7 @@ paddingHorizontal:wp(3)
 //     // }
 
 //     let selectedCategories = [];
-   
+
 //     if (`${type}` !== 'USER') {
 //       if (`${companyName}` === "") {
 //         errorToast("Company Name is Required");
@@ -1651,9 +1415,7 @@ paddingHorizontal:wp(3)
 //         return 0;
 //       }
 
-
 //       // console.log(countryId,"countryIdcountryIdcountryIdcountryId",stateId,cityId)
-
 
 //       if (!countryId || !countryId?.value) {
 //         errorToast("Country is Required");
@@ -1668,8 +1430,6 @@ paddingHorizontal:wp(3)
 //         return 0;
 //       };
 
-
-
 //       console.log(categoryArr,"categoryArr")
 //       console.log("categoryArrObj", categoryArr[0],"categoryObj")
 
@@ -1682,8 +1442,6 @@ paddingHorizontal:wp(3)
 //         return el
 //       })
 
-
-
 //       console.log("tempArr=======", tempArr, "===== tempArr")
 //       // console.log("tempArr", tempArr[], "tempArr")
 //        selectedCategories =tempArr.filter(el => el.checked).map(el => ({ categoryId: el._id }));
@@ -1693,7 +1451,7 @@ paddingHorizontal:wp(3)
 //         errorToast("Category is Required");
 //         return 0;
 //       };
-     
+
 //       if (`${address}` === "") {
 //         errorToast("Address is Required");
 //         return 0;
@@ -1707,10 +1465,9 @@ paddingHorizontal:wp(3)
 //       //   errorToast("Google Maps Link Name is Required");
 //       //   return 0;
 //       // };
-      
-      
+
 //     }
-   
+
 //     if (!termsAccepted) {
 //       errorToast("Please Accept our terms and condition and privacy policy before registering !!!");
 //       return
@@ -1759,7 +1516,7 @@ paddingHorizontal:wp(3)
 //         toastSuccess(res.message);
 //         await setToken(res.token);
 //         setIsAuthorized(true);
-        
+
 //         navigation.navigate('Subscriptions',{register:true});
 //       }
 //     } catch (error) {
@@ -1871,26 +1628,18 @@ paddingHorizontal:wp(3)
 //     errorToast(err);
 //   };
 
-
 //   const handleCheckCategory = (id) => {
 //     let tempCategoryObjIndex = categoryArr.findIndex(el => el._id == id);
 
-
 //     let tempCategoryArr = categoryArr;
-
 
 //     if (tempCategoryObjIndex != -1) {
 //       tempCategoryArr[tempCategoryObjIndex].checked = !tempCategoryArr[tempCategoryObjIndex].checked
 //     }
 
-
 //     setcategoryArr([...tempCategoryArr])
 
 //   }
-
-
-
-
 
 //   // const data = [
 //   //   { label: 'Item 1', value: '1' },
@@ -1912,10 +1661,6 @@ paddingHorizontal:wp(3)
 //     );
 //   };
 
-
-
-
-
 //   const renderCategory = ({ item, index }) => {
 //     return (
 //       <>
@@ -1933,7 +1678,6 @@ paddingHorizontal:wp(3)
 //       </>
 //     )
 //   }
-
 
 //   return (
 //     <>
@@ -1988,12 +1732,10 @@ paddingHorizontal:wp(3)
 //             underlineColorAndroid="#E7E7E8"
 //           />
 
-
-          
 //              {/* <TextInput
 //             style={styles1.mbboot}
 //             mode="outlined"
-         
+
 //             label="Name Of the Organization *"
 //             outlineStyle={{
 //               borderWidth: 0.8,
@@ -2016,10 +1758,6 @@ paddingHorizontal:wp(3)
 //             underlineColor="#E7E7E8"
 //             underlineColorAndroid="#E7E7E8"
 //           /> */}
-
-
-
-
 
 //           <TextInput
 //             style={styles1.mbboot}
@@ -2080,7 +1818,6 @@ paddingHorizontal:wp(3)
 //             underlineColorAndroid="#E7E7E8"
 //           /> */}
 
-
 //           <TextInput
 //             style={styles1.mbboot}
 //             mode="outlined"
@@ -2091,7 +1828,7 @@ paddingHorizontal:wp(3)
 //               borderWidth: 0.8,
 //               borderRadius: 16,
 //               borderColor: '#B08218',
-              
+
 //               height: 50,
 //             }}
 //             theme={{
@@ -2109,11 +1846,7 @@ paddingHorizontal:wp(3)
 //             underlineColorAndroid="#E7E7E8"
 //           />
 
-
-
 // {/* <Text style={{ marginBottom: 15, }}></Text> */}
-
-
 
 //           <MultiSelect
 //           style={styles1.dropdown}
@@ -2128,7 +1861,7 @@ paddingHorizontal:wp(3)
 //           value={selected}
 //           search
 //           searchPlaceholder="Search..."
-          
+
 //           onChange={item => {
 //             console.log(item, " CAT ITEM");
 //             // console.log(item.map((el) => ({...el, checked})))
@@ -2152,10 +1885,6 @@ paddingHorizontal:wp(3)
 //             </TouchableOpacity>
 //           )}
 //         />
-
-
-
-
 
 //           {/* <TextInput
 //             style={styles1.mbboot}
@@ -2185,8 +1914,6 @@ paddingHorizontal:wp(3)
 //             underlineColorAndroid="#E7E7E8"
 //           /> */}
 
-
-         
 //           <TextInput
 //             style={styles1.mbboot}
 //             mode="outlined"
@@ -2270,11 +1997,6 @@ paddingHorizontal:wp(3)
 //                 underlineColor="#E7E7E8"
 //                 underlineColorAndroid="#E7E7E8"
 //               />
-
-
-
-
-
 
 //           {/* <TextInput
 //             style={styles1.mbboot}
@@ -2477,9 +2199,8 @@ paddingHorizontal:wp(3)
 //                 underlineColor="#E7E7E8"
 //                 underlineColorAndroid="#E7E7E8"
 //               /> */}
-            
-//               {/* //////new Fields */}
 
+//               {/* //////new Fields */}
 
 //               {/* <TextInput
 //                 style={styles1.mbboot}
@@ -2508,7 +2229,6 @@ paddingHorizontal:wp(3)
 //                 underlineColor="#E7E7E8"
 //                 underlineColorAndroid="#E7E7E8"
 //               /> */}
-
 
 //               <Pressable onPress={() => setAniversaryDateModal(true)}>
 
@@ -2652,10 +2372,6 @@ paddingHorizontal:wp(3)
 //                 <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'Please Select City *'}</Text>
 //               </Pressable>
 
-
-
-
-
 //               {/* <Pressable
 //                 style={styles1.BorderedPressable}
 //                 onPress={() => {
@@ -2666,15 +2382,6 @@ paddingHorizontal:wp(3)
 //             </>
 //           )}
 
-
-         
-
-
-          
-          
-
-
-
 //           {/* <FlatList
 //             data={categoryArr}
 //             scrollEnabled={false}
@@ -2682,7 +2389,7 @@ paddingHorizontal:wp(3)
 //             renderItem={renderCategory}
 //             keyExtractor={(item, index) => `${index}`}
 //           /> */}
-// {/* 
+// {/*
 //       <Dropdown
 //         style={styles1.dropdown}
 //         placeholderStyle={styles1.placeholderStyle}
@@ -2698,7 +2405,7 @@ paddingHorizontal:wp(3)
 //         onChange={item => {
 //           setValue(item.value);
 //         }}
-        
+
 //       />
 
 // <View style={styles1.dropdown}>
@@ -2707,14 +2414,8 @@ paddingHorizontal:wp(3)
 // </View> */}
 
 // {/* <View style={styles1.container}> */}
-      
+
 //       {/* </View> */}
-
-
-
-
-         
-
 
 //           <Modal
 //             animationType="slide"
@@ -2832,7 +2533,6 @@ paddingHorizontal:wp(3)
 //           </View>
 //         </View>
 
-
 //         <Modal
 //           animationType="slide"
 //           transparent={true}
@@ -2844,7 +2544,7 @@ paddingHorizontal:wp(3)
 //             <View style={styles1.modalView}>
 //               <Text style={styles1.modalText}>Select Birthday</Text>
 //               <DatePicker
-              
+
 //               dividerColor={'red'}
 //               date={aniversaryDate} mode="date" onDateChange={setAniversaryDate} textColor={'#000000'} />
 //               <Pressable
@@ -2855,9 +2555,6 @@ paddingHorizontal:wp(3)
 //             </View>
 //           </View>
 //         </Modal>
-
-
-
 
 //         <Modal
 //           animationType="slide"
@@ -2890,7 +2587,7 @@ paddingHorizontal:wp(3)
 //   dropdown: {
 //     marginTop:20,
 //     borderWidth: 0.8,
-    
+
 //     borderColor: '#B08218',
 
 //     height: 50,
@@ -2955,42 +2652,6 @@ paddingHorizontal:wp(3)
 //     marginRight: 5,
 //     fontSize: 12,
 //   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //   centeredView: {
 //     flex: 1,

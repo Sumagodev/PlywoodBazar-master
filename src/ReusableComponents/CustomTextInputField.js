@@ -13,7 +13,7 @@ const CustomTextInputField = ({
 }) => {
   const handleOnChangeText = (text) => {
     if (validator) {
-      validator(text);
+      validator(text); 
     }
   };
 
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   input: {
     flex:1,
     fontSize: wp(4),
+
     color: '#000000',
     paddingStart: wp(2),
   },

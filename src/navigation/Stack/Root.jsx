@@ -53,6 +53,7 @@ import Login from '../../components/Login';
 import VerifyOtp from '../../components/VerifyOtp';
 import ReviewsPage from '../../components/ReviewsPage';
 import EventsOrActivitiesPage from '../../ReusableComponents/EventsOrActivitiesPage';
+import AddDealershipOpportunitiesForm from '../../components/AddDealershipOpportunitiesForm';
 
 
 export const isAuthorisedContext = createContext({});
@@ -510,6 +511,14 @@ export default function RootStack() {
               }}
               name="EventsOrActivitiesPage"
               component={EventsOrActivitiesPage}
+            />
+             <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="AddDealershipOpportunitiesForm"
+              component={AddDealershipOpportunitiesForm}
             />
 
           </Stack.Navigator>

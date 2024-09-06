@@ -61,6 +61,11 @@ export default function Home() {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [productName, setProductName] = useState('');
+  const [organizationName, setOrganizationName] = useState('');
+    const [location, setLocation] = useState('');
+    const [brand, setBrand] = useState('');
+    const [email, setEmail] = useState('');
+    const [type, setType] = useState('');
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const {height, width} = useWindowDimensions();
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
@@ -79,6 +84,14 @@ export default function Home() {
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const getauthuser = async () => {
+    let decoded = await getDecodedToken();
+    if (decoded && decoded?._id) {
+      setuserid(decoded?._id);
+      getUserById(decoded?._id);
     }
   };
 
@@ -142,22 +155,33 @@ export default function Home() {
   const handleApplySubmitRequirement = async () => {
     setApplyFromModal(true)
     try {
-      if (name == '') {
+      if (organizationName == '') {
         errorToast('Name cannot be empty');
         return;
       }
-      if (phone == '') {
-        errorToast('Mobile number cannot be empty');
-        return;
-      }
-      if (address == '') {
-        errorToast('Address cannot be empty');
-        return;
-      }
       if (productName == '') {
-        errorToast('Product cannot be empty');
+        errorToast(' Product Name cannot be empty');
         return;
       }
+      if (type == '') {
+        errorToast('Type number cannot be empty');
+        return;
+      }
+      if (brand == '') {
+        errorToast('Brand cannot be empty');
+        return;
+      }
+      if (location == '') {
+        errorToast('Location cannot be empty');
+        return;
+      }
+
+       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          errorToast('Product cannot be empty');
+          return;
+        }
+    
 
       let obj = {
         name,
@@ -589,7 +613,7 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
                 {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
                 <Text style={{fontSize:wp(6),fontWeight:800,color:'white'}}>New Arrivals</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
-                  <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)}/>
+                  <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} />
                 </Pressable>
               </View>
 <Carousel
@@ -719,7 +743,7 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
 
                <View style={[styles.padinghr, { alignSelf:'center',alignItems: 'center', justifyContent: 'space-between', marginBottom: wp(2),paddingBottom:wp(2.5)}]}>
                 <Text style={[styles1.headingmain,{marginBottom:wp(5)}]}>Dealership Opportunities</Text>              
-                <AddOpportunitiesHomeBanner style={{marginTop:wp(5)}}></AddOpportunitiesHomeBanner>
+                <AddOpportunitiesHomeBanner style={{marginTop:wp(5)}} onPress={()=>{navigate.navigate('AddDealershipOpportunitiesForm')}}></AddOpportunitiesHomeBanner>
               </View>
 
 
@@ -788,12 +812,12 @@ style={{marginTop:wp(5),paddingBottom:wp(5)}}
             <Text style={styles1.textStyle}>Apply Form</Text>
             <View style={styles1.textFieldContainer}>
                 <View style={{height:wp(1)}} />
-                <CustomTextInputField placeholder='Organization Name*' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
-                <CustomTextInputField placeholder='Type*' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
-                <CustomTextInputField placeholder='Product' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
-                <CustomTextInputField placeholder='Brand' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
-                <CustomTextInputField placeholder='Location' onChangeText={value=>setName(value)}/><View style={{height:wp(1)}} />
-                <CustomTextInputField placeholder='Email' onChangeText={value=>setName(value)} inputType='email'/><View style={{height:wp(1)}} />                              
+                <CustomTextInputField placeholder='Organization Name*' onChangeText={value=>setOrganizationName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Type*' onChangeText={value=>setType(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Product' onChangeText={value=>setProductName(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Brand' onChangeText={value=>setBrand(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Location' onChangeText={value=>setLocation(value)}/><View style={{height:wp(1)}} />
+                <CustomTextInputField placeholder='Email' onChangeText={value=>setEmail(value)} inputType='email'/><View style={{height:wp(1)}} />                              
             </View>
             <View style={styles1.btnContainer}>
                 <TouchableOpacity onPress={()=>{handleApplySubmitRequirement()}}>
