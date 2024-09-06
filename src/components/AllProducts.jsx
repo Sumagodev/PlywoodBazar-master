@@ -1,17 +1,18 @@
-import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import { TextInput, useTheme } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StackRouter, useNavigation ,useIsFocused} from '@react-navigation/native';
+import { StackRouter, useNavigation, useIsFocused } from '@react-navigation/native';
 import { getAllProducts } from '../services/Product.service';
 import Header from '../navigation/customheader/Header';
 import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Entypo';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-import { checkForValidSubscriptionAndReturnBoolean ,getDecodedToken} from '../services/User.service';
+import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken } from '../services/User.service';
 import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -33,7 +34,6 @@ export default function AllProducts(props) {
   const [categoryid, setCategoryid] = useState('');
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isloding, setIsloding] = useState(false);
-
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
   const [rating, setRating] = useState(0);
@@ -54,16 +54,9 @@ export default function AllProducts(props) {
   const [distributorArr, setDistributorArr] = useState([]);
   const [isLoading1, setIsLoading1] = useState(false);
   const [usertypes, setUsertypes] = useState([]);
-
-
-
-
   const [statesDisplayArr, setStatesDisplayArr] = useState([]);
   const [citiesDisplayArr, setCitiesDisplayArr] = useState([]);
-
   const [brandArr, setBrandArr] = useState([]);
-
-
   const [searchState, setSearchState] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [limit, setLimit] = useState(10);
@@ -72,11 +65,8 @@ export default function AllProducts(props) {
   const [isLoading, setIsLoading] = useState(true);
   const nextPageIdentifierRef = useRef();
   const [isFirstPageReceived, setIsFirstPageReceived] = useState(false);
-
-
   const getProducts = async () => {
     console.log('countof functioncall');
-    
     try {
       let query = '';
       if (categoryid != '') {
@@ -134,7 +124,7 @@ export default function AllProducts(props) {
   };
   const handleGetProducts = async (source) => {
     console.log('functioncalled');
-    
+
     setIsloding(true)
     setIsLoading1(true)
     try {
@@ -412,6 +402,7 @@ export default function AllProducts(props) {
 
     setSelected(arr);
   };
+
 
   // useEffect(() => {
   //   if (focused) {
@@ -837,26 +828,31 @@ export default function AllProducts(props) {
 
 
   return (
-      <View style={{backgroundColor: '#FFFFFF'}}>
+    <View style={{ backgroundColor: '#FFFFFF' }}>
 
-    <View style={styles.container}>
-      {/* <Header /> */}
-      {/* <Header stackHeader={true} screenName={'All Products'} rootProps={props} /> */}
+      <View style={styles.container}>
+        {/* <Header /> */}
+        {/* <Header stackHeader={true} screenName={'All Products'} rootProps={props} /> */}
 
-      <Text style={styles.headingTextStyle}>All Products</Text>
-      <View style={styles.searchRow}>
-        <CustomTextInputField customWidth={wp(70)} placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} inputType="text"   onChangeText={e =>{setQuery(e) ,setProductsArr(null),setIsLoading(true),setPage(1)} } value={qry}/>
-        <TouchableOpacity style={styles.filterIconStyle} onPress={() => this.RBSheet.open()}>
-          <Icon name="tune" size={wp(5)} color={'white'} />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-    
-        data={productsArr}
-        keyExtractor={(item, index) => `${index}`}
-        renderItem={({ item, index }) => {
-          // Check if it's a banner placeholder
-      
+        <Text style={styles.headingTextStyle}>All Products</Text>
+        <View style={styles.searchRow}>
+          <CustomTextInputField customWidth={wp(70)} placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} inputType="text" onChangeText={e => { setQuery(e), setProductsArr(null), setIsLoading(true), setPage(1) }} value={qry} />
+          <TouchableOpacity style={styles.filterIconStyle} onPress={() => this.RBSheet.open()}>
+            <Icon name="tune" size={wp(5)} color={'white'} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterIconStyle} onPress={() => {HandleClearFilter(),setIsLoading(true)}}>
+            <Icon name="refresh" size={wp(6)} color={'white'} />
+          </TouchableOpacity>
+
+
+        </View>
+        <FlatList
+
+          data={productsArr}
+          keyExtractor={(item, index) => `${index}`}
+          renderItem={({ item, index }) => {
+            // Check if it's a banner placeholder
+
             return (
               <NewArrivalProductCard
                 imagePath={{ uri: generateImageUrl(item.mainImage) }}
@@ -869,33 +865,33 @@ export default function AllProducts(props) {
                 onCardPressed={() => navigate.navigate('Productdetails', { data: item?.slug })}
               />
             );
-}}
-        
-        scrollEnabled
-        numColumns={1}
-        style={{ width: '100%',height:'100%', backgroundColor: '#FFFFFF', }}
-        contentContainerStyle={{ paddingVertical: 5, paddingBottom:wp(35) }}
-         ListFooterComponent={<View>
-                {
-                  isLoading1 ?
-                  <View style={{margin:wp(10)}}>
-                    <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
-                    </View>
-                    : <View style={{margin:wp(10)}}>
-                    <LoadMoreButton onPress={() => { fetchNextPage() }}  />
-                    </View>
-                }
-              </View>
+          }}
 
-              }
-      />
+          scrollEnabled
+          numColumns={1}
+          style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF', }}
+          contentContainerStyle={{ paddingVertical: 5, paddingBottom: wp(35) }}
+          ListFooterComponent={<View>
+            {
+              isLoading1 ?
+                <View style={{ margin: wp(10) }}>
+                  <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+                </View>
+                : <View style={{ margin: wp(10) }}>
+                  <LoadMoreButton onPress={() => { fetchNextPage() }} />
+                </View>
+            }
+          </View>
 
-      {
-        isLoading ?
-          <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
-          : null
-      }
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          }
+        />
+
+        {
+          isLoading ?
+            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            : null
+        }
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <RBSheet
             ref={ref => {
               this.RBSheet = ref;
@@ -1048,7 +1044,7 @@ export default function AllProducts(props) {
             </ScrollView>
           </RBSheet>
         </View>
-    </View>
+      </View>
     </View>
   );
 }
@@ -1057,7 +1053,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     paddingTop: wp(2),
-    marginBottom:wp(20)
+    marginBottom: wp(20)
   },
   headingTextStyle: {
     fontSize: wp(6),

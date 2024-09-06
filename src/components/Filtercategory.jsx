@@ -7,6 +7,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import styles from '../../assets/stylecomponents/Style';
+import Icon1 from 'react-native-vector-icons/Entypo';
 import { getBrandApi } from '../services/brand.service';
 import { getNestedCategories } from '../services/Category.service';
 import { getCityApi } from '../services/city.service';
@@ -805,7 +806,12 @@ const Filtercategory = (props) => {
                 <Icon name="tune" size={wp(6)} color={'white'} />
               </View>
             </TouchableOpacity>
-
+            <TouchableOpacity onPress={() => {HandleClearFilter(),setIsLoading(true)}}>
+              <View style={[styles1.col2, {}]}>
+                <Icon name="refresh" size={wp(6)} color={'white'} />
+              </View>
+            </TouchableOpacity>
+       
           </View>
 
         </View>
@@ -1166,7 +1172,7 @@ const stylesSearch = StyleSheet.create({
     backgroundColor: CustomColors.searchBackground,
     borderRadius: wp(10),
     flexDirection: 'row',
-    width: wp(80),
+    width: wp(70),
     height: wp(12),
     padding: wp(0.5),
     borderColor: '#CDC2A1',
