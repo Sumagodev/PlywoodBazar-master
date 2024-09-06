@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { axiosApiInstance } from '../../App';
 //import { /*apiinstance*/ axios } from "../App";
-import { url } from './url.service';
+import { url } from './url.service'; 
 
 let serverUrl = `${url}/product`;
 
