@@ -7,6 +7,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import styles from '../../assets/stylecomponents/Style';
+import Icon1 from 'react-native-vector-icons/Entypo';
 import { getBrandApi } from '../services/brand.service';
 import { getNestedCategories } from '../services/Category.service';
 import { getCityApi } from '../services/city.service';
@@ -27,7 +28,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import CustomColors from '../styles/CustomColors';
 
- const  Filtercategory = (props) =>  {
+const Filtercategory = (props) => {
 
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
   const [isloding, setIsloding] = useState(false);
@@ -45,8 +46,8 @@ import CustomColors from '../styles/CustomColors';
   const [cityLoading, setCityLoading] = useState(false);
 
   let rbsheefRef = useRef();
- const [userObj, setUserObj] = useState({});
- const [role, setRole] = useState("");
+  const [userObj, setUserObj] = useState({});
+  const [role, setRole] = useState("");
   const [manufacturersArr, setManufacturersArr] = useState([]);
   const [dealersArr, setDealersArr] = useState([]);
   const [distributorArr, setDistributorArr] = useState([]);
@@ -143,9 +144,9 @@ import CustomColors from '../styles/CustomColors';
           query = `${query}&q=${qry}`;
         }
       }
-      if(role && role!=""){
-        if (query == '') { 
-            query = `role=${role}`;
+      if (role && role != "") {
+        if (query == '') {
+          query = `role=${role}`;
         }
         else {
           query = `${query}&role=${role}`;
@@ -158,10 +159,10 @@ import CustomColors from '../styles/CustomColors';
           query = `${query}&rating=${rating}`;
         }
       }
-      
-      let response = await getAllUsers(query,source);
+
+      let response = await getAllUsers(query, source);
       //let { data: res } = await getAllUsers(query,source);
-      res=response.data
+      res = response.data
       //console.log('AllDataX=>',response)
       if (res.data && res?.data?.length > 0) {
         Promise.resolve()
@@ -169,20 +170,20 @@ import CustomColors from '../styles/CustomColors';
             // setProductsArr(res?.data);
             setTotal(res?.total);
             setIsLoading1(false)
-             if(page > 1 && res?.data?.length > 0){
-             nextPageIdentifierRef.current = page;
-            setProductsArr([...productsArr, ...res?.data])
+            if (page > 1 && res?.data?.length > 0) {
+              nextPageIdentifierRef.current = page;
+              setProductsArr([...productsArr, ...res?.data])
 
             } else {
-            setProductsArr(res?.data)
-            setIsLoading1(false)
+              setProductsArr(res?.data)
+              setIsLoading1(false)
             }
             setIsLoading(false);
             setIsLoading1(false)
             page == 1 && setIsFirstPageReceived(true);
           })
           .then(() => {
-           
+
           });
       } else {
         Promise.resolve()
@@ -193,12 +194,12 @@ import CustomColors from '../styles/CustomColors';
           })
           .then(() => {
             setIsloding(false);
-            
+
           });
       }
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log("Axios Error=>Cancelled ",error);
+        console.log("Axios Error=>Cancelled ", error);
       } else {
         setIsLoading(false);
         errorToast(error);
@@ -208,13 +209,13 @@ import CustomColors from '../styles/CustomColors';
   };
   const fetchNextPage = () => {
 
-    console.log("================================end===============================================",nextPageIdentifierRef)
+    console.log("================================end===============================================", nextPageIdentifierRef)
     // if (nextPageIdentifierRef.current == null) {
     //   // End of data.
     //   return;
     // }
 
-    setPage(page+1)
+    setPage(page + 1)
     // fetchData();
   };
 
@@ -262,11 +263,11 @@ import CustomColors from '../styles/CustomColors';
         setStatesDisplayArr(res.data.map(el => ({ ...el, checked: false })));
       }
     } catch (error) {
-      console.log('handleGetStateError',error);
+      console.log('handleGetStateError', error);
     }
   };
 
-  
+
   const handleGetCities = async (queryString) => {
     try {
       setCityLoading(true)
@@ -285,18 +286,18 @@ import CustomColors from '../styles/CustomColors';
         setCityLoading(false)
       }
     } catch (error) {
-      console.log('handleGetCities',error);
+      console.log('handleGetCities', error);
       setCityLoading(false)
     }
   };
 
-  const handlegetUser =async() => {
-    try{
+  const handlegetUser = async () => {
+    try {
 
       console.log('handlegetUser() Called.')
-      let userArr =[
+      let userArr = [
         {
-          name:ROLES_CONSTANT.MANUFACTURER,
+          name: ROLES_CONSTANT.MANUFACTURER,
           checked: false
         },
         {
@@ -304,26 +305,26 @@ import CustomColors from '../styles/CustomColors';
           checked: false
         },
         {
-          name:ROLES_CONSTANT.DEALER,
+          name: ROLES_CONSTANT.DEALER,
           checked: false
         },
       ]
-    
-      let decoded =await getDecodedToken();
-      console.log(decoded,"handlegetUser() Called. Token ")
-      if(decoded && decoded.role){
+
+      let decoded = await getDecodedToken();
+      console.log(decoded, "handlegetUser() Called. Token ")
+      if (decoded && decoded.role) {
         setUserObj(decoded)
         setRole(decoded?.role);
         let temotoleAee = userArr.filter((el) => el.name != role);
         setUsertypes(temotoleAee)
-  
-      // console.log(decoded,"decoded")
-    }  else {
-      setUsertypes(userArr)
 
+        // console.log(decoded,"decoded")
+      } else {
+        setUsertypes(userArr)
+
+      }
     }
-  }
-    catch(err){
+    catch (err) {
       toastError(err)
     }
   }
@@ -364,31 +365,31 @@ import CustomColors from '../styles/CustomColors';
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
     // }
 
-  if (!isFirstPageReceived && isLoading) {
-    // Show loader when fetching first page data.
-    console.log('loading.................')
-    return <ActivityIndicator size={'large'} color={'red'} width={wp(50)}/>;
-  }
+    if (!isFirstPageReceived && isLoading) {
+      // Show loader when fetching first page data.
+      console.log('loading.................')
+      return <ActivityIndicator size={'large'} color={'red'} width={wp(50)} />;
+    }
     return (
       <>
 
-    {
-      
-        <TouchableOpacity onPress={() => navigation.navigate('Supplier', { data: item })} style={styles1.boxproduct}>
-          {
-            item.bannerImage && item.bannerImage!="" ?   <Image source={{ uri: generateImageUrl(item.bannerImage) }} style={[styles1.imgresponsives]} resizeMode='stretch' />:        <Image source={require('../../assets/img/profile1.png')}style={[styles1.imgresponsives]}  />
-          }
-          <View style={styles1.infoproduct}>
-            <Text style={styles1.producthead}>{item.companyName} </Text>
-            <Text style={styles1.sizesqure}>
-              Products : {item.mainImage} <Text style={{ fontFamily: 'Manrope-Bold' }}>{item?.productsCount ? item?.productsCount : 'N.A.'}</Text>
-            </Text>
-            <Text style={styles1.pricearea}>
-              Rating : <Text style={{ fontFamily: 'Manrope-Bold' }}>{item.rating ? item.rating : 0} <AntDesign name='star' size={13} color='#b08218' /> </Text>
-            </Text>
-          </View>
-        </TouchableOpacity>
-      }
+        {
+
+          <TouchableOpacity onPress={() => navigation.navigate('Supplier', { data: item })} style={styles1.boxproduct}>
+            {
+              item.bannerImage && item.bannerImage != "" ? <Image source={{ uri: generateImageUrl(item.bannerImage) }} style={[styles1.imgresponsives]} resizeMode='stretch' /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.imgresponsives]} />
+            }
+            <View style={styles1.infoproduct}>
+              <Text style={styles1.producthead}>{item.companyName} </Text>
+              <Text style={styles1.sizesqure}>
+                Products : {item.mainImage} <Text style={{ fontFamily: 'Manrope-Bold' }}>{item?.productsCount ? item?.productsCount : 'N.A.'}</Text>
+              </Text>
+              <Text style={styles1.pricearea}>
+                Rating : <Text style={{ fontFamily: 'Manrope-Bold' }}>{item.rating ? item.rating : 0} <AntDesign name='star' size={13} color='#b08218' /> </Text>
+              </Text>
+            </View>
+          </TouchableOpacity>
+        }
       </>
     );
   };
@@ -401,8 +402,8 @@ import CustomColors from '../styles/CustomColors';
     // }
 
     const someShopData = {
-      name:item.companyName,
-      imagePath:item.bannerImage && item.bannerImage!="" ?   { uri: generateImageUrl(item.bannerImage) }: require('../../assets/img/profile1.png'),
+      name: item.companyName,
+      imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/profile1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
       address: item.message
@@ -410,18 +411,18 @@ import CustomColors from '../styles/CustomColors';
 
 
 
-  if (!isFirstPageReceived && isLoading) {
-    // Show loader when fetching first page data.
-   
-    return <ActivityIndicator size={'small'} color={'red'} width={wp(50)}/>;
-  }
+    if (!isFirstPageReceived && isLoading) {
+      // Show loader when fetching first page data.
+
+      return <ActivityIndicator size={'small'} color={'red'} width={wp(50)} />;
+    }
     return (
       <>
 
-    {
-      
-       <ShopListItem vendorItem={someShopData} onItemPress={()=>{navigation.navigate('Supplier', { data: item })}}></ShopListItem>
-      }
+        {
+
+          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }}></ShopListItem>
+        }
       </>
     );
   };
@@ -443,9 +444,9 @@ import CustomColors from '../styles/CustomColors';
 
     setCitiesArr([...tempArr]);
   };
-  const handleCheckCategory = (item,isSubcategory=false) => {
+  const handleCheckCategory = (item, isSubcategory = false) => {
     let tempArr = categoryData;
-    if(isSubcategory) {
+    if (isSubcategory) {
 
       let indexValue = tempArr.findIndex(el => item.parentCategoryId == el._id);
       let indexValue2 = tempArr[indexValue].subCategoryArr.findIndex(el => item._id == el._id);
@@ -479,8 +480,8 @@ import CustomColors from '../styles/CustomColors';
 
   const handleUserTypeCheck = id => {
     let tempArr = [...usertypes];
-    tempArr =    tempArr.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)
-    console.log(tempArr,"tempArrtempArrtempArr",id)
+    tempArr = tempArr.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)
+    console.log(tempArr, "tempArrtempArrtempArr", id)
     tempArr[id].checked = !tempArr[id].checked;
     setUsertypes(tempArr);
   };
@@ -492,15 +493,17 @@ import CustomColors from '../styles/CustomColors';
     //   tempArr[indexCheck].checked = !tempArr[indexCheck].checked;
     // }
 
-    let stateId ="";
-    {tempArr.map((el,index)=>{
-      if (el._id == id) {
-        el.checked = true;
-        stateId = el._id;
-      }else{
-        el.checked = false
-      }
-    })}
+    let stateId = "";
+    {
+      tempArr.map((el, index) => {
+        if (el._id == id) {
+          el.checked = true;
+          stateId = el._id;
+        } else {
+          el.checked = false
+        }
+      })
+    }
 
 
     handleGetCities(stateId)
@@ -537,7 +540,7 @@ import CustomColors from '../styles/CustomColors';
   useEffect(() => {
     // const decodedToken = await getDecodedToken();
     // let role = "";
-    
+
     // if(decodedToken){
     //     role  = decodedToken.role
     // }
@@ -548,22 +551,22 @@ import CustomColors from '../styles/CustomColors';
     handleGetProducts(source);
     return function () {
       source.cancel();
-  };
+    };
 
-    
-  }, [categoryData, minPrice, usertypes, maxPrice, qry, brandArr, citiesDisplayArr, statesDisplayArr, rating,role,page]);
+
+  }, [categoryData, minPrice, usertypes, maxPrice, qry, brandArr, citiesDisplayArr, statesDisplayArr, rating, role, page]);
 
 
   const HandleClearFilter = () => {
     setCategoryData(categoryData.map(el => ({ ...el, checked: false })))
-    setUsertypes((prev) =>prev.map((el) =>({ ...el, checked: false })))
+    setUsertypes((prev) => prev.map((el) => ({ ...el, checked: false })))
     setMinPrice(0);
     setMaxPrice(0)
     setQuery("");
-    setBrandArr((prev) =>prev.map((el) =>({ ...el, checked: false })))
-    setStatesDisplayArr(statesArr.map((el) =>({ ...el, checked: false })))
+    setBrandArr((prev) => prev.map((el) => ({ ...el, checked: false })))
+    setStatesDisplayArr(statesArr.map((el) => ({ ...el, checked: false })))
     setCitiesDisplayArr([])
-    
+
     setRating(0);
     this.RBSheet.close()
   }
@@ -583,14 +586,14 @@ import CustomColors from '../styles/CustomColors';
             borderColor="red"
           />
           <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
-         
-         
-          
+
+
+
         </View>
-            {
-            item.subCategoryArr && item.subCategoryArr.length > 0 &&  item.checked &&
-                <FlatList data={item.subCategoryArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, indexX) => `SubCategory${item._id}`} renderItem={renderCategory} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} /> 
-            }
+        {
+          item.subCategoryArr && item.subCategoryArr.length > 0 && item.checked &&
+          <FlatList data={item.subCategoryArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, indexX) => `SubCategory${item._id}`} renderItem={renderCategory} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
+        }
       </>
     );
   };
@@ -603,15 +606,15 @@ import CustomColors from '../styles/CustomColors';
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
-              handleCheckCategory(item,true);
+              handleCheckCategory(item, true);
             }}
             color="#B08218"
             borderColor="red"
           />
           <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
-         
-         
-          
+
+
+
         </View>
       </>
     );
@@ -776,197 +779,202 @@ import CustomColors from '../styles/CustomColors';
   return (
     <>
 
-    {/* <Header backbtnshowpage /> */}
+      {/* <Header backbtnshowpage /> */}
 
 
 
-    <Header normal ={true} screenName={'Shop'} rootProps={props} />
-    <View style={[styles.padinghr, styles.bgwhite, {flex:1}]}>
-      <View style={{ paddingBottom: 20 }}>
-        <View style={{ display: 'flex', flexDirection: 'row', gap: 5, marginTop:hp(2), justifyContent: 'space-between' }}>
-          {/* <TypeWriter typing={1}> asdf asdf asdfa sdf asdfadffa asdf asdfaf</TypeWriter> */}
-          <View style={[stylesSearch.mainContainer]}>
-        <View style={stylesSearch.iconContainer}>
+      <Header normal={true} screenName={'Shop'} rootProps={props} />
+      <View style={[styles.padinghr, styles.bgwhite, { flex: 1 }]}>
+        <View style={{ paddingBottom: 20 }}>
+          <View style={{ display: 'flex', flexDirection: 'row', gap: 5, marginTop: hp(2), justifyContent: 'space-between' }}>
+            {/* <TypeWriter typing={1}> asdf asdf asdfa sdf asdfadffa asdf asdfaf</TypeWriter> */}
+            <View style={[stylesSearch.mainContainer]}>
+              <View style={stylesSearch.iconContainer}>
                 <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
-        </View>
-      <TextInput
-        style={stylesSearch.input}
-        placeholder={'Search by category, company, vendor'}       
-        
-        onChangeText={e =>{setQuery(e) ,setProductsArr(null),setIsLoading(true),setPage(1)} } value={qry}   
-      />
-    </View>
-            
-          
+              </View>
+              <TextInput
+                style={stylesSearch.input}
+                placeholder={'Search by category, company, vendor'}
+
+                onChangeText={e => { setQuery(e), setProductsArr(null), setIsLoading(true), setPage(1) }} value={qry}
+              />
+            </View>
+
+
             <TouchableOpacity onPress={() => this.RBSheet.open()}>
-            <View style={[styles1.col2, {}]}>              
-              <Icon name="tune" size={wp(6)} color={'white'}  />
+              <View style={[styles1.col2, {}]}>
+                <Icon name="tune" size={wp(6)} color={'white'} />
               </View>
             </TouchableOpacity>
-          
+            <TouchableOpacity onPress={() => {HandleClearFilter(),setIsLoading(true)}}>
+              <View style={[styles1.col2, {}]}>
+                <Icon name="refresh" size={wp(6)} color={'white'} />
+              </View>
+            </TouchableOpacity>
+       
+          </View>
+
         </View>
-        
-      </View>
 
 
-    {
-      productsArr && productsArr?.length > 0 ?
-      <FlatList
-      data={productsArr}
-      keyExtractor={(item, index) => `${index}`}
-      
-      renderItem={renderproduct}
-      //onEndReached={fetchNextPage}
-      onEndReachedThreshold={0.1}
-      scrollEnabled={true}
-      style={{ width: '100%' }}
-      contentContainerStyle={[{ paddingVertical: 5, paddingBottom: 5, paddingTop: 5 }]}
-      ListFooterComponent={<View>
         {
-          isLoading1?
-            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)}/>
-          : <LoadMoreButton onPress={()=>{ fetchNextPage()}}/>
-        }
-      </View>
-      
-    }
-      />
-     
-      :
-      (
-        isLoading ? null : (
-         (
-            <View style={{ height: wp(80), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Text>No Shop Found</Text>
-            </View>
-          )
-        )
-      )
-    }
-      {
-        isLoading? 
-        <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)}/>
-        :null
-      }
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <RBSheet
-          ref={ref => {
-            this.RBSheet = ref;
-          }}
-          height={700}
-          openDuration={250}
-          customStyles={{
-            container: {
-              marginHorizontal: 10,
-              width: wp(95),
-              padding: 10,
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-            },
-          }}>
-          <View style={{backgroundColor:'#6B4E37', borderRadius:wp(2)}}>
-              <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding:wp(3) }}>Filters</Text>
-            </View>
-          <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>User Types</Text>
-            <FlatList data={usertypes.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `UserType${index}`} renderItem={renderUserTypes} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Category</Text>
-            <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>State</Text>
-            <TextInput onChangeText={(val) => handleSearchState(val)} value={searchState} style={[styles1.textInput, {height:hp(6),}]} placeholder='Search State Here' />
-            <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>City</Text>
-            <TextInput onChangeText={(val) => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, {height:hp(6)}]} placeholder='Search City Here' />
-            {
-              cityLoading ?
-                <ActivityIndicator color="#E7B84E" size={"large"} />
-                :
-                <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-            }
-            <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Rating</Text>
-            <Pressable onPress={() => setRating(4)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
-            <Checkbox.Android
-            status={rating ==4 ? 'checked' : 'unchecked'}
-            onPress={() => {
-              if (rating === 4) {
-                  setRating(0)
-              }else{
-                setRating(4)
-              }
-            }}
-            color="#B08218"
-            borderColor="red"
-          />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <Text style={{ marginLeft: 5 }}>& more</Text>
-            </Pressable>
-            <Pressable onPress={() => setRating(3)} style={{ display: "flex", flexDirection: "row",alignItems:'center'}}>
-            <Checkbox.Android
-            status={rating ==3 ? 'checked' : 'unchecked'}
-            onPress={() => {
-              if (rating === 3 ) {
-                  setRating(0)
-              }else{
-                setRating(3)
-              }
-            }}
-            color="#B08218"
-            borderColor="red"
-          />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <Text style={{ marginLeft: 5 }}>& more</Text>
-            </Pressable>
-            <Pressable onPress={() => setRating(2)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
-            <Checkbox.Android
-            status={rating ==2 ? 'checked' : 'unchecked'}
-            onPress={() => {
-              if (rating === 2) {
-                setRating(0)
-              }else{
+          productsArr && productsArr?.length > 0 ?
+            <FlatList
+              data={productsArr}
+              keyExtractor={(item, index) => `${index}`}
 
-                setRating(2)
+              renderItem={renderproduct}
+              //onEndReached={fetchNextPage}
+              onEndReachedThreshold={0.1}
+              scrollEnabled={true}
+              style={{ width: '100%' }}
+              contentContainerStyle={[{ paddingVertical: 5, paddingBottom: 5, paddingTop: 5 }]}
+              ListFooterComponent={<View>
+                {
+                  isLoading1 ?
+                    <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+                    : <LoadMoreButton onPress={() => { fetchNextPage() }} />
+                }
+              </View>
+
               }
+            />
+
+            :
+            (
+              isLoading ? null : (
+                (
+                  <View style={{ height: wp(80), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>No Shop Found</Text>
+                  </View>
+                )
+              )
+            )
+        }
+        {
+          isLoading ?
+            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            : null
+        }
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <RBSheet
+            ref={ref => {
+              this.RBSheet = ref;
             }}
-            color="#B08218"
-            borderColor="red"
-          />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <Text style={{ marginLeft: 5 }}>& more</Text>
-            </Pressable>
-            <Pressable onPress={() => setRating(1)} style={{ display: "flex", flexDirection: "row" ,alignItems:'center'}}>
-            <Checkbox.Android
-            status={rating ==1 ? 'checked' : 'unchecked'}
-            onPress={() => {
-              if(rating === 1){
-                setRating(0)
-              }else{
-                setRating(1)
+            height={700}
+            openDuration={250}
+            customStyles={{
+              container: {
+                marginHorizontal: 10,
+                width: wp(95),
+                padding: 10,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+              },
+            }}>
+            <View style={{ backgroundColor: '#6B4E37', borderRadius: wp(2) }}>
+              <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3) }}>Filters</Text>
+            </View>
+            <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>User Types</Text>
+              <FlatList data={usertypes.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `UserType${index}`} renderItem={renderUserTypes} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Category</Text>
+              <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>State</Text>
+              <TextInput onChangeText={(val) => handleSearchState(val)} value={searchState} style={[styles1.textInput, { height: hp(6), }]} placeholder='Search State Here' />
+              <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>City</Text>
+              <TextInput onChangeText={(val) => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, { height: hp(6) }]} placeholder='Search City Here' />
+              {
+                cityLoading ?
+                  <ActivityIndicator color="#E7B84E" size={"large"} />
+                  :
+                  <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
               }
-              
-            }}
-            color="#B08218"
-            borderColor="red"
-          />
-              <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-              <Text style={{ marginLeft: 5 }}>& more</Text>
-            </Pressable>
-            {/* <Pressable onPress={() => setRating(0)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Rating</Text>
+              <Pressable onPress={() => setRating(4)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+                <Checkbox.Android
+                  status={rating == 4 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    if (rating === 4) {
+                      setRating(0)
+                    } else {
+                      setRating(4)
+                    }
+                  }}
+                  color="#B08218"
+                  borderColor="red"
+                />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
+              </Pressable>
+              <Pressable onPress={() => setRating(3)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+                <Checkbox.Android
+                  status={rating == 3 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    if (rating === 3) {
+                      setRating(0)
+                    } else {
+                      setRating(3)
+                    }
+                  }}
+                  color="#B08218"
+                  borderColor="red"
+                />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
+              </Pressable>
+              <Pressable onPress={() => setRating(2)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+                <Checkbox.Android
+                  status={rating == 2 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    if (rating === 2) {
+                      setRating(0)
+                    } else {
+
+                      setRating(2)
+                    }
+                  }}
+                  color="#B08218"
+                  borderColor="red"
+                />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
+              </Pressable>
+              <Pressable onPress={() => setRating(1)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+                <Checkbox.Android
+                  status={rating == 1 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    if (rating === 1) {
+                      setRating(0)
+                    } else {
+                      setRating(1)
+                    }
+
+                  }}
+                  color="#B08218"
+                  borderColor="red"
+                />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
+              </Pressable>
+              {/* <Pressable onPress={() => setRating(0)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
             <Checkbox.Android
             status={rating ==0 ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -982,26 +990,26 @@ import CustomColors from '../styles/CustomColors';
               <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
               <Text style={{ marginLeft: 5 }}>& more</Text>
             </Pressable> */}
-            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop:hp(5) }}>
+              <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: hp(5) }}>
 
-              <TouchableOpacity
-                style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
-                onPress={() => HandleClearFilter()}
-              >
-                <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
-                onPress={() => this.RBSheet.close()}
-              >
-                <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4)  }}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </RBSheet>
+                <TouchableOpacity
+                  style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                  onPress={() => HandleClearFilter()}
+                >
+                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                  onPress={() => this.RBSheet.close()}
+                >
+                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </RBSheet>
+        </View>
       </View>
-    </View>
 
     </>
 
@@ -1019,7 +1027,7 @@ const styles1 = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(0,0,0,0.5)",
     borderRadius: 10,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
   },
   sizesqure: {
     color: '#000',
@@ -1067,12 +1075,12 @@ const styles1 = StyleSheet.create({
   },
   col2: {
     width: wp(12),
-    height:wp(12),
-    backgroundColor:'#6B4E37',
-    borderRadius:wp(9),
-    justifyContent:'center',
-    alignContent:'center',
-    alignItems:'center'
+    height: wp(12),
+    backgroundColor: '#6B4E37',
+    borderRadius: wp(9),
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center'
   },
   serachborder: {
     display: 'flex',
@@ -1160,36 +1168,35 @@ const styles1 = StyleSheet.create({
 
 const stylesSearch = StyleSheet.create({
 
-  mainContainer:{
-      backgroundColor:CustomColors.searchBackground,
-      borderRadius:wp(10),
-      flexDirection:'row',
-      width:wp(80),
-      height:wp(12),     
-      padding:wp(0.5),
-      borderColor:'#CDC2A1',
-      borderWidth:wp(0.3)    
+  mainContainer: {
+    backgroundColor: CustomColors.searchBackground,
+    borderRadius: wp(10),
+    flexDirection: 'row',
+    width: wp(70),
+    height: wp(12),
+    padding: wp(0.5),
+    borderColor: '#CDC2A1',
+    borderWidth: wp(0.3)
   },
-  iconContainer:{      
-      backgroundColor:CustomColors.mattBrownDark,
-      width:wp(10),
-      height:wp(10),
-      justifyContent:'center',
-      alignItems:'center',
-      alignSelf:'center',
-      borderRadius:wp(10),
+  iconContainer: {
+    backgroundColor: CustomColors.mattBrownDark,
+    width: wp(10),
+    height: wp(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: wp(10),
   },
-  iconImageStyle:{
-      width:wp(8),
-      height:wp(8),
-      justifyContent:'center',
-      alignItems:'center',
+  iconImageStyle: {
+    width: wp(8),
+    height: wp(8),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  input:{
-    flex:1,
-    
+  input: {
+    flex: 1,
+
   }
 });
 
 export default Filtercategory;
-

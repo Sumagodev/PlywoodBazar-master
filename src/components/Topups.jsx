@@ -42,7 +42,7 @@ export default function Topups(props) {
             }
         } else {
             errorToast(
-                "`Phonepe is not working.Please Try Some another Payment Method"
+                "Phonepe is not working.Please Try Some another Payment Method"
             );
         }
       }

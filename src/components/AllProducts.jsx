@@ -1,27 +1,28 @@
-import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
-import { TextInput, useTheme } from 'react-native-paper';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StackRouter, useNavigation ,useIsFocused} from '@react-navigation/native';
-import { getAllProducts } from '../services/Product.service';
+import {TextInput, useTheme} from 'react-native-paper';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {StackRouter, useNavigation, useIsFocused} from '@react-navigation/native';
+import {getAllProducts} from '../services/Product.service';
 import Header from '../navigation/customheader/Header';
 import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Entypo';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
-import { errorToast, toastSuccess } from '../utils/toastutill';
-import { checkForValidSubscriptionAndReturnBoolean ,getDecodedToken} from '../services/User.service';
-import { Checkbox } from 'react-native-paper';
+import {errorToast, toastSuccess} from '../utils/toastutill';
+import {checkForValidSubscriptionAndReturnBoolean, getDecodedToken} from '../services/User.service';
+import {Checkbox} from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { getBrandApi } from '../services/brand.service';
-import { getNestedCategories } from '../services/Category.service';
-import { getCityApi } from '../services/city.service';
-import { generateImageUrl } from '../services/url.service';
-import { getStates } from '../services/State.service';
-import { getAllUsers } from '../services/User.service';
-import { ROLES_CONSTANT } from '../utils/constants';
+import {getBrandApi} from '../services/brand.service';
+import {getNestedCategories} from '../services/Category.service';
+import {getCityApi} from '../services/city.service';
+import {generateImageUrl} from '../services/url.service';
+import {getStates} from '../services/State.service';
+import {getAllUsers} from '../services/User.service';
+import {ROLES_CONSTANT} from '../utils/constants';
 // import Header from '../navigation/customheader/Header';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import axios from 'axios';
@@ -33,7 +34,6 @@ export default function AllProducts(props) {
   const [categoryid, setCategoryid] = useState('');
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isloding, setIsloding] = useState(false);
-
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
   const [rating, setRating] = useState(0);
@@ -48,41 +48,31 @@ export default function AllProducts(props) {
 
   let rbsheefRef = useRef();
   const [userObj, setUserObj] = useState({});
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState('');
   const [manufacturersArr, setManufacturersArr] = useState([]);
   const [dealersArr, setDealersArr] = useState([]);
   const [distributorArr, setDistributorArr] = useState([]);
   const [isLoading1, setIsLoading1] = useState(false);
   const [usertypes, setUsertypes] = useState([]);
-
-
-
-
   const [statesDisplayArr, setStatesDisplayArr] = useState([]);
   const [citiesDisplayArr, setCitiesDisplayArr] = useState([]);
-
   const [brandArr, setBrandArr] = useState([]);
-
-
-  const [searchState, setSearchState] = useState("");
-  const [searchCity, setSearchCity] = useState("");
+  const [searchState, setSearchState] = useState('');
+  const [searchCity, setSearchCity] = useState('');
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPages, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const nextPageIdentifierRef = useRef();
   const [isFirstPageReceived, setIsFirstPageReceived] = useState(false);
-
-
   const getProducts = async () => {
     console.log('countof functioncall');
-    
     try {
       let query = '';
       if (categoryid != '') {
         query += `category=${categoryid}`;
       }
-      const { data: res } = await getAllProducts(query);
+      const {data: res} = await getAllProducts(query);
       if (res) {
         setProductsArr(res.data);
         //console.log('Allproducts', res.data)
@@ -102,7 +92,7 @@ export default function AllProducts(props) {
       setCategoryid(props?.route.params?.data);
     }
   }, [props]);
-  const handelcallbtn = (phone) => {
+  const handelcallbtn = phone => {
     if (!currentUserHasActiveSubscription) {
       errorToast('You do not have a valid subscription to perform this action');
       return 0;
@@ -118,13 +108,9 @@ export default function AllProducts(props) {
           //setName(decoded?.user?.name);
         }
 
-        let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        let {data: res} = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
         if (res.data) {
-          console.log(
-            'XX',
-            res.data,
-            'XX',
-          );
+          console.log('XX', res.data, 'XX');
           setCurrentUserHasActiveSubscription(res.data);
         }
       }
@@ -132,18 +118,17 @@ export default function AllProducts(props) {
       errorToast(err);
     }
   };
-  const handleGetProducts = async (source) => {
+  const handleGetProducts = async source => {
     console.log('functioncalled');
-    
-    setIsloding(true)
-    setIsLoading1(true)
-    try {
 
+    setIsloding(true);
+    setIsLoading1(true);
+    try {
       let query = `role=${role}&perPage=${limit}`;
       query += `&page=${page}`;
 
       if (usertypes && usertypes.length > 0 && usertypes.filter(el => el.checked == true).length > 0) {
-        let tempArr = usertypes.filter(el => el.checked == true)
+        let tempArr = usertypes.filter(el => el.checked == true);
         if (query == '') {
           query = `userTypes=${tempArr.map(el => el.name)}`;
         } else {
@@ -205,11 +190,10 @@ export default function AllProducts(props) {
           query = `${query}&q=${qry}`;
         }
       }
-      if (role && role != "") {
+      if (role && role != '') {
         if (query == '') {
           query = `role=${role}`;
-        }
-        else {
+        } else {
           query = `${query}&role=${role}`;
         }
       }
@@ -223,62 +207,60 @@ export default function AllProducts(props) {
 
       let response = await getAllProducts(query);
       //let { data: res } = await getAllUsers(query,source);
-      res = response.data
+      res = response.data;
       //console.log('AllDataX=>',response)
       if (res.data && res?.data?.length > 0) {
         Promise.resolve()
           .then(() => {
             // setProductsArr(res?.data);
             setTotal(res?.total);
-            setIsLoading1(false)
+            setIsLoading1(false);
             if (page > 1 && res?.data?.length > 0) {
               nextPageIdentifierRef.current = page;
-              setProductsArr([...productsArr, ...res?.data])
-
+              setProductsArr([...productsArr, ...res?.data]);
             } else {
-              setProductsArr(res?.data)
-              setIsLoading1(false)
+              setProductsArr(res?.data);
+              setIsLoading1(false);
             }
             setIsLoading(false);
-            setIsLoading1(false)
+            setIsLoading1(false);
             page == 1 && setIsFirstPageReceived(true);
           })
           .then(() => {
             setIsloding(false);
-            setIsLoading1(false)
+            setIsLoading1(false);
           });
       } else {
         Promise.resolve()
           .then(() => {
             setProductsArr([]);
             setTotal(0);
-            setIsLoading1(false)
+            setIsLoading1(false);
           })
           .then(() => {
             setIsloding(false);
-            setIsLoading1(false)
+            setIsLoading1(false);
           });
       }
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log("Axios Error=>Cancelled ", error);
-        setIsLoading1(false)
+        console.log('Axios Error=>Cancelled ', error);
+        setIsLoading1(false);
       } else {
         setIsLoading(false);
-        setIsLoading1(false)
+        setIsLoading1(false);
         errorToast(error);
       }
     }
   };
   const fetchNextPage = () => {
-
-    console.log("================================end===============================================", nextPageIdentifierRef)
+    console.log('================================end===============================================', nextPageIdentifierRef);
     // if (nextPageIdentifierRef.current == null) {
     //   // End of data.
     //   return;
     // }
 
-    setPage(page + 1)
+    setPage(page + 1);
     // fetchData();
   };
 
@@ -288,9 +270,9 @@ export default function AllProducts(props) {
 
   const getCategory = async () => {
     try {
-      const { data: res } = await getNestedCategories();
+      const {data: res} = await getNestedCategories();
       if (res) {
-        let tempArr = res.data.map(el => ({ ...el, checked: false }));
+        let tempArr = res.data.map(el => ({...el, checked: false}));
 
         setCategoryData(tempArr);
         if (props?.route?.params?.data) {
@@ -303,102 +285,96 @@ export default function AllProducts(props) {
   };
   const getBrands = async () => {
     try {
-      const { data: res } = await getBrandApi();
+      const {data: res} = await getBrandApi();
       if (res) {
-        setBrandArr(res.data.map(el => ({ ...el, checked: false })));
+        setBrandArr(res.data.map(el => ({...el, checked: false})));
       }
     } catch (error) {
       toastError(error);
     }
   };
 
-
-  const handleGetStates = async (queryString) => {
+  const handleGetStates = async queryString => {
     try {
-      let query = `page=${1}&perPage=${1000}`
+      let query = `page=${1}&perPage=${1000}`;
 
       // if (queryString && queryString != "") {
       //   query = `${query}&q=${queryString}`
       // }
-      let { data: res } = await getStates(query);
+      let {data: res} = await getStates(query);
       if (res.data) {
-        setStatesArr(res.data.map(el => ({ ...el, checked: false })));
-        setStatesDisplayArr(res.data.map(el => ({ ...el, checked: false })));
+        setStatesArr(res.data.map(el => ({...el, checked: false})));
+        setStatesDisplayArr(res.data.map(el => ({...el, checked: false})));
       }
     } catch (error) {
       console.log('handleGetStateError', error);
     }
   };
 
-
-  const handleGetCities = async (queryString) => {
+  const handleGetCities = async queryString => {
     try {
-      setCityLoading(true)
-      let query = `page=${1}&perPage=${10000}`
-      if (queryString && queryString != "") {
-        query = `${query}&stateId=${queryString}`
+      setCityLoading(true);
+      let query = `page=${1}&perPage=${10000}`;
+      if (queryString && queryString != '') {
+        query = `${query}&stateId=${queryString}`;
       }
 
-      let { data: res } = await getCityApi(query);
+      let {data: res} = await getCityApi(query);
       if (res.data) {
         // console.log(res.data)
-        setCitiesArr(res.data.map(el => ({ ...el, checked: false })));
+        setCitiesArr(res.data.map(el => ({...el, checked: false})));
         if (props?.route?.params?.locationId) {
           handleCheckLocationOnRender(props?.route?.params?.locationId, res.data);
         }
-        setCityLoading(false)
+        setCityLoading(false);
       }
     } catch (error) {
       console.log('handleGetCities', error);
-      setCityLoading(false)
+      setCityLoading(false);
     }
   };
 
   const handlegetUser = async () => {
     try {
-
-      console.log('handlegetUser() Called.')
+      console.log('handlegetUser() Called.');
       let userArr = [
         {
           name: ROLES_CONSTANT.MANUFACTURER,
-          checked: false
+          checked: false,
         },
         {
           name: ROLES_CONSTANT.DISTRIBUTOR,
-          checked: false
+          checked: false,
         },
         {
           name: ROLES_CONSTANT.DEALER,
-          checked: false
+          checked: false,
         },
-      ]
+      ];
 
       let decoded = await getDecodedToken();
-      console.log(decoded, "handlegetUser() Called. Token ")
+      console.log(decoded, 'handlegetUser() Called. Token ');
       if (decoded && decoded.role) {
-        setUserObj(decoded)
+        setUserObj(decoded);
         setRole(decoded?.role);
-        let temotoleAee = userArr.filter((el) => el.name != role);
-        setUsertypes(temotoleAee)
+        let temotoleAee = userArr.filter(el => el.name != role);
+        setUsertypes(temotoleAee);
 
         // console.log(decoded,"decoded")
       } else {
-        setUsertypes(userArr)
-
+        setUsertypes(userArr);
       }
+    } catch (err) {
+      toastError(err);
     }
-    catch (err) {
-      toastError(err)
-    }
-  }
+  };
 
   useEffect(() => {
     if (focused) {
-      handlegetUser()
+      handlegetUser();
       getCategory();
       getBrands();
       handleGetStates();
-
     }
   }, [focused]);
 
@@ -421,8 +397,7 @@ export default function AllProducts(props) {
   //     // setSelected([])
   //   }
   // }, [focused]);
-  const renderproductOld = ({ item, index }) => {
-
+  const renderproductOld = ({item, index}) => {
     // if (!isFirstPageReceived && isloding) {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
@@ -430,25 +405,24 @@ export default function AllProducts(props) {
 
     if (!isFirstPageReceived && isLoading) {
       // Show loader when fetching first page data.
-      console.log('loading.................')
+      console.log('loading.................');
       return <ActivityIndicator size={'small'} color={'red'} width={wp(50)} />;
     }
     return (
       <>
-
         {
-
-          <TouchableOpacity onPress={() => navigation.navigate('Supplier', { data: item })} style={styles1.boxproduct}>
-            {
-              item.bannerImage && item.bannerImage != "" ? <Image source={{ uri: generateImageUrl(item.bannerImage) }} style={[styles1.imgresponsives]} resizeMode='stretch' /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.imgresponsives]} />
-            }
+          <TouchableOpacity onPress={() => navigation.navigate('Supplier', {data: item})} style={styles1.boxproduct}>
+            {item.bannerImage && item.bannerImage != '' ? <Image source={{uri: generateImageUrl(item.bannerImage)}} style={[styles1.imgresponsives]} resizeMode="stretch" /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.imgresponsives]} />}
             <View style={styles1.infoproduct}>
               <Text style={styles1.producthead}>{item.companyName} </Text>
               <Text style={styles1.sizesqure}>
-                Products : {item.mainImage} <Text style={{ fontFamily: 'Manrope-Bold' }}>{item?.productsCount ? item?.productsCount : 'N.A.'}</Text>
+                Products : {item.mainImage} <Text style={{fontFamily: 'Manrope-Bold'}}>{item?.productsCount ? item?.productsCount : 'N.A.'}</Text>
               </Text>
               <Text style={styles1.pricearea}>
-                Rating : <Text style={{ fontFamily: 'Manrope-Bold' }}>{item.rating ? item.rating : 0} <AntDesign name='star' size={13} color='#b08218' /> </Text>
+                Rating :{' '}
+                <Text style={{fontFamily: 'Manrope-Bold'}}>
+                  {item.rating ? item.rating : 0} <AntDesign name="star" size={13} color="#b08218" />{' '}
+                </Text>
               </Text>
             </View>
           </TouchableOpacity>
@@ -457,8 +431,7 @@ export default function AllProducts(props) {
     );
   };
 
-  const renderproduct = ({ item, index }) => {
-
+  const renderproduct = ({item, index}) => {
     // if (!isFirstPageReceived && isloding) {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
@@ -466,13 +439,11 @@ export default function AllProducts(props) {
 
     const someShopData = {
       name: item.companyName,
-      imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/profile1.png'),
+      imagePath: item.bannerImage && item.bannerImage != '' ? {uri: generateImageUrl(item.bannerImage)} : require('../../assets/img/profile1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
-      address: item.message
+      address: item.message,
     };
-
-
 
     if (!isFirstPageReceived && isLoading) {
       // Show loader when fetching first page data.
@@ -481,10 +452,12 @@ export default function AllProducts(props) {
     }
     return (
       <>
-
         {
-
-          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }}></ShopListItem>
+          <ShopListItem
+            vendorItem={someShopData}
+            onItemPress={() => {
+              navigation.navigate('Supplier', {data: item});
+            }}></ShopListItem>
         }
       </>
     );
@@ -494,7 +467,7 @@ export default function AllProducts(props) {
     let tempArr = [...arr];
     let indexValue = tempArr.findIndex(el => id == el._id);
     tempArr[indexValue].checked = !tempArr[indexValue].checked;
-    tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({ ...el, checked: false }));
+    tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({...el, checked: false}));
 
     setCategoryData([...tempArr]);
   };
@@ -504,20 +477,18 @@ export default function AllProducts(props) {
     let indexValue = tempArr.findIndex(el => id == el._id);
     tempArr[indexValue].checked = !tempArr[indexValue].checked;
 
-
     setCitiesArr([...tempArr]);
   };
   const handleCheckCategory = (item, isSubcategory = false) => {
     let tempArr = categoryData;
     if (isSubcategory) {
-
       let indexValue = tempArr.findIndex(el => item.parentCategoryId == el._id);
       let indexValue2 = tempArr[indexValue].subCategoryArr.findIndex(el => item._id == el._id);
-      tempArr[indexValue].subCategoryArr[indexValue2].checked = !tempArr[indexValue].subCategoryArr[indexValue2].checked
+      tempArr[indexValue].subCategoryArr[indexValue2].checked = !tempArr[indexValue].subCategoryArr[indexValue2].checked;
     } else {
       let indexValue = tempArr.findIndex(el => item._id == el._id);
       tempArr[indexValue].checked = !tempArr[indexValue].checked;
-      tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({ ...el, checked: false }));
+      tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({...el, checked: false}));
     }
     setCategoryData([...tempArr]);
   };
@@ -540,10 +511,9 @@ export default function AllProducts(props) {
     setCitiesDisplayArr(tempArr);
   };
 
-
   const handleUserTypeCheck = id => {
     let tempArr = [...usertypes];
-    tempArr = tempArr.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)
+    tempArr = tempArr.filter(el => (userObj.role ? el.name.toLowerCase() != userObj.role.toLowerCase() : true));
     // console.log(tempArr, "tempArrtempArrtempArr", id)
     tempArr[id].checked = !tempArr[id].checked;
     setUsertypes(tempArr);
@@ -556,20 +526,19 @@ export default function AllProducts(props) {
     //   tempArr[indexCheck].checked = !tempArr[indexCheck].checked;
     // }
 
-    let stateId = "";
+    let stateId = '';
     {
       tempArr.map((el, index) => {
         if (el._id == id) {
           el.checked = true;
           stateId = el._id;
         } else {
-          el.checked = false
+          el.checked = false;
         }
-      })
+      });
     }
 
-
-    handleGetCities(stateId)
+    handleGetCities(stateId);
 
     setStatesDisplayArr(tempArr);
   };
@@ -599,7 +568,6 @@ export default function AllProducts(props) {
     setDistributorArr(tempArr);
   };
 
-
   useEffect(() => {
     // const decodedToken = await getDecodedToken();
     // let role = "";
@@ -608,38 +576,32 @@ export default function AllProducts(props) {
     //     role  = decodedToken.role
     // }
 
-
-
     let source = axios.CancelToken.source();
     handleGetProducts(source);
     return function () {
       source.cancel();
     };
-
-
   }, [categoryData, minPrice, usertypes, maxPrice, qry, brandArr, citiesDisplayArr, statesDisplayArr, rating, role, page]);
 
-
   const HandleClearFilter = () => {
-    setCategoryData(categoryData.map(el => ({ ...el, checked: false })))
-    setUsertypes((prev) => prev.map((el) => ({ ...el, checked: false })))
+    setCategoryData(categoryData.map(el => ({...el, checked: false})));
+    setUsertypes(prev => prev.map(el => ({...el, checked: false})));
     setMinPrice(0);
-    setMaxPrice(0)
-    setQuery("");
-    setBrandArr((prev) => prev.map((el) => ({ ...el, checked: false })))
-    setStatesDisplayArr(statesArr.map((el) => ({ ...el, checked: false })))
-    setCitiesDisplayArr([])
+    setMaxPrice(0);
+    setQuery('');
+    setBrandArr(prev => prev.map(el => ({...el, checked: false})));
+    setStatesDisplayArr(statesArr.map(el => ({...el, checked: false})));
+    setCitiesDisplayArr([]);
 
     setRating(0);
-    this.RBSheet.close()
-  }
+    this.RBSheet.close();
+  };
 
-
-  const renderfilter = ({ item, index }) => {
+  const renderfilter = ({item, index}) => {
     // console.log(item, "item")
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -648,24 +610,20 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
-
-
-
+          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
-        {
-          item.subCategoryArr && item.subCategoryArr.length > 0 && item.checked &&
-          <FlatList data={item.subCategoryArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, indexX) => `SubCategory${item._id}`} renderItem={renderCategory} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-        }
+        {item.subCategoryArr && item.subCategoryArr.length > 0 && item.checked && (
+          <FlatList data={item.subCategoryArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, indexX) => `SubCategory${item._id}`} renderItem={renderCategory} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
+        )}
       </>
     );
   };
 
-  const renderCategory = ({ item, index }) => {
+  const renderCategory = ({item, index}) => {
     // console.log(item, "item")
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -674,18 +632,15 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
-
-
-
+          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
-  const renderVendorFilter = ({ item, index }) => {
+  const renderVendorFilter = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -694,15 +649,15 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
-  const renderStateFilter = ({ item, index }) => {
+  const renderStateFilter = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -711,15 +666,15 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
-  const renderCityFilter = ({ item, index }) => {
+  const renderCityFilter = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -728,17 +683,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-
-  const renderUserTypes = ({ item, index }) => {
+  const renderUserTypes = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -747,21 +701,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ color: "black", fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-
-
-
-
-
-  const renderManufacturersFilter = ({ item, index }) => {
+  const renderManufacturersFilter = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -770,16 +719,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-  const renderDealerFilter = ({ item, index }) => {
+  const renderDealerFilter = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -788,16 +737,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-  const renderDistributorFilter = ({ item, index }) => {
+  const renderDistributorFilter = ({item, index}) => {
     return (
       <>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -806,96 +755,99 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
+          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-
-
-
-
-
-
-
-  const handleSearchState = (val) => {
+  const handleSearchState = val => {
     let tempArr = statesArr.filter(el => `${el.name}`.toLowerCase().includes(`${val}`.toLowerCase()));
     setStatesDisplayArr([...tempArr]);
-    // handleGetStates(val)
+    //          handleGetStates(val)
     setSearchState(val);
-  }
+  };
 
-  const handleSearchCity = (val) => {
-
+  const handleSearchCity = val => {
     // handleGetCities(val)
-
     let tempArr = citiesArr.filter(el => `${el.name}`.toLowerCase().includes(`${val}`.toLowerCase()));
     setCitiesDisplayArr([...tempArr]);
     setSearchCity(val);
-  }
-
+  };
 
   return (
-      <View style={{backgroundColor: '#FFFFFF'}}>
+    <View style={{backgroundColor: '#FFFFFF'}}>
+      <Header normal={true} screenName={'All Products'} rootProps={props} />
+      <View style={styles.container}>
+        <Text style={styles.headingTextStyle}>All Products</Text>
+        <View style={styles.searchRow}>
+          <CustomTextInputField
+            customWidth={wp(70)}
+            placeholder="Search Here"
+            imagePath={require('../../assets/img/ic_search.png')}
+            inputType="text"
+            onChangeText={e => {
+              setQuery(e), setProductsArr(null), setIsLoading(true), setPage(1);
+            }}
+            value={qry}
+          />
+          <TouchableOpacity style={styles.filterIconStyle} onPress={() => this.RBSheet.open()}>
+            <Icon name="tune" size={wp(5)} color={'white'} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.filterIconStyle}
+            onPress={() => {
+              HandleClearFilter(), setIsLoading(true);
+            }}>
+            <Icon name="refresh" size={wp(6)} color={'white'} />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={productsArr}
+          keyExtractor={(item, index) => `${index}`}
+          renderItem={({item, index}) => {
+            // Check if it's a banner placeholder
 
-    <View style={styles.container}>
-      {/* <Header /> */}
-      {/* <Header stackHeader={true} screenName={'All Products'} rootProps={props} /> */}
-
-      <Text style={styles.headingTextStyle}>All Products</Text>
-      <View style={styles.searchRow}>
-        <CustomTextInputField customWidth={wp(70)} placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} inputType="text"   onChangeText={e =>{setQuery(e) ,setProductsArr(null),setIsLoading(true),setPage(1)} } value={qry}/>
-        <TouchableOpacity style={styles.filterIconStyle} onPress={() => this.RBSheet.open()}>
-          <Icon name="tune" size={wp(5)} color={'white'} />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-    
-        data={productsArr}
-        keyExtractor={(item, index) => `${index}`}
-        renderItem={({ item, index }) => {
-          // Check if it's a banner placeholder
-      
             return (
               <NewArrivalProductCard
-                imagePath={{ uri: generateImageUrl(item.mainImage) }}
+                imagePath={{uri: generateImageUrl(item.mainImage)}}
                 price={item?.price}
                 name={item.name}
                 location="Location"
-                isVerified={item?.approved === "APPROVED"} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
-                onGetQuotePressed={() => { }}
-                onCallPressed={() => { handelcallbtn(item?.createdByObj?.companyObj?.phone) }}
-                onCardPressed={() => navigate.navigate('Productdetails', { data: item?.slug })}
+                isVerified={item?.approved === 'APPROVED'} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
+                onGetQuotePressed={() => {}}
+                onCallPressed={() => {
+                  handelcallbtn(item?.createdByObj?.companyObj?.phone);
+                }}
+                onCardPressed={() => navigate.navigate('Productdetails', {data: item?.slug})}
               />
             );
-}}
-        
-        scrollEnabled
-        numColumns={1}
-        style={{ width: '100%',height:'100%', backgroundColor: '#FFFFFF', }}
-        contentContainerStyle={{ paddingVertical: 5, paddingBottom:wp(35) }}
-         ListFooterComponent={<View>
-                {
-                  isLoading1 ?
-                  <View style={{margin:wp(10)}}>
-                    <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
-                    </View>
-                    : <View style={{margin:wp(10)}}>
-                    <LoadMoreButton onPress={() => { fetchNextPage() }}  />
-                    </View>
-                }
-              </View>
+          }}
+          scrollEnabled
+          numColumns={1}
+          style={{width: '100%', height: '100%', backgroundColor: '#FFFFFF'}}
+          contentContainerStyle={{paddingVertical: 5, paddingBottom: wp(35)}}
+          ListFooterComponent={
+            <View>
+              {isLoading1 ? (
+                <View style={{margin: wp(10)}}>
+                  <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+                </View>
+              ) : (
+                <View style={{margin: wp(10)}}>
+                  <LoadMoreButton
+                    onPress={() => {
+                      fetchNextPage();
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          }
+        />
 
-              }
-      />
-
-      {
-        isLoading ?
-          <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
-          : null
-      }
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {isLoading ? <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} /> : null}
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <RBSheet
             ref={ref => {
               this.RBSheet = ref;
@@ -911,107 +863,111 @@ export default function AllProducts(props) {
                 borderTopLeftRadius: 10,
               },
             }}>
-            <View style={{ backgroundColor: '#6B4E37', borderRadius: wp(2) }}>
-              <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3) }}>Filters</Text>
+            <View style={{backgroundColor: '#6B4E37', borderRadius: wp(2)}}>
+              <Text style={{color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3)}}>Filters</Text>
             </View>
-            <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
-              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>User Types</Text>
-              <FlatList data={usertypes.filter(el => userObj.role ? (el.name.toLowerCase() != userObj.role.toLowerCase()) : true)} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `UserType${index}`} renderItem={renderUserTypes} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Category</Text>
-              <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>State</Text>
-              <TextInput onChangeText={(val) => handleSearchState(val)} value={searchState} style={[styles1.textInput, { height: hp(6), }]} placeholder='Search State Here' />
-              <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>City</Text>
-              <TextInput onChangeText={(val) => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, { height: hp(6) }]} placeholder='Search City Here' />
-              {
-                cityLoading ?
-                  <ActivityIndicator color="#E7B84E" size={"large"} />
-                  :
-                  <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
-              }
-              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Rating</Text>
-              <Pressable onPress={() => setRating(4)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+            <ScrollView contentContainerStyle={{padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC'}}>
+              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>User Types</Text>
+              <FlatList
+                data={usertypes.filter(el => (userObj.role ? el.name.toLowerCase() != userObj.role.toLowerCase() : true))}
+                nestedScrollEnabled={false}
+                scrollEnabled={false}
+                keyExtractor={(item, index) => `UserType${index}`}
+                renderItem={renderUserTypes}
+                contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
+              />
+              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>Category</Text>
+              <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
+              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>State</Text>
+              <TextInput onChangeText={val => handleSearchState(val)} value={searchState} style={[styles1.textInput, {height: hp(6)}]} placeholder="Search State Here" />
+              <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
+              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>City</Text>
+              <TextInput onChangeText={val => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, {height: hp(6)}]} placeholder="Search City Here" />
+              {cityLoading ? (
+                <ActivityIndicator color="#E7B84E" size={'large'} />
+              ) : (
+                <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
+              )}
+              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>Rating</Text>
+              <Pressable onPress={() => setRating(4)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <Checkbox.Android
                   status={rating == 4 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     if (rating === 4) {
-                      setRating(0)
+                      setRating(0);
                     } else {
-                      setRating(4)
+                      setRating(4);
                     }
                   }}
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <Text style={{ marginLeft: 5 }}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <Text style={{marginLeft: 5}}>& more</Text>
               </Pressable>
-              <Pressable onPress={() => setRating(3)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+              <Pressable onPress={() => setRating(3)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <Checkbox.Android
                   status={rating == 3 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     if (rating === 3) {
-                      setRating(0)
+                      setRating(0);
                     } else {
-                      setRating(3)
+                      setRating(3);
                     }
                   }}
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <Text style={{ marginLeft: 5 }}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <Text style={{marginLeft: 5}}>& more</Text>
               </Pressable>
-              <Pressable onPress={() => setRating(2)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+              <Pressable onPress={() => setRating(2)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <Checkbox.Android
                   status={rating == 2 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     if (rating === 2) {
-                      setRating(0)
+                      setRating(0);
                     } else {
-
-                      setRating(2)
+                      setRating(2);
                     }
                   }}
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <Text style={{ marginLeft: 5 }}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <Text style={{marginLeft: 5}}>& more</Text>
               </Pressable>
-              <Pressable onPress={() => setRating(1)} style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
+              <Pressable onPress={() => setRating(1)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <Checkbox.Android
                   status={rating == 1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     if (rating === 1) {
-                      setRating(0)
+                      setRating(0);
                     } else {
-                      setRating(1)
+                      setRating(1);
                     }
-
                   }}
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
-                <Text style={{ marginLeft: 5 }}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
+                <Text style={{marginLeft: 5}}>& more</Text>
               </Pressable>
               {/* <Pressable onPress={() => setRating(0)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
             <Checkbox.Android
@@ -1029,26 +985,19 @@ export default function AllProducts(props) {
               <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
               <Text style={{ marginLeft: 5 }}>& more</Text>
             </Pressable> */}
-              <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: hp(5) }}>
-
-                <TouchableOpacity
-                  style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
-                  onPress={() => HandleClearFilter()}
-                >
-                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: hp(5)}}>
+                <TouchableOpacity style={{backgroundColor: '#624832', width: wp(42), borderRadius: 10, paddingVertical: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onPress={() => HandleClearFilter()}>
+                  <Text style={{color: 'white', fontWeight: 'bold', fontSize: wp(4)}}>Clear Filters</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
-                  onPress={() => this.RBSheet.close()}
-                >
-                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Close</Text>
+                <TouchableOpacity style={{backgroundColor: '#624832', width: wp(42), borderRadius: 10, paddingVertical: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onPress={() => this.RBSheet.close()}>
+                  <Text style={{color: 'white', fontWeight: 'bold', fontSize: wp(4)}}>Close</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
           </RBSheet>
         </View>
-    </View>
+      </View>
     </View>
   );
 }
@@ -1057,7 +1006,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     paddingTop: wp(2),
-    marginBottom:wp(20)
+    marginBottom: wp(20),
   },
   headingTextStyle: {
     fontSize: wp(6),
@@ -1096,7 +1045,7 @@ const styles1 = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.5)",
+    borderColor: 'rgba(0,0,0,0.5)',
     borderRadius: 10,
     paddingHorizontal: 10,
   },
@@ -1151,7 +1100,7 @@ const styles1 = StyleSheet.create({
     borderRadius: wp(5),
     justifyContent: 'center',
     alignContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   serachborder: {
     display: 'flex',
@@ -1237,3 +1186,32 @@ const styles1 = StyleSheet.create({
   },
 });
 
+const stylesSearch = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: CustomColors.searchBackground,
+    borderRadius: wp(10),
+    flexDirection: 'row',
+    width: wp(80),
+    padding: wp(0.5),
+    borderColor: '#CDC2A1',
+    borderWidth: wp(0.3),
+  },
+  iconContainer: {
+    backgroundColor: CustomColors.mattBrownDark,
+    width: wp(12),
+    height: wp(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: wp(10),
+  },
+  iconImageStyle: {
+    width: wp(8),
+    height: wp(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+  },
+});
