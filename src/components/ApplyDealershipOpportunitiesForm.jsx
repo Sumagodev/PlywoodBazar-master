@@ -1,5 +1,5 @@
 import {View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput} from 'react-native';
-import React, {useEffect, useState,useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../navigation/customheader/Header';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
@@ -12,11 +12,12 @@ import {DarkTheme, useIsFocused, useNavigation} from '@react-navigation/native';
 import {getCityByStateApi, getCountriesApi, getStateByCountryApi} from '../services/location.service';
 import MultiSelect from 'react-native-multiple-select';
 import CustomColors from '../styles/CustomColors';
-const AddDealershipOpportunitiesForm = props => {
+const ApplyDealershipOpportunitiesForm = props => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
+  const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [productsArray, setproductsArray] = useState([]);
@@ -32,7 +33,6 @@ const AddDealershipOpportunitiesForm = props => {
   const [modalFor, setModalFor] = useState('Country');
   const [selected, setSelected] = useState([]);
   console.log('cityyyyy', cityArr);
-  const debounceTimeout = useRef(null);
 
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -74,39 +74,30 @@ const AddDealershipOpportunitiesForm = props => {
       console.log('elsssssss');
     }
   };
-  // const handleGetStates = async countrysId => {
-  //   try {
-  //     let {data: res} = await getStateByCountryApi(`countryId=${countrysId}`);
-  //     if (res.data) {
-  //       console.log(res.data, 'asd');
-  //       setstateArr(res.data);
-  //     } else {
-  //       setstateArr([]);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  const handleGetStates = async (countrysId) => {
+  const handleGetCoutries = async () => {
+    try {
+      let {data: res} = await getCountriesApi();
+      if (res.data) {
+        setcountryArr(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleGetStates = async countrysId => {
     try {
       let {data: res} = await getStateByCountryApi(`countryId=${countrysId}`);
-      setstateArr(res.data || []);
+      if (res.data) {
+        console.log(res.data, 'asd');
+        setstateArr(res.data);
+      } else {
+        setstateArr([]);
+      }
     } catch (error) {
-      Alert.alert("Error", "Failed to fetch states. Please try again.");
+      console.log(error);
     }
   };
-  const handleDebouncedGetStates = (countryId) => {
-    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
-    debounceTimeout.current = setTimeout(() => {
-      handleGetStates(countryId);
-    }, 300); // 300ms delay
-  };
-  
-  useEffect(() => {
-    if (countryId) {
-      handleDebouncedGetStates(countryId);
-    }
-  }, [countryId]);
 
   const handleGetCities = async stateId => {
     try {
@@ -121,11 +112,11 @@ const AddDealershipOpportunitiesForm = props => {
     }
   };
 
-  // useEffect(() => {
-  //   if (countryId) {
-  //     handleGetStates(countryId);
-  //   }
-  // }, [countryId]);
+  useEffect(() => {
+    if (countryId) {
+      handleGetStates(countryId);
+    }
+  }, [countryId]);
 
   useEffect(() => {
     if (stateId) {
@@ -138,38 +129,38 @@ const AddDealershipOpportunitiesForm = props => {
     handleGetProdductsBySupplierId();
   }, []);
 
-  const validateForm = () => {
-    if (!name || !selectedBusinessType || !selectedproductsArray || !brand || !stateId || !selectedItems) {
-      return 'All fields marked with * are required.';
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return 'Please enter a valid email address.';
-    }
-    return null;
-  };
-  
-  const resetForm = () => {
-    setName('');
-    setType('');
-    setProductName('');
-    setBrand('');
-    setEmail('');
-    setSelectedBusinessType(null);
-    setSelectedproductsArray(null);
-    setSelectedItems([]);
-  };
-  
   const handleSubmit = () => {
-    const error = validateForm();
-    if (error) {
-      Alert.alert('Validation Error', error);
+    // Basic validation
+    if (!name || !type || !productName || !location || !brand || !email) {
+      Alert.alert('Validation Error', 'All fields marked with * are required.');
       return;
     }
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Validation Error', 'Please enter a valid email address.');
+      return;
+    }
+    // If all validations pass, handle form submission logic here
     Alert.alert('Success', 'Dealership Opportunity Submitted Successfully');
-    resetForm();
+    // Clear the form or send data to the backend
   };
-
+  // const renderItem = item => {
+  //   return (
+  //     <View style={styles1.item}>
+  //       <Text style={styles1.selectedTextStyle}>{item.name}</Text>
+  //       {/* <AntDesign style={styles1.icon} color="black" name="Safety" size={20} /> */}
+  //     </View>
+  //   );
+  // };
+  const renderItem = item => {
+    return (
+      <View style={styles1.item}>
+        <Text style={styles1.selectedTextStyle}>{item.name}</Text>
+        {/* <AntDesign style={styles1.icon} color="black" name="Safety" size={20} /> */}
+      </View>
+    );
+  };
   const removeItem = (itemId) => {
     // Filter out the item that matches the itemId and update the state
     const updatedItems = selectedItems.filter((id) => id !== itemId);
@@ -197,7 +188,6 @@ const AddDealershipOpportunitiesForm = props => {
               search
               searchPlaceholder="Search..."
               value={selectedBusinessType} // Make sure this is the correct format (string or object)
-              selectedTextStyle={{fontSize: 13,}}
               onChange={item => {
                 console.log(item, 'uuuuu');
 
@@ -213,7 +203,6 @@ const AddDealershipOpportunitiesForm = props => {
               valueField="name" // Ensure this matches your data structure
               placeholder="Product *"
               search
-              selectedTextStyle={{fontSize: 13,}}
               searchPlaceholder="Search..."
               value={selectedproductsArray} // Make sure this is the correct format (string or object)
               onChange={item => {
@@ -535,4 +524,4 @@ const stylesMul = StyleSheet.create({
   },
 });
 
-export default AddDealershipOpportunitiesForm;
+export default ApplyDealershipOpportunitiesForm;

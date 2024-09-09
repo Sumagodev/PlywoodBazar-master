@@ -39,6 +39,7 @@
     "react-native-image-crop-picker": "^0.40.2",
     "react-native-image-slider-box": "^2.0.7",
     "react-native-linear-gradient": "^2.8.3",
+    "react-native-multiple-select": "^0.5.12",
     "react-native-orientation-locker": "^1.7.0",
     "react-native-paper": "^5.3.1",
     "react-native-phone-number-input": "^2.1.0",
