@@ -123,7 +123,7 @@ export default function Search(props) {
             </View>
 
             <TouchableOpacity onPress={() => this.RBSheet.open()}>
-              <View style={[{width: wp(14), height: wp(14), backgroundColor: '#6B4E37', borderRadius: wp(5), justifyContent: 'center', alignContent: 'center', alignItems: 'center'}]}>
+              <View style={[{width: wp(12), height: wp(12), backgroundColor: '#6B4E37', borderRadius: wp(8), justifyContent: 'center', alignContent: 'center', alignItems: 'center'}]}>
                 <Icon name="tune" size={wp(7)} color={'white'} />
               </View>
             </TouchableOpacity>
@@ -215,8 +215,8 @@ const stylesSearch = StyleSheet.create({
   },
   iconContainer: {
     backgroundColor: CustomColors.mattBrownDark,
-    width: wp(12),
-    height: wp(12),
+    width: wp(10),
+    height: wp(10),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',

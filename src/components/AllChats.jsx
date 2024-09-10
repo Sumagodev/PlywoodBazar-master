@@ -1,14 +1,14 @@
-import {View, Text, StyleSheet, FlatList, Pressable, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Modal} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {createTicket, getTicketsbyUserId} from '../services/UserTicket.service';
-import {getDecodedToken} from '../services/User.service';
+import { View, Text, StyleSheet, FlatList, Pressable, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { createTicket, getTicketsbyUserId } from '../services/UserTicket.service';
+import { getDecodedToken } from '../services/User.service';
 import Header from '../navigation/customheader/Header';
 import moment from 'moment';
 import Entypo from 'react-native-vector-icons/Entypo';
 import styles from '../../assets/stylecomponents/Style';
-import {toastSuccess ,errorToast} from '../utils/toastutill';
+import { toastSuccess, errorToast } from '../utils/toastutill';
 import FaqAccordion from '../ReusableComponents/FaqAccordion';
 import TicketItem from '../ReusableComponents/TicketItem';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
@@ -28,7 +28,7 @@ export default function AllChats(props) {
     try {
       let query = `page=${skipValue}&perPage=${limitValue}&userId=${userIdValue}`;
 
-      let {data: res} = await getTicketsbyUserId(query);
+      let { data: res } = await getTicketsbyUserId(query);
       if (res.data) {
         setTicketsArr(res.data);
       }
@@ -65,7 +65,7 @@ export default function AllChats(props) {
         userId: decodedObj?.userId,
         name: message,
       };
-      let {data: res} = await createTicket(obj);
+      let { data: res } = await createTicket(obj);
       if (res.message) {
         toastSuccess(res.message);
         setModal(false)
@@ -88,31 +88,31 @@ export default function AllChats(props) {
     }
   };
 
-  const renderTicket = ({item, index}) => {
+  const renderTicket = ({ item, index }) => {
     return (
       <>
-        <Pressable style={internal_styles.TicketContainer} onPress={() => navigation.navigate('Chat', {data: item._id})}>
-          <View style={[internal_styles.flexRow, {marginBottom: 15, justifyContent: 'space-between'}]}>
+        <Pressable style={internal_styles.TicketContainer} onPress={() => navigation.navigate('Chat', { data: item._id })}>
+          <View style={[internal_styles.flexRow, { marginBottom: 15, justifyContent: 'space-between' }]}>
             <Text style={{}}>{item.name}</Text>
-            <Pressable onPress={() => navigation.navigate('Chat', {data: item._id})}>
+            <Pressable onPress={() => navigation.navigate('Chat', { data: item._id })}>
               <Entypo name="chevron-thin-right" size={15} color="rgba(0,0,0,0.4)" />
             </Pressable>
           </View>
-          <Text style={{position: 'absolute', bottom: 5, right: 5, fontSize: 10}}>{moment(item.createdAt).format('DD-MM-YYYY')}</Text>
+          <Text style={{ position: 'absolute', bottom: 5, right: 5, fontSize: 10 }}>{moment(item.createdAt).format('DD-MM-YYYY')}</Text>
         </Pressable>
       </>
     );
   };
-  const renderMyTicket = ({item, index}) => {
-    const itemTicket={
-      name:item.name,
-      date:moment(item.createdAt).format('DD-MM-YYYY')
+  const renderMyTicket = ({ item, index }) => {
+    const itemTicket = {
+      name: item.name,
+      date: moment(item.createdAt).format('DD-MM-YYYY')
     }
     return (
-      <View style={{alignSelf:'center'}}>
-      <TicketItem   ticketItem={itemTicket} onViewPress={() => navigation.navigate('Chat', {data: item._id})}></TicketItem>
+      <View style={{ alignSelf: 'center' }}>
+        <TicketItem ticketItem={itemTicket} onViewPress={() => navigation.navigate('Chat', { data: item._id })}></TicketItem>
       </View>
-      
+
     );
   };
   const faqData = [
@@ -125,44 +125,45 @@ export default function AllChats(props) {
   const renderFaqItem = ({ item }) => (
     <FaqAccordion
 
-    item={item}
-    
+      item={item}
+
     />
   );
 
   return (
-    <KeyboardAvoidingView 
+  <View>
+    <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{height: hp(100),backgroundColor: '#FFF4EC'}}
+      style={{  backgroundColor: '#FFF4EC' }}
     >
-      <Header normal={true} screenName={'Your Tickets  '} rootProps={props} />    
+      <Header normal={true}  rootProps={props} />
       <FlatList
         data={ticketsArr}
         ListHeaderComponent={
           <>
-            <View style={{paddingHorizontal: 10}}>
-              <Text style={{fontSize: wp(6), color: '#000000', marginTop: hp(3), marginBottom: hp(1), fontWeight: 800, fontFamily: 'Poppins-Medium', alignSelf: 'center'}}>FAQ</Text>
+            <View style={{ paddingHorizontal: 10 }}>
+              <Text style={{ fontSize: wp(6), color: '#000000', fontWeight: 800, fontFamily: 'Poppins-Medium', alignSelf: 'center' }}>FAQ</Text>
               <FlatList
                 data={faqData}
                 keyExtractor={item => item.id.toString()}
                 renderItem={renderFaqItem}
-                contentContainerStyle={{paddingBottom: hp(2)}}
+                contentContainerStyle={{ paddingBottom: hp(0) }}
               />
             </View>
             <View style={reviewStyle.container}>
               <Text style={reviewStyle.title}>Your Tickets</Text>
               <View style={reviewStyle.addBtn}>
-                <CustomButtonOld onPress={() => {setModal(true)}} text={"Add"} />
+                <CustomButtonOld onPress={() => { setModal(true) }} text={"Add"} />
               </View>
             </View>
           </>
         }
-        renderItem={renderMyTicket}        
-        
-        // Adjust the paddingBottom to create space for the bottom container
+        renderItem={renderMyTicket}
+
+      // Adjust the paddingBottom to create space for the bottom container
       />
 
-<Modal
+      <Modal
         animationType="slide"
         transparent={true}
         visible={applyFormModal}
@@ -170,31 +171,32 @@ export default function AllChats(props) {
           setModal(!applyFormModal);
         }}>
 
-        
-        <View style={internal_styles.bottom_container}>
-        <Text style={{marginBottom:wp(2),fontSize:wp(5),alignSelf:'flex-start'}}>Create A Ticket</Text>
 
-        <Input 
-          placeholder="Please Enter Message..." 
-          value={message} 
-          onChangeText={e => setMessage(e)} 
-          style={internal_styles.textInputStyles} 
-          multiline={true} 
-          numberOfLines={3}  
-        />
-        <View style={[{width: wp(50)}]}
-        >
-          <CustomButtonOld   onPress={handleTicketCreation}  text={'Raise New TIcket'}></CustomButtonOld>
+        <View style={internal_styles.bottom_container}>
+          <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
+
+          <Input
+            placeholder="Please Enter Message..."
+            value={message}
+            onChangeText={e => setMessage(e)}
+            style={internal_styles.textInputStyles}
+            multiline={true}
+            numberOfLines={3}
+          />
+          <View style={[{ width: wp(50) }]}
+          >
+            <CustomButtonOld onPress={handleTicketCreation} text={'Raise New TIcket'}></CustomButtonOld>
+          </View>
         </View>
-      </View>
       </Modal>
-  
-      
+
+
     </KeyboardAvoidingView>
+    </View>
   );
 }
 const internal_styles = StyleSheet.create({
- 
+
   emptyText: {
     fontSize: 20,
     textAlign: 'center',
@@ -205,14 +207,14 @@ const internal_styles = StyleSheet.create({
     flexDirection: 'row',
   },
   bottom_container: {
-    alignSelf:'center',
-    alignContent:'center',
-    alignItems:'center',
+    alignSelf: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
     padding: 10,
-    width:wp(100),
+    width: wp(100),
     position: 'absolute',
     bottom: 0,
-    backgroundColor:'#fff'
+    backgroundColor: '#fff'
   },
   textInputStyles: {
     borderWidth: 0.5,
@@ -225,21 +227,21 @@ const internal_styles = StyleSheet.create({
 
 const reviewStyle = StyleSheet.create({
   container: {
-    alignSelf:'center',
+    alignSelf: 'center',
     marginVertical: wp(5),
-    width:wp(85),
-    justifyContent:'center',
-    alignItems:'flex-start'
+    width: wp(85),
+    justifyContent: 'center',
+    alignItems: 'flex-start'
   },
   title: {
     fontSize: wp(6),
     fontWeight: 'bold',
-   
+
   },
   addBtn: {
-    borderRadius:50,borderColor:'#BC9B80',
-    borderWidth:wp(1),
-    position:'absolute',
-    right:0
+    borderRadius: 50, borderColor: '#BC9B80',
+    borderWidth: wp(1),
+    position: 'absolute',
+    right: 0
   },
 });

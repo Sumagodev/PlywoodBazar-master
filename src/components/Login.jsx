@@ -12,7 +12,7 @@ import { heightPercentageToDP,widthPercentageToDP } from 'react-native-responsiv
 export default Login = () => {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(false); 
 
   const handleSendOTP = async () => {
     const mobileNumberPattern = /^[6-9][0-9]{9}$/;

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity,ImageBackground } from 'react-native';
 import React, { useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
@@ -16,6 +16,7 @@ export default function Aboutus(props: any) {
     return (
         <>
             <Header normal={true} screenName={'About Us'} rootProps={props} />
+            
             <ScrollView style={internalcss.bgwhite}>
                 <LinearGradient colors={['#FBE8D8', '#E4C1A3']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
                     <View style={internalcss.container}>
@@ -31,7 +32,7 @@ export default function Aboutus(props: any) {
                                 Plywood Bazar.com is a startup that is working to improve this unorganized furniture, interior and exterior industry by coordinating between them. Providing large potential market exposure for business expansion.
                             </Text>
                         </View>
-                        
+
                         <View style={[internalcss.aboutCard, internalcss.aboutCardVision, isExpanded ? { height: 'auto' } : { height: wp(68) }]}>
                             <Text style={internalcss.heading}>Company Vision</Text>
                             <Text style={internalcss.content}>
@@ -69,28 +70,27 @@ const internalcss = StyleSheet.create({
         alignSelf: 'center',
     },
     heading: {
-        marginVertical: wp(2),
         fontSize: wp(5),
         fontFamily: 'Poppins-Medium',
-        alignSelf: 'center'
-    },
-    content: {        
+        alignSelf: 'center',
+        color: "#603200",
+        fontWeight: 'bold'
+},
+content: {
         fontSize: wp(3.2),
         fontFamily: 'Poppins-Regular',
-        color: '#797979',
-        marginBottom: 5,
-        textAlign: 'justify'
-    },
+        color: '#000'
+},
     bgwhite: {
         flex: 1,
     },
     aboutCard: {
-        borderColor: '#FBE8D8',
-        borderWidth: wp(0.5),
+ 
         marginVertical: wp(2),
         padding: wp(5),
         backgroundColor: '#FFF',
         borderRadius: wp(5),
+        elevation:3
     },
     aboutCardVision: {
         overflow: 'hidden',

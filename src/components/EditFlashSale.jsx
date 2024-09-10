@@ -136,9 +136,10 @@ export default function EditFlashSale(props) {
 
   return (
     <>
-      <Header normal={true} screenName={'Edit Flash Sale'} rootProps={props} />
+      <Header normal={true} rootProps={props} />
+      <View style={{backgroundColor:'#FFFFFF'}}>
 
-      <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{flex: 1,borderTopLeftRadius:wp(10),borderTopRightRadius:wp(10),marginTop:wp(0), width:wp(100),overflow:'hidden'}}>
+      <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{borderTopLeftRadius:wp(10),borderTopRightRadius:wp(10),marginTop:wp(0), width:wp(100),overflow:'hidden',backgroundColor:'#FFFFFF'}}>
         <ScrollView style={styles1.card_main}>
         <Text style={{fontSize:wp(5),fontWeight:800,alignSelf:'center'}}>Update Flash Sale</Text>
           <Text style={styles1.nameheading}>Product</Text>
@@ -333,7 +334,7 @@ export default function EditFlashSale(props) {
           </View>
         </ScrollView>
       </ImageBackground>
-
+</View>
       <DatePicker
         modal
         minimumDate={new Date()}
@@ -414,5 +415,6 @@ const styles1 = StyleSheet.create({
   card_main:{
     paddingVertical:wp(6),
     paddingHorizontal:wp(3)
+  
   }
 });

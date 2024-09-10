@@ -368,7 +368,7 @@ const Filtercategory = (props) => {
     if (!isFirstPageReceived && isLoading) {
       // Show loader when fetching first page data.
       console.log('loading.................')
-      return <ActivityIndicator size={'large'} color={'red'} width={wp(50)} />;
+      return <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />;
     }
     return (
       <>
@@ -1074,8 +1074,8 @@ const styles1 = StyleSheet.create({
     zIndex: 5,
   },
   col2: {
-    width: wp(12),
-    height: wp(12),
+    width: wp(10),
+    height: wp(10),
     backgroundColor: '#6B4E37',
     borderRadius: wp(9),
     justifyContent: 'center',
@@ -1173,23 +1173,23 @@ const stylesSearch = StyleSheet.create({
     borderRadius: wp(10),
     flexDirection: 'row',
     width: wp(70),
-    height: wp(12),
+    height: wp(10),
     padding: wp(0.5),
     borderColor: '#CDC2A1',
     borderWidth: wp(0.3)
   },
   iconContainer: {
     backgroundColor: CustomColors.mattBrownDark,
-    width: wp(10),
-    height: wp(10),
+    width: wp(9),
+    height: wp(9),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     borderRadius: wp(10),
   },
   iconImageStyle: {
-    width: wp(8),
-    height: wp(8),
+    width: wp(7),
+    height: wp(7),
     justifyContent: 'center',
     alignItems: 'center',
   },

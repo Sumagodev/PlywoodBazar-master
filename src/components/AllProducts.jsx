@@ -815,7 +815,7 @@ export default function AllProducts(props) {
                 name={item.name}
                 location="Location"
                 isVerified={item?.approved === 'APPROVED'} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
-                onGetQuotePressed={() => {}}
+                onGetQuotePressed={() => navigate.navigate('Productdetails', {data: item?.slug})}
                 onCallPressed={() => {
                   handelcallbtn(item?.createdByObj?.companyObj?.phone);
                 }}

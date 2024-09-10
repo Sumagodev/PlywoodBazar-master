@@ -16,7 +16,7 @@ import {PRIMARY_COLOR, WHITE_COLOR} from '../utils/constants';
 import CustomColors from '../styles/CustomColors';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 export default function MyPromotions(props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const focused = useIsFocused();
   const [saleArr, setSaleArr] = useState([]);
   const [userSubscriptionExpired, setUserSubscriptionExpired] = useState(true);

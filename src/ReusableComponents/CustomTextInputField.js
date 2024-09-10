@@ -8,7 +8,9 @@ const CustomTextInputField = ({
   inputType = 'text',
   placeholder = '',
   validator,
+  editable,
   customWidth='100%',
+  
     ...rest
 }) => {
   const handleOnChangeText = (text) => {
@@ -29,6 +31,7 @@ const CustomTextInputField = ({
         style={styles.input}
         placeholder={placeholder}
         secureTextEntry={inputType === 'password'}
+        editable={editable}
         keyboardType={
           inputType === 'number' ? 'numeric' : inputType === 'email'
             ? 'email-address'

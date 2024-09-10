@@ -55,9 +55,11 @@ const styles = StyleSheet.create({
         borderRadius: wp(5),
     },
     imageStyle: {
-        borderRadius: wp(5),
+
         width: '100%',
-        height: '45%'
+        height: '45%',
+        borderTopRightRadius:wp(5),
+        borderTopLeftRadius:wp(5),
     },
     table: {
         marginHorizontal: wp(2),

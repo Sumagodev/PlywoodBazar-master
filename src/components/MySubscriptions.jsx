@@ -1,24 +1,27 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
-import React, {useEffect, useState} from 'react';
-import {FlatList, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import React, { useEffect, useState } from 'react';
+import { FlatList, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View,ActivityIndicator } from 'react-native';
+
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {getAllSubscriptionbyUserId, usersubscriptionMailId} from '../services/UserSubscription.service';
-import {errorToast, toastSuccess} from '../utils/toastutill';
+import { getAllSubscriptionbyUserId, usersubscriptionMailId } from '../services/UserSubscription.service';
+import { errorToast, toastSuccess } from '../utils/toastutill';
 import MyActivityItem from '../ReusableComponents/MyActivityItem';
 import MySubscriptionItem from '../ReusableComponents/MySubscriptionItem';
 import LinearGradient from 'react-native-linear-gradient';
-import {Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
+import CustomColors from '../styles/CustomColors';
 export default function MySubscriptions(props) {
   const navigation = useNavigation();
 
   const [subscriptionArr, setSubscriptionArr] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const getSubscriptions = async () => {
     try {
-      const {data: res} = await getAllSubscriptionbyUserId();
+      const { data: res } = await getAllSubscriptionbyUserId();
       if (res) {
         console.log(res.data);
         setSubscriptionArr(res.data);
@@ -29,69 +32,71 @@ export default function MySubscriptions(props) {
   };
 
   const handlemailUserSubscription = async id => {
+    setIsLoading(true)
     try {
-      let {data: res} = await usersubscriptionMailId(id);
+      let { data: res } = await usersubscriptionMailId(id);
       console.log(res, 'dataa');
       if (res.message) {
         toastSuccess(res.message);
+        setIsLoading(false)
       }
     } catch (err) {
       errorToast(err);
     }
   };
 
-  const renderSubscriptionItem = ({item, index}) => {
+  const renderSubscriptionItem = ({ item, index }) => {
     return (
-      <View style={[styles1.card_main, {marginTop: 10}]}>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+      <View style={[styles1.card_main, { marginTop: 10 }]}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text style={styles1.nameheading}>{item?.name}</Text>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>Description : </Text>
           <Text>{item?.description}</Text>
         </View>
 
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>Price : </Text>
           <Text>₹ {item?.price}</Text>
         </View>
 
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>Start Date : </Text>
           <Text>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>End Date : </Text>
           <Text>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>Number of Advertisement :</Text>
           <Text>
             {item?.numberOfAdvertisement} for {item?.advertisementDays} days
           </Text>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>Number Of Sales :</Text>
           <Text>
             {item?.numberOfSales ? item?.numberOfSales : 0} for {item?.saleDays} days
           </Text>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text>Purchased On :</Text>
           <Text>{moment(item?.createdAt).format('DD-MM-YYYY')}</Text>
         </View>
 
-        <View style={{display: 'flex', alignItems: 'flex-end', marginTop: hp(2)}}>
-          <TouchableOpacity onPress={() => handlemailUserSubscription(item._id)} style={{backgroundColor: '#000', borderRadius: 5, width: wp(25), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{color: '#fff', fontSize: 11, padding: 5}}>
-              <EvilIcons name="envelope" size={15} color="#fff" style={{marginTop: hp(4)}} /> Send Email
+        <View style={{ display: 'flex', alignItems: 'flex-end', marginTop: hp(2) }}>
+          <TouchableOpacity onPress={() => handlemailUserSubscription(item._id)} style={{ backgroundColor: '#000', borderRadius: 5, width: wp(25), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: '#fff', fontSize: 11, padding: 5 }}>
+              <EvilIcons name="envelope" size={15} color="#fff" style={{ marginTop: hp(4) }} /> Send Email
             </Text>
           </TouchableOpacity>
         </View>
       </View>
     );
   };
-  const renderMySubscriptionItem = ({item, index}) => {
+  const renderMySubscriptionItem = ({ item, index }) => {
     const myItem = {
       description: item?.description,
       name: item?.name,
@@ -111,12 +116,12 @@ export default function MySubscriptions(props) {
     getSubscriptions();
   }, []);
 
-  const gradientDirection = {start: {x: 1, y: 0}, end: {x: 0, y: 0}};
+  const gradientDirection = { start: { x: 1, y: 0 }, end: { x: 0, y: 0 } };
   return (
     <>
       <Header normal={true} screenName={'My Subscriptions'} rootProps={props} />
-      <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1,overflow:'hidden'}}>
-      <Pressable style={{alignItems: 'center', justifyContent: 'center', width: '100%'}} onPress={() => navigation.navigate('Subscriptions', {register: false})} >
+      <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ flex: 1, overflow: 'hidden' }}>
+        <Pressable style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }} onPress={() => navigation.navigate('Subscriptions', { register: false })} >
           <LinearGradient colors={['#B1784A', '#B1784A', '#624832', '#B1784A']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
             <Text style={stylesGradient.text} numberOfLines={1} ellipsizeMode="tail">
               Buy Subscription
@@ -124,22 +129,26 @@ export default function MySubscriptions(props) {
             <Icon name="notifications" size={wp(7)} color={'white'} />
           </LinearGradient>
         </Pressable>
-      <ScrollView style={{flex: 1, paddingHorizontal: 10}}>
-        
-        <Text style={{fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>My Subscriptions</Text>
+        <ScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 10 ,alignItems:'center'}}>
+        {
+          isLoading ?
+            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            : null
+        }
+          <Text style={{ fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center',alite }}>My Subscriptions</Text>
 
-        {subscriptionArr.length > 0 ? (
-          <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderMySubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 10}} />
-        ) : (
-          <View style={{height: hp(85), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20}}>You have No Subscription</Text>
-          </View>
-        )}
-
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Subscriptions', {register: false})} style={[styles.btnbg, {marginBottom: 15}]}>
+          {subscriptionArr.length > 0 ? (
+            <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderMySubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 10 }} />
+          ) : (
+            <View style={{ height: hp(85), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>You have No Subscription</Text>
+            </View>
+          )}
+         
+          {/* <TouchableOpacity onPress={() => navigation.navigate('Subscriptions', {register: false})} style={[styles.btnbg, {marginBottom: 15}]}>
           <Text style={styles.textbtn}>Buy Subscription</Text>
         </TouchableOpacity> */}
-      </ScrollView>
+        </ScrollView>
       </ImageBackground>
     </>
   );
@@ -183,7 +192,7 @@ const styles1 = StyleSheet.create({
 });
 const stylesGradient = StyleSheet.create({
   gradientContainer: {
-    marginVertical:wp(2),
+    marginVertical: wp(2),
     paddingVertical: 10,
     paddingHorizontal: 20, // Adjust this value to change horizontal padding
     borderRadius: 50,

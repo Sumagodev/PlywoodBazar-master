@@ -1,5 +1,5 @@
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { StyleSheet, View, Image, Pressable } from "react-native";
+import { StyleSheet, View, Image, Pressable ,Linking} from "react-native";
 import { Text } from "react-native-paper";
 import { Rating } from "react-native-ratings";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,6 +7,11 @@ import CustomButton from "./CustomButton";
 import CustomColors from "../styles/CustomColors";
 
 const ShopListItem = ({vendorItem,onItemPress})=>{
+    const Contact=(phone)=>{
+        console.log('phoneee',phone);
+        
+        Linking.openURL(`tel:${phone}`);
+    }
     return(
         <Pressable style={styles.container} onPress={onItemPress}>
             <View style={styles.mainContainer}>                
@@ -28,9 +33,9 @@ const ShopListItem = ({vendorItem,onItemPress})=>{
                         <Text style={styles.vendorAddress} numberOfLines={2} ellipsizeMode="tail">{vendorItem.address}</Text>
                     </View>
                     <CustomButton rightIcon={require('../../assets/img/phone.png')} rightIconBgColor={CustomColors.accentGreen} text='CONTACT' 
-                        onPress={()=>{
+                        onPress={()=>Contact(vendorItem.phone)
 
-                        }}
+                        }
                         marginTop={wp(1)} textSize={wp(4)}
                     />
                 </View>

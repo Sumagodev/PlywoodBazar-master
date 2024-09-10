@@ -33,7 +33,7 @@ const LegalAbouts = (props) => {
               <Text style={styles.profileTitle}>Founder & CEO Plywood Bazar.Com</Text>
             </View>
           </View>
-          <View style={styles.notifications}>
+          <View style={styles.notifications}> 
             <Text style={styles.notificationsTitle}>Our Company Motto</Text>
 
             <Text style={styles.notificationsText}>Plywood Bazar.Com Is A Startup That Is Working To Improve This Unorganized Furniture, Interior And Exterior Industry By Co-Ordinate In Between Them. Providing Large Potential Market Exposure For Business Expansion.</Text>

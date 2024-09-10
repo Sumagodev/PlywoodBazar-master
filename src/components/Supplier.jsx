@@ -12,6 +12,7 @@ import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 import {addReview, getReviewForProduct} from '../services/ProductReview.service';
 import {Rating, AirbnbRating} from 'react-native-ratings';
@@ -389,7 +390,7 @@ export default function Supplier(props) {
               <View style={[styles1.flexbetwen, {flex: 1, flexDirection: 'row', flexWrap: 'wrap', padding: wp(1)}]}>
                 <View style={styles1.cardwrap}>
                   <View style={styles1.carddata}>
-                    <Image source={require('../../assets/img/g5.png')} style={{height: wp(10), width: wp(10)}} />
+                    <Ionicons name="business" size={32} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'center'}}>Nature of Business</Text>
@@ -399,7 +400,7 @@ export default function Supplier(props) {
 
                 <View style={styles1.cardwrap}>
                   <View style={styles1.carddata}>
-                    <Image source={require('../../assets/img/g6.png')} style={{height: wp(7), width: wp(6)}} />
+                    <AntDesign name="tags" size={32} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>GST No.</Text>
@@ -409,7 +410,7 @@ export default function Supplier(props) {
 
                 <View style={styles1.cardwrap}>
                   <View style={styles1.carddata}>
-                    <Image source={require('../../assets/img/g4.png')} style={{height: wp(10), width: wp(10)}} />
+                    <Ionicons name="calendar" size={32} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Year of Establishment</Text>
@@ -419,7 +420,7 @@ export default function Supplier(props) {
 
                 <View style={styles1.cardwrap}>
                   <View style={styles1.carddata}>
-                    <Image source={require('../../assets/img/g2.png')} style={{height: wp(10), width: wp(10)}} />
+                    <Ionicons name="call" size={32} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Landline</Text>
@@ -429,7 +430,7 @@ export default function Supplier(props) {
 
                 <View style={styles1.cardwrap}>
                   <View style={styles1.carddata}>
-                    <Image source={require('../../assets/img/g3.png')} style={{height: wp(10), width: wp(10)}} />
+                    <AntDesign name="contacts" size={32} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Contact Person Name</Text>
@@ -439,7 +440,7 @@ export default function Supplier(props) {
 
                 <View style={styles1.cardwrap}>
                   <View style={styles1.carddata}>
-                    <Image source={require('../../assets/img/g1.png')} style={{height: wp(10), width: wp(10)}} />
+                    <FontAwesome name="birthday-cake" size={30} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>BirthDate</Text>
@@ -899,7 +900,7 @@ const styles1 = StyleSheet.create({
   carddata: {
     height: wp(13),
     width: wp(13),
-    padding: wp(5),
+    padding: wp(1),
     backgroundColor: '#EBCCAC',
     borderRadius: 30,
     alignItems: 'center',
