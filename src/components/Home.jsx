@@ -49,6 +49,7 @@ import FlashSaleItemWithDiscount from '../ReusableComponents/FlashSaleItemWithDi
 import NewArrivalProductCardVertical from '../ReusableComponents/NewArrivalProductCardVertical';
 import OpportunitiesItem from '../ReusableComponents/OpportunitiesItem';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
+import { getProductYouMayLike } from '../services/Product.service';
 
 export default function Home() {
   const navigate = useNavigation();
@@ -75,6 +76,8 @@ export default function Home() {
 
   const [blogsArr, setBlogsArr] = useState([]);
   const [blogVideoArr, setBlogVideoArr] = useState([]);
+  const [likeproductarray, setlikeproductarray] = useState([]);
+console.log('ccccccccccc',likeproductarray);
 
   const handleGetBlogs = async () => {
     try {
@@ -106,11 +109,22 @@ export default function Home() {
       console.log(err);
     }
   };
+  const handleproductyoumaylike = async () => {
+    try {
+      let { data: res } = await getProductYouMayLike();
+      if (res.data) {
+        setlikeproductarray(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (focused) {
       handleGetBlogs();
       handleGetBlogVideo();
+      handleproductyoumaylike();
     }
   }, [focused]);
 
@@ -281,6 +295,8 @@ export default function Home() {
       if (res.data) {
         console.log(res.data, 'New Arrivals');
         setAdvertisementsArr(res.data);
+        console.log('newwwwwww',res.data);
+        
       }
     } catch (err) {
       errorToast(err);
@@ -450,13 +466,14 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })}>
-      <LikeProduct imagePath={require('../../assets/img/laminate.png')} name={item.productSlug} location={'Nashik'} />
+    return <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.slug})}>
+      <LikeProduct imagePath={{uri:generateImageUrl(item?.mainImage)}} name={item.productName} location={item.cityName} onCallPress={()=> handelcallbtn (item.createdByObj.companyObj.phone)}/>
     </Pressable>
   };
 
   const renderNewArrivals = ({ item, index }) => {
-    return <NewArrivalProductCardVertical horizontal newProductItem={{ imagePath: require('../../assets/img/ply_sample.png'), isVerified: true, name: item.productSlug, location: 'Nashik' }} ></NewArrivalProductCardVertical>;
+    // return <NewArrivalProductCardVertical horizontal newProductItem={{ imagePath: require('../../assets/img/ply_sample.png'), isVerified: true, name: item.productSlug, location: 'Nashik' }} ></NewArrivalProductCardVertical>;
+    return <NewArrivalProductCardVertical horizontal  newProductItem={item} image={{uri:generateImageUrl(item?.image)}}></NewArrivalProductCardVertical>;
   };
 
   const renderProduct = ({ item, index }) => {
@@ -715,7 +732,7 @@ export default function Home() {
               <FlatList
                 style={styles.mttop10}
                 contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }}
-                data={dummyData}
+                data={likeproductarray}
                 horizontal
                 columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
                 renderItem={renderProductsYouMayLike}
@@ -739,7 +756,7 @@ export default function Home() {
                   </Pressable>
                 </View>
                 <Carousel
-                  data={dummyNewArrivalData}
+                  data={advertisementsArr}
                   renderItem={renderNewArrivals}
                   sliderWidth={wp(100)}
                   itemWidth={wp(45)}

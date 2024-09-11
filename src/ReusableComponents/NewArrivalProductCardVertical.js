@@ -2,16 +2,19 @@ import { StyleSheet, View, Image, Text, Pressable } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import CustomButton from "./CustomButton"
-
-export default NewArrivalProductCardVertical = ({ newProductItem, onPress }) => {
+import { generateImageUrl } from '../services/url.service';
+export default NewArrivalProductCardVertical = ({ newProductItem, image,onPress }) => {
+    const item =newProductItem
+    console.log('tttt',item);
+    
     return (
         <Pressable style={styles.container} onPress={onPress}>
-            <Image style={styles.imageStyle} source={newProductItem.imagePath} />
+            <Image style={styles.imageStyle} source={image} />
             <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{newProductItem.name}</Text>
             <View style={styles.rowStyle}>
                 <View style={{ width:'90%',padding:wp(1),flexDirection:'row',alignSelf:'center',justifyContent:'center',alignItems:'center',alignContent:'center' }}>
                 <Icon size={wp(5)} name='map-marker' color='gray' />
-                <Text style={{}} numberOfLines={1} ellipsizeMode="tail">{newProductItem.location}</Text>
+                <Text style={{}} numberOfLines={1} ellipsizeMode="tail">{newProductItem.cityName}</Text>
                 </View>
             </View>
             <View style={styles.rowStyle}>

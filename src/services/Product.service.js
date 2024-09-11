@@ -51,3 +51,6 @@ export const searchProduct = async (query) => {
 export const deleteById=async(id)=>{
   return axiosApiInstance.delete(`${serverUrl}/deleteById/${id}`)
 }
+export const getProductYouMayLike=async()=>{
+  return axiosApiInstance.get(`${serverUrl}/getProductYouMayLike`)
+}

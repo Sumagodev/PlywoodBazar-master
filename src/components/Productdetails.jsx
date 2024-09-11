@@ -1,6 +1,6 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList,Linking, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList,Linking, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View,ActivityIndicator} from 'react-native';
 import {SliderBox} from 'react-native-image-slider-box';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {LinearTextGradient} from 'react-native-text-gradient';
@@ -35,9 +35,11 @@ export default function Productdetails(props) {
   const [readmore, setReadmore] = useState(false);
   const [activeclass, setActiveclass] = useState('Product Specification');
   const [authorized, setIsAuthorized] = useContext(isAuthorisedContext);
-
+  const [isloding, setIsloding] = useState(false);
   const getProductObj = async () => {
+    setIsloding(true)
     try {
+     
       const {data: res} = await getProductById(props?.route?.params?.data);
       if (res) {
         console.log(JSON.stringify(res.data, null, 2), 'dataxxx');
@@ -95,6 +97,7 @@ export default function Productdetails(props) {
           },
         ];
         setcategoryname1(tempArr);
+        setIsloding(false)
       }
     } catch (error) {
       console.error(error);
@@ -393,22 +396,22 @@ export default function Productdetails(props) {
   };
 
   return (
-    <View style={[styles.bgwhite, styles.flex1]}>
-      {productObj && productObj?._id && (
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          //Header to show above listview
-          ListHeaderComponent={ListHeader}
-          //Footer to show below listview
-          ListFooterComponent={ListFooter}
-          scrollEnabled={true}
-          nestedScrollEnabled={true}
-          data={[]} // Empty data, as you're only using it for header and footer
-          // renderItem={ItemView}
-          // ListEmptyComponent={EmptyListMessage}
-        />
-      )}
-    </View>
+   <View style={[styles.bgwhite, styles.flex1]}>
+  {isloding ? (
+    <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+  ) : (
+    productObj && productObj._id && (
+      <FlatList
+        keyExtractor={(item, index) => index.toString()}
+        ListHeaderComponent={ListHeader}
+        ListFooterComponent={ListFooter}
+        scrollEnabled={true}
+        nestedScrollEnabled={true}
+        data={[]} // Empty data as you're using it for header and footer only
+      />
+    )
+  )}
+</View>
   );
 }
 const styles1 = StyleSheet.create({

@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     locationImageStyle: {
-        height: 13,
-        width: 13,
+        height: 22,
+        width: 17,
         marginRight: 5,
     },
     textContainer: {
