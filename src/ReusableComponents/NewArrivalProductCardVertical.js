@@ -3,30 +3,31 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import CustomButton from "./CustomButton"
 import { generateImageUrl } from '../services/url.service';
-export default NewArrivalProductCardVertical = ({ newProductItem, image,onPress }) => {
-    const item =newProductItem
-    console.log('tttt',item);
-    
+export default NewArrivalProductCardVertical = ({ newProductItem, image, onPress, onCallPress }) => {
+    const item = newProductItem
+    console.log('tttt', item);
+
     return (
         <Pressable style={styles.container} onPress={onPress}>
             <Image style={styles.imageStyle} source={image} />
-            <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{newProductItem.name}</Text>
+            <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{newProductItem.productname}</Text>
+        
             <View style={styles.rowStyle}>
-                <View style={{ width:'90%',padding:wp(1),flexDirection:'row',alignSelf:'center',justifyContent:'center',alignItems:'center',alignContent:'center' }}>
-                <Icon size={wp(5)} name='map-marker' color='gray' />
-                <Text style={{}} numberOfLines={1} ellipsizeMode="tail">{newProductItem.cityName}</Text>
+                <View style={{ width: '90%', padding: wp(1), flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', alignItems: 'center', alignContent: 'center' }}>
+                    <Icon size={wp(5)} name='map-marker' color='gray' />
+                    <Text style={{}} numberOfLines={1} ellipsizeMode="tail">{newProductItem.cityName}</Text>
                 </View>
             </View>
             <View style={styles.rowStyle}>
-                <Icon size={wp(5)} 
+                <Icon size={wp(5)}
                     name={newProductItem.isVerified ? 'check-decagram' : 'alert-decagram'}
                     color={newProductItem.isVerified ? 'green' : 'red'}
                 />
-                <Text style={wp(4)}>{newProductItem.isVerified ? 'Verified' : 'Unverified'}</Text>
+                <Text style={wp(4)}>{newProductItem.verifeied ? 'Verified' : 'Unverified'}</Text>
             </View>
-            <View style={{marginVertical:wp(1)}}>
+            <View style={{ marginVertical: wp(1) }}>
                 <CustomButton rightIcon={require('../../assets/img/phone.png')} rightIconBgColor={CustomColors.accentGreen} text='Get Quote'
-                    onPress={() => { }}
+                    onPress={onCallPress}
                     textSize={wp(4)}
                 />
             </View>
@@ -51,19 +52,19 @@ const styles = StyleSheet.create({
         borderRadius: wp(5),
     },
     headText: {
-        width:'85%',
+        width: '85%',
         fontWeight: 'bold',
         fontSize: wp(5),
         marginVertical: wp(2),
     },
-    rowStyle: {        
+    rowStyle: {
         flexDirection: 'row',
-        alignItems:'center',
-        alignContent:'center',
-        alignSelf:'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        alignSelf: 'center',
         marginBottom: wp(1),
         width: '85%',
-        justifyContent: 'center',    
+        justifyContent: 'center',
         overflow: "hidden"
     }
 })

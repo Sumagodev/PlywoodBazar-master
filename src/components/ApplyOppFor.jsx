@@ -18,7 +18,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { AddDealershipOpportunities } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-const AddDealershipOpportunitiesForm = ({props,navigation}) => {
+const ApplyOppFor = ({props,navigation}) => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
   const [userID, setuserID] = useState('');
@@ -386,7 +386,7 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
                   );
                 })
               ) : (
-                <Text>No items selected</Text>
+                <Text>No cities selected</Text>
               )}
             </View>
 
@@ -526,7 +526,7 @@ const styles1 = StyleSheet.create({
     borderColor: CustomColors.searchBgColor,
     backgroundColor: CustomColors.mattBrownFaint,
     shadowColor: CustomColors.shadowColorGray,
-    height: wp(15),
+    height: wp(10),
 
     marginBottom: 4,
   },
@@ -662,4 +662,4 @@ const stylesMul = StyleSheet.create({
   },
 });
 
-export default AddDealershipOpportunitiesForm;
+export default ApplyOppFor;

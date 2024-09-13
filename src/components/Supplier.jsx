@@ -179,7 +179,7 @@ export default function Supplier(props) {
       errorToast(err);
     }
   };
-
+ 
   const onBuffer = val => console.log(val);
   const videoError = val => console.error(val);
   const getauthuser = async () => {

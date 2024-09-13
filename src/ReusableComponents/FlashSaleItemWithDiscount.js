@@ -4,12 +4,16 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'reac
 import CustomColors from '../styles/CustomColors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, offPercentage, onCallPress, onCardPress,discountType }) => {
+const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, offPercentage, onCallPress, onCardPress,discountType,EndDate }) => {
     return (
         <Pressable style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
                 <Image style={styles.imageStyle} source={imagePath} />
+                <View style={{flexDirection:'row'}}>
                 <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
+                <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{EndDate}</Text>
+                </View>
+               
             </View>
             <View style={styles.priceRow}>
                 <Text style={styles.salePriceStyle}>₹{salePrice}/-</Text>

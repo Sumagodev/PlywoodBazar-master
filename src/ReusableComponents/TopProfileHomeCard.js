@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Image} from 'react-native-elements';
 import {Text} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
@@ -6,18 +6,19 @@ import CustomButton from './CustomButton';
 import CustomColors from '../styles/CustomColors';
 import { AirbnbRating, Rating } from 'react-native-ratings';
 
-export default TopProfileHomeCard = ({title, image, description}) => (
+export default TopProfileHomeCard = ({title, image, rating,Product,onPress,onCallPress}) => (
   <View style={styles1.card1}>
-    <View style={{flexDirection: 'row', justifyContent: 'flex-end' ,width:wp(68)}}>
+    <View style={{flexDirection: 'row', justifyContent: 'flex-end', overflow:'hidden', width:'87%',right:wp(-11)}}>
       <View>
         <Text style={styles1.cardTitle1} numberOfLines={1} ellipsizeMode="tail">
           {title}
         </Text>
-       <View style={{alignItems:'flex-start'}}>
-       <Rating size={1} imageSize={wp(5)} readonly={true} startingValue={4.5}></Rating>
+       <View style={{alignItems:'flex-start' ,flexDirection:'row'}}>
+       <Rating size={1} imageSize={wp(4)} readonly={true} startingValue={rating}></Rating>
+       <Text style={{ fontWeight: '900',fontSize:wp(2.5),marginLeft:wp(1.5)}}>Products{" "}{Product}</Text>
        </View>
         <View style={{flexDirection: 'row', margin: wp(3), alignItems: 'flex-start', right: wp(5), }}>
-          <View style={styles1.callwrap}>
+          <TouchableOpacity style={styles1.callwrap} onPress={onCallPress} >
             <View style={styles1.iconwrap}>
               <Image
                 source={require('../../assets/img/phone.png')} // Replace with your image path
@@ -27,14 +28,14 @@ export default TopProfileHomeCard = ({title, image, description}) => (
             <View style={{    paddingLeft: wp(1),paddingRight:wp(3)}}>
               <Text style={{ fontWeight: '900',}}>Connect</Text>
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles1.callwrap1}>
             <View style={styles1.iconwrap1}>
               
             </View>
-            <View style={{    }}>
-              <Text style={{ fontWeight: '900',color:'white',paddingLeft: wp(4),paddingRight:wp(4)}}>Visit</Text>
-            </View>
+            <TouchableOpacity onPress={onPress}>
+              <Text style={{ fontWeight: '900',color:'white',paddingLeft: wp(4),paddingRight:wp(4)}}>Profile</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -44,12 +45,12 @@ export default TopProfileHomeCard = ({title, image, description}) => (
           position: "absolute",
           shadowOpacity: 1,
           width: wp(25),
-          left: -wp(13),
+          left: -wp(14),
           alignSelf: 'center',
           borderRadius: 60,
           elevation: wp(5),
         }}>
-        <Image source={{uri: image}} style={styles1.cardImage1} />
+        <Image source={image}  resizeMode='cover'  style={styles1.cardImage1} />
       </View>
   </View>
 );
@@ -65,6 +66,7 @@ const styles1 = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     margin: wp(5),
+    paddingVertical:wp(1.5),
     width: wp(68),
     marginLeft: wp(14),
   },
@@ -76,9 +78,10 @@ const styles1 = StyleSheet.create({
     borderColor: 'white',
   },
   cardTitle1: {
-    fontSize: wp(5),
+    fontSize: wp(4),
     fontWeight: 'bold',
     marginVertical: 5,
+    overflow:'hidden'
   },
   cardDescription1: {
     fontSize: 14,

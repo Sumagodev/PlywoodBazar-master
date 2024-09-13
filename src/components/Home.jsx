@@ -14,7 +14,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../ReusableComponents/Header';
-import { getForHomepage } from '../services/Advertisement.service';
+import { GetDealershipOpportunities, getForHomepage } from '../services/Advertisement.service';
 import { getBlogApi } from '../services/Blog.service';
 import { getBlogVideoApi } from '../services/BlogVideo.service';
 import { getAllCategories } from '../services/Category.service';
@@ -22,7 +22,7 @@ import { getAllFlashSales } from '../services/FlashSales.service';
 import { addUserRequirement } from '../services/UserRequirements.service';
 import { generateImageUrl } from '../services/url.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getUserById, getUserUserById } from '../services/User.service';
+import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getUserById, getUserUserById, topProfilesHomePage } from '../services/User.service';
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import LikeProduct from '../ReusableComponents/ProductsYouMayLike';
@@ -50,6 +50,7 @@ import NewArrivalProductCardVertical from '../ReusableComponents/NewArrivalProdu
 import OpportunitiesItem from '../ReusableComponents/OpportunitiesItem';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { getProductYouMayLike } from '../services/Product.service';
+import { stateDetails } from '../services/State.service';
 
 export default function Home() {
   const navigate = useNavigation();
@@ -68,6 +69,8 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [type, setType] = useState('');
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
+  const [topprofiles, settopprofiles] = useState([]);
+  const [stateDetailss, setstateDetails] = useState([]);
   const { height, width } = useWindowDimensions();
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -75,9 +78,13 @@ export default function Home() {
   console.log('isAuthorized', isAuthorized);
 
   const [blogsArr, setBlogsArr] = useState([]);
+  const [oppdata, setoppdata] = useState([]);
   const [blogVideoArr, setBlogVideoArr] = useState([]);
   const [likeproductarray, setlikeproductarray] = useState([]);
-console.log('ccccccccccc',likeproductarray);
+  const [addressInFromFiled, setAddressInFormFiled] = useState('');
+  console.log('oppdata', oppdata);
+
+
 
   const handleGetBlogs = async () => {
     try {
@@ -85,6 +92,17 @@ console.log('ccccccccccc',likeproductarray);
       if (res.data) {
         // console.log(res.data, 'res.data');
         setBlogsArr(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleopportunitydata = async () => {
+    try {
+      let { data: res } = await GetDealershipOpportunities();
+      if (res.data) {
+        // console.log(res.data, 'res.data');
+        setoppdata(res.data);
       }
     } catch (err) {
       console.log(err);
@@ -125,6 +143,7 @@ console.log('ccccccccccc',likeproductarray);
       handleGetBlogs();
       handleGetBlogVideo();
       handleproductyoumaylike();
+      handleopportunitydata();
     }
   }, [focused]);
 
@@ -138,7 +157,7 @@ console.log('ccccccccccc',likeproductarray);
         errorToast('Mobile number cannot be empty');
         return;
       }
-      if (address == '') {
+      if (addressInFromFiled == '') {
         errorToast('Address cannot be empty');
         return;
       }
@@ -160,7 +179,7 @@ console.log('ccccccccccc',likeproductarray);
         toastSuccess(res.message);
         setName('');
         setPhone('');
-        setAddress('');
+        setAddressInFormFiled('');
         setProductName('');
       }
     } catch (err) {
@@ -295,8 +314,34 @@ console.log('ccccccccccc',likeproductarray);
       if (res.data) {
         console.log(res.data, 'New Arrivals');
         setAdvertisementsArr(res.data);
-        console.log('newwwwwww',res.data);
-        
+        console.log('newwwwwww', res.data);
+
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
+  const handletopProfiles = async () => {
+    try {
+      let { data: res } = await topProfilesHomePage();
+      if (res.data) {
+
+        settopprofiles(res.data);
+        console.log('settopprofiles', res.data);
+
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
+  const handlestates = async () => {
+    try {
+      let { data: res } = await stateDetails();
+      if (res.data) {
+
+        setstateDetails(res.data);
+        console.log('setstateDetails', res.data);
+
       }
     } catch (err) {
       errorToast(err);
@@ -379,6 +424,7 @@ console.log('ccccccccccc',likeproductarray);
       handleGetAdvvertisementForHomepage();
       handleNestedcategories();
       handleGetSubscriptions();
+      handletopProfiles();
     }
   }, [focused]);
 
@@ -441,6 +487,14 @@ console.log('ccccccccccc',likeproductarray);
       navigate.navigate('Login')
     }
   }
+  const GotoGetQuote = (item) => {
+    if (isAuthorized) {
+      navigate.navigate('Productdetails', { data: item?.product?.slug })
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  }
   const renderHighlights = ({ item, index }) => {
     return (
       <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} style={styles1.boxproduct}>
@@ -466,14 +520,15 @@ console.log('ccccccccccc',likeproductarray);
     );
   };
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.slug})}>
-      <LikeProduct imagePath={{uri:generateImageUrl(item?.mainImage)}} name={item.productName} location={item.cityName} onCallPress={()=> handelcallbtn (item.createdByObj.companyObj.phone)}/>
+    console.log(item, 'QAA');
+    return <Pressable onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}>
+      <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} />
     </Pressable>
   };
 
   const renderNewArrivals = ({ item, index }) => {
     // return <NewArrivalProductCardVertical horizontal newProductItem={{ imagePath: require('../../assets/img/ply_sample.png'), isVerified: true, name: item.productSlug, location: 'Nashik' }} ></NewArrivalProductCardVertical>;
-    return <NewArrivalProductCardVertical horizontal  newProductItem={item} image={{uri:generateImageUrl(item?.image)}}></NewArrivalProductCardVertical>;
+    return <NewArrivalProductCardVertical horizontal newProductItem={item} image={{ uri: generateImageUrl(item?.image) }} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
   };
 
   const renderProduct = ({ item, index }) => {
@@ -503,6 +558,7 @@ console.log('ccccccccccc',likeproductarray);
           duration={10}
           offPercentage={item?.discountValue}
           discountType={item?.discountType}
+          // EndDate={item?.userId?.subscriptionEndDate}
           onCallPress={() => { handelcallbtn(item?.phone) }}
         ></FlashSaleItemWithDiscount>
       </View>
@@ -552,7 +608,8 @@ console.log('ccccccccccc',likeproductarray);
   };
   const renderOpportunities = ({ item, index }) => {
     return (
-      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
+      // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
+      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => navigate.navigate('ApplyOppFor', { data: item })} ></OpportunitiesItem>
     );
   };
 
@@ -565,7 +622,7 @@ console.log('ccccccccccc',likeproductarray);
       //   navigate.navigate('Subscriptions', { register: false })
       //   return 0;
       // }
-   
+
       navigate.navigate('AllProducts', { type: '' })
 
     }
@@ -580,7 +637,7 @@ console.log('ccccccccccc',likeproductarray);
       //   navigate.navigate('Subscriptions', { register: false })
       //   return 0;
       // }
-   
+
       navigate.navigate('AllProducts', { type: '' })
 
     }
@@ -595,7 +652,7 @@ console.log('ccccccccccc',likeproductarray);
         navigate.navigate('Subscriptions', { register: false })
         return 0;
       }
-   
+
       navigate.navigate('AddAdvertisement')
 
     }
@@ -610,8 +667,8 @@ console.log('ccccccccccc',likeproductarray);
         navigate.navigate('Subscriptions', { register: false })
         return 0;
       }
-   
-     setApplyFromModal(true)
+
+      setApplyFromModal(true)
 
     }
     else {
@@ -625,8 +682,8 @@ console.log('ccccccccccc',likeproductarray);
         navigate.navigate('Subscriptions', { register: false })
         return 0;
       }
-   
-      navigate.navigate('AddDealershipOpportunitiesForm') 
+
+      navigate.navigate('AddDealershipOpportunitiesForm')
 
     }
     else {
@@ -662,8 +719,8 @@ console.log('ccccccccccc',likeproductarray);
   return (
     <>
       <View style={[styles.bgwhite]}>
-        <Pressable onPress={()=>navigate.navigate('Search')}>
-          <View style={{ width: wp(90), alignSelf: 'center', marginTop: wp(3) }} onPress={()=>navigate.navigate('Search')}>
+        <Pressable onPress={() => navigate.navigate('Search')}>
+          <View style={{ width: wp(90), alignSelf: 'center', marginTop: wp(3) }} onPress={() => navigate.navigate('Search')}>
             <CustomTextInputField placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} editable={false}  ></CustomTextInputField>
           </View>
         </Pressable>
@@ -786,9 +843,9 @@ console.log('ccccccccccc',likeproductarray);
               >
                 <Text style={styles1.topprofiletext} >Top Profiles</Text>
                 <Carousel
-                  data={DATA1}
+                  data={topprofiles}
                   renderItem={({ item }) => (
-                    <TopProfileHomeCard title={item.title} image={item.image} description={item.description} />
+                    <TopProfileHomeCard title={item.name} image={{ uri: generateImageUrl(item.profileImage) }} rating={item.rating} Product={item.productsCount} onPress={() => { navigate.navigate('Supplier', { data: item }) }} onCallPress={() => handelcallbtn(item?.phone)} />
                   )}
                   sliderWidth={wp(100)}
                   itemWidth={wp(80)}
@@ -886,7 +943,7 @@ console.log('ccccccccccc',likeproductarray);
               </View>
 
 
-              <FlatList data={blogsArr} horizontal renderItem={renderOpportunities} keyExtractor={(item, index) => `${index}`} />
+              <FlatList data={oppdata} horizontal renderItem={renderOpportunities} keyExtractor={(item, index) => `${index}`} />
 
 
 
@@ -896,13 +953,13 @@ console.log('ccccccccccc',likeproductarray);
               <View style={[styles.padinghr, styles1.videoCardHome]}>
 
                 <Text style={[styles1.headingmain]}>Videos</Text>
-                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => {navigate.navigate('Blogs', { data: false })}} />
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => { navigate.navigate('Blogs', { data: false }) }} />
               </View>
               <FlatList data={blogVideoArr} horizontal renderItem={renderVideo} keyExtractor={(item, index) => `${index}`} />
 
               <View style={[styles.padinghr, { alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginTop: wp(7), marginBottom: 10 }]}>
                 <Text style={[styles1.headingmain]}>Blogs</Text>
-                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => { navigate.navigate('Blogs', { data: true })}} />
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => { navigate.navigate('Blogs', { data: true }) }} />
               </View>
 
               <FlatList contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={blogsArr} horizontal renderItem={renderBlogs} keyExtractor={(item, index) => `${index}`} />
@@ -916,15 +973,18 @@ console.log('ccccccccccc',likeproductarray);
                 <Text style={styles1.textStyle}>TELL US YOUR REQUIREMENT</Text>
                 <View style={styles1.textFieldContainer}>
                   <View style={{ height: wp(1) }} />
-                  <CustomTextInputField placeholder='Name*' onChangeText={value => setName(value)} /><View style={{ height: wp(1) }} />
+                  <CustomTextInputField placeholder='Name*' onChangeText={value => setName(value)} value={name} /><View style={{ height: wp(1) }} />
                   <CustomTextInputField placeholder='Mobile Number*' onChangeText={(value) => {
                     const sanitizedText = value.replace(/[^0-9]/g, '').slice(0, 10);
                     setPhone(sanitizedText)
                     value = sanitizedText
                   }
-                  } inputType='number' maxLength={10} /><View style={{ height: wp(1) }} />
-                  <CustomTextInputField placeholder='Address*' onChangeText={value => setAddress(value)} /><View style={{ height: wp(1) }} />
-                  <CustomTextInputField placeholder='Product/Service*' onChangeText={value => setProductName(value)} /><View style={{ height: wp(1) }} />
+
+                  } inputType='number' maxLength={10} value={phone} /><View style={{ height: wp(1) }} />
+                  <CustomTextInputField placeholder='Address*' onChangeText={value => setAddressInFormFiled(value)}  value={addressInFromFiled}/>
+                  <View style={{ height: wp(1) }}  />
+                  <CustomTextInputField placeholder='Product/Service*' onChangeText={value => setProductName(value)} value={productName} />
+                  <View style={{ height: wp(1) }} />
                 </View>
                 <View style={styles1.btnContainer}>
                   <TouchableOpacity onPress={() => { handleSubmitRequirement() }}>

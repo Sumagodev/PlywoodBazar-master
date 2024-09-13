@@ -54,6 +54,8 @@ import VerifyOtp from '../../components/VerifyOtp';
 import ReviewsPage from '../../components/ReviewsPage';
 import EventsOrActivitiesPage from '../../ReusableComponents/EventsOrActivitiesPage';
 import AddDealershipOpportunitiesForm from '../../components/AddDealershipOpportunitiesForm';
+import ApplyOppFor from '../../components/ApplyOppFor';
+
 
 
 export const isAuthorisedContext = createContext({});
@@ -519,6 +521,14 @@ export default function RootStack() {
               }}
               name="AddDealershipOpportunitiesForm"
               component={AddDealershipOpportunitiesForm}
+            />
+             <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="ApplyOppFor"
+              component={ApplyOppFor}
             />
 
           </Stack.Navigator>

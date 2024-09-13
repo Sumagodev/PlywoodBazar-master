@@ -31,7 +31,7 @@ const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }
             </View>
         </View>
         <View style={styles.buttonContainer}>
-        <CustomButtonOld text='Get Quote' textSize={screenWidth*0.045} style={styles.button} onPress={onGetQuotePress}/>
+        <CustomButtonOld  paddingHorizontal={screenWidth*0.01} text='Get Quote' textSize={screenWidth*0.040} style={styles.button} onPress={onGetQuotePress}/>
     </View>
     </View>
     );
@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     container: {
         margin: 2,
         borderRadius: 25,
-        width: (Dimensions.get('window').width / 2) - 20, // Width for two columns
-        height: screenWidth * 0.60, // Adjust the height for a fixed but scalable size
+        width: (Dimensions.get('window').width / 1.9) - 10, // Width for two columns
+        height: screenWidth * 0.64, // Adjust the height for a fixed but scalable size
         elevation: 10,
-        margin: 10,
+        margin: 5,
         overflow: 'hidden',
     },
     elevatedContainer: {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     locationImageStyle: {
-        height: 22,
+        height: 15,
         width: 17,
         marginRight: 5,
     },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     locationText: {
         alignSelf: 'center',
         color: CustomColors.textGrey,
-        fontSize: screenWidth*0.045,
+        fontSize: screenWidth*0.035,
     },
     priceText: {
         alignSelf: 'center',

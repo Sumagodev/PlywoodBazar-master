@@ -29,6 +29,9 @@ export const getAllUsers = async (query, source) => {
 export const checkForValidSubscriptionAndReturnBoolean = async (id) => {
   return axios.get(`${serverUrl}/checkForValidSubscriptionAndReturnBoolean/${id}`);
 }
+export const topProfilesHomePage = async () => {
+  return axios.get(`${serverUrl}/getTopVendors`);
+}
 
 export const otpLogin = async obj => {
   return axios.post(`${serverUrl}/app-login/`, obj);

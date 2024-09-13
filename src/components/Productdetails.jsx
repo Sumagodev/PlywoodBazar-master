@@ -24,6 +24,8 @@ import ReviewsItem from '../ReusableComponents/ReviewsItem';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 
 export default function Productdetails(props) {
+  const [isAuthorized] = useContext(isAuthorisedContext);
+
   const [productObj, setProductObj] = useState(null);
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
@@ -36,6 +38,8 @@ export default function Productdetails(props) {
   const [activeclass, setActiveclass] = useState('Product Specification');
   const [authorized, setIsAuthorized] = useContext(isAuthorisedContext);
   const [isloding, setIsloding] = useState(false);
+  const [productId, setProductId] = useState('');
+  const [productOwnerId, setProdutOwnerId] = useState('');
   const getProductObj = async () => {
     setIsloding(true)
     try {
@@ -48,6 +52,9 @@ export default function Productdetails(props) {
 
         handleGetProductReview(res.data._id);
         setProductObj(res.data);
+        setProductId(res.data._id)
+
+        setProdutOwnerId(res.data.createdById)
         let imaArr = [
           {
             image: res.data.mainImage,
@@ -315,7 +322,7 @@ export default function Productdetails(props) {
           )}
 
           <TouchableOpacity style={{alignSelf: 'center' ,marginVertical:wp(6)}}>
-            <CustomButtonNew text={'Get Latest Price'} paddingHorizontal={wp(5)} />
+            <CustomButtonNew text={'Get Latest Price'} paddingHorizontal={wp(5)} onPress={()=>{console.log('Latest Price')}} />
           </TouchableOpacity>
 
           <LinearGradient colors={['#5a432f', '#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
@@ -334,9 +341,13 @@ export default function Productdetails(props) {
                 <Icon name="check-circle-outline" color="white" size={wp(8)} />
                 <Text style={{color: 'white', marginLeft: wp(1)}}>{currentUserHasActiveSubscription ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber || 'NA' : `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}`.slice(0, 2) + '***'}</Text>
               </View>
+              <View style={{justifyContent:'flex-end',alignSelf:'flex-end', flex:1,marginTop:wp(2)}}>
+              <CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={()=>{console.log('Aaaaaa')}}></CustomButtonNew>
+              </View>
             </View>
           </LinearGradient>
 
+          <StartBusinessBanner></StartBusinessBanner>
           {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}
             <View style={similarProductsStyle.container}>
              
@@ -361,7 +372,9 @@ export default function Productdetails(props) {
           {/* </ImageBackground> */}
         </View>
       
-        <StartBusinessBanner />
+         <View style={{marginTop:wp(10)}}></View>
+
+
         <View style={reviewStyle.container}>
           <Text style={reviewStyle.title}>Review</Text>
           <View style={reviewStyle.addBtn}><CustomButtonOld  textSize={wp(4)} text={"Add"}></CustomButtonOld></View>
@@ -381,7 +394,7 @@ export default function Productdetails(props) {
               </ScrollView>
 
               <View style={{alignSelf:'center',marginBottom:wp(5)}}>
-              <CustomButton text={'Show More'} textSize={wp(3.5)}></CustomButton>
+              <CustomButtonNew  paddingHorizontal={wp(6)} text={'View More..'} textSize={wp(3.5)} onPress={()=>{navigation.navigate('ReviewsPage', {data: productOwnerId})}}></CustomButtonNew>
               </View>
 
         {/* {authorized && (
