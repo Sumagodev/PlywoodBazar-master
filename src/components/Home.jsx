@@ -831,11 +831,12 @@ export default function Home() {
               </LinearGradient>
 
 
+          {isAuthorized && (
+            <View style={{ marginVertical: wp(5) }}>
+              <StartBusinessBanner />
+            </View>
+          )}
 
-
-              <View style={{ marginVertical: wp(5) }}>
-                <StartBusinessBanner></StartBusinessBanner>
-              </View>
               <ImageBackground
                 source={require('../../assets/img/bgtopprofile.png')}
                 style={styles1.topprofilewrap}

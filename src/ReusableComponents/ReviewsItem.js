@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, Image } from "react-native"
 import { Rating } from "react-native-ratings"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { generateImageUrl } from "../services/url.service"
 
 const ReviewsItem =({reviewItem})=>{
     return(
@@ -12,7 +13,7 @@ const ReviewsItem =({reviewItem})=>{
                 <Text ellipsizeMode="tail" numberOfLines={3} style={{fontSize:wp(3.5)}}>{reviewItem.message}</Text>
             </View>
             <View style={styles.imageContainer}>
-                <Image style={styles.image} source={reviewItem.imagePath}/>
+                <Image style={styles.image} source={{uri:generateImageUrl(reviewItem?.userId?.profileImage)}} resizeMode="contain"/>
             </View>
         </View>
     )

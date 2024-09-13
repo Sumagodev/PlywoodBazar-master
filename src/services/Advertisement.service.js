@@ -24,7 +24,9 @@ export const getAdvertisementById = async (id) => {
 }
 export const AddDealershipOpportunities = async (obj) => {
     // return /*apiinstance*/ axios.post(`https://webhook.site/239d7bbd-6c40-4fbe-bfa8-07944952c09f`,obj)
-    return /*apiinstance*/ axios.post(`${serverUrl1}/dealership-owners/${obj}`)
+    // return /*apiinstance*/ axios.post(`${serverUrl1}/dealership-owners/`,)
+
+    return /*apiinstance*/ axios.post(`${serverUrl1}/dealership-owners/`, obj)
 }
 export const GetDealershipOpportunities = async () => {
  

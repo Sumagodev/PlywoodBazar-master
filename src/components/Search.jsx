@@ -209,6 +209,7 @@ const stylesSearch = StyleSheet.create({
     borderRadius: wp(10),
     flexDirection: 'row',
     width: wp(80),
+    height:wp(13),
     padding: wp(0.5),
     borderColor: '#CDC2A1',
     borderWidth: wp(0.3),
