@@ -3,7 +3,8 @@
 // export const adminUrl = 'http://192.168.0.37:3016';
 
 // production url
-export const url = "https://api.plywoodbazar.com";
+//export const url = "https://api.plywoodbazar.com";
+export const url = "https://13.232.176.232/api";
 // export const adminUrl = "http://localhost:3000";
 // export const adminUrl = "http://192.168.0.4:3016";
 

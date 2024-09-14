@@ -1173,7 +1173,7 @@ const stylesSearch = StyleSheet.create({
     borderRadius: wp(10),
     flexDirection: 'row',
     width: wp(70),
-    height: wp(12),
+    height: wp(16),
     padding: wp(0.5),
     borderColor: '#CDC2A1',
     borderWidth: wp(0.3)
