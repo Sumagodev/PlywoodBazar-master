@@ -144,6 +144,7 @@ export default function Home() {
       handleGetBlogVideo();
       handleproductyoumaylike();
       handleopportunitydata();
+      handlestates();
     }
   }, [focused]);
 
@@ -920,7 +921,7 @@ export default function Home() {
 
                 <Text style={{ alignSelf: 'center', fontSize: wp(6), marginVertical: wp(3) }} numberOfLines={1} ellipsizeMode="tail">States</Text>
                 <Carousel
-                  data={DATA1}
+                  data={stateDetailss}
                   renderItem={({ item }) => (
                     <StateItem item={item}></StateItem>
                   )}

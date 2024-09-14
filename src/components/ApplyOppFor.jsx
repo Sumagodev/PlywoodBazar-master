@@ -214,7 +214,6 @@ const ApplyOppFor = ({props,navigation}) => {
         errorToast('Image is Required');
         return 0;
       }
-      
       let obj = {
         Organisation_name: name,
         Type: selectedBusinessType,
@@ -225,10 +224,7 @@ const ApplyOppFor = ({props,navigation}) => {
         cityId:selectedItems,
         stateId:stateId,
         image:fileBase64
-
-
       };
-
       const { data: res } = await AddDealershipOpportunities(obj);
       if (res) {
         toastSuccess(res.message);
