@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity, Pressable} from 'react-native';
-import {Dimensions} from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'react-native';
+import { Dimensions } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
 import CustomRoundedTextButton from './CustomRoundedTextButton.js';
@@ -9,33 +9,34 @@ import { widthPercentageToDP } from 'react-native-responsive-screen';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const NewArrivalProductCard = ({imagePath, name, price, location, isVerified = false, onCallPressed, onGetQuotePressed, onCardPressed}) => {
+const NewArrivalProductCard = ({ imagePath, name, price, location, isVerified = false, onCallPressed, onGetQuotePressed, onCardPressed }) => {
   return (
     <Pressable onPress={onCardPressed}>
       <View style={styles.container}>
-        <View style={[styles.elevatedContainer, {flexDirection: 'row'}]}>
+        <View style={[styles.elevatedContainer, { flexDirection: 'row' }]}>
           <Image source={imagePath} style={styles.imageStyle} />
-          <View style={[{flexDirection: 'column',flex:1,marginEnd:10}]}>
+          <View style={[{ flexDirection: 'column', flex: 1, marginEnd: 10 }]}>
             <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-            <View style={{flexDirection: 'row', marginTop: screenWidth*0.01}}>
+            <View style={{ flexDirection: 'row', marginTop: screenWidth * 0.01 }}>
               <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
-              <Text style={styles.locationText}numberOfLines={1} ellipsizeMode='tail'>{location}</Text>
+              <Text style={styles.locationText} numberOfLines={1} ellipsizeMode='tail'>{location}</Text>
             </View>
             <View style={styles.locationRow}>
               {isVerified && (
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Image style={styles.locationImageStyle} source={require('../../assets/img/verified_icon.png')} />
                   <Text style={styles.locationText} numberOfLines={1} ellipsizeMode='tail'>Verified</Text>
                 </View>
               )}
             </View>
-            <View style={{flexDirection: 'row',justifyContent:'space-between'}}>
-            <Text style={[styles.textPrice]} numberOfLines={1} ellipsizeMode='tail' >₹{price}</Text>
-            <TouchableOpacity style={[styles.getQuoteBtn]} onPress={onGetQuotePressed}>
-              <Text style={[styles.textQuote]} numberOfLines={1} ellipsizeMode='tail' >Get Quote</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={[styles.textPrice]} numberOfLines={1} ellipsizeMode='tail' >₹{price}</Text>
+          
 
             </View>
+            <TouchableOpacity style={[styles.getQuoteBtn]} onPress={onGetQuotePressed}>
+            <Text style={[styles.textQuote]} numberOfLines={1} ellipsizeMode='tail' >Get Quote</Text>
+          </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -51,11 +52,11 @@ const NewArrivalProductCard = ({imagePath, name, price, location, isVerified = f
 const styles = StyleSheet.create({
   container: {
     margin: screenWidth * 0.02,
-    backgroundColor:'#FFFFFF',
+    backgroundColor: '#FFFFFF',
     borderRadius: 25,
     overflow: 'hidden',
     margin: screenWidth * 0.01,
-    
+
     elevation: 5,
   },
   elevatedContainer: {
@@ -63,12 +64,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     elevation: 10,
     borderColor: 'black',
-    backgroundColor:'#FFFFFF',
+    backgroundColor: '#FFFFFF',
   },
   imageStyle: {
     margin: 5,
     width: screenWidth * 0.30,
-    height:'auto',
+    height: 'auto',
     borderRadius: 25,
   },
   callIconContainer: {
@@ -77,15 +78,15 @@ const styles = StyleSheet.create({
     right: '0%',
     backgroundColor: 'white',
     height: screenWidth * 0.095,
-    width: screenWidth * 0.095 ,
+    width: screenWidth * 0.095,
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
   },
   callIcon: {
-    width:screenWidth * 0.085 ,
-    height: screenWidth * 0.085 ,
-    padding: screenWidth * 0.02 ,
+    width: screenWidth * 0.085,
+    height: screenWidth * 0.085,
+    padding: screenWidth * 0.02,
     resizeMode: 'contain',
     backgroundColor: CustomColors.accentGreen, // Background color
     borderRadius: 50,
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
   },
   locationRow: {
     flexDirection: 'row',
-    alignContent:'center',
-    
+    alignContent: 'center',
+
   },
   locationImageStyle: {
     alignSelf: 'center',
@@ -121,26 +122,26 @@ const styles = StyleSheet.create({
 
   getQuoteBtn: {
     backgroundColor: CustomColors.mattBrownDark,
-    paddingBottom:screenWidth * 0.01,
+    paddingBottom: screenWidth * 0.01,
     borderRadius: 25,
-    paddingTop:screenWidth*0.01,
-    paddingBottom:screenWidth*0.02,
-    paddingLeft:screenWidth*0.02,
-    paddingRight:screenWidth*0.02,
+    paddingTop: screenWidth * 0.01,
+    paddingBottom: screenWidth * 0.02,
+    paddingLeft: screenWidth * 0.02,
+    paddingRight: screenWidth * 0.02,
     alignSelf: 'flex-end',
-    marginBottom:screenWidth * 0.02,
+    marginBottom: screenWidth * 0.02,
   },
-  textQuote:{
-    color:'white',
+  textQuote: {
+    color: 'white',
     paddingLeft: screenWidth * 0.02,
     paddingRight: screenWidth * 0.02,
     fontSize: screenWidth * 0.0400,
-    fontWeight:500,
+    fontWeight: 500,
   },
-  textPrice:{
-    color:'#3D3B3B',
-    fontFamily:'Poppins-Bold',
-    fontWeight:400,
+  textPrice: {
+    color: '#3D3B3B',
+    fontFamily: 'Poppins-Bold',
+    fontWeight: 400,
     paddingLeft: screenWidth * 0.02,
     paddingRight: screenWidth * 0.02,
     fontSize: screenWidth * 0.045,

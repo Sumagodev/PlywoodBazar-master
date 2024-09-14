@@ -75,14 +75,12 @@ export default function Home() {
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
   const focused = useIsFocused();
-  console.log('isAuthorized', isAuthorized);
 
   const [blogsArr, setBlogsArr] = useState([]);
   const [oppdata, setoppdata] = useState([]);
   const [blogVideoArr, setBlogVideoArr] = useState([]);
   const [likeproductarray, setlikeproductarray] = useState([]);
   const [addressInFromFiled, setAddressInFormFiled] = useState('');
-  console.log('oppdata', oppdata);
 
 
 
@@ -90,18 +88,15 @@ export default function Home() {
     try {
       let { data: res } = await getBlogApi();
       if (res.data) {
-        // console.log(res.data, 'res.data');
         setBlogsArr(res.data);
       }
     } catch (err) {
-      console.log(err);
     }
   };
   const handleopportunitydata = async () => {
     try {
       let { data: res } = await GetDealershipOpportunities();
       if (res.data) {
-        // console.log(res.data, 'res.data');
         setoppdata(res.data);
       }
     } catch (err) {
@@ -288,7 +283,6 @@ export default function Home() {
 
       let { data: res } = await getAllFlashSales('endDate=' + endDate);
       if (res.data) {
-        console.log(res.data, "flash sales")
         setFlashSalesArr(res.data);
       }
     } catch (err) {
@@ -313,9 +307,7 @@ export default function Home() {
     try {
       let { data: res } = await getForHomepage();
       if (res.data) {
-        console.log(res.data, 'New Arrivals');
         setAdvertisementsArr(res.data);
-        console.log('newwwwwww', res.data);
 
       }
     } catch (err) {
@@ -328,12 +320,11 @@ export default function Home() {
       if (res.data) {
 
         settopprofiles(res.data);
-        console.log('settopprofiles', res.data);
 
       }
     } catch (err) {
       errorToast(err);
-    }
+    } 
   };
   const handlestates = async () => {
     try {
@@ -341,7 +332,7 @@ export default function Home() {
       if (res.data) {
 
         setstateDetails(res.data);
-        console.log('setstateDetails', res.data);
+       
 
       }
     } catch (err) {
@@ -521,7 +512,6 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({ item, index }) => {
-    console.log(item, 'QAA');
     return <Pressable onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}>
       <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} />
     </Pressable>
@@ -549,7 +539,6 @@ export default function Home() {
   };
 
   const renderFlashSale = ({ item, index }) => {
-    console.log('itemssss', item)
     return (
       <View style={{ marginHorizontal: wp(1) }}>
         <FlashSaleItemWithDiscount imagePath={{ uri: generateImageUrl(item?.productId?.mainImage) }}
@@ -559,7 +548,7 @@ export default function Home() {
           duration={10}
           offPercentage={item?.discountValue}
           discountType={item?.discountType}
-          // EndDate={item?.userId?.subscriptionEndDate}
+          EndDate={item?.endDate}
           onCallPress={() => { handelcallbtn(item?.phone) }}
         ></FlashSaleItemWithDiscount>
       </View>
@@ -610,7 +599,7 @@ export default function Home() {
   const renderOpportunities = ({ item, index }) => {
     return (
       // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
-      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => navigate.navigate('ApplyOppFor', { data: item })} ></OpportunitiesItem>
+      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true ,stateName: item?.stateName }} onApplyPress={() => navigate.navigate('ApplyOppFor', { Data:item })} ></OpportunitiesItem>
     );
   };
 
@@ -923,7 +912,7 @@ export default function Home() {
                 <Carousel
                   data={stateDetailss}
                   renderItem={({ item }) => (
-                    <StateItem item={item}></StateItem>
+                    <StateItem item={item} onPress={() => navigate.navigate('Filtercategory',{Data:item})}></StateItem>
                   )}
                   sliderWidth={wp(100)}
                   itemWidth={wp(25)}

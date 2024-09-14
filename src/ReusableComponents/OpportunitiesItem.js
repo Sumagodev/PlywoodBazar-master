@@ -27,7 +27,7 @@ export default OpportunitiesItem = ({ opportunityItem, onApplyPress }) => {
                             paddingHorizontal={wp(2)}
                         />
                     </View>
-                    <Text style={{fontSize:wp(4), color:'white', fontWeight:'bold'}}>{opportunityItem.isExclusive ? 'EXCLUSIVE' : ''}</Text>
+                    <Text style={{fontSize:wp(4), color:'white', fontWeight:'bold'}}>{opportunityItem.stateName}</Text>
                     <Text style={styles.titleStyle} numberOfLines={2} ellipsizeMode='tail'>{opportunityItem.title} </Text>
                 </LinearGradient>
             </ImageBackground>

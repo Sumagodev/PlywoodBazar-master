@@ -16,9 +16,14 @@ import styles from '../../assets/stylecomponents/Style';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { AddDealershipOpportunities } from '../services/Advertisement.service';
+import {  ApplyForDealershipOpportunitiy } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-const ApplyOppFor = ({props,navigation}) => {
+const ApplyOppFor = ({route,navigation}) => {
+  const { Data } = route.params;
+  console.log('Data',Data);
+  const State= Data.stateId
+
+  
   const focused = useIsFocused();
   const [name, setName] = useState('');
   const [userID, setuserID] = useState('');
@@ -31,20 +36,19 @@ const ApplyOppFor = ({props,navigation}) => {
   const [productsArray, setproductsArray] = useState([]);
   console.log('productsArray',productsArray);
   
-  const [selectedBusinessType, setSelectedBusinessType] = useState();
+  const [selectedBusinessType, setSelectedBusinessType] = useState(Data.Type);
   const [selectedproductsArray, setSelectedproductsArray] = useState();
   const [countryArr, setcountryArr] = useState([]);
   const [stateArr, setstateArr] = useState([]);
   const [cityArr, setcityArr] = useState([]);
   const [countryId, setcountryId] = useState('648d5b79f79a9ff6f10a82fb');
-  const [stateId, setstateId] = useState(null);
+  const [stateId, setstateId] = useState(State);
   const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
   const [selected, setSelected] = useState([]);
   const [file, setFile] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
-
   console.log('selectedproductsArray', selectedproductsArray);
   const debounceTimeout = useRef(null);
 
@@ -146,7 +150,7 @@ const ApplyOppFor = ({props,navigation}) => {
 
   useEffect(() => {
     if (stateId) {
-      handleGetCities(stateId.value);
+      handleGetCities(stateId);
     }
   }, [stateId]);
 
@@ -177,16 +181,7 @@ const ApplyOppFor = ({props,navigation}) => {
     setSelectedItems([]);
   };
 
-  const handleSubmit1 = () => {
-    const error = validateForm();
-    if (error) {
-      Alert.alert('Validation Error', error);
-      return;
-    }
-    Alert.alert('Success', 'Dealership Opportunity Submitted Successfully');
-    resetForm();
-  };
-
+ 
   const handleSubmit = async () => {
     try {
       if (`${name}` === '') {
@@ -206,26 +201,23 @@ const ApplyOppFor = ({props,navigation}) => {
         errorToast('Product is Required');
         return 0;
       }
-      if (`${cityId}` === '') {
+      if (`${selectedItems}` === '') {
         errorToast('City is Required');
         return 0;
       }
-      if (`${fileBase64}` === '') {
-        errorToast('Image is Required');
-        return 0;
-      }
+     
       let obj = {
         Organisation_name: name,
         Type: selectedBusinessType,
-
+        dealershipOwnerId:Data._id,
         Brand:brand,
         productId:selectedproductsArray,
         userId:userID,
         cityId:selectedItems,
         stateId:stateId,
-        image:fileBase64
+     
       };
-      const { data: res } = await AddDealershipOpportunities(obj);
+      const { data: res } = await ApplyForDealershipOpportunitiy(obj);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
@@ -235,43 +227,7 @@ const ApplyOppFor = ({props,navigation}) => {
       errorToast(error);
     }
   };
-  const handleDocumentPicker = async () => {
-    try {
-      ImagePicker.openPicker({
-        // width: 300,
-        // height: 400,
-        cropping: true,
-        freeStyleCropEnabled: true,
 
-        includeBase64: true,
-      }).then(image => {
-        console.log(image, image.path.split('/')[image.path.split('/').length - 1]);
-        setFile({ name: image.path.split('/')[image.path.split('/').length - 1] });
-        setFileBase64(`data:${image.mime};base64,${image.data}`);
-      });
-
-      // let file = await DocumentPicker.pickSingle({
-      //   presentationStyle: 'fullScreen',
-
-      //   type: DocumentPicker.types.images,
-      // });
-      // if (file) {
-      //   console.log(file, 'file');
-      //   let base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
-      //   if (base64) {
-      //     console.log('SETTING BASE ^$', file);
-      //     setFile(file);
-      //     setFileBase64(`data:${file.type};base64,${base64}`);
-      //   }
-      //   // getBase64(file, (result) => {
-      //   //     setGstCertificateName(file);
-      //   //     setgstCertificate(result);
-      //   // })
-      // }
-    } catch (error) {
-      handleError(error);
-    }
-  };
   const removeItem = (itemId) => {
     // Filter out the item that matches the itemId and update the state
     const updatedItems = selectedItems.filter((id) => id !== itemId);
@@ -279,67 +235,30 @@ const ApplyOppFor = ({props,navigation}) => {
   };
   return (
     <>
-      <Header normal={true} screenName={'Dealership Opportunities'} rootProps={props} />
+      <Header normal={true} screenName={'Dealership Opportunities'}  />
       <ScrollView>
         <View style={styles1.containerForm}>
-          <Text style={styles1.textStyle}>Add Dealership Opportunities</Text>
+          <Text style={styles1.textStyle}>Apply Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)} />
             <View style={{ height: wp(1) }} />
 
-            <Dropdown
-              style={styles1.dropdown}
-              placeholderStyle={styles1.placeholderStyle}
-              data={rolesArr}
-              maxHeight={300}
-              labelField="name"
-              valueField="name" // Ensure this matches your data structure
-              placeholder="Business Type *"
-              search
-              searchPlaceholder="Search..."
-              value={selectedBusinessType} // Make sure this is the correct format (string or object)
-              selectedTextStyle={{ fontSize: 13, }}
-              onChange={item => {
-                console.log(item, 'uuuuu');
-
-                setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
-              }}
-            />
-            <Dropdown
-              style={styles1.dropdown}
-              placeholderStyle={styles1.placeholderStyle}
-              data={productsArray}
-              maxHeight={300}
-              labelField="name"
-              valueField="name" // Ensure this matches your data structure
-              placeholder="Product *"
-              search
-              selectedTextStyle={{ fontSize: 13, }}
-              searchPlaceholder="Search..."
-              value={selectedproductsArray} // Make sure this is the correct format (string or object)
-              onChange={item => {
-                console.log(item, 'uuuuu');
-
-                setSelectedproductsArray(item._id); // Use `item.value` to match the `valueField`
-              }}
-            />
+            <TextInput style={styles1.BorderedPressable} placeholder="Business Type*" value={Data.Type}  />
+            <View style={{ height: wp(1) }} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Product*" value={Data.Product} onChangeText={value => setSelectedproductsArray(Data.Product)} />
+            <View style={{ height: wp(1) }} />
+        
+           
 
             <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />
+            <TextInput style={styles1.BorderedPressable} placeholder="State*" value={Data.stateName} onChangeText={value => setstateId(Data.stateName)} />
+            <View style={{ height: wp(1) }} />
 
-            <Pressable
-              style={styles1.BorderedPressable}
-              onPress={() => {
-                setModalVisible(true);
-                setModalFor('State');
-              }}>
-              <View style={{ height: wp(1.5) }} />
-              <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
-              <View style={{ height: wp(1.5) }} />
-            </Pressable>
+      
             <View style={{ marginVertical: wp(2) }}>
               <MultiSelect
                 hideTags
@@ -386,16 +305,7 @@ const ApplyOppFor = ({props,navigation}) => {
               )}
             </View>
 
-            <Text style={styles1.nameheading}> Image </Text>
-            <Pressable
-              style={[styles1.dropdownStyle, { paddingVertical: wp(3), paddingStart: wp(2), flexDirection: 'row', flex: 1, justifyContent: 'space-between' }]}
-              onPress={() => {
-                handleDocumentPicker();
-              }}>
-              <Text style={styles.borderedPressableText}>{file && file.name ? file?.name : 'Please Upload Image'}</Text>
-              <FontAwesome5Icon style={{ right: wp(5) }} name="caret-square-up" size={wp(6)} color="black" />
-
-            </Pressable>
+     
           </View>
           <View style={styles1.btnContainer}>
             <TouchableOpacity

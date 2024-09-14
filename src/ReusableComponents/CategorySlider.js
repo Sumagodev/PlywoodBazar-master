@@ -12,7 +12,7 @@ const CategorySlider = ({ data }) => {
 
   const scrollViewRef = useRef();
   const [scrollPosition, setScrollPosition] = useState(0);
-  
+  console.log('data:item?._id',data);
   const itemWidth = wp(18) + 20; // Item width + horizontal margin
 
   const scrollOneItem = (direction) => {
@@ -41,6 +41,8 @@ const CategorySlider = ({ data }) => {
         <View style={{flexDirection:'row',width:wp(5)}}></View>
           {data.map((item, index) => (
         <Pressable key={index} onPress={() => {navigate.navigate('BottomBar',{screen:'Shop',params:{data:item?._id}})}}>
+    
+        
           <View style={styles.item}>
             <Image source={{uri: generateImageUrl(item.image)}} style={styles.image} />
             <Text style={styles.name} numberOfLines={1} ellipsizeMode='tail' >{item.name}</Text>

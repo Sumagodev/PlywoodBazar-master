@@ -4,6 +4,7 @@ import { url } from "./url.service";
 
 let serverUrl = `${url}/advertisement`;
 let serverUrl1 = `${url}/dealershipOwnerRoutes`;
+let serverUrl2 = `${url}/dealershipUSerRoutes`;
 
 
 export const AddAdvertisement = async (obj) => {
@@ -23,14 +24,16 @@ export const getAdvertisementById = async (id) => {
     return /*apiinstance*/ axios.get(`${serverUrl}/getById/${id}`)
 }
 export const AddDealershipOpportunities = async (obj) => {
-    // return /*apiinstance*/ axios.post(`https://webhook.site/239d7bbd-6c40-4fbe-bfa8-07944952c09f`,obj)
-    // return /*apiinstance*/ axios.post(`${serverUrl1}/dealership-owners/`,)
+    
 
-    return /*apiinstance*/ axios.post(`${serverUrl1}/dealership-owners/`, obj)
+    return axios.post(`${serverUrl1}/addDealershipOpportunity/`, obj)
+}
+export const ApplyForDealershipOpportunitiy = async (obj) => {
+    return /*apiinstance*/ axios.post(`${serverUrl2}/applyForDealershipOpportunitiy`, obj)
 }
 export const GetDealershipOpportunities = async () => {
  
-    return /*apiinstance*/ axios.get(`${serverUrl1}/dealership-owners`)
+    return /*apiinstance*/ axios.get(`${serverUrl1}/getDelearshipOpportunities`)
 }
 
 

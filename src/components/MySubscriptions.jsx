@@ -135,7 +135,7 @@ export default function MySubscriptions(props) {
             <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
             : null
         }
-          <Text style={{ fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center',alite }}>My Subscriptions</Text>
+          <Text style={{ fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>My Subscriptions</Text>
 
           {subscriptionArr.length > 0 ? (
             <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderMySubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 10 }} />

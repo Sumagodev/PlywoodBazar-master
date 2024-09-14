@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import CustomColors from '../styles/CustomColors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, offPercentage, onCallPress, onCardPress,discountType,EndDate }) => {
+    const [timeDiff, setTimeDiff] = useState('');
+    useEffect(() => {
+        const givenTime = new Date(EndDate);
+    
+        const calculateTimeDifference = () => {
+          const currentTime = new Date();
+          const differenceInMs = givenTime - currentTime; // Time left
+    
+          if (differenceInMs <= 0) {
+            // If time has passed or reached 0, show "Sale Ended"
+            setTimeDiff("Sale Ended");
+          } else {
+            // Calculate days, hours, minutes
+            const days = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((differenceInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((differenceInMs % (1000 * 60 * 60)) / (1000 * 60));
+    
+            setTimeDiff(`${days} days, ${hours} hours, ${minutes} minutes`);
+          }
+        };
+    
+        calculateTimeDifference();
+    
+        // Optionally update every minute
+        const interval = setInterval(calculateTimeDifference, 60000);
+    
+        return () => clearInterval(interval); // Cleanup the interval
+      }, []);
     return (
         <Pressable style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
                 <Image style={styles.imageStyle} source={imagePath} />
-                <View style={{flexDirection:'row'}}>
+                <View style={{}}>
                 <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
-                <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{EndDate}</Text>
+                <Text style={[styles.nameStyle,{fontSize:wp(3),color:CustomColors.accentBrownFaint}]} ellipsizeMode='tail' numberOfLines={1}>{timeDiff}</Text>
                 </View>
                
             </View>

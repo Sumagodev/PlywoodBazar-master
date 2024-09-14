@@ -51,8 +51,11 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
     try {
       let obj = {...selectedSubscriptionObj};
       const {data: res} = await buySubscription(obj);
+      console.log('res.message',res);
       if (res) {
         toastSuccess(res.message);
+       
+        
         if (res?.data && res?.data.instrumentResponse) {
           let instrumentResponse = res?.data.instrumentResponse;
           if (instrumentResponse?.redirectInfo) {

@@ -911,7 +911,7 @@ const styles1 = StyleSheet.create({
 //         shortDescription: shortDescription,
 //         longDescription: longDescription,
 //         status: status,
-//         image: image,
+//         : image,
 //         // image:productObj?.mainImage,
 //         imageArr: imageArr,
 //         categoryArr: [{ categoryId: category }],

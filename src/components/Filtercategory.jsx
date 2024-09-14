@@ -36,6 +36,8 @@ const Filtercategory = (props) => {
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
   const [rating, setRating] = useState(0);
+  console.log('ratinggg',rating);
+  
   const [qry, setQuery] = useState('');
   const focused = useIsFocused();
   const [minPrice, setMinPrice] = useState(0);

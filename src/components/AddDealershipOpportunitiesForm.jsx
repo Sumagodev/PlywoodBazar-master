@@ -218,15 +218,13 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
       let obj = {
         Organisation_name: name,
         Type: selectedBusinessType,
-
         Brand:brand,
-        productId:selectedproductsArray,
+        productId:selectedproductsArray._id,
         userId:userID,
         cityId:selectedItems,
-        stateId:stateId,
-        image:fileBase64
-
-
+        stateId:stateId.value,
+        image:fileBase64,
+        Product:selectedproductsArray.name
       };
 
       const { data: res } = await AddDealershipOpportunities(obj);
@@ -325,7 +323,7 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
               onChange={item => {
                 console.log(item, 'uuuuu');
 
-                setSelectedproductsArray(item._id); // Use `item.value` to match the `valueField`
+                setSelectedproductsArray(item); // Use `item.value` to match the `valueField`
               }}
             />
 

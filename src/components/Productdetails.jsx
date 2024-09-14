@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Linking, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Modal, TextInput } from 'react-native';
+import { FlatList, Linking, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Modal, TextInput, Alert } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { LinearTextGradient } from 'react-native-text-gradient';
@@ -26,13 +26,17 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 
 export default function Productdetails(props) {
   const [isAuthorized] = useContext(isAuthorisedContext);
-
+  const [supplierObj, setSupplierObj] = useState({});
+  console.log('supplierObj',supplierObj);
+  
   const [productObj, setProductObj] = useState(null);
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
 
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [similarProductsArr, setSimilarProductsArr] = useState([]);
+  console.log('similarProductsArr', similarProductsArr);
+
   const focused = useIsFocused();
   const [readmore, setReadmore] = useState(false);
   const [activeclass, setActiveclass] = useState('Product Specification');
@@ -40,15 +44,34 @@ export default function Productdetails(props) {
   const [isloding, setIsloding] = useState(false);
   const [productId, setProductId] = useState('');
   const [productOwnerId, setProdutOwnerId] = useState('');
-  const [nameForReview, setNameForReview] = useState('');
-  const [messageForReview, setMessageForReview] = useState('');
+  const [nameForReview, setNameForReview] = useState();
+  const [messageForReview, setMessageForReview] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);            
+  const [userid, setuserid] = useState();            
+console.log('hhhh',userid);
 
   const [productReviewArr, setProductReviewArr] = useState([]);
   const [loading, setLoading] = useState(true);
+  const HandleGetUserById = async id => {
+    console.log('=================', id, '==========================');
 
+    try {
+      if (!id) {
+        return null;
+      }
+      let {data: res} = await getUserUserById(id);
+      console.log('=================', res, '==========================');
 
+      if (res.data) {
+        setSupplierObj(res.data);
+        setVideoArr(res?.data?.videoArr?.map(el => ({...el, isPaused: false})));
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
+ 
 
   const renderReviewItem = ({ item }) => {
     console.log(item, 'renderReviewItem'); // This will log the item to the console
@@ -60,6 +83,8 @@ export default function Productdetails(props) {
     try {
 
       const { data: res } = await getProductById(props?.route?.params?.data);
+     setuserid(res.data._id);
+      
       if (res) {
         //console.log(JSON.stringify(res.data, null, 2), 'dataxxx');
 
@@ -183,7 +208,7 @@ export default function Productdetails(props) {
       let { data: res } = await createLead(obj);
       if (res.message) {
         toastSuccess(res.message);
-       // Linking.openURL(`tel:${phone}`);
+        // Linking.openURL(`tel:${phone}`);
       }
     } catch (err) {
       errorToast(err);
@@ -195,9 +220,12 @@ export default function Productdetails(props) {
       let decoded = await getDecodedToken();
       if (decoded) {
         let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        console.log('setCurrentUserHasActiveSubscription',res);
         if (res.data) {
 
           setCurrentUserHasActiveSubscription(res.data);
+          
+          
         }
       }
     } catch (err) {
@@ -221,21 +249,20 @@ export default function Productdetails(props) {
         errorToast('Please enter a name');
         return;
       }
-      if (!(supplierObj && supplierObj._id)) {
-        errorToast('Something went wrong please close the app and open again ');
-        return;
-      }
+      setModalVisible(false);
       let obj = {
         rating,
-        messageForReview,
-        name,
-        userId: supplierObj._id,
+        message:messageForReview,
+        name:nameForReview,
+        userId: userid,
+        // userId: '66dde3b7c434a420a313a77a',
       };
-      let { data: res } = await addReview(obj);
+      let {data: res} = await addReview(obj);
       if (res.message) {
+        Alert.alert('gore dada')
         toastSuccess(res.message);
         setModalVisible(false);
-        handleGetProductReview(supplierObj?._id);
+    
       }
     } catch (err) {
       errorToast(err);
@@ -306,11 +333,11 @@ export default function Productdetails(props) {
       <NewArrivalProductCard
         imagePath={{ uri: generateImageUrl(item?.mainImage) }}
         price={item?.price}
-        name={item?.name}
-        location="Location"
-        isVerified={item?.approved === "APPROVED"} // Check if item.approved is "APPROVED"
+        name={item?.productName}
+        location={item?.cityName}
+        isVerified={item?.isVerified} // Check if item.approved is "APPROVED"
         onCallPressed={() => { handelcallbtn(item?.createdByObj?.companyObj?.phone) }}
-        onGetQuotePressed={() => {  handleGetQuoteClick(item)}}
+        onGetQuotePressed={() => { handleGetQuoteClick(item) }}
 
         onCardPressed={() => navigation.navigate('Productdetails', { data: item?.slug })}></NewArrivalProductCard>
     );
@@ -320,8 +347,7 @@ export default function Productdetails(props) {
     // View to set in Header
     return (
       <>
-        {/*       <Header stackHeader={true} screenName={productObj?.name ? productObj?.name : '' } rootProps={props} />
-         */}
+
         {/* <View style={styles1.flexbetween}>
           <Pressable onPress={() => navigation.goBack()}>
             <Image source={require('../../assets/img/backbtn.png')} style={styles1.imgsmall} resizeMode="contain" />
@@ -398,19 +424,19 @@ export default function Productdetails(props) {
                 <Text style={{ color: 'white', marginLeft: wp(1) }}>{currentUserHasActiveSubscription ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber || 'NA' : `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}`.slice(0, 2) + '***'}</Text>
               </View>
               <View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end', flex: 1, marginTop: wp(2) }}>
-                <CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={() => {handleContactSupplierClick() }}></CustomButtonNew>
+                <CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={() => { handleContactSupplierClick() }}></CustomButtonNew>
               </View>
             </View>
           </LinearGradient>
           <View>
-          { isAuthorized && (
-  <View style={{ marginVertical: wp(5) }}>
-    <StartBusinessBanner></StartBusinessBanner>
-  </View>
-)}    
+            {isAuthorized && (
+              <View style={{ marginVertical: wp(5) }}>
+                <StartBusinessBanner></StartBusinessBanner>
+              </View>
+            )}
           </View>
 
-      {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}
+          {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}
           <View style={similarProductsStyle.container}>
 
             <View style={[styles.padinghr, { alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginTop: wp(7), marginBottom: 10 }]}>
@@ -465,31 +491,6 @@ export default function Productdetails(props) {
           </TouchableOpacity>
         )} */}
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles2.centeredView}>
-            <View style={styles2.modalView}>
-              <View style={{ padding: 20 }}>
-                <Text style={styles2.modalText}>Add Review</Text>
-                <TextInput style={styles2.modalTextInput} onChangeText={(e) => { setNameForReview(e) }} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
-                <TextInput multiline={true} style={styles2.modalTextInput} onChangeText={(e) => { setMessageForReview(e) }} value={messageForReview} placeholder="Please Enter message" placeholderTextColor={'#000'} />
-                <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
-              </View>
-              <TouchableOpacity style={styles2.yellowButton} onPress={() => { handleSubmitReview() }}>
-                <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
-            </TouchableOpacity>
-          </View>
-        </Modal>
       </View>
     );
   };
@@ -511,6 +512,31 @@ export default function Productdetails(props) {
         )
       )}
 
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible); 
+      }}>
+      <View style={styles2.centeredView}>
+        <View style={styles2.modalView}>
+          <View style={{ padding: 20 }}>
+            <Text style={styles2.modalText}>Add Review</Text>
+            <TextInput style={styles2.modalTextInput} onChangeText={(e) =>  setNameForReview(e)} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
+            <TextInput multiline={true} style={styles2.modalTextInput} onChangeText={(e) =>  setMessageForReview(e) } value={messageForReview} placeholder="Please Enter message" placeholderTextColor={'#000'} />
+            <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+          </View>
+          <TouchableOpacity style={styles2.yellowButton} onPress={() => handleSubmitReview()}>
+            <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity onPress={() => setModalVisible(false)} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
+    </Modal>
     </View>
   );
 }
