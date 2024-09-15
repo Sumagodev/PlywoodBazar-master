@@ -59,7 +59,7 @@ export default function AllProducts(props) {
   const [brandArr, setBrandArr] = useState([]);
   const [searchState, setSearchState] = useState('');
   const [searchCity, setSearchCity] = useState('');
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(40);
   const [page, setPage] = useState(1);
   const [totalPages, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -204,6 +204,12 @@ export default function AllProducts(props) {
           query = `${query}&rating=${rating}`;
         }
       }
+
+
+
+
+      console.log(query,"QQQQ");
+
 
       let response = await getAllProducts(query);
       //let { data: res } = await getAllUsers(query,source);
@@ -826,15 +832,15 @@ export default function AllProducts(props) {
           scrollEnabled
           numColumns={1}
           style={{width: '100%', height: '100%', backgroundColor: '#FFFFFF'}}
-          contentContainerStyle={{paddingVertical: 5, paddingBottom: wp(35)}}
+          contentContainerStyle={{paddingVertical: 5, paddingBottom: wp(75)}}
           ListFooterComponent={
-            <View>
+            <View style={{marginVertical:wp(10)}}>
               {isLoading1 ? (
-                <View style={{margin: wp(10)}}>
+                <View style={{margin: wp(1)}}>
                   <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
                 </View>
               ) : (
-                <View style={{margin: wp(10)}}>
+                <View style={{margin: wp(1)}}>
                   <LoadMoreButton
                     onPress={() => {
                       fetchNextPage();

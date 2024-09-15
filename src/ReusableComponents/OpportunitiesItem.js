@@ -5,6 +5,7 @@ import CustomButton from "./CustomButton";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CustomColors from '../styles/CustomColors';
 import { color } from 'react-native-elements/dist/helpers';
+import CustomButtonNew from './CustomButtonNew';
 
 export default OpportunitiesItem = ({ opportunityItem, onApplyPress }) => {
     return (
@@ -17,14 +18,16 @@ export default OpportunitiesItem = ({ opportunityItem, onApplyPress }) => {
                     end={{ x: 0, y: 1 }}
                 >
                     <View style={styles.buttonStyle}>
-                        <CustomButton
+                        <CustomButtonNew
                             text='Apply'
                             onPress={onApplyPress}
                             hasBorder={true}
                             buttonBgColor='#573C26'
-                            paddingVertical={wp(1)}
+                            paddingVertical={wp(2)}
                             textSize={wp(3.5)}
-                            paddingHorizontal={wp(2)}
+                            paddingHorizontal={wp(4)}
+                            
+                            
                         />
                     </View>
                     <Text style={{fontSize:wp(4), color:'white', fontWeight:'bold'}}>{opportunityItem.stateName}</Text>

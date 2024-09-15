@@ -189,30 +189,51 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
 
   const handleSubmit = async () => {
     try {
-      if (`${name}` === '') {
+      
+      if (!name) {
         errorToast('Name is Required');
-        return 0;
+        return;
       }
-     
-      if (`${selectedBusinessType}` === '') {
+  
+      // Validate if a business type is selected
+      if (!selectedBusinessType) {
         errorToast('Business Type is Required');
-        return 0;
+        return;
       }
-      if (`${brand}` === '') {
+  
+      // Validate if a brand is provided
+      if (!brand) {
         errorToast('Brand is Required');
-        return 0;
+        return;
       }
-      if (`${selectedproductsArray}` === '') {
+  
+      // Validate if a product is selected
+      if (!selectedproductsArray) {
         errorToast('Product is Required');
-        return 0;
+        return;
       }
-      if (`${cityId}` === '') {
+  
+      // Validate if a city is selected
+      if (!selectedItems || selectedItems.length === 0) {
         errorToast('City is Required');
-        return 0;
+        return;
       }
-      if (`${fileBase64}` === '') {
+  
+      // Validate if an image is selected
+      if (!fileBase64) {
         errorToast('Image is Required');
-        return 0;
+        return;
+      }
+       
+       // Validate if an image is selected
+       if (!cityId.length<1) {
+        errorToast('City is Required');
+        return;
+      }
+       // Validate if an image is selected
+       if (!stateId) {
+        errorToast('State is Required');
+        return;
       }
       
       let obj = {
@@ -623,7 +644,7 @@ const stylesMul = StyleSheet.create({
     fontWeight: 'bold',
   },
   multiSelect: {
-    height: wp(10),
+    height: wp(14),
     borderRadius: 25, // Rounded borders
     borderWidth: 1,
     padding: 5,
@@ -638,7 +659,7 @@ const stylesMul = StyleSheet.create({
     marginBottom: wp(3)
   },
   multiSelectInput: {
-    height: wp(10),
+    height: wp(14),
     borderRadius: 25, // Rounded borders for the input section
     marginTop: wp(2),
     paddingHorizontal: wp(5),

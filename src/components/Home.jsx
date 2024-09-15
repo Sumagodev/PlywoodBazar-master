@@ -1,7 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState, useContext } from 'react';
-import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Video from 'react-native-video';
@@ -172,7 +172,9 @@ export default function Home() {
       let { data: res } = await addUserRequirement(obj);
 
       if (res.message) {
+        console.log('xxxxxxx',res.message)
         toastSuccess(res.message);
+        Alert.alert(res.message)
         setName('');
         setPhone('');
         setAddressInFormFiled('');
@@ -615,7 +617,7 @@ export default function Home() {
   const renderOpportunities = ({ item, index }) => {
     return (
       // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
-      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true ,stateName: item?.stateName }} onApplyPress={() => navigate.navigate('ApplyOppFor', { Data:item })} ></OpportunitiesItem>
+      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true ,stateName: item?.stateName }} onApplyPress={()=>{gotoApplyOpportunities(item)}} ></OpportunitiesItem>
     );
   };
 
@@ -690,6 +692,22 @@ export default function Home() {
       }
 
       navigate.navigate('AddDealershipOpportunitiesForm')
+
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  }
+
+  const gotoApplyOpportunities = (item) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+
+      navigate.navigate('ApplyOppFor', { Data:item })
 
     }
     else {

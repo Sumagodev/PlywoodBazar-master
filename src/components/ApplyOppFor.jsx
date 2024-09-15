@@ -20,7 +20,8 @@ import {  ApplyForDealershipOpportunitiy } from '../services/Advertisement.servi
 import { errorToast, toastSuccess } from '../utils/toastutill';
 const ApplyOppFor = ({route,navigation}) => {
   const { Data } = route.params;
-  console.log('Data',Data);
+  console.log('Datax',Data);
+  console.log('DataxCities',Data.cities);
   const State= Data.stateId
 
   
@@ -72,6 +73,14 @@ const ApplyOppFor = ({route,navigation}) => {
       checked: false,
     },
   ]);
+
+
+
+
+
+  //setcityArr(Data.cities)
+
+
 
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
@@ -150,7 +159,8 @@ const ApplyOppFor = ({route,navigation}) => {
 
   useEffect(() => {
     if (stateId) {
-      handleGetCities(stateId);
+      console.log(stateId,'zzzz');
+      //handleGetCities(stateId);
     }
   }, [stateId]);
 
@@ -241,29 +251,34 @@ const ApplyOppFor = ({route,navigation}) => {
           <Text style={styles1.textStyle}>Apply Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)}    editable={false}
+            />
             <View style={{ height: wp(1) }} />
 
-            <TextInput style={styles1.BorderedPressable} placeholder="Business Type*" value={Data.Type}  />
+            <TextInput style={styles1.BorderedPressable} placeholder="Business Type*" value={Data.Type}    editable={false}
+            />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Product*" value={Data.Product} onChangeText={value => setSelectedproductsArray(Data.Product)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Product*" value={Data.Product} onChangeText={value => setSelectedproductsArray(Data.Product)}    editable={false}
+            />
             <View style={{ height: wp(1) }} />
         
            
 
-            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)}    editable={false}
+            />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)}    editable={false}/>
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="State*" value={Data.stateName} onChangeText={value => setstateId(Data.stateName)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="State*" value={Data.stateName} onChangeText={value => setstateId(Data.stateName)}   editable={false}
+ />
             <View style={{ height: wp(1) }} />
 
       
             <View style={{ marginVertical: wp(2) }}>
               <MultiSelect
                 hideTags
-                items={cityArr}
-                uniqueKey="_id"
+                items={Data.cities}
+                uniqueKey="cityId"
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={selectedItems}
                 selectText="     Select Cities"
@@ -275,7 +290,7 @@ const ApplyOppFor = ({route,navigation}) => {
                 selectedItemTextColor="#000"
                 selectedItemIconColor="#000"
                 itemTextColor="#000"
-                displayKey="name"
+                displayKey="cityName"
                 searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
                 submitButtonColor={CustomColors.mattBrownDark}
                 submitButtonText="Select"
@@ -288,11 +303,11 @@ const ApplyOppFor = ({route,navigation}) => {
             <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
               {selectedItems.length > 0 ? (
                 selectedItems.map(itemId => {
-                  const item = cityArr.find(i => i._id === itemId);
+                  const item = Data.cities.find(i => i.cityId === itemId);
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.name}
+                        {item.cityName}
                       </Text>
                       <TouchableOpacity onPress={() => removeItem(itemId)}>
                         <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
@@ -370,7 +385,7 @@ const ApplyOppFor = ({route,navigation}) => {
                   <>
                     <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>City</Text>
                     <FlatList
-                      data={cityArr}
+                      data={Data.cities}
                       keyExtractor={(item, index) => index}
                       renderItem={({ item, index }) => {
                         return (
@@ -400,11 +415,11 @@ const styles1 = StyleSheet.create({
     elevation: 5,
     backgroundColor: '#f4eddb',
     borderRadius: 25,
-    width: wp(96),
+    width: wp(99),
     alignItems: 'center',
     overflow: 'hidden',
     alignSelf: 'center',
-    marginTop: wp(7),
+    marginTop: wp(3),
   },
   textStyle: {
     color: '#000000',
@@ -418,6 +433,7 @@ const styles1 = StyleSheet.create({
     marginBottom: wp(15),
   },
   btnContainer: {
+    paddingTop:wp(-10),
     position: 'absolute',
     backgroundColor: '#6c4f37',
     bottom: 0,
@@ -445,6 +461,7 @@ const styles1 = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 25,
     elevation: 3,
+    color:'black'
   },
   borderedPressableText: {},
   centeredView: {
@@ -531,7 +548,7 @@ const stylesMul = StyleSheet.create({
     fontWeight: 'bold',
   },
   multiSelect: {
-    height: wp(10),
+    height: wp(14),
     borderRadius: 25, // Rounded borders
     borderWidth: 1,
     padding: 5,
@@ -546,7 +563,7 @@ const stylesMul = StyleSheet.create({
     marginBottom: wp(3)
   },
   multiSelectInput: {
-    height: wp(10),
+    height: wp(14),
     borderRadius: 25, // Rounded borders for the input section
     marginTop: wp(2),
     paddingHorizontal: wp(5),
