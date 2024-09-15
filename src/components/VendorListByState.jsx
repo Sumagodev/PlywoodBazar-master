@@ -28,9 +28,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import CustomColors from '../styles/CustomColors';
 
-const Filtercategory = (props) => {
-
-  
+const VendorListByState = (props) => {
+    
 
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
   const [isloding, setIsloding] = useState(false);
@@ -76,14 +75,14 @@ const Filtercategory = (props) => {
   const [isLoading1, setIsLoading1] = useState(false);
   const nextPageIdentifierRef = useRef();
   const [isFirstPageReceived, setIsFirstPageReceived] = useState(false);
-  const [receivedStateIdFromPorops, setReceivedStateIdFromPorops] = useState('');
 
-  
-  if(props?.route?.params?.xState){
-    setSearchState(props?.route?.params?.xState)
-    console.log(props?.route?.params?.xState,'QAZZZZZZ')
-    
-  }
+
+
+
+  console.log('Goray','VendorListByState',)
+  const { data, xState } = props?.route?.params || {};
+
+  console.log('xxx',xState);
 
   const handleGetProducts = async (source) => {
     setIsloding(true)
@@ -127,30 +126,14 @@ const Filtercategory = (props) => {
           query = `${query}&locations=${tempArr.map(el => el._id)}`;
         }
       }
-      // if (statesDisplayArr && statesDisplayArr.filter(el => el.checked == true).length > 0) {
-      //   let tempArr = statesDisplayArr.filter(el => el.checked == true);
-      //   if (query == '') {
-      //     query = `state=${tempArr.map(el => el._id)}`;
-      //   } else {
-      //     query = `${query}&state=${tempArr.map(el => el._id)}`;
-      //   }
-      // }
-
-
-      if(props?.route?.params?.xState && searchState.length<1){
-        query = `${query}&state=${props?.route?.params?.xState}`;
-      }else{
-        if (statesDisplayArr && statesDisplayArr.filter(el => el.checked == true).length > 0) {
-          let tempArr = statesDisplayArr.filter(el => el.checked == true);
-          if (query == '') {
-            query = `state=${tempArr.map(el => el._id)}`;
-          } else {
-            query = `${query}&state=${tempArr.map(el => el._id)}`;
-          }
+      if (statesDisplayArr && statesDisplayArr.filter(el => el.checked == true).length > 0) {
+        let tempArr = statesDisplayArr.filter(el => el.checked == true);
+        if (query == '') {
+          query = `state=${tempArr.map(el => el._id)}`;
+        } else {
+          query = `${query}&state=${tempArr.map(el => el._id)}`;
         }
       }
-
-
       if (minPrice) {
         if (query == '') {
           query = `minPrice=${minPrice}`;
@@ -280,7 +263,7 @@ const Filtercategory = (props) => {
   };
 
 
-  const handleGetStates = async (queryString) => {
+  const handleGetStatesX = async (queryString) => {
     try {
       let query = `page=${1}&perPage=${1000}`
 
@@ -296,6 +279,28 @@ const Filtercategory = (props) => {
       console.log('handleGetStateError', error);
     }
   };
+
+  const handleGetStates = async (queryString) => {
+    try {
+        let query = `page=${1}&perPage=${1000}`;
+        let { data: res } = await getStates(query);
+
+        if (res.data) {
+            const updatedStatesArr = res.data.map(el => ({
+                ...el,
+                checked: el._id === xState, // Set checked true if the stateId matches
+            }));
+
+            setStatesArr(updatedStatesArr); 
+            setStatesDisplayArr(updatedStatesArr); // Display the updated state list
+            if (xState) {
+                handleGetCities(xState);
+            }
+        }
+    } catch (error) {
+        console.log('handleGetStateError', error);
+    }
+};
 
 
   const handleGetCities = async (queryString) => {
@@ -365,7 +370,12 @@ const Filtercategory = (props) => {
       getCategory();
       getBrands();
       handleGetStates();
-
+      if (xState?.stateId?._id) {
+        const selectedState = statesArr.find(el => el._id === xState?.stateId?._id);
+        if (selectedState) {
+            setSelected([selectedState._id]); // Automatically check the state
+        }
+    }
     }
   }, [focused]);
 
@@ -1230,4 +1240,4 @@ const stylesSearch = StyleSheet.create({
   }
 });
 
-export default Filtercategory;
+export default VendorListByState;

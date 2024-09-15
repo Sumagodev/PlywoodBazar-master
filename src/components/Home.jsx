@@ -245,6 +245,8 @@ export default function Home() {
     }
     else {
       navigate.navigate('Login')
+      errorToast('Please login to access this feature');
+
     }
   };
 
@@ -479,6 +481,20 @@ export default function Home() {
       navigate.navigate('Login')
     }
   }
+  const GotoFlashSaleCallIcon = () => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      handelcallbtn(item?.phone) 
+    }
+    else {
+      errorToast('You need to login first to use this feature');
+      navigate.navigate('Login')
+    }
+  }
   const GotoGetQuote = (item) => {
     if (isAuthorized) {
       navigate.navigate('Productdetails', { data: item?.product?.slug })
@@ -549,7 +565,7 @@ export default function Home() {
           offPercentage={item?.discountValue}
           discountType={item?.discountType}
           EndDate={item?.endDate}
-          onCallPress={() => { handelcallbtn(item?.phone) }}
+          onCallPress={() => { GotoFlashSaleCallIcon()}}
         ></FlashSaleItemWithDiscount>
       </View>
     );
@@ -912,17 +928,17 @@ export default function Home() {
                 <Carousel
                   data={stateDetailss}
                   renderItem={({ item }) => (
-                    <StateItem item={item} onPress={() => navigate.navigate('Filtercategory',{Data:item})}></StateItem>
+                    <StateItem item={item} onPress={() => {navigate.navigate('VendorListByState',{data:item,xState:item?.stateId?._id})}}></StateItem>
                   )}
                   sliderWidth={wp(100)}
-                  itemWidth={wp(25)}
+                  itemWidth={wp(35)}
                   loop={true}
                   autoplay={true}
                   autoplayDelay={1000}
 
                   autoplayInterval={3000}
                   layout={'default'}
-                  inactiveSlideScale={0.80}
+                  inactiveSlideScale={0.60}
                   inactiveSlideOpacity={0.9}
                   contentContainerStyle={{ marginBottom: wp(5) }}
                 />

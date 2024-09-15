@@ -10,14 +10,14 @@ axios.interceptors.request.use((request) => {
   return Promise.reject(error);
 });
 
-// axios.interceptors.response.use((response) => {
-//   console.log('Response:', response);
-//   return response;
+axios.interceptors.response.use((response) => {
+  console.log('Response:', response);
+  return response;
 
-// }, (error) => {
-//   console.error('Response Error:', error);
-//   return Promise.reject(error);
-// });
+}, (error) => {
+  console.error('Response Error:', error);
+  return Promise.reject(error);
+});
 export const axiosApiInstance = axios.create();
 import {SafeAreaView} from 'react-native'
 import { OrientationLocker } from 'react-native-orientation-locker';

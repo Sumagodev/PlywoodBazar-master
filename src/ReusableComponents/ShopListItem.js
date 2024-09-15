@@ -15,7 +15,7 @@ const ShopListItem = ({vendorItem,onItemPress})=>{
     return(
         <Pressable style={styles.container} onPress={onItemPress}>
             <View style={styles.mainContainer}>                
-                    <Image style={styles.imageStyle} source={vendorItem.imagePath} />
+                    <Image style={styles.imageStyle} resizeMode="contain" source={vendorItem.imagePath} />
                 <View style={{width: wp(1.5)}} />
                 <View style={styles.columnContainer}>
                     <Text style={[styles.vendorName, {marginBottom: wp(0.256)}]} numberOfLines={2} ellipsizeMode="tail">{vendorItem.name}</Text>

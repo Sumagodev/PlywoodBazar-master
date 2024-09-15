@@ -2,11 +2,20 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { View, StyleSheet, Text, Image, Pressable } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomColors from "../styles/CustomColors";
+import { useState } from "react";
 
 const ProductItemHorizontal = ({ product, onPress }) => {
+    const [imageFailed, setImageFailed] = useState(false); // State to track image failure
+    
     return (
         <Pressable style={styles.container} onPress={onPress}>
-            <Image style={styles.imageStyle} source={product.imagePath} />
+            
+            <Image
+          source={imageFailed ? require('../../assets/img/logo_1.png') : product.imagePath} // Fallback to default image
+          resizeMode='contain'
+          style={styles.imageStyle}
+          onError={() => setImageFailed(true)} // Set imageFailed to true on error
+        />
             <View style={styles.table}>
                 <Text style={styles.headStyle} numberOfLines={1} ellipsizeMode="tail">{product.name}</Text>
                 <View style={styles.tableRow}>
@@ -47,12 +56,12 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         borderRadius: wp(5),
-        width: '40%',
+        width: '30%',
         height: '100%'
     },
     table: {
         marginTop: wp(1),
-        marginStart: wp(2),
+        marginStart: wp(4),
         width: '60%'
     },
     headStyle: {

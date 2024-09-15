@@ -55,6 +55,7 @@ import ReviewsPage from '../../components/ReviewsPage';
 import EventsOrActivitiesPage from '../../ReusableComponents/EventsOrActivitiesPage';
 import AddDealershipOpportunitiesForm from '../../components/AddDealershipOpportunitiesForm';
 import ApplyOppFor from '../../components/ApplyOppFor';
+import VendorListByState from '../../components/VendorListByState';
 
 
 
@@ -530,6 +531,17 @@ export default function RootStack() {
               name="ApplyOppFor"
               component={ApplyOppFor}
             />
+
+<Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="VendorListByState"
+              component={VendorListByState}
+            />
+
+
 
           </Stack.Navigator>
         </NavigationContainer>

@@ -10,6 +10,7 @@ import {searchProduct} from '../services/Product.service';
 import {getDecodedToken, searchVendorFromDb} from '../services/User.service';
 import {errorToast} from '../utils/toastutill';
 import ProductItemHorizontal from '../ReusableComponents/ProductItemHorizontal';
+import { generateImageUrl } from '../services/url.service';
 
 export default function Search(props) {
   const navigation = useNavigation();
@@ -85,7 +86,7 @@ console.log('allProductsArr',allProductsArr);
   };
   const renderSearchProductItem = ({item, index}) => {
     const product={
-        imagePath:item?.image,
+        imagePath:{uri:generateImageUrl(item?.mainImage)},
         name:item?.name,
         sellingPrice:item?.sellingprice,
         price:item?.price,
