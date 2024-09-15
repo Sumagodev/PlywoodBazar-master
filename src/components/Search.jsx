@@ -66,6 +66,149 @@ console.log('allProductsArr',allProductsArr);
     }
   };
 
+
+  const handleGetProducts = async source => {
+    console.log('functioncalled');
+
+    setIsloding(true);
+    setIsLoading1(true);
+    try {
+      let query = `role=${role}&perPage=${limit}`;
+      query += `&page=${page}`;
+
+      if (usertypes && usertypes.length > 0 && usertypes.filter(el => el.checked == true).length > 0) {
+        let tempArr = usertypes.filter(el => el.checked == true);
+        if (query == '') {
+          query = `userTypes=${tempArr.map(el => el.name)}`;
+        } else {
+          let temArr = tempArr.map(el => el.name);
+
+          query = `${query}&userTypes=${tempArr.map(el => el.name)}`;
+        }
+      }
+      if (categoryData && categoryData.filter(el => el.checked == true).length > 0) {
+        let tempArr = categoryData.filter(el => el.checked == true);
+        if (query == '') {
+          query = `categories=${tempArr.map(el => el._id)}`;
+        } else {
+          query = `${query}&categories=${tempArr.map(el => el._id)}`;
+        }
+      }
+      if (brandArr && brandArr.filter(el => el.checked == true).length > 0) {
+        let tempArr = brandArr.filter(el => el.checked == true);
+        if (query == '') {
+          query = `vendors=${tempArr.map(el => el._id)}`;
+        } else {
+          query = `${query}&vendors=${tempArr.map(el => el._id)}`;
+        }
+      }
+      if (citiesDisplayArr && citiesDisplayArr.filter(el => el.checked == true).length > 0) {
+        let tempArr = citiesDisplayArr.filter(el => el.checked == true);
+        if (query == '') {
+          query = `locations=${tempArr.map(el => el._id)}`;
+        } else {
+          query = `${query}&locations=${tempArr.map(el => el._id)}`;
+        }
+      }
+      if (statesDisplayArr && statesDisplayArr.filter(el => el.checked == true).length > 0) {
+        let tempArr = statesDisplayArr.filter(el => el.checked == true);
+        if (query == '') {
+          query = `state=${tempArr.map(el => el._id)}`;
+        } else {
+          query = `${query}&state=${tempArr.map(el => el._id)}`;
+        }
+      }
+      if (minPrice) {
+        if (query == '') {
+          query = `minPrice=${minPrice}`;
+        } else {
+          query = `${query}&minPrice=${minPrice}`;
+        }
+      }
+      if (maxPrice) {
+        if (query == '') {
+          query = `maxPrice=${maxPrice}`;
+        } else {
+          query = `${query}&maxPrice=${maxPrice}`;
+        }
+      }
+      if (qry) {
+        if (query == '') {
+          query = `q=${qry}`;
+        } else {
+          query = `${query}&q=${qry}`;
+        }
+      }
+      if (role && role != '') {
+        if (query == '') {
+          query = `role=${role}`;
+        } else {
+          query = `${query}&role=${role}`;
+        }
+      }
+      if (rating) {
+        if (query == '') {
+          query = `rating=${rating}`;
+        } else {
+          query = `${query}&rating=${rating}`;
+        }
+      }
+
+
+
+
+      console.log(query,"QQQQ");
+
+
+      let response = await getAllProducts(query);
+      //let { data: res } = await getAllUsers(query,source);
+      res = response.data;
+      //console.log('AllDataX=>',response)
+      if (res.data && res?.data?.length > 0) {
+        Promise.resolve()
+          .then(() => {
+            // setProductsArr(res?.data);
+            setTotal(res?.total);
+            setIsLoading1(false);
+            if (page > 1 && res?.data?.length > 0) {
+              nextPageIdentifierRef.current = page;
+              setProductsArr([...productsArr, ...res?.data]);
+            } else {
+              setProductsArr(res?.data);
+              setIsLoading1(false);
+            }
+            setIsLoading(false);
+            setIsLoading1(false);
+            page == 1 && setIsFirstPageReceived(true);
+          })
+          .then(() => {
+            setIsloding(false);
+            setIsLoading1(false);
+          });
+      } else {
+        Promise.resolve()
+          .then(() => {
+            setProductsArr([]);
+            setTotal(0);
+            setIsLoading1(false);
+          })
+          .then(() => {
+            setIsloding(false);
+            setIsLoading1(false);
+          });
+      }
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log('Axios Error=>Cancelled ', error);
+        setIsLoading1(false);
+      } else {
+        setIsLoading(false);
+        setIsLoading1(false);
+        errorToast(error);
+      }
+    }
+  };
+
   const handleRedirect = obj => {
     navigation.navigate('Supplier', {data: obj});
   };

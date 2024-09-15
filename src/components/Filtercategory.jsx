@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState,useContext } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
@@ -27,10 +27,13 @@ import ShopListItem from '../ReusableComponents/ShopListItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import CustomColors from '../styles/CustomColors';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 
 const Filtercategory = (props) => {
 
-  
+  const [isAuthorized] = useContext(isAuthorisedContext);
+  const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
+
 
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
   const [isloding, setIsloding] = useState(false);
@@ -84,7 +87,31 @@ const Filtercategory = (props) => {
     console.log(props?.route?.params?.xState,'QAZZZZZZ')
     
   }
+  const HandleCheckValidSubscription = async () => {
+    try {
+      let decoded = await getDecodedToken();
+      if (decoded) {
+        if (decoded?.user?.name) {
+        //  setName(decoded?.user?.name);
+        }
 
+        let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        if (res.data) {
+          console.log(
+            'setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+            res.data,
+            'setCurrentUserHasActiveSubscription,setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+          );
+          setCurrentUserHasActiveSubscription(res.data);
+        }
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
+  useEffect(() => {
+    HandleCheckValidSubscription();
+  }, [isAuthorized])
   const handleGetProducts = async (source) => {
     setIsloding(true)
     setIsLoading1(true)
@@ -451,12 +478,27 @@ const Filtercategory = (props) => {
 
         {
 
-          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }}></ShopListItem>
+          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }} onCotactPress={gotoCallBtn(item)}></ShopListItem>
         }
       </>
     );
   };
 
+  const gotoCallBtn = (item) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        //navigation.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      //navigate.navigate('MyFlashSales')
+
+
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  }
   const handleCheckCategoryOnRender = (id, arr) => {
     let tempArr = [...arr];
     let indexValue = tempArr.findIndex(el => id == el._id);

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "./CustomButton";
 import CustomColors from "../styles/CustomColors";
 
-const ShopListItem = ({vendorItem,onItemPress})=>{
+const ShopListItem = ({vendorItem,onItemPress,onCotactPress})=>{
     const Contact=(phone)=>{
         console.log('phoneee',phone);
         
@@ -33,9 +33,7 @@ const ShopListItem = ({vendorItem,onItemPress})=>{
                         <Text style={styles.vendorAddress} numberOfLines={2} ellipsizeMode="tail">{vendorItem.address}</Text>
                     </View>
                     <CustomButton rightIcon={require('../../assets/img/phone.png')} rightIconBgColor={CustomColors.accentGreen} text='CONTACT' 
-                        onPress={()=>Contact(vendorItem.phone)
-
-                        }
+                        onPress={onCotactPress}
                         marginTop={wp(1)} textSize={wp(4)}
                     />
                 </View>

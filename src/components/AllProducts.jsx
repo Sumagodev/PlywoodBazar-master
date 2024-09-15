@@ -97,8 +97,15 @@ export default function AllProducts(props) {
       errorToast('You do not have a valid subscription to perform this action');
       return 0;
     }
-
     Linking.openURL(`tel:${phone}`);
+  };
+  const handelGetQuoteBtn = phone => {
+    if (!currentUserHasActiveSubscription) {
+      errorToast('You do not have a valid subscription to perform this action');
+      return 0;
+    }
+
+    navigate.navigate('Productdetails', {data: item?.slug})
   };
   const HandleCheckValidSubscription = async () => {
     try {
@@ -821,7 +828,7 @@ export default function AllProducts(props) {
                 name={item.name}
                 location={item?.cityName + " "+ item?.stateName }
                 isVerified={item?.isVerified} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
-                onGetQuotePressed={() => navigate.navigate('Productdetails', {data: item?.slug})}
+                onGetQuotePressed={() => {handelGetQuoteBtn}}
                 onCallPressed={() => {
                   handelcallbtn(item?.createdByObj?.companyObj?.phone);
                 }}

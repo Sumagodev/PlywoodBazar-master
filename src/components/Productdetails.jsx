@@ -44,7 +44,7 @@ export default function Productdetails(props) {
   const [isloding, setIsloding] = useState(false);
   const [productId, setProductId] = useState('');
   const [productOwnerId, setProdutOwnerId] = useState('');
-  const [nameForReview, setNameForReview] = useState();
+  const [nameForReview, setNameForReview] = useState(null);
   const [messageForReview, setMessageForReview] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState(1);            
@@ -245,10 +245,11 @@ console.log('hhhh',userid);
         errorToast('You do not have a valid subscription to perform this action');
         return 0;
       }
-      if (nameForReview == '') {
+      if (!nameForReview) {
         errorToast('Please enter a name');
         return;
       }
+
       setModalVisible(false);
       let obj = {
         rating,
@@ -259,9 +260,12 @@ console.log('hhhh',userid);
       };
       let {data: res} = await addReview(obj);
       if (res.message) {
-        Alert.alert('gore dada')
+//        Alert.alert(res.message)
         toastSuccess(res.message);
         setModalVisible(false);
+        setMessageForReview(null)
+        setNameForReview(null)
+        setRating(null)
     
       }
     } catch (err) {
