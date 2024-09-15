@@ -331,12 +331,12 @@ console.log('hhhh',userid);
     //console.log('***********=>', item);
     return (
       <NewArrivalProductCard
-        imagePath={{ uri: generateImageUrl(item?.mainImage) }}
+        imagePath={{ uri: generateImageUrl(item?.productImage) }}
         price={item?.price}
         name={item?.productName}
         location={item?.cityName}
         isVerified={item?.isVerified} // Check if item.approved is "APPROVED"
-        onCallPressed={() => { handelcallbtn(item?.createdByObj?.companyObj?.phone) }}
+        onCallPressed={() => { handelcallbtn(item?.userMobileNumber) }}
         onGetQuotePressed={() => { handleGetQuoteClick(item) }}
 
         onCardPressed={() => navigation.navigate('Productdetails', { data: item?.slug })}></NewArrivalProductCard>

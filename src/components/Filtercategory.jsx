@@ -30,6 +30,8 @@ import CustomColors from '../styles/CustomColors';
 
 const Filtercategory = (props) => {
 
+  
+
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
   const [isloding, setIsloding] = useState(false);
 
@@ -234,6 +236,8 @@ const Filtercategory = (props) => {
         setCategoryData(tempArr);
         if (props?.route?.params?.data) {
           handleCheckCategoryOnRender(props?.route?.params?.data, tempArr);
+          console.log('handleCheckCategoryOnRender',props?.route?.params?.data, tempArr);
+          
         }
       }
     } catch (error) {

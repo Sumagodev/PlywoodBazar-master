@@ -17,7 +17,7 @@ const StateItem = ({ item ,onPress}) => {
             />
 
 
-            <Text style={stateStyle.title} numberOfLines={1} ellipsizeMode="tail">{item.stateId.name}</Text>
+            <Text style={stateStyle.title} numberOfLines={2} ellipsizeMode="tail">{item.stateId.name}</Text>
         </TouchableOpacity>
     );
 }

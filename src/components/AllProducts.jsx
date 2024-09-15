@@ -813,8 +813,8 @@ export default function AllProducts(props) {
                 imagePath={{uri: generateImageUrl(item.mainImage)}}
                 price={item?.price}
                 name={item.name}
-                location="Location"
-                isVerified={item?.approved === 'APPROVED'} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
+                location={item?.cityName + " "+ item?.stateName }
+                isVerified={item?.isVerified} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
                 onGetQuotePressed={() => navigate.navigate('Productdetails', {data: item?.slug})}
                 onCallPressed={() => {
                   handelcallbtn(item?.createdByObj?.companyObj?.phone);

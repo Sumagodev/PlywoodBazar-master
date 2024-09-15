@@ -883,7 +883,7 @@ export default function Home() {
 
               </LinearGradient>
 
-              {/* <View style={styles1.flexbetwen}>
+              {/* <View style={styles1.flexbetwen}> 
                 <Text style={styles1.headingmain}>New Products</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
                   <Text style={styles1.viewall}>View All</Text>

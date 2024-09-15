@@ -18,9 +18,8 @@ const ProductItemHorizontal = ({ product, onPress }) => {
                     <Text style={styles.valueTextStyle}>{product.price}</Text>
                 </View>
                 <View style={styles.tableRow}>
-                    <Text style={styles.keyTextStyle}>Approved:</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1, paddingRight: wp(4) }}>
-                        <Text style={{ fontSize: wp(4), flex: 1 }} ellipsizeMode="tail" numberOfLines={1}>
+                        <Text style={{ fontSize: wp(4), }} ellipsizeMode="tail" numberOfLines={1}>
                             {product.approval ? 'Approved' : 'Not Approved'}
                         </Text>
                         <Icon

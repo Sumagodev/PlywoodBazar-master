@@ -18,6 +18,7 @@ export default function Search(props) {
   const [allProductsArr, setAllProducts] = useState([]);
   const [searchVendor, setSearchVendor] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+console.log('allProductsArr',allProductsArr);
 
   const handleSearchFromDb = async value => {
     try {
@@ -29,6 +30,8 @@ export default function Search(props) {
       setSearchQuery(value);
       if (value != '' && value?.length > 1) {
         const {data: res} = await searchVendorFromDb(`search=${value}&role=${role}`);
+        console.log(`search=${value}&role=${role}`);
+        
         if (res && res.data?.length > 0) {
           setProductArr(res.data);
         } else {
@@ -49,6 +52,8 @@ export default function Search(props) {
       setSearchQuery(value);
       if (value != '' && value?.length > 1) {
         const {data: res} = await searchProduct(value);
+        console.log(value);
+        
         if (res && res.data?.length > 0) {
           setAllProducts(res.data);
         } else {
@@ -80,16 +85,15 @@ export default function Search(props) {
   };
   const renderSearchProductItem = ({item, index}) => {
     const product={
-        imagePath:item?.name,
+        imagePath:item?.image,
         name:item?.name,
-        sellingPrice:'100',
-        price:'120',
-        status:'Approved',
-        approval:true
+        sellingPrice:item?.sellingprice,
+        price:item?.price,
+        approval:item?.isVerified
 
     }
     return (
-      <ProductItemHorizontal product={product}></ProductItemHorizontal>
+      <ProductItemHorizontal product={product} onPress={() => navigation.navigate('Productdetails', {data: item?.slug})}></ProductItemHorizontal>
     );
   };
   return (
