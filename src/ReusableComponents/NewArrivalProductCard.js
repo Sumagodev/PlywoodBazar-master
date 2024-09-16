@@ -5,7 +5,8 @@ import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
 import CustomRoundedTextButton from './CustomRoundedTextButton.js';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
@@ -42,7 +43,7 @@ const NewArrivalProductCard = ({ imagePath, name, price, location, isVerified = 
       </View>
       <View style={styles.callIconContainer}>
         <TouchableOpacity onPress={onCallPressed}>
-          <Image style={styles.callIcon} source={require('../../assets/img/phone.png')} />
+        <Ionicons  name="call" size={wp(6)} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
     </Pressable>
@@ -76,10 +77,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '0%',
     right: '0%',
-    backgroundColor: 'white',
+    backgroundColor: '#39AB68',
     height: screenWidth * 0.095,
     width: screenWidth * 0.095,
-    borderRadius: 25,
+    borderRadius: 27,
     alignItems: 'center',
     justifyContent: 'center',
   },

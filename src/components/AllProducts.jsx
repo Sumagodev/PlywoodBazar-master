@@ -1,5 +1,5 @@
 import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect,useContext} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import {TextInput, useTheme} from 'react-native-paper';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -25,6 +25,7 @@ import {getAllUsers} from '../services/User.service';
 import {ROLES_CONSTANT} from '../utils/constants';
 // import Header from '../navigation/customheader/Header';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 import axios from 'axios';
 
 import ShopListItem from '../ReusableComponents/ShopListItem';
@@ -45,7 +46,7 @@ export default function AllProducts(props) {
   const [statesArr, setStatesArr] = useState([]);
   const [citiesArr, setCitiesArr] = useState([]);
   const [cityLoading, setCityLoading] = useState(false);
-
+  const [isAuthorized] = useContext(isAuthorisedContext);
   let rbsheefRef = useRef();
   const [userObj, setUserObj] = useState({});
   const [role, setRole] = useState('');
@@ -81,31 +82,41 @@ export default function AllProducts(props) {
       console.error(error);
     }
   };
-
+  const Gotodetailspage = (item) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      navigate.navigate('Productdetails', {data: item?.slug})
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  };
   useEffect(() => {
     getProducts();
     HandleCheckValidSubscription();
-  }, []);
+  }, [isAuthorized]);
 
   useEffect(() => {
     if (props?.route.params?.data) {
       setCategoryid(props?.route.params?.data);
     }
   }, [props]);
-  const handelcallbtn = phone => {
-    if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+  const handelcallbtn = (phone) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      Linking.openURL(`tel:${phone}`);
     }
-    Linking.openURL(`tel:${phone}`);
-  };
-  const handelGetQuoteBtn = phone => {
-    if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+    else {
+      navigate.navigate('Login')
     }
-
-    navigate.navigate('Productdetails', {data: item?.slug})
   };
   const HandleCheckValidSubscription = async () => {
     try {
@@ -828,11 +839,11 @@ export default function AllProducts(props) {
                 name={item.name}
                 location={item?.cityName + " "+ item?.stateName }
                 isVerified={item?.isVerified} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
-                onGetQuotePressed={() => {handelGetQuoteBtn}}
+                onGetQuotePressed={() => {Gotodetailspage(item)}}
                 onCallPressed={() => {
                   handelcallbtn(item?.createdByObj?.companyObj?.phone);
                 }}
-                onCardPressed={() => navigate.navigate('Productdetails', {data: item?.slug})}
+                onCardPressed={() => {Gotodetailspage(item)}}
               />
             );
           }}

@@ -103,7 +103,20 @@ export default function Home() {
       console.log(err);
     }
   };
-
+  const gototopprofile = (item) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      // Linking.openURL(tel:${phone});
+      navigate.navigate('Supplier', { data: item }) 
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  };
   const getauthuser = async () => {
     let decoded = await getDecodedToken();
     if (decoded && decoded?._id) {
@@ -870,7 +883,7 @@ export default function Home() {
                 <Carousel
                   data={topprofiles}
                   renderItem={({ item }) => (
-                    <TopProfileHomeCard title={item.name} image={{ uri: generateImageUrl(item.profileImage) }} rating={item.rating} Product={item.productsCount} onPress={() => { navigate.navigate('Supplier', { data: item }) }} onCallPress={() => handelcallbtn(item?.phone)} />
+                    <TopProfileHomeCard title={item.name} image={{ uri: generateImageUrl(item.profileImage) }} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} />
                   )}
                   sliderWidth={wp(100)}
                   itemWidth={wp(80)}

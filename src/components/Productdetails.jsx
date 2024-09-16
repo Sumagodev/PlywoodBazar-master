@@ -196,7 +196,7 @@ console.log('hhhh',userid);
   const handleContactSupplier = async () => {
     try {
       const decodedToken = await getDecodedToken();
-      //console.log(decodedToken);
+      console.log('decodedToken', decodedToken);
       let obj = {
         userId: decodedToken?.user?._id,
         phone: decodedToken?.user?.phone,
@@ -206,9 +206,22 @@ console.log('hhhh',userid);
         createdById: productObj?.createdById,
       };
       let { data: res } = await createLead(obj);
+
+
       if (res.message) {
-        toastSuccess(res.message);
-        // Linking.openURL(`tel:${phone}`);
+
+        if (isAuthorized) {
+          toastSuccess(res.message);
+          if (!currentUserHasActiveSubscription) {
+            errorToast('You do not have a valid subscription to perform this action');
+            return 0;
+          }
+          Linking.openURL(`tel:${decodedToken?.user?.phone}`);
+        }
+        else {
+          navigation.navigate('Login')
+        }
+
       }
     } catch (err) {
       errorToast(err);
@@ -245,28 +258,35 @@ console.log('hhhh',userid);
         errorToast('You do not have a valid subscription to perform this action');
         return 0;
       }
-      if (!nameForReview) {
+      if (nameForReview == '') {
         errorToast('Please enter a name');
+         Alert.alert('Validation Error', 'Please enter a Name.');
         return;
       }
-
+      if (messageForReview == '') {
+        errorToast('Please enter a Message');
+         Alert.alert('Validation Error', 'Please enter a Message.');
+        return;
+      }
+      if (rating == '') {
+        errorToast('Please Add a Rating');
+        return;
+      }
       setModalVisible(false);
       let obj = {
         rating,
-        message:messageForReview,
-        name:nameForReview,
+        message: messageForReview,
+        name: nameForReview,
         userId: userid,
         // userId: '66dde3b7c434a420a313a77a',
       };
-      let {data: res} = await addReview(obj);
+      let { data: res } = await addReview(obj);
       if (res.message) {
-//        Alert.alert(res.message)
+
         toastSuccess(res.message);
         setModalVisible(false);
-        setMessageForReview(null)
-        setNameForReview(null)
-        setRating(null)
-    
+        setMessageForReview('');
+        setNameForReview('')
       }
     } catch (err) {
       errorToast(err);
@@ -346,7 +366,19 @@ console.log('hhhh',userid);
         onCardPressed={() => navigation.navigate('Productdetails', { data: item?.slug })}></NewArrivalProductCard>
     );
   };
-
+  const TakeSellingPrice = (phone) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      console.log('selling price')
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  };
   const ListHeader = () => {
     // View to set in Header
     return (
@@ -400,13 +432,7 @@ console.log('hhhh',userid);
             <CustomButtonNew
               text={'Get Latest Price'}
               paddingHorizontal={wp(5)}
-              onPress={() => {
-                if (currentUserHasActiveSubscription && isAuthorized) {
-                  console.log("User is authorized and has an active subscription");
-                } else {
-                  console.log("User is either unauthorized or does not have an active subscription");
-                }
-              }}
+              onPress={() => {TakeSellingPrice()}}
             />
 
           </TouchableOpacity>
@@ -527,8 +553,8 @@ console.log('hhhh',userid);
         <View style={styles2.modalView}>
           <View style={{ padding: 20 }}>
             <Text style={styles2.modalText}>Add Review</Text>
-            <TextInput style={styles2.modalTextInput} onChangeText={(e) =>  setNameForReview(e)} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
-            <TextInput multiline={true} style={styles2.modalTextInput} onChangeText={(e) =>  setMessageForReview(e) } value={messageForReview} placeholder="Please Enter message" placeholderTextColor={'#000'} />
+            <TextInput style={styles2.modalTextInput} onChangeText={(e) => setNameForReview(e)} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
+              <TextInput multiline={true} style={styles2.modalTextInput} onChangeText={(e) => setMessageForReview(e)} value={messageForReview} placeholder="Please Enter message" placeholderTextColor={'#000'} />
             <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
           </View>
           <TouchableOpacity style={styles2.yellowButton} onPress={() => handleSubmitReview()}>
@@ -536,7 +562,7 @@ console.log('hhhh',userid);
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={() => setModalVisible(false)} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableOpacity onPress={() => {setModalVisible(false),setMessageForReview(''),setNameForReview('')}} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
         </TouchableOpacity>
       </View>

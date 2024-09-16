@@ -1,6 +1,6 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {FlatList, Image, ImageBackground, Linking, Pressable, StyleSheet, Text, View, Modal, TextInput, TouchableOpacity, LinearGradient, Button} from 'react-native';
+import React, {useEffect, useState,useContext} from 'react';
+import {FlatList, Image, ImageBackground, Linking, Pressable, StyleSheet, Text, View, Modal, TextInput, TouchableOpacity, LinearGradient, Button,Alert} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Video from 'react-native-video';
 import Header from '../navigation/customheader/Header';
@@ -13,7 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
-
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 import {addReview, getReviewForProduct} from '../services/ProductReview.service';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {createLead} from '../services/leads.service';
@@ -31,6 +31,7 @@ export default function Supplier(props) {
   const focused = useIsFocused();
   const [productReviewArr, setProductReviewArr] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isAuthorized] = useContext(isAuthorisedContext);
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [infolist, setInfolist] = useState([
     {
@@ -93,30 +94,54 @@ export default function Supplier(props) {
   // };
 
   const handelwhatappclick = () => {
-    if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      Linking.openURL(`https://api.whatsapp.com/send/?phone=${supplierObj?.phone}`);
     }
-    Linking.openURL(`https://api.whatsapp.com/send/?phone=${supplierObj?.phone}`);
+    else {
+      navigate.navigate('Login')
+    }
   };
 
+  
   const handelcallbtn = () => {
-    if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+
+      Linking.openURL(`tel:${supplierObj?.phone}`);
+    }
+    else {
+      navigate.navigate('Login')
     }
 
-    Linking.openURL(`tel:${supplierObj?.phone}`);
-  };
-  const handelclickcmail = () => {
-    if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+  }
+
+
+
+const handelclickcmail = () => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      Linking.openURL(`mailto:${supplierObj?.email}`);
     }
-    Linking.openURL(`mailto:${supplierObj?.email}`);
+    else {
+      navigate.navigate('Login')
+    }
   };
 
   const handleGetProductReview = async id => {
+
     try {
       let {data: res} = await getReviewForProduct(`userId=${id}`);
       if (res.message) {
@@ -293,6 +318,11 @@ export default function Supplier(props) {
         errorToast('Please enter a name');
         return;
       }
+      if (message == '') {
+        errorToast('Please enter a Message');
+        Alert.alert('Validation Error', 'Please enter a Message.');
+        return;
+      }
       if (!(supplierObj && supplierObj._id)) {
         errorToast('Something went wrong please close the app and open again ');
         return;
@@ -303,7 +333,7 @@ export default function Supplier(props) {
         name,
         userId: supplierObj._id,
       };
-      let {data: res} = await addReview(obj);
+      let { data: res } = await addReview(obj);
       if (res.message) {
         toastSuccess(res.message);
         setModalVisible(false);
