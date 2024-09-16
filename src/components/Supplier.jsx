@@ -25,6 +25,7 @@ import TopProfilesVerticalCard from '../ReusableComponents/TopProfilesVerticalCa
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import CustomColors from '../styles/CustomColors';
+import ProductsCardWithoutLocation from '../ReusableComponents/ProductsCardWithoutLocation';
 
 export default function Supplier(props) {
   const navigate = useNavigation();
@@ -231,6 +232,24 @@ const handelclickcmail = () => {
     }
   };
 
+  const handleGetQuoteClick2 = (item) => {
+
+    console.log(JSON.stringify(item),'zzzzzzxv');
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      //navigate.navigate('Productdetails', {data: item.productSlug})
+      navigate.navigate('Productdetails', {data: item?.slug})
+
+    }
+    else {
+      errorToast('You need to login to access this feature');
+      navigate.navigate('Login')
+    }
+  };
   const handleGetProductReview = async id => {
 
     try {
@@ -272,6 +291,8 @@ const handelclickcmail = () => {
       if (res.data) {
         // console.log(JSON.stringify(res.data, null, 2), "products")
         setProductsArr(res.data);
+        
+
       }
     } catch (err) {
       errorToast(err);
@@ -360,7 +381,8 @@ const handelclickcmail = () => {
     return <NewArrivalProductCard  onCallPressed={()=>{handelcallbtn(item)}} onGetQuotePressed={()=>{handleGetQuoteClick(item)}} onCardPressed={() => navigate.navigate('Productdetails', {data: item.productSlug})} imagePath={{ uri: generateImageUrl(item?.product?.mainImage)}} isVerified={item.isVerified} name={item.productName} location={item.cityName} price={item?.price}></NewArrivalProductCard>;
   };
   const Products1 = ({item, index}) => {
-    return <NewArrivalProductCard onPress={() => navigate.navigate('Productdetails', {data: item.slug})} mainImage={item.mainImage} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice}></NewArrivalProductCard>;
+    console.log('QAZXC',generateImageUrl(item?.mainImage))
+    return <ProductsCardWithoutLocation  onGetQuotePressed={()=>{handleGetQuoteClick2(item)}} onCallPressed={()=>{handelcallbtn(item)}} onPress={() => navigate.navigate('Productdetails', {data: item.slug})} imagePath={{uri:generateImageUrl(item?.mainImage)}} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice}/>
   };
   const Topprofiles = ({item, index}) => {
     console.log('xx',item.name);

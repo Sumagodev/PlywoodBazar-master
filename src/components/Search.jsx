@@ -228,12 +228,15 @@ console.log('allProductsArr',allProductsArr);
     );
   };
   const renderSearchProductItem = ({item, index}) => {
+
+  console.log('zxcv',JSON.stringify(item))
+
     const product={
         imagePath:{uri:generateImageUrl(item?.mainImage)},
         name:item?.name,
         sellingPrice:item?.sellingprice,
         price:item?.price,
-        approval:item?.isVerified
+        approval:item?.approved === 'APPROVED'
 
     }
     return (

@@ -38,7 +38,7 @@ export default function EditProduct(props) {
   const [glue, setglue] = useState('');
   const [sellingprice, setsellingprice] = useState('');
   const [warranty, setwarranty] = useState('');
-  const [shortDescription, setshortDescription] = useState('');
+  const [shortDescription, setshortDescription] = useState('best');
   const [longDescription, setLongDescription] = useState();
   const [image, setimage] = useState();
   const [pricetype, setpricetype] = useState("per Nos/sheet");
@@ -117,10 +117,10 @@ export default function EditProduct(props) {
         return 0;
       }
 
-      if (`${shortDescription}` === '') {
-        errorToast('Please Fill shortDescription');
-        return 0;
-      }
+      // if (`${shortDescription}` === '') {
+      //   errorToast('Please Fill shortDescription');
+      //   return 0;
+      // }
 
       if (`${fileBase64}` === '') {
         errorToast('Please add main imgae');
@@ -148,7 +148,7 @@ export default function EditProduct(props) {
           glue,
           warranty,
         },
-        // shortDescription: shortDescription,
+        shortDescription: 'shortDescription',
         longDescription: longDescription,
         status: status,
         image: image,

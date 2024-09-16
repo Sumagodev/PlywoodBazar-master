@@ -20,10 +20,10 @@ export default NewArrivalProductCardVertical = ({ newProductItem, image, onPress
             </View>
             <View style={styles.rowStyle}>
                 <Icon size={wp(5)}
-                    name={newProductItem.isVerified ? 'check-decagram' : 'alert-decagram'}
-                    color={newProductItem.isVerified ? 'green' : 'red'}
+                    name={newProductItem.verifeied ? 'check-decagram' : 'alert-decagram'}
+                    color={newProductItem.verifeied ? 'green' : 'red'}
                 />
-                <Text style={wp(4)}>{newProductItem.verifeied ? 'Verified' : 'Unverified'}</Text>
+                <Text style={wp(4)}>{newProductItem.verifeied ? ' Verified' : ' Unverified'}</Text>
             </View>
             <View style={{ marginVertical: wp(1) }}>
                 <CustomButton rightIcon={require('../../assets/img/phone.png')} rightIconBgColor={CustomColors.accentGreen} text='Get Quote'

@@ -10,7 +10,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const NewArrivalProductCard = ({ imagePath, name, price, location, isVerified = false, onCallPressed, onGetQuotePressed, onCardPressed }) => {
+const ProductsCardWithoutLocation = ({ imagePath, name, price, location, isVerified = false, onCallPressed, onGetQuotePressed, onCardPressed }) => {
   const [imageFailed, setImageFailed] = useState(false); // State to track image failure
 
   return (
@@ -25,10 +25,10 @@ const NewArrivalProductCard = ({ imagePath, name, price, location, isVerified = 
         />
           <View style={[{ flexDirection: 'column', flex: 1, marginEnd: 10 }]}>
             <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-            <View style={{ flexDirection: 'row', marginTop: screenWidth * 0.01 }}>
+            {/* <View style={{ flexDirection: 'row', marginTop: screenWidth * 0.01 }}>
               <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
               <Text style={styles.locationText} numberOfLines={1} ellipsizeMode='tail'>{location}</Text>
-            </View>
+            </View> */}
             <View style={styles.locationRow}>
               {isVerified && (
                 <View style={{ flexDirection: 'row' }}>
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NewArrivalProductCard;
+export default ProductsCardWithoutLocation;
