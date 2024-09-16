@@ -120,10 +120,10 @@ export default VerifyOtp = ({route}) => {
           >
             {/* Add any content inside the card here */}
             <View style={{alignSelf:'center',marginTop:30,marginBottom:30}}>
-                <Text style={{fontFamily:'Poppins-Light',color:'#000000'}}>A 4 Digit code has been sent to {mobileNumber} </Text>
+                <Text style={{fontFamily:'Poppins-Light',color:'#000000'}}>A 6 Digit code has been sent to {mobileNumber} </Text>
             </View>
             <OtpRow onOtpChange={handleOtpChange} />
-            {error && <Text style={styles.errorText}>Please enter a valid 4-digit OTP.</Text>}
+            {error && <Text style={styles.errorText}>Please enter a valid 6-digit OTP.</Text>}
             <View style={{alignSelf:'center', marginTop:20}}>
               <CustomRoundedTextButton buttonText='VERIFY' buttonColor={CustomColors.mattBrownDark}
               onPress={handleVerifyOTP}

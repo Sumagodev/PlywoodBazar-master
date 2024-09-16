@@ -54,7 +54,7 @@ export default function Requirement() {
             <TextInput style={styles1.card_main} placeholder='Enter your Phone' />
         </View>
 
-            <TouchableOpacity onPress={()=> navigate.navigate('Mobilenumber')} style={[styles.btnbg, {marginVertical:15    }]}>
+            <TouchableOpacity onPress={()=> navigation.navigate('Mobilenumber')} style={[styles.btnbg, {marginVertical:15    }]}>
               <Text style={[styles.textbtn,  {fontFamily:'Manrope-Medium'}]}>Write a Review</Text>
             </TouchableOpacity>
 

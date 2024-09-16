@@ -375,6 +375,7 @@ const handelclickcmail = () => {
   };
 
   const ReviewsItem1 = ({item, index}) => {
+    console.log('rrrr',JSON.stringify(item))
     return <ReviewsItem reviewItem={item} />;
   };
   const ProductsYouMayLike1 = ({item, index}) => {
@@ -450,6 +451,8 @@ const handelclickcmail = () => {
         return;
       }
       if (!(supplierObj && supplierObj._id)) {
+      console.log('supplierObj._id',supplierObj._id);
+      
         errorToast('Something went wrong please close the app and open again ');
         return;
       }
@@ -549,8 +552,8 @@ const handelclickcmail = () => {
                     <Ionicons name="business" size={32} color="#000" />
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={{fontWeight: 'bold', alignSelf: 'center'}}>Nature of Business</Text>
-                    <Text style={{alignSelf: 'flex-start'}}>{supplierObj?.companyObj?.natureOfBusiness ? supplierObj?.companyObj?.natureOfBusiness : 'Not provided'} </Text>
+                    <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Nature of Business</Text>
+                    <Text style={{alignSelf: 'flex-start',width:wp(60)}}>{supplierObj?.companyObj?.natureOfBusiness ? supplierObj?.companyObj?.natureOfBusiness : 'Not provided'} </Text>
                   </View>
                 </View>
 
@@ -560,7 +563,7 @@ const handelclickcmail = () => {
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>GST No.</Text>
-                    <Text style={{alignSelf: 'center'}}>{supplierObj?.companyObj?.gstNumber ? supplierObj?.companyObj?.gstNumber : 'Not provided'} </Text>
+                    <Text style={{alignSelf: 'center',width:wp(60)}}>{supplierObj?.companyObj?.gstNumber ? supplierObj?.companyObj?.gstNumber : 'Not provided'} </Text>
                   </View>
                 </View>
 
@@ -570,7 +573,7 @@ const handelclickcmail = () => {
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Year of Establishment</Text>
-                    <Text style={{alignSelf: 'flex-start'}}>{supplierObj?.companyObj?.yearOfEstablishment ? supplierObj?.companyObj?.yearOfEstablishment : 'Not provided'}</Text>
+                    <Text style={{alignSelf: 'flex-start',width:wp(60)}}>{supplierObj?.companyObj?.yearOfEstablishment ? supplierObj?.companyObj?.yearOfEstablishment : 'Not provided'}</Text>
                   </View>
                 </View>
 
@@ -580,7 +583,7 @@ const handelclickcmail = () => {
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Landline</Text>
-                    <Text style={{alignSelf: 'flex-start'}}>{currentUserHasActiveSubscription ? (supplierObj?.landline ? supplierObj?.landline : 'Not provided') : "You don't have subscription"}</Text>
+                    <Text style={{alignSelf: 'flex-start',width:wp(60)}}>{currentUserHasActiveSubscription ? (supplierObj?.landline ? supplierObj?.landline : 'Not provided') : "You don't have subscription"}</Text>
                   </View>
                 </View>
 
@@ -590,7 +593,7 @@ const handelclickcmail = () => {
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>Contact Person Name</Text>
-                    <Text style={{alignSelf: 'flex-start'}}>{supplierObj?.name ? supplierObj?.name : 'Not provided'} </Text>
+                    <Text style={{alignSelf: 'flex-start',width:wp(60)}}>{supplierObj?.name ? supplierObj?.name : 'Not provided'} </Text>
                   </View>
                 </View>
 
@@ -600,7 +603,7 @@ const handelclickcmail = () => {
                   </View>
                   <View style={{margin: wp(1), alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold', alignSelf: 'flex-start'}}>BirthDate</Text>
-                    <Text style={{aalignSelf: 'flex-start'}}>{supplierObj?.aniversaryDate ? moment(supplierObj?.aniversaryDate).format('YYYY-MM-DD') : 'Not provided'}</Text>
+                    <Text style={{alignSelf: 'flex-start',width:wp(60)}}>{supplierObj?.aniversaryDate ? moment(supplierObj?.aniversaryDate).format('YYYY-MM-DD') : 'Not provided'}</Text>
                   </View>
                 </View>
               </View>

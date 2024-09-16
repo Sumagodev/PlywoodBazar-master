@@ -2,8 +2,11 @@ import { StyleSheet, View, Text, Image } from "react-native"
 import { Rating } from "react-native-ratings"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { generateImageUrl } from "../services/url.service"
+import { useState } from "react"
 
 const ReviewsItem =({reviewItem})=>{
+    const [imageFailed, setImageFailed] = useState(false); // State to track image failure
+
     return(
         <View style={styles.container}>
             <View style={styles.contentContainer}>
@@ -13,7 +16,12 @@ const ReviewsItem =({reviewItem})=>{
                 <Text ellipsizeMode="tail" numberOfLines={3} style={{fontSize:wp(3.5)}}>{reviewItem.message}</Text>
             </View>
             <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{uri:generateImageUrl(reviewItem?.userId?.profileImage)}} resizeMode="contain"/>
+                <Image
+                source={imageFailed ? require('../../assets/img/logo_1.png') : {uri:generateImageUrl(reviewItem?.userId?.profileImage)}} // Fallback to default image
+                resizeMode='contain'
+                style={styles.image}
+                onError={() => setImageFailed(true)} // Set imageFailed to true on error
+              />
             </View>
         </View>
     )

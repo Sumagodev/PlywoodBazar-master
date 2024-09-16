@@ -355,7 +355,7 @@ export default function Productdetails(props) {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
+        navigation.navigate('Subscriptions', { register: false })
         return 0;
       }
       navigation.navigate('Productdetails', { data: item?.slug })
@@ -384,14 +384,14 @@ export default function Productdetails(props) {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
+        navigation.navigate('Subscriptions', { register: false })
         return 0;
       }
       console.log('selling price')
       setvalue(price)
     }
     else {
-      navigate.navigate('Login')
+      navigation.navigate('Login')
     }
   };
   const ListHeader = () => {

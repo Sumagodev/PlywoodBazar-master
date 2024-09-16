@@ -638,19 +638,20 @@ export default function Home() {
 
 
   const GotoProductspage = () => {
-    if (isAuthorized) {
-      // if (!currentUserHasActiveSubscription) {
-      //   errorToast('You do not have a valid subscription to perform this action');
-      //   navigate.navigate('Subscriptions', { register: false })
-      //   return 0;
-      // }
+     navigate.navigate('AllProducts', { type: '' })
+    // if (isAuthorized) {
+    //   // if (!currentUserHasActiveSubscription) {
+    //   //   errorToast('You do not have a valid subscription to perform this action');
+    //   //   navigate.navigate('Subscriptions', { register: false })
+    //   //   return 0;
+    //   // }
 
-      navigate.navigate('AllProducts', { type: '' })
+    //   navigate.navigate('AllProducts', { type: '' })
 
-    }
-    else {
-      navigate.navigate('Login')
-    }
+    // }
+    // else {
+    //   navigate.navigate('Login')
+    // }
   }
   const StartBusiness = () => {
     if (isAuthorized) {

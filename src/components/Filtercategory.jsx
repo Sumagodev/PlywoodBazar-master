@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState,useContext } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,Linking } from 'react-native';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Linking } from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -42,8 +42,8 @@ const Filtercategory = (props) => {
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
   const [rating, setRating] = useState(0);
-  console.log('ratinggg',rating);
-  
+  console.log('ratinggg', rating);
+
   const [qry, setQuery] = useState('');
   const focused = useIsFocused();
   const [minPrice, setMinPrice] = useState(0);
@@ -82,18 +82,18 @@ const Filtercategory = (props) => {
   const [isFirstPageReceived, setIsFirstPageReceived] = useState(false);
   const [receivedStateIdFromPorops, setReceivedStateIdFromPorops] = useState('');
 
-  
-  if(props?.route?.params?.xState){
+
+  if (props?.route?.params?.xState) {
     setSearchState(props?.route?.params?.xState)
-    console.log(props?.route?.params?.xState,'QAZZZZZZ')
-    
+    console.log(props?.route?.params?.xState, 'QAZZZZZZ')
+
   }
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
       if (decoded) {
         if (decoded?.user?.name) {
-        //  setName(decoded?.user?.name);
+          //  setName(decoded?.user?.name);
         }
 
         let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
@@ -165,9 +165,9 @@ const Filtercategory = (props) => {
       // }
 
 
-      if(props?.route?.params?.xState && searchState.length<1){
+      if (props?.route?.params?.xState && searchState.length < 1) {
         query = `${query}&state=${props?.route?.params?.xState}`;
-      }else{
+      } else {
         if (statesDisplayArr && statesDisplayArr.filter(el => el.checked == true).length > 0) {
           let tempArr = statesDisplayArr.filter(el => el.checked == true);
           if (query == '') {
@@ -288,8 +288,8 @@ const Filtercategory = (props) => {
         setCategoryData(tempArr);
         if (props?.route?.params?.data) {
           handleCheckCategoryOnRender(props?.route?.params?.data, tempArr);
-          console.log('handleCheckCategoryOnRender',props?.route?.params?.data, tempArr);
-          
+          console.log('handleCheckCategoryOnRender', props?.route?.params?.data, tempArr);
+
         }
       }
     } catch (error) {
@@ -464,7 +464,7 @@ const Filtercategory = (props) => {
       imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/logo_1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
-      address: item?.cityName +" "+item?.stateName
+      address: item?.cityName + " " + item?.stateName
     };
 
 
@@ -479,13 +479,15 @@ const Filtercategory = (props) => {
 
         {
 
-          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }} onCotactPress={()=>{gotoCallBtn(item)}}></ShopListItem>
+          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }} onCotactPress={() => { gotoCallBtn(item) }}></ShopListItem>
         }
       </>
     );
   };
 
   const gotoCallBtn = (item) => {
+    console.log('item',item);
+    
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
@@ -496,7 +498,7 @@ const Filtercategory = (props) => {
 
     }
     else {
-      navigate.navigate('Login')
+      navigation.navigate('Login')
     }
   }
   const handleCheckCategoryOnRender = (id, arr) => {
@@ -878,12 +880,12 @@ const Filtercategory = (props) => {
                 <Icon name="tune" size={wp(6)} color={'white'} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {HandleClearFilter(),setIsLoading(true)}}>
+            <TouchableOpacity onPress={() => { HandleClearFilter(), setIsLoading(true) }}>
               <View style={[styles1.col2, {}]}>
                 <Icon name="refresh" size={wp(6)} color={'white'} />
               </View>
             </TouchableOpacity>
-       
+
           </View>
 
         </View>
@@ -1267,7 +1269,7 @@ const stylesSearch = StyleSheet.create({
   },
   input: {
     flex: 1,
-      
+
 
   }
 });
