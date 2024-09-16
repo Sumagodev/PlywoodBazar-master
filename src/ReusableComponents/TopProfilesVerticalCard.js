@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, Pressable } from 'react-native';
 import { Rating } from 'react-native-ratings';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -6,15 +6,20 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from './CustomButton';
 import CustomButtonNew from './CustomButtonNew';
 
-const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
-
-    
+const TopProfilesVerticalCard = ({imagePath,name,products,rating,address,onViewPress}) => {
+    const [imageFailed, setImageFailed] = useState(false); // State to track image failure
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
-                <Image style={styles.imageStyle} source={imagePath} />
+                
+                <Image
+          source={imageFailed ? require('../../assets/img/logo_1.png') : imagePath} // Fallback to default image
+          resizeMode='stretch'
+          style={styles.imageStyle}
+          onError={() => setImageFailed(true)} // Set imageFailed to true on error
+        />
             </View>
-            <Text style={styles.nameStyle}>{name}</Text>
+            <Text style={styles.nameStyle} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
             <View style={styles.rowStyle}>
                 <Text style={[styles.textStyle, {fontWeight: '400'}]}>Products: </Text>
                 <Text style={[styles.textStyle, {fontWeight: 'bold'}]}>{products}</Text>
@@ -28,7 +33,7 @@ const TopProfilesVerticalCard = ({imagePath,name,products,rating,address}) => {
                 <Text style={[styles.textStyle,{marginHorizontal:wp(1)}]} numberOfLines={1} ellipsizeMode='tail'>{address}</Text>
             </View>
             <View style={{paddingTop: wp(1)}}>
-                <CustomButtonNew  textSize={wp(3.5)} onPress={()=>console.log('function called')} text={'View Profile'} paddingHorizontal={wp(4)} paddingVertical={wp(2)}/>
+                <CustomButtonNew  textSize={wp(3.5)} onPress={onViewPress} text={'View Profile'} paddingHorizontal={wp(4)} paddingVertical={wp(2)}/>
             </View>
         </View>
     );
@@ -59,9 +64,8 @@ const styles = StyleSheet.create({
         width: wp(30), height: wp(30),
     },
     nameStyle:{
-        marginTop: wp(5),
-        fontSize: wp(5),
-        fontWeight: 'bold',
+        marginTop: wp(6 ),
+        fontSize: wp(4),
     },
     rowStyle:{
         flexDirection: 'row',

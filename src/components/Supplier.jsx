@@ -1,12 +1,12 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState,useContext} from 'react';
-import {FlatList, Image, ImageBackground, Linking, Pressable, StyleSheet, Text, View, Modal, TextInput, TouchableOpacity, LinearGradient, Button,Alert} from 'react-native';
+import {FlatList, Image, ImageBackground, Share ,Linking, Pressable, StyleSheet, Text, View, Modal, TextInput, TouchableOpacity, LinearGradient, Button,Alert} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Video from 'react-native-video';
 import Header from '../navigation/customheader/Header';
-import {getAllProductsBySupplierId} from '../services/Product.service';
+import {getAllProductsBySupplierId, getProductYouMayLike} from '../services/Product.service';
 import {generateImageUrl} from '../services/url.service';
-import {checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getUserById, getUserUserById} from '../services/User.service';
+import {checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getUserById, getUserUserById,topProfilesHomePage} from '../services/User.service';
 import {errorToast, toastSuccess} from '../utils/toastutill';
 import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -33,6 +33,7 @@ export default function Supplier(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [showEditIcon, setShowEditIcon] = useState(false);
+  const [userId, setUserId] = useState(null);
   const [infolist, setInfolist] = useState([
     {
       activeimgimg: require('../../assets/img/activeprofile.png'),
@@ -52,6 +53,8 @@ export default function Supplier(props) {
 
   const [supplierObj, setSupplierObj] = useState({});
   const [productsArr, setProductsArr] = useState([]);
+  const [productYouMayLikeArray, setProductsYouMayLike] = useState([]);
+  const [topProfileArray, setTopProfileArray] = useState([]);
 
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
@@ -93,6 +96,28 @@ export default function Supplier(props) {
   //   }
   // };
 
+  const handleGetProductYouMayLike = async () => {
+    try {
+      let { data: res } = await getProductYouMayLike();
+      if (res.data) {
+        setProductsYouMayLike(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleGetTopProfiles = async () => {
+    try {
+      let { data: res } = await topProfilesHomePage();
+      if (res.data) {
+        setTopProfileArray(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handelwhatappclick = () => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
@@ -103,6 +128,22 @@ export default function Supplier(props) {
       Linking.openURL(`https://api.whatsapp.com/send/?phone=${supplierObj?.phone}`);
     }
     else {
+      navigate.navigate('Login')
+    }
+  };
+
+  const handleViewProfileClick = (item) => {
+    console.log('xxxx ---------')
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      navigate.navigate('Supplier', { data: item }) 
+    }
+    else {
+      errorToast('You need to login to access this feature');
       navigate.navigate('Login')
     }
   };
@@ -136,6 +177,56 @@ const handelclickcmail = () => {
       Linking.openURL(`mailto:${supplierObj?.email}`);
     }
     else {
+      navigate.navigate('Login')
+    }
+  };
+  const handeleClickShare = async () => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      try {
+        const result = await Share.share({
+          message: `Check out this supplier: https://plywoodbazar.com/Supplier/${userId}`,
+        });
+    
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // Shared with activity type of result.activityType
+            console.log('Shared with activity type: ', result.activityType);
+          } else {
+            // Shared successfully
+            console.log('Shared successfully');
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // Dismissed the share dialog
+          console.log('Share dismissed');
+        }
+      } catch (error) {
+        console.log('Error sharing: ', error.message);
+      }
+    }
+    else {
+      navigate.navigate('Login')
+    }
+  };
+  const handleGetQuoteClick = (item) => {
+
+    console.log(JSON.stringify(item),'zzzzzzxv');
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigate.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      //navigate.navigate('Productdetails', {data: item.productSlug})
+      navigate.navigate('Productdetails', {data: item?.product?.slug})
+
+    }
+    else {
+      errorToast('You need to login to access this feature');
       navigate.navigate('Login')
     }
   };
@@ -220,9 +311,12 @@ const handelclickcmail = () => {
       console.log(JSON.stringify(props.route.params.data, null, 2), 'props.route.params.data');
       if (props?.route?.params?.data?._id) {
         HandleGetUserById(props?.route?.params?.data?._id);
+        setUserId(props?.route?.params?.data?._id);
         setsupplerid(props?.route?.params?.data?._id);
         HandleCheckValidSubscription();
         HandleGetProductBySupplierId(props?.route?.params?.data?._id);
+        handleGetProductYouMayLike();
+        handleGetTopProfiles();
       }
     }
   }, [props.route.params.data, focused]);
@@ -254,6 +348,7 @@ const handelclickcmail = () => {
     );
   };
 
+
   const rendershopcategory = ({item, index}) => {
     return <ImageBackground source={{uri: generateImageUrl(item.image)}} imageStyle={{borderRadius: 10}} style={styles1.category} resizeMode="cover"></ImageBackground>;
   };
@@ -262,13 +357,22 @@ const handelclickcmail = () => {
     return <ReviewsItem reviewItem={item} />;
   };
   const ProductsYouMayLike1 = ({item, index}) => {
-    return <NewArrivalProductCard onCardPressed={() => navigate.navigate('Productdetails', {data: item.productSlug})} imagePath={require('../../assets/img/g1.png')} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price}></NewArrivalProductCard>;
+    return <NewArrivalProductCard  onCallPressed={()=>{handelcallbtn(item)}} onGetQuotePressed={()=>{handleGetQuoteClick(item)}} onCardPressed={() => navigate.navigate('Productdetails', {data: item.productSlug})} imagePath={{ uri: generateImageUrl(item?.product?.mainImage)}} isVerified={item.isVerified} name={item.productName} location={item.cityName} price={item?.price}></NewArrivalProductCard>;
   };
   const Products1 = ({item, index}) => {
     return <NewArrivalProductCard onPress={() => navigate.navigate('Productdetails', {data: item.slug})} mainImage={item.mainImage} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice}></NewArrivalProductCard>;
   };
   const Topprofiles = ({item, index}) => {
-    return <TopProfilesVerticalCard imagePath={item.imagePath} name={item.name} products={item.products} rating={item.rating} address={'Nashik'} />;
+    console.log('xx',item.name);
+    const { cityName, stateName } = item;
+
+  // Check if cityName or stateName are null, 'null', or empty strings, and build the address
+  const validCity = cityName && cityName !== 'null' ? cityName : '';
+  const validState = stateName && stateName !== 'null' ? stateName : '';
+
+  // Return the combined address, trimming any extra spaces
+  const location= `${validCity} ${validState}`.trim();
+    return <TopProfilesVerticalCard  onViewPress={()=>{handleViewProfileClick(item)}} name={item?.companyName} imagePath={{ uri: generateImageUrl(item.profileImage) }} rating={item.rating} Product={item?.productsCount}  address={location} onPress={{}} onCallPress={() => handelcallbtn(item?.phone)}  />;
   };
   const handlePauseAndUnpause = index => {
     let tempArr = videoArr;
@@ -395,18 +499,18 @@ const handelclickcmail = () => {
               </View>
             </View>
             <View style={{alignItems: 'center', flexDirection: 'row'}}>
-              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#39AB68'}]} onPress={handelcallbtn}>
+              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#39AB68'}]} onPress={()=>{handelcallbtn()}}>
                 <Ionicons name="call" size={25} color="#fff" />
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#FFF3E9'}]} onPress={handelclickcmail}>
+              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#FFF3E9'}]} onPress={()=>{handelclickcmail()}}>
                 <FontAwesome name="envelope-o" size={25} color="#624832" />
               </TouchableOpacity>
-              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#39AB68'}]} onPress={handelwhatappclick}>
+              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#39AB68'}]} onPress={()=>{handelwhatappclick()}}>
                 <FontAwesome name="whatsapp" size={25} color="#fff" />
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#FFF3E9'}]} onPress={handelclickcmail}>
+              <TouchableOpacity style={[styles1.callbtn, {backgroundColor: '#FFF3E9'}]} onPress={()=>{handeleClickShare()}}>
                 <FontAwesome name="share" size={23} color="#624832" />
               </TouchableOpacity>
             </View>
@@ -508,7 +612,7 @@ const handelclickcmail = () => {
                   </View>
                 </View>
                 <View style={{marginVertical: wp(1)}}>
-                  <FlatList data={dataArray.slice(0, 2)} renderItem={ProductsYouMayLike1} style={{paddingVertical: 10}} keyExtractor={(item, index) => `${index}`} />
+                  <FlatList data={productYouMayLikeArray.slice(0, 2)} renderItem={ProductsYouMayLike1} style={{paddingVertical: 10}} keyExtractor={(item, index) => `${index}`} />
                 </View>
               </View>
             </>
@@ -540,7 +644,7 @@ const handelclickcmail = () => {
                   <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{paddingVertical: 10}} keyExtractor={(item, index) => `${index}`} />
                     <View style={{alignSelf: 'center'}}>
-                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => handleModelshow()} />
+                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={()=>{navigate.navigate('ReviewsPage', {data: supplierObj._id})}} />
                     </View>
                   </View>
                 ) : (
@@ -557,7 +661,7 @@ const handelclickcmail = () => {
                 </View>
                 {dataArray && dataArray.length > 0 ? (
                   <View style={{marginVertical: wp(2)}}>
-                    <FlatList data={dataArray1} renderItem={Topprofiles} style={{paddingVertical: 10}} keyExtractor={(item, index) => `${index}`} numColumns={2} />
+                    <FlatList data={topProfileArray.slice(-4)} renderItem={Topprofiles} style={{paddingVertical: 10}} keyExtractor={(item, index) => `${index}`} numColumns={2} />
                   </View>
                 ) : (
                   <View style={{height: hp(20), backgroundColor: 'FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

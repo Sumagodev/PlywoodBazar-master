@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState,useContext } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,Linking } from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -15,7 +15,7 @@ import { getAllProducts } from '../services/Product.service';
 import { generateImageUrl } from '../services/url.service';
 import { errorToast } from '../utils/toastutill';
 import { getStates } from '../services/State.service';
-import { getAllUsers, getDecodedToken } from '../services/User.service';
+import { checkForValidSubscriptionAndReturnBoolean, getAllUsers, getDecodedToken } from '../services/User.service';
 import { ROLES_CONSTANT } from '../utils/constants';
 // import Header from '../navigation/customheader/Header';
 import TypeWriter from 'react-native-typewriter'
@@ -28,6 +28,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import CustomColors from '../styles/CustomColors';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
+
 
 const Filtercategory = (props) => {
 
@@ -463,7 +464,7 @@ const Filtercategory = (props) => {
       imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/logo_1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
-      address: item.message
+      address: item?.cityName +" "+item?.stateName
     };
 
 
@@ -478,7 +479,7 @@ const Filtercategory = (props) => {
 
         {
 
-          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }} onCotactPress={gotoCallBtn(item)}></ShopListItem>
+          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }} onCotactPress={()=>{gotoCallBtn(item)}}></ShopListItem>
         }
       </>
     );
@@ -488,11 +489,10 @@ const Filtercategory = (props) => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
-        //navigation.navigate('Subscriptions', { register: false })
+        navigation.navigate('Subscriptions', { register: false })
         return 0;
       }
-      //navigate.navigate('MyFlashSales')
-
+      Linking.openURL(`tel:${item?.phone}`);
 
     }
     else {

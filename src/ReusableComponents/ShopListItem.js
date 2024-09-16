@@ -7,11 +7,7 @@ import CustomButton from "./CustomButton";
 import CustomColors from "../styles/CustomColors";
 
 const ShopListItem = ({vendorItem,onItemPress,onCotactPress})=>{
-    const Contact=(phone)=>{
-        console.log('phoneee',phone);
-        
-        Linking.openURL(`tel:${phone}`);
-    }
+    
     return(
         <Pressable style={styles.container} onPress={onItemPress}>
             <View style={styles.mainContainer}>                

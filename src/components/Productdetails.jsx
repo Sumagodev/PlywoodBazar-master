@@ -27,8 +27,8 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 export default function Productdetails(props) {
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [supplierObj, setSupplierObj] = useState({});
-  console.log('supplierObj',supplierObj);
-  
+  console.log('supplierObj', supplierObj);
+
   const [productObj, setProductObj] = useState(null);
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
@@ -47,12 +47,15 @@ export default function Productdetails(props) {
   const [nameForReview, setNameForReview] = useState(null);
   const [messageForReview, setMessageForReview] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [rating, setRating] = useState(1);            
-  const [userid, setuserid] = useState();            
-console.log('hhhh',userid);
+  const [rating, setRating] = useState(1);
+  const [userid, setuserid] = useState();
+  const [sellingprice, setsellingprice] = useState();
+  const [value, setvalue] = useState('Get Latest Price');
+  console.log('hhhh', userid);
+  console.log('hhhh', value);
 
   const [productReviewArr, setProductReviewArr] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const HandleGetUserById = async id => {
     console.log('=================', id, '==========================');
 
@@ -60,18 +63,18 @@ console.log('hhhh',userid);
       if (!id) {
         return null;
       }
-      let {data: res} = await getUserUserById(id);
+      let { data: res } = await getUserUserById(id);
       console.log('=================', res, '==========================');
 
       if (res.data) {
         setSupplierObj(res.data);
-        setVideoArr(res?.data?.videoArr?.map(el => ({...el, isPaused: false})));
+        setVideoArr(res?.data?.videoArr?.map(el => ({ ...el, isPaused: false })));
       }
     } catch (err) {
       errorToast(err);
     }
   };
- 
+
 
   const renderReviewItem = ({ item }) => {
     console.log(item, 'renderReviewItem'); // This will log the item to the console
@@ -83,8 +86,9 @@ console.log('hhhh',userid);
     try {
 
       const { data: res } = await getProductById(props?.route?.params?.data);
-     setuserid(res.data._id);
-      
+      setuserid(res.data._id);
+      setsellingprice(res.data.sellingprice);
+
       if (res) {
         //console.log(JSON.stringify(res.data, null, 2), 'dataxxx');
 
@@ -212,6 +216,7 @@ console.log('hhhh',userid);
 
         if (isAuthorized) {
           toastSuccess(res.message);
+          setLoading(false)
           if (!currentUserHasActiveSubscription) {
             errorToast('You do not have a valid subscription to perform this action');
             return 0;
@@ -233,12 +238,12 @@ console.log('hhhh',userid);
       let decoded = await getDecodedToken();
       if (decoded) {
         let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
-        console.log('setCurrentUserHasActiveSubscription',res);
+        console.log('setCurrentUserHasActiveSubscription', res);
         if (res.data) {
 
           setCurrentUserHasActiveSubscription(res.data);
-          
-          
+
+
         }
       }
     } catch (err) {
@@ -260,12 +265,12 @@ console.log('hhhh',userid);
       }
       if (nameForReview == '') {
         errorToast('Please enter a name');
-         Alert.alert('Validation Error', 'Please enter a Name.');
+        Alert.alert('Validation Error', 'Please enter a Name.');
         return;
       }
       if (messageForReview == '') {
         errorToast('Please enter a Message');
-         Alert.alert('Validation Error', 'Please enter a Message.');
+        Alert.alert('Validation Error', 'Please enter a Message.');
         return;
       }
       if (rating == '') {
@@ -326,16 +331,22 @@ console.log('hhhh',userid);
   };
 
   const handleContactSupplierClick = () => {
+  
     if (isAuthorized) {
+
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
         navigation.navigate('Subscriptions', { register: false })
+        errorToast('You do not have a valid subscription to perform this action');
+        setLoading(false)
         return 0;
       }
       handleContactSupplier()
+     
+
     }
     else {
       navigation.navigate('Login')
+      setLoading(false)
     }
   }
   const handleGetQuoteClick = (item) => {
@@ -345,14 +356,14 @@ console.log('hhhh',userid);
         navigate.navigate('Subscriptions', { register: false })
         return 0;
       }
-      navigation.navigate('Productdetails', { data: item?.slug })
+      navigation.navigate('Productdetails', { data: item?.product?.slug })
     }
     else {
       navigation.navigate('Login')
     }
   }
   const renderSimilarProducts = ({ item, index }) => {
-    //console.log('***********=>', item);
+    console.log('***********=>', JSON.stringify(item));
     return (
       <NewArrivalProductCard
         imagePath={{ uri: generateImageUrl(item?.productImage) }}
@@ -366,7 +377,8 @@ console.log('hhhh',userid);
         onCardPressed={() => navigation.navigate('Productdetails', { data: item?.slug })}></NewArrivalProductCard>
     );
   };
-  const TakeSellingPrice = (phone) => {
+  const TakeSellingPrice = (price) => {
+    console.log('***')
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
@@ -374,6 +386,7 @@ console.log('hhhh',userid);
         return 0;
       }
       console.log('selling price')
+      setvalue(price)
     }
     else {
       navigate.navigate('Login')
@@ -428,14 +441,19 @@ console.log('hhhh',userid);
             <Text style={styles1.descpriionttext}>{productObj?.longDescription}</Text>
           )}
 
-          <TouchableOpacity style={{ alignSelf: 'center', marginVertical: wp(6) }}>
+          {sellingprice ? (<TouchableOpacity style={{ alignSelf: 'center', marginVertical: wp(6) }}>
             <CustomButtonNew
-              text={'Get Latest Price'}
+              text={value}
               paddingHorizontal={wp(5)}
-              onPress={() => {TakeSellingPrice()}}
+              onPress={() => {  TakeSellingPrice(sellingprice),console.log('7777') }}
             />
 
-          </TouchableOpacity>
+          </TouchableOpacity>) : (<TouchableOpacity style={{ alignSelf: 'center', marginVertical: wp(6) }}>
+           
+          </TouchableOpacity>)}
+
+
+
 
           <LinearGradient colors={['#5a432f', '#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
             <View style={gradientStyle.card}>
@@ -454,7 +472,8 @@ console.log('hhhh',userid);
                 <Text style={{ color: 'white', marginLeft: wp(1) }}>{currentUserHasActiveSubscription ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber || 'NA' : `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}`.slice(0, 2) + '***'}</Text>
               </View>
               <View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end', flex: 1, marginTop: wp(2) }}>
-                <CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={() => { handleContactSupplierClick() }}></CustomButtonNew>
+                {loading === 'true'? (<ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />) : (<CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={() => { handleContactSupplierClick(), setLoading(true) }}></CustomButtonNew>)}
+
               </View>
             </View>
           </LinearGradient>
@@ -543,30 +562,30 @@ console.log('hhhh',userid);
       )}
 
       <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible); 
-      }}>
-      <View style={styles2.centeredView}>
-        <View style={styles2.modalView}>
-          <View style={{ padding: 20 }}>
-            <Text style={styles2.modalText}>Add Review</Text>
-            <TextInput style={styles2.modalTextInput} onChangeText={(e) => setNameForReview(e)} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles2.centeredView}>
+          <View style={styles2.modalView}>
+            <View style={{ padding: 20 }}>
+              <Text style={styles2.modalText}>Add Review</Text>
+              <TextInput style={styles2.modalTextInput} onChangeText={(e) => setNameForReview(e)} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
               <TextInput multiline={true} style={styles2.modalTextInput} onChangeText={(e) => setMessageForReview(e)} value={messageForReview} placeholder="Please Enter message" placeholderTextColor={'#000'} />
-            <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+              <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+            </View>
+            <TouchableOpacity style={styles2.yellowButton} onPress={() => handleSubmitReview()}>
+              <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles2.yellowButton} onPress={() => handleSubmitReview()}>
-            <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>
+
+          <TouchableOpacity onPress={() => { setModalVisible(false), setMessageForReview(''), setNameForReview('') }} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity onPress={() => {setModalVisible(false),setMessageForReview(''),setNameForReview('')}} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
-        </TouchableOpacity>
-      </View>
-    </Modal>
+      </Modal>
     </View>
   );
 }

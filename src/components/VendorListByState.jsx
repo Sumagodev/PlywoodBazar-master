@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState,Linking } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
@@ -15,7 +15,7 @@ import { getAllProducts } from '../services/Product.service';
 import { generateImageUrl } from '../services/url.service';
 import { errorToast } from '../utils/toastutill';
 import { getStates } from '../services/State.service';
-import { getAllUsers, getDecodedToken } from '../services/User.service';
+import { checkForValidSubscriptionAndReturnBoolean, getAllUsers, getDecodedToken } from '../services/User.service';
 import { ROLES_CONSTANT } from '../utils/constants';
 // import Header from '../navigation/customheader/Header';
 import TypeWriter from 'react-native-typewriter'
@@ -27,9 +27,12 @@ import ShopListItem from '../ReusableComponents/ShopListItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import CustomColors from '../styles/CustomColors';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 
 const VendorListByState = (props) => {
     
+  const [isAuthorized] = useContext(isAuthorisedContext);
+  const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
 
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
   const [isloding, setIsloding] = useState(false);
@@ -214,6 +217,7 @@ const VendorListByState = (props) => {
       } else {
         setIsLoading(false);
         errorToast(error);
+        console.log('zxx4',err)
         setIsLoading1(false)
       }
     }
@@ -237,8 +241,13 @@ const VendorListByState = (props) => {
   const getCategory = async () => {
     try {
       const { data: res } = await getNestedCategories();
+      console.log('zxxxxx',res)
       if (res) {
-        let tempArr = res.data.map(el => ({ ...el, checked: false }));
+
+        let tempArr = res.data.map(el => {
+          console.log('elx',el);
+          ({ ...el, checked: false })
+        });
 
         setCategoryData(tempArr);
         if (props?.route?.params?.data) {
@@ -249,6 +258,7 @@ const VendorListByState = (props) => {
       }
     } catch (error) {
       errorToast(error);
+      console.log('zxx5',error)
     }
   };
   const getBrands = async () => {
@@ -258,6 +268,7 @@ const VendorListByState = (props) => {
         setBrandArr(res.data.map(el => ({ ...el, checked: false })));
       }
     } catch (error) {
+      console.log('zxx1',error)
       toastError(error);
     }
   };
@@ -361,6 +372,7 @@ const VendorListByState = (props) => {
     }
     catch (err) {
       toastError(err)
+      console.log('zxx2',err)
     }
   }
 
@@ -390,6 +402,21 @@ const VendorListByState = (props) => {
     setSelected(arr);
   };
 
+  const gotoCallBtn = (item) => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        errorToast('You do not have a valid subscription to perform this action');
+        navigation.navigate('Subscriptions', { register: false })
+        return 0;
+      }
+      Linking.openURL(`tel:${item?.phone}`);
+
+    }
+    else {
+      errorToast('You need to login to access this feature');
+      navigate.navigate('Login')
+    }
+  }
   // useEffect(() => {
   //   if (focused) {
   //     // let categoryArr = searchParams.get('categories').split(',')
@@ -461,7 +488,7 @@ const VendorListByState = (props) => {
 
         {
 
-          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }}></ShopListItem>
+          <ShopListItem vendorItem={someShopData} onItemPress={() => { navigation.navigate('Supplier', { data: item }) }} onCotactPress={()=>{gotoCallBtn(item)}}></ShopListItem>
         }
       </>
     );
@@ -596,6 +623,32 @@ const VendorListByState = (props) => {
 
   }, [categoryData, minPrice, usertypes, maxPrice, qry, brandArr, citiesDisplayArr, statesDisplayArr, rating, role, page]);
 
+  const HandleCheckValidSubscription = async () => {
+    try {
+      let decoded = await getDecodedToken();
+      if (decoded) {
+        if (decoded?.user?.name) {
+        //  setName(decoded?.user?.name);
+        }
+
+        let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        if (res.data) {
+          console.log(
+            'setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+            res.data,
+            'setCurrentUserHasActiveSubscription,setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+          );
+          setCurrentUserHasActiveSubscription(res.data);
+        }
+      }
+    } catch (err) {
+      errorToast(err);
+      console.log('zxx3',err)
+    }
+  };
+  useEffect(() => {
+    HandleCheckValidSubscription();
+  }, [isAuthorized])
 
   const HandleClearFilter = () => {
     setCategoryData(categoryData.map(el => ({ ...el, checked: false })))
