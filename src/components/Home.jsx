@@ -868,7 +868,7 @@ export default function Home() {
               </LinearGradient>
 
 
-          {isAuthorized && (
+          {isAuthorized==='false' && (
             <View style={{ marginVertical: wp(5) }}>
               <StartBusinessBanner />
             </View>

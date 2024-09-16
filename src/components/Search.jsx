@@ -270,11 +270,11 @@ console.log('allProductsArr',allProductsArr);
               />
             </View>
 
-            <TouchableOpacity onPress={() => this.RBSheet.open()}>
+            {/* <TouchableOpacity onPress={() => this.RBSheet.open()}>
               <View style={[{width: wp(12), height: wp(12), backgroundColor: '#6B4E37', borderRadius: wp(8), justifyContent: 'center', alignContent: 'center', alignItems: 'center'}]}>
                 <Icon name="tune" size={wp(7)} color={'white'} />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>       
         {/* {productArr.length > 0 && searchQuery !== '' ? (
           <FlatList contentContainerStyle={styles.listContainer} data={productArr} keyExtractor={(item, index) => index} renderItem={renderSearchItem} />
