@@ -350,13 +350,15 @@ export default function Productdetails(props) {
     }
   }
   const handleGetQuoteClick = (item) => {
+    console.log('item?.slug ',item?.slug );
+    
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
         navigate.navigate('Subscriptions', { register: false })
         return 0;
       }
-      navigation.navigate('Productdetails', { data: item?.product?.slug })
+      navigation.navigate('Productdetails', { data: item?.slug })
     }
     else {
       navigation.navigate('Login')
