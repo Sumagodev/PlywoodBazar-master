@@ -217,7 +217,7 @@ const VendorListByState = (props) => {
       } else {
         setIsLoading(false);
         errorToast(error);
-        console.log('zxx4',err)
+        console.log('zxx4',error)
         setIsLoading1(false)
       }
     }
@@ -238,27 +238,46 @@ const VendorListByState = (props) => {
 
   const [selected, setSelected] = useState([]);
 
+  // const getCategory = async () => {
+  //   try {
+  //     const { data: res } = await getNestedCategories();
+  //     console.log('zxxxxx',res)
+  //     if (res) {
+
+  //       let tempArr = res.data.map(el => {
+  //         console.log('elx',el);
+  //         ({ ...el, checked: false })
+  //       });
+
+  //       setCategoryData(tempArr);
+  //       if (props?.route?.params?.data) {
+  //         handleCheckCategoryOnRender(props?.route?.params?.data, tempArr);
+  //         console.log('handleCheckCategoryOnRender',props?.route?.params?.data, tempArr);
+          
+  //       }
+  //     }
+  //   } catch (error) {
+  //     errorToast(error);
+  //     console.log('zxx5',error)
+  //   }
+  // };
+ 
   const getCategory = async () => {
     try {
       const { data: res } = await getNestedCategories();
-      console.log('zxxxxx',res)
       if (res) {
-
-        let tempArr = res.data.map(el => {
-          console.log('elx',el);
-          ({ ...el, checked: false })
-        });
+        let tempArr = res.data.map(el => ({ ...el, checked: false }));
 
         setCategoryData(tempArr);
         if (props?.route?.params?.data) {
           handleCheckCategoryOnRender(props?.route?.params?.data, tempArr);
-          console.log('handleCheckCategoryOnRender',props?.route?.params?.data, tempArr);
-          
+          console.log('handleCheckCategoryOnRender', props?.route?.params?.data, tempArr);
+
         }
       }
     } catch (error) {
-      errorToast(error);
-      console.log('zxx5',error)
+      // errorToast(error);
+      console.log('zxx0',error)
     }
   };
   const getBrands = async () => {
@@ -663,10 +682,10 @@ const VendorListByState = (props) => {
     setRating(0);
     this.RBSheet.close()
   }
-
+ 
 
   const renderfilter = ({ item, index }) => {
-    // console.log(item, "item")
+    console.log(item, "itemmm")
     return (
       <>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>
@@ -692,7 +711,7 @@ const VendorListByState = (props) => {
   };
 
   const renderCategory = ({ item, index }) => {
-    // console.log(item, "item")
+    // console.log(item, "itemmm")
     return (
       <>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>

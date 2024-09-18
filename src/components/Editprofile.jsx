@@ -287,7 +287,7 @@ export default function Editprofile(props) {
     } catch (error) {
       handleError(error);
     }
-  };
+  }; 
 
   const handlePickProfileImage = async () => {
     try {

@@ -71,6 +71,8 @@ export default function Home() {
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const [topprofiles, settopprofiles] = useState([]);
   const [stateDetailss, setstateDetails] = useState([]);
+  console.log('stateDetailss',stateDetailss);
+  
   const { height, width } = useWindowDimensions();
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -187,7 +189,7 @@ export default function Home() {
       if (res.message) {
         console.log('xxxxxxx',res.message)
         toastSuccess(res.message);
-        Alert.alert(res.message)
+        // Alert.alert(res.message)
         setName('');
         setPhone('');
         setAddressInFormFiled('');

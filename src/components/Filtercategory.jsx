@@ -312,9 +312,7 @@ const Filtercategory = (props) => {
     try {
       let query = `page=${1}&perPage=${1000}`
 
-      // if (queryString && queryString != "") {
-      //   query = `${query}&q=${queryString}`
-      // }
+    
       let { data: res } = await getStates(query);
       if (res.data) {
         setStatesArr(res.data.map(el => ({ ...el, checked: false })));
@@ -647,7 +645,7 @@ const Filtercategory = (props) => {
 
 
   const renderfilter = ({ item, index }) => {
-    // console.log(item, "item")
+    console.log(item, "itemm")
     return (
       <>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>

@@ -131,67 +131,67 @@ export default function AllChats(props) {
   );
 
   return (
-  <View>
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{  backgroundColor: '#FFF4EC' }}
-    >
-      <Header normal={true}  rootProps={props} />
-      <FlatList
-        data={ticketsArr}
-        ListHeaderComponent={
-          <>
-            <View style={{ paddingHorizontal: 10 }}>
-              <Text style={{ fontSize: wp(6), color: '#000000', fontWeight: 800, fontFamily: 'Poppins-Medium', alignSelf: 'center' }}>FAQ</Text>
-              <FlatList
-                data={faqData}
-                keyExtractor={item => item.id.toString()}
-                renderItem={renderFaqItem}
-                contentContainerStyle={{ paddingBottom: hp(0) }}
-              />
-            </View>
-            <View style={reviewStyle.container}>
-              <Text style={reviewStyle.title}>Your Tickets</Text>
-              <View style={reviewStyle.addBtn}>
-                <CustomButtonOld onPress={() => { setModal(true) }} text={"Add"} />
+    <View style={{}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ backgroundColor: '#FFF4EC' }}
+      >
+        <Header normal={true} rootProps={props} />
+        <FlatList
+          data={ticketsArr}
+          ListHeaderComponent={
+            <>
+              <View style={{ paddingHorizontal: 10 }}>
+                <Text style={{ fontSize: wp(6), color: '#000000', fontWeight: 800, fontFamily: 'Poppins-Medium', alignSelf: 'center' }}>FAQ</Text>
+                <FlatList
+                  data={faqData}
+                  keyExtractor={item => item.id.toString()}
+                  renderItem={renderFaqItem}
+                  contentContainerStyle={{ paddingBottom: hp(0) }}
+                />
               </View>
+              <View style={reviewStyle.container}>
+                <Text style={reviewStyle.title}>Your Tickets</Text>
+                <View style={reviewStyle.addBtn}>
+                  <CustomButtonOld onPress={() => { setModal(true) }} text={"Add"} />
+                </View>
+              </View>
+            </>
+          }
+          renderItem={renderMyTicket}
+
+        // Adjust the paddingBottom to create space for the bottom container
+        />
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={applyFormModal}
+          onRequestClose={() => {
+            setModal(!applyFormModal);
+          }}>
+
+
+          <View style={internal_styles.bottom_container}>
+            <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
+
+            <Input
+              placeholder="Please Enter Message..."
+              value={message}
+              onChangeText={e => setMessage(e)}
+              style={internal_styles.textInputStyles}
+              multiline={true}
+              numberOfLines={3}
+            />
+            <View style={[{ width: wp(50) }]}
+            >
+              <CustomButtonOld onPress={handleTicketCreation} text={'Raise New TIcket'}></CustomButtonOld>
             </View>
-          </>
-        }
-        renderItem={renderMyTicket}
-
-      // Adjust the paddingBottom to create space for the bottom container
-      />
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={applyFormModal}
-        onRequestClose={() => {
-          setModal(!applyFormModal);
-        }}>
-
-
-        <View style={internal_styles.bottom_container}>
-          <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
-
-          <Input
-            placeholder="Please Enter Message..."
-            value={message}
-            onChangeText={e => setMessage(e)}
-            style={internal_styles.textInputStyles}
-            multiline={true}
-            numberOfLines={3}
-          />
-          <View style={[{ width: wp(50) }]}
-          >
-            <CustomButtonOld onPress={handleTicketCreation} text={'Raise New TIcket'}></CustomButtonOld>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
 
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

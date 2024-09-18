@@ -1,37 +1,37 @@
-import {DarkTheme, useIsFocused, useNavigation} from '@react-navigation/native';
-import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground} from 'react-native';
-import DocumentPicker, {isInProgress} from 'react-native-document-picker';
-import {Checkbox} from 'react-native-paper';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground } from 'react-native';
+import DocumentPicker, { isInProgress } from 'react-native-document-picker';
+import { Checkbox } from 'react-native-paper';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import RNFetchBlob from 'rn-fetch-blob';
 import styles from '../../assets/stylecomponents/Style';
-import {registerUser, setToken} from '../services/User.service';
-import {getCityByStateApi, getCountriesApi, getStateByCountryApi} from '../services/location.service';
-import {ROLES_CONSTANT} from '../utils/constants';
-import {errorToast, toastSuccess} from '../utils/toastutill';
-import {getAllCategories} from '../services/Category.service';
-import {Appearance} from 'react-native';
-import {isAuthorisedContext} from '../navigation/Stack/Root';
+import { registerUser, setToken } from '../services/User.service';
+import { getCityByStateApi, getCountriesApi, getStateByCountryApi } from '../services/location.service';
+import { ROLES_CONSTANT } from '../utils/constants';
+import { errorToast, toastSuccess } from '../utils/toastutill';
+import { getAllCategories } from '../services/Category.service';
+import { Appearance } from 'react-native';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {MultiSelect} from 'react-native-element-dropdown';
+import { MultiSelect } from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import CustomColors from '../styles/CustomColors';
-
+import ImagePicker from 'react-native-image-crop-picker';
 export default function Register() {
   const [value, setValue] = useState(null);
 
   const focused = useIsFocused();
   const navigation = useNavigation();
   const [aniversaryDate, setAniversaryDate] = useState(new Date());
-
+  const [profileImage, setProfileImage] = useState('');
   const [aniversaryDateModal, setAniversaryDateModal] = useState(false);
-
+  const [bannerImage, setBannerImage] = useState('');
   const [categoryModal, setCategoryModal] = useState(false);
   const [categorydata, setcategorydata] = useState([]); // for dropdown
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -166,14 +166,14 @@ export default function Register() {
 
       let tempArr = categoryArr?.map(el => {
         if (selected.includes(el?._id)) {
-          el = {...el, checked: true};
+          el = { ...el, checked: true };
         }
         return el;
       });
 
       console.log('tempArr=======', tempArr, '===== tempArr');
       // console.log("tempArr", tempArr[], "tempArr")
-      selectedCategories = tempArr.filter(el => el.checked).map(el => ({categoryId: el._id}));
+      selectedCategories = tempArr.filter(el => el.checked).map(el => ({ categoryId: el._id }));
 
       // console.log("temcattemcattemcat", temcat,"temcattemcattemcat")
       if (!selectedCategories || selectedCategories?.length == 0) {
@@ -216,6 +216,8 @@ export default function Register() {
       cityId: cityId?.value,
       aniversaryDate,
       categoryArr: selectedCategories,
+      bannerImage,
+      profileImage,
       companyObj: {
         name: companyName,
         email: companyEmail,
@@ -236,7 +238,7 @@ export default function Register() {
     console.log(JSON.stringify(obj, null, 2), '>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 
     try {
-      let {data: res} = await registerUser(obj);
+      let { data: res } = await registerUser(obj);
       console.log(JSON.stringify(res, null, 2), 'register data ');
 
       if (res) {
@@ -245,7 +247,7 @@ export default function Register() {
         await setToken(res.token);
         setIsAuthorized(true);
 
-        navigation.navigate('Subscriptions', {register: true});
+        navigation.navigate('Subscriptions', { register: true });
       }
     } catch (error) {
       console.log(error);
@@ -256,7 +258,7 @@ export default function Register() {
 
   const handleGetCoutries = async () => {
     try {
-      let {data: res} = await getCountriesApi();
+      let { data: res } = await getCountriesApi();
       if (res.data) {
         setcountryArr(res.data);
       }
@@ -267,7 +269,7 @@ export default function Register() {
 
   const handleGetStates = async countrysId => {
     try {
-      let {data: res} = await getStateByCountryApi(`countryId=${countrysId}`);
+      let { data: res } = await getStateByCountryApi(`countryId=${countrysId}`);
       if (res.data) {
         console.log(res.data, 'asd');
         setstateArr(res.data);
@@ -281,7 +283,7 @@ export default function Register() {
 
   const handleGetCities = async stateId => {
     try {
-      let {data: res} = await getCityByStateApi(`stateId=${stateId}`);
+      let { data: res } = await getCityByStateApi(`stateId=${stateId}`);
       if (res.data) {
         setcityArr(res.data);
       } else {
@@ -332,10 +334,10 @@ export default function Register() {
 
   const handleNestedCategory = async () => {
     try {
-      const {data: res} = await getAllCategories();
+      const { data: res } = await getAllCategories();
       if (res.success && res.data.length) {
-        setcategoryArr(res.data.map(el => ({...el, checked: false})));
-        setcategorydata(res.data.map(el => ({label: el.name, value: el._id})));
+        setcategoryArr(res.data.map(el => ({ ...el, checked: false })));
+        setcategorydata(res.data.map(el => ({ label: el.name, value: el._id })));
       }
     } catch (error) {
       console.error(error);
@@ -381,6 +383,55 @@ export default function Register() {
   const [selectedbusitype, setSelectedbusitype] = useState();
   console.log('renderdataaaaaa', selectedbusitype);
 
+  const handlePickProfileImage = async () => {
+    try {
+      ImagePicker.openPicker({
+        // width: 300,
+        // height: 400,
+        cropping: true,
+        freeStyleCropEnabled: true,
+        includeBase64: true,
+      }).then(image => {
+        // console.log(image, image.path.split("/")[image.path.split("/").length - 1]);
+        setProfileImage(`data:${image.mime};base64,${image.data}`);
+      });
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const handlePickBannerImage = async () => {
+    try {
+      ImagePicker.openPicker({
+        // width: 300,
+        // height: 400,
+        cropping: true,
+        freeStyleCropEnabled: true,
+        includeBase64: true,
+      }).then(image => {
+        // console.log(image, image.path.split("/")[image.path.split("/").length - 1]);
+        setBannerImage(`data:${image.mime};base64,${image.data}`);
+      });
+
+      // let file = await DocumentPicker.pickSingle({
+      //   presentationStyle: 'fullScreen',
+      //   type: DocumentPicker.types.images,
+      // });
+      // if (file) {
+      //   console.log(file, 'file');
+      //   let base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
+      //   if (base64) {
+      //     console.log('SETTING BASE ^$', file);
+      //     let image = `data:${file.type};base64,${base64}`
+      //     console.log(image, "image");
+      //     setBannerImage(`${image}`)
+      //   }
+      // }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   const renderItem = item => {
     return (
       <View style={styles1.item}>
@@ -398,10 +449,10 @@ export default function Register() {
     );
   };
 
-  const renderCategory = ({item, index}) => {
+  const renderCategory = ({ item, index }) => {
     return (
       <>
-        <Pressable style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} onPress={() => handleCheckCategory(item._id)}>
+        <Pressable style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} onPress={() => handleCheckCategory(item._id)}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -417,15 +468,15 @@ export default function Register() {
   };
 
   return (
-    <View style={{backgroundColor: 'white'}}>
-      <View style={{alignSelf: 'center'}}>
+    <View style={{ backgroundColor: 'white' }}>
+      <View style={{ alignSelf: 'center' }}>
         <Image source={require('../../assets/img/logo.png')} style={styles1.logosize} resizeMode="contain" />
       </View>
 
       <ScrollView contentContainerStyle={[styles.bgwhite]}>
-        <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{borderRadius: 30, flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden'}}>
-          <View style={{paddingHorizontal: wp(2.5), borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingBottom: wp(20)}}>
-            <View style={[{flex: 1, alignSelf: 'center', alignItems: 'center'}]}>
+        <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ borderRadius: 30, flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden' }}>
+          <View style={{ paddingHorizontal: wp(2.5), borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingBottom: wp(20) }}>
+            <View style={[{ flex: 1, alignSelf: 'center', alignItems: 'center' }]}>
               <View>
                 <Text style={styles1.heading}>Organisation Details</Text>
               </View>
@@ -665,7 +716,7 @@ export default function Register() {
             underlineColorAndroid="#E7E7E8"
           /> */}
 
-            <Text style={{fontSize: 17, marginTop: 15, fontWeight: '600', textAlign: 'center'}}>Contact Person Details</Text>
+            <Text style={{ fontSize: 17, marginTop: 15, fontWeight: '600', textAlign: 'center' }}>Contact Person Details</Text>
             {role !== ROLES_CONSTANT.USER && (
               <>
                 {/* <Text style={{ marginTop: hp(4), color: "black", fontSize: 18, paddingLeft: 5 }}>Company Details</Text> */}
@@ -844,15 +895,11 @@ export default function Register() {
                 underlineColorAndroid="#E7E7E8"
               /> */}
                 <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setGoogleMapsLink(e)} value={googleMapsLink} placeholder="Google Maps Link" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
-                {/* //////new Fields */}
+                <Pressable onPress={() => handlePickProfileImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={profileImage} editable={false} placeholder="Profile Photo" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
+                <Pressable onPress={() => handlePickBannerImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={bannerImage} editable={false} placeholder="Banner Image" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
+                
 
-                {/* <Pressable
-                style={styles1.BorderedPressable}
-                onPress={() => {
-                  handleDocumentPicker();
-                }}>
-                <Text style={styles.borderedPressableText}>{gstCertificate && gstCertificate.name ? gstCertificate?.name : 'Please Upload GST Certificate'}</Text>
-              </Pressable> */}
+
               </>
             )}
 
@@ -902,18 +949,18 @@ export default function Register() {
                 <View style={styles1.modalView}>
                   {modalFor == 'Country' ? (
                     <>
-                      <Text style={{fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold'}}>Country</Text>
+                      <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>Country</Text>
                       <FlatList
                         data={countryArr}
                         keyExtractor={(item, index) => index}
-                        renderItem={({item, index}) => {
+                        renderItem={({ item, index }) => {
                           return (
                             <Pressable
                               onPress={() => {
-                                setcountryId({name: item.name, value: item._id});
+                                setcountryId({ name: item.name, value: item._id });
                                 setModalVisible(false);
                               }}
-                              style={[styles1.BorderedPressable, {width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5)}]}>
+                              style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
                               <Text style={styles1.BorderedPressableText}>{item.name}</Text>
                             </Pressable>
                           );
@@ -922,19 +969,19 @@ export default function Register() {
                     </>
                   ) : modalFor == 'State' ? (
                     <>
-                      <Text style={{fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold'}}>State</Text>
+                      <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>State</Text>
                       <FlatList
                         data={stateArr}
                         keyExtractor={(item, index) => index}
-                        renderItem={({item, index}) => {
+                        renderItem={({ item, index }) => {
                           return (
                             <Pressable
                               onPress={() => {
-                                setstateId({name: item.name, value: item._id});
+                                setstateId({ name: item.name, value: item._id });
                                 setModalVisible(false);
                                 setcityId(null);
                               }}
-                              style={[styles1.BorderedPressable, {width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5)}]}>
+                              style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
                               <Text style={styles1.BorderedPressableText}>{item.name}</Text>
                             </Pressable>
                           );
@@ -943,18 +990,18 @@ export default function Register() {
                     </>
                   ) : (
                     <>
-                      <Text style={{fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold'}}>City</Text>
+                      <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>City</Text>
                       <FlatList
                         data={cityArr}
                         keyExtractor={(item, index) => index}
-                        renderItem={({item, index}) => {
+                        renderItem={({ item, index }) => {
                           return (
                             <Pressable
                               onPress={() => {
-                                setcityId({name: item.name, value: item._id});
+                                setcityId({ name: item.name, value: item._id });
                                 setModalVisible(false);
                               }}
-                              style={[styles1.BorderedPressable, {width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5)}]}>
+                              style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
                               <Text style={styles1.BorderedPressableText}>{item.name}</Text>
                             </Pressable>
                           );
@@ -966,8 +1013,8 @@ export default function Register() {
               </View>
             </Modal>
 
-            <View style={[{marginVertical: 20, alignItems: 'center'}]}>
-              <View style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginBottom: 10, justifyContent: 'center'}}>
+            <View style={[{ marginVertical: 20, alignItems: 'center' }]}>
+              <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginBottom: 10, justifyContent: 'center' }}>
                 <Checkbox.Android
                   status={termsAccepted ? 'checked' : 'unchecked'}
                   onPress={() => {
@@ -979,26 +1026,26 @@ export default function Register() {
 
                 <Text> Please Accept our </Text>
                 <Pressable onPress={() => navigation.navigate('TermsAndConditions')}>
-                  <Text style={{color: 'red', fontFamily: 'Poppins-Medium', fontSize: wp(4), marginTop: 5}}> terms and condition </Text>
+                  <Text style={{ color: 'red', fontFamily: 'Poppins-Medium', fontSize: wp(4), marginTop: 5 }}> terms and condition </Text>
                 </Pressable>
                 <Text>and </Text>
-                <Pressable style={{marginBottom: 5}} onPress={() => navigation.navigate('Privacy')}>
-                  <Text style={{color: 'red', fontFamily: 'Poppins-Medium', marginTop: 5}}> privacy policy</Text>
+                <Pressable style={{ marginBottom: 5 }} onPress={() => navigation.navigate('Privacy')}>
+                  <Text style={{ color: 'red', fontFamily: 'Poppins-Medium', marginTop: 5 }}> privacy policy</Text>
                 </Pressable>
-                <Text style={{marginBottom: 5, marginLeft: 15}}>before registering</Text>
+                <Text style={{ marginBottom: 5, marginLeft: 15 }}>before registering</Text>
               </View>
 
-              <View style={{alignSelf: 'center'}}>
+              <View style={{ alignSelf: 'center' }}>
                 <CustomButtonNew text={'Submit'} paddingHorizontal={wp(8)} buttonColor={'#573C26'} onPress={() => handleSubmit()} />
               </View>
 
-              <Pressable onPress={() => navigation.navigate('Mobilenumber')} style={[{alignItems: 'center', justifyContent: 'center', width: wp(93), marginTop: 10, flexDirection: 'row'}]}>
+              <Pressable onPress={() => navigation.navigate('Mobilenumber')} style={[{ alignItems: 'center', justifyContent: 'center', width: wp(93), marginTop: 10, flexDirection: 'row' }]}>
                 <Text style={styles1.btnTxt}>Already a user ?</Text>
-                <Text style={[styles1.btnTxt, {color: '#C28C28', marginLeft: 10, fontSize: 15, fontFamily: 'Poppins-Medium'}]}>Login</Text>
+                <Text style={[styles1.btnTxt, { color: '#C28C28', marginLeft: 10, fontSize: 15, fontFamily: 'Poppins-Medium' }]}>Login</Text>
               </Pressable>
 
-              <TouchableOpacity onPress={() => navigation.navigate('LegalAbouts')} style={{alignSelf: 'center'}}>
-                <Text style={[styles1.btnTxt, {color: '#C28C28', marginLeft: 10, fontSize: 15, fontFamily: 'Poppins-Medium'}]}>Legal & About</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('LegalAbouts')} style={{ alignSelf: 'center' }}>
+                <Text style={[styles1.btnTxt, { color: '#C28C28', marginLeft: 10, fontSize: 15, fontFamily: 'Poppins-Medium' }]}>Legal & About</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -1035,7 +1082,7 @@ export default function Register() {
                 <DatePicker date={aniversaryDate} mode="date" onDateChange={setAniversaryDate} />
                 <Pressable
                   style={[styles1.button, styles1.buttonClose]}
-                  // onPress={() => setCategoryModal(!categoryModal)}
+                // onPress={() => setCategoryModal(!categoryModal)}
                 >
                   <Text style={styles1.textStyle}>Close</Text>
                 </Pressable>
