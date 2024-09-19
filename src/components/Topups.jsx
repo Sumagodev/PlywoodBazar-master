@@ -14,7 +14,7 @@ export default function Topups(props) {
   const navigation = useNavigation();
 
   const [subscriptionArr, setSubscriptionArr] = useState([]);
-  const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
+  const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState('');
   const getSubscriptions = async () => {
     try {
       let decoded = await getDecodedToken();
@@ -28,7 +28,10 @@ export default function Topups(props) {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (item) => {
+    
+    console.log('selectedSubscriptionObj',selectedSubscriptionObj);
+    
     try {
       let obj = {...selectedSubscriptionObj};
       const {data: res} = await buyTopup(obj);
@@ -83,6 +86,7 @@ export default function Topups(props) {
     );
   };
   const renderMyTopupItem = ({item, index}) => {
+    
     const myItem = {
       description: item?.description,
       validity: 'No Validity',
@@ -93,7 +97,7 @@ export default function Topups(props) {
       numberOfSale: item?.numberOfSales ? item?.numberOfSales : 0,
     };
     return (
-      <MyTopUpItem topUpItem={myItem} onPress={() => handleSubmit()}></MyTopUpItem>
+      <MyTopUpItem topUpItem={myItem} onPress={() => {setSelectedSubscriptionObj(item),handleSubmit(item)}}></MyTopUpItem>
     );
   };
 
@@ -115,11 +119,7 @@ export default function Topups(props) {
           </View>
         )}
 
-        {selectedSubscriptionObj && selectedSubscriptionObj?._id && (
-          <Pressable onPress={() => handleSubmit()} style={[styles.btnbg, {width: wp(90), marginHorizontal: 20, marginBottom: 15}]}>
-            <Text style={styles.textbtn}>Buy Topup</Text>
-          </Pressable>
-        )}
+        
       </View>
       </ImageBackground>
     </>

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   container: {
     margin: 1,
     flexDirection: 'row',
-    backgroundColor: CustomColors.mattBrownFaint,
+    backgroundColor: '#ffffff',
     shadowColor: CustomColors.shadowColorGray,
     shadowRadius: 50,
     elevation: 5,

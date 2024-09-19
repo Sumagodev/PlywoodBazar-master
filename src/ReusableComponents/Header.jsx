@@ -69,6 +69,7 @@ export default function Header(props) {
             sliderBoxHeight={hp(25)}
             autoplay
             circleLoop
+            autoplayInterval={5000} 
             dotStyle={styles1.dotStyle}
             paginationBoxVerticalPadding={0}
             dotColor="#725842"

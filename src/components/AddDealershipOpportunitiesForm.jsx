@@ -18,19 +18,19 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { AddDealershipOpportunities } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-const AddDealershipOpportunitiesForm = ({props,navigation}) => {
+const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
   const [userID, setuserID] = useState('');
-  console.log('userIDuserID',userID);
-  
+  console.log('userIDuserID', userID);
+
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [productsArray, setproductsArray] = useState([]);
-  console.log('productsArray',productsArray);
-  
+  console.log('productsArray', productsArray);
+
   const [selectedBusinessType, setSelectedBusinessType] = useState();
   const [selectedproductsArray, setSelectedproductsArray] = useState();
   const [countryArr, setcountryArr] = useState([]);
@@ -45,11 +45,11 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
   const [file, setFile] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
 
-  console.log('selectedproductsArray', selectedproductsArray);
+  console.log('loggg', stateId);
   const debounceTimeout = useRef(null);
 
   const [selectedItems, setSelectedItems] = useState([]);
-  console.log('selectedItems',selectedItems);
+  console.log('selectedItems', selectedItems);
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
@@ -72,10 +72,10 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
     let res = await getUserById(decodedToken?.userId);
-    console.log('decodedToken?.userId',decodedToken?.userId);
+    console.log('decodedToken?.userId', decodedToken?.userId);
     if (res?.data) {
-     setuserID(res?.data.data._id);
-      
+      setuserID(res?.data.data._id);
+
       setName(res.data.data.companyObj.name);
       setEmail(res.data.data.companyObj.email);
     }
@@ -177,19 +177,87 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
     setSelectedItems([]);
   };
 
-  const handleSubmit1 = () => {
-    const error = validateForm();
-    if (error) {
-      Alert.alert('Validation Error', error);
-      return;
-    }
-    Alert.alert('Success', 'Dealership Opportunity Submitted Successfully');
-    resetForm();
-  };
 
+
+  // const handleSubmit = async () => {
+  //   try {
+
+  //     if (!name) {
+  //       errorToast('Name is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a business type is selected
+  //     if (!selectedBusinessType) {
+  //       errorToast('Business Type is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a brand is provided
+  //     if (!brand) {
+  //       errorToast('Brand is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a product is selected
+  //     if (!selectedproductsArray) {
+  //       errorToast('Product is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a city is selected
+  //     if (!selectedItems || selectedItems.length === 0) {
+  //       errorToast('City is Required');
+  //       return;
+  //     }
+
+  //     // Validate if an image is selected
+  //     if (!fileBase64) {
+  //       errorToast('Image is Required');
+  //       return;
+  //     }
+
+  //     // Validate if an image is selected
+  //     if (!cityId.length < 1) {
+  //       errorToast('City is Required');
+  //       return;
+  //     }
+  //     // Validate if an image is selected
+  //     if (!stateId) {
+  //       errorToast('State is Required');
+  //       return;
+  //     }
+
+  //     let obj = {
+  //       Organisation_name: name,
+  //       Type: selectedBusinessType,
+  //       Brand: brand,
+  //       productId: selectedproductsArray._id,
+  //       userId: userID,
+  //       cityId: selectedItems,
+  //       stateId: stateId.value,
+  //       image: fileBase64,
+  //       Product: selectedproductsArray.name
+  //     };
+  //     console.log('obj', obj);
+
+  //     const { data: res } = await AddDealershipOpportunities(obj);
+  //     if (res) {
+  //       toastSuccess(res.message);
+  //       console.log('');
+
+  //       navigation.goBack();
+  //       resetForm();
+  //     }
+  //   } catch (error) {
+  //     errorToast(error);
+  //     console.log('errorToast', errorToast);
+
+  //   }
+  // };
   const handleSubmit = async () => {
     try {
-      
+      // Validate if a name is provided
       if (!name) {
         errorToast('Name is Required');
         return;
@@ -208,7 +276,7 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
       }
   
       // Validate if a product is selected
-      if (!selectedproductsArray) {
+      if (!selectedproductsArray || !selectedproductsArray._id) {
         errorToast('Product is Required');
         return;
       }
@@ -224,30 +292,35 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
         errorToast('Image is Required');
         return;
       }
-       
-       // Validate if an image is selected
-       if (!cityId.length<1) {
+  
+   
+      if (!cityId < 1) {
         errorToast('City is Required');
         return;
       }
-       // Validate if an image is selected
-       if (!stateId) {
+  
+      // Validate if stateId is selected
+      if (!stateId || !stateId.value) {
         errorToast('State is Required');
         return;
       }
-      
+  
+      // Prepare the object
       let obj = {
         Organisation_name: name,
         Type: selectedBusinessType,
-        Brand:brand,
-        productId:selectedproductsArray._id,
-        userId:userID,
-        cityId:selectedItems,
-        stateId:stateId.value,
-        image:fileBase64,
-        Product:selectedproductsArray.name
+        Brand: brand,
+        productId: selectedproductsArray._id,
+        userId: userID,
+        cityId: selectedItems,
+        stateId: stateId.value,
+        image: fileBase64,
+        Product: selectedproductsArray.name
       };
-
+  
+      console.log('Submitting object:', obj);
+  
+      // Submit data
       const { data: res } = await AddDealershipOpportunities(obj);
       if (res) {
         toastSuccess(res.message);
@@ -255,9 +328,11 @@ const AddDealershipOpportunitiesForm = ({props,navigation}) => {
         resetForm();
       }
     } catch (error) {
-      errorToast(error);
+      errorToast('An error occurred while submitting.');
+      console.log('Error:', error);
     }
   };
+  
   const handleDocumentPicker = async () => {
     try {
       ImagePicker.openPicker({

@@ -21,6 +21,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function Userprofile1(props) {
   const [userObj, setUserObj] = useState(null);
+  console.log('userObj',userObj);
+  
   const navigation = useNavigation();
   const focused = useIsFocused();
   const getUserObj = async () => {
@@ -130,10 +132,11 @@ export default function Userprofile1(props) {
               <Text style={styles1.nameheading}> {userObj?.role}</Text>
             </View>
 
-            <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Country</Text>
+           {/* <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Country</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
               <Text style={styles1.nameheading}>{userObj?.countryObj?.name}</Text>
             </Pressable>
+            */}
             <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>State</Text>
             <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
               <Text style={styles1.nameheading}>{userObj?.stateObj?.name}</Text>

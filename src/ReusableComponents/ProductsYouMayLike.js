@@ -5,10 +5,10 @@ import { Dimensions } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
 import CustomButtonOld from './CustomButtonOld.js';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
-
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }) => {
     return (
       <View>
@@ -25,7 +25,7 @@ const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }
                 </View>
                 <View style={styles.callIconContainer}>
                 <TouchableOpacity onPress={onCallPress}>
-                  <Image style={styles.callIcon} source={require('../../assets/img/phone.png')} />
+                  <Ionicons  name="call" size={wp(6)} color="#FFFFFF" />
                 </TouchableOpacity>
                 </View>
             </View>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         width: (Dimensions.get('window').width / 1.9) - 10, // Width for two columns
         height: screenWidth * 0.64, // Adjust the height for a fixed but scalable size
-        elevation: 10,
+  
         margin: 5,
         overflow: 'hidden',
     },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         top: '45%', // Center vertically in the upper half
         left: '50%', // Center horizontally
         transform: [{ translateX: -25 }], // Adjust for centering
-        backgroundColor: 'white',
+        backgroundColor: '#04AA6D',
         height: 50, // Slightly larger than icon
         width: 50, // Slightly larger than icon
         borderRadius: 25, // Half of the height/width for perfect circle

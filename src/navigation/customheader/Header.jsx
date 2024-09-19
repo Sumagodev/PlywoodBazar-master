@@ -10,7 +10,7 @@ export default function Header(props) {
   return (
     <View style={styles.rowStyle}>
       {props.normal && (
-        <Image style={styles.logoStyle} source={require('../../../assets/img/logo.png')}/>
+        <Image style={styles.logoStyle} source={require('../../../assets/img/logonew.png')}/>
       )}
 
       {props.stackHeader && (
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
   },
   logoStyle: {
     width: '100%',
-    height: wp(12),
+    height: wp(13.5),
+    resizeMode:"contain"
   },
   categry: {
     fontSize: wp(6),

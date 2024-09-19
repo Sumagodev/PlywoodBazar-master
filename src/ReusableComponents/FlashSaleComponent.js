@@ -64,10 +64,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: wp(30),
-    height: wp(50),
+    width: wp(35),
+    height: wp(58),
     borderRadius: 10,
-    backgroundColor: '#005AAB',
+    backgroundColor: 'red',
     overflow: 'hidden',
   },
   linesContainer: {

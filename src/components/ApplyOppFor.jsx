@@ -193,6 +193,7 @@ const ApplyOppFor = ({route,navigation}) => {
 
  
   const handleSubmit = async () => {
+   
     try {
       if (`${name}` === '') {
         errorToast('Name is Required');

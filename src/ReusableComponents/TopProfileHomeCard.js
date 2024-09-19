@@ -6,7 +6,9 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Rating } from 'react-native-ratings';
 import CustomColors from '../styles/CustomColors';
 
-const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPress }) => {
+const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPress ,item}) => {
+  console.log('og',item);
+  
   const [imageFailed, setImageFailed] = useState(false); // State to track image failure
 
   return (

@@ -48,6 +48,8 @@ console.log(JSON.stringify(props,null,2),"propspropspropspropsprops")
   };
 
   const handleSubmit = async () => {
+    console.log('selectedSubscriptionObj',selectedSubscriptionObj);
+    
     try {
       let obj = {...selectedSubscriptionObj};
       const {data: res} = await buySubscription(obj);

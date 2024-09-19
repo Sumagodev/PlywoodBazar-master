@@ -1075,7 +1075,7 @@ const Filtercategory = (props) => {
                   style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                   onPress={() => this.RBSheet.close()}
                 >
-                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Close</Text>
+                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Apply</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>

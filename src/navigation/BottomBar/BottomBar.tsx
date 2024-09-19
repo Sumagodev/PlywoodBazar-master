@@ -23,7 +23,7 @@ function MyTabBar({ state, descriptors, navigation }) {
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: '#5a432f',
+        backgroundColor: '#cc8d19',
         paddingHorizontal: wp(3),
         paddingVertical: wp(3),
         justifyContent: 'space-between',
@@ -74,12 +74,12 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={[ styles.navItem, isFocused && styles.selectedItem,]}
           >
             {
-              label.toLowerCase() === 'home' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="home-variant" style={isFocused ? styles.iconSelected : styles.iconDefault} />) :
-              label.toLowerCase() === 'shop' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="store" style={isFocused ? styles.iconSelected : styles.iconDefault} />) : 
-              label.toLowerCase() === 'search' ? ( <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
-              label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
+              label.toLowerCase() === 'home' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="home-variant" style={isFocused ? styles.iconSelected : styles.iconDefault} />) :
+              label.toLowerCase() === 'shop' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="store" style={isFocused ? styles.iconSelected : styles.iconDefault} />) : 
+              label.toLowerCase() === 'search' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
+              label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
               (
-                <Icon color={isFocused ? '#5a432f' : 'white'} size={wp(6)} name={isAuthorized ? "account-check" : "account-arrow-right"} style={isFocused ? styles.iconSelected : styles.iconDefault} />
+                <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name={isAuthorized ? "account-check" : "account-arrow-right"} style={isFocused ? styles.iconSelected : styles.iconDefault} />
               )
             }
             <Text style={[ styles.label, isFocused && styles.selectedLabel,]}>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
   },
   selectedLabel: {
-    color: '#5a432f',
+    color: '#cc8d19',
     fontSize: wp(4),
   },
 })

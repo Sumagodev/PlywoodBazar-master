@@ -130,6 +130,7 @@ const ApplyDealershipOpportunitiesForm = props => {
   }, []);
 
   const handleSubmit = () => {
+    Alert.alert('hiii')
     // Basic validation
     if (!name || !type || !productName || !location || !brand || !email) {
       Alert.alert('Validation Error', 'All fields marked with * are required.');
@@ -145,6 +146,10 @@ const ApplyDealershipOpportunitiesForm = props => {
     Alert.alert('Success', 'Dealership Opportunity Submitted Successfully');
     // Clear the form or send data to the backend
   };
+
+
+
+  
   // const renderItem = item => {
   //   return (
   //     <View style={styles1.item}>

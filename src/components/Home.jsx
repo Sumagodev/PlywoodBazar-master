@@ -71,8 +71,8 @@ export default function Home() {
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const [topprofiles, settopprofiles] = useState([]);
   const [stateDetailss, setstateDetails] = useState([]);
-  console.log('stateDetailss',stateDetailss);
-  
+  console.log('stateDetailss', stateDetailss);
+
   const { height, width } = useWindowDimensions();
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -113,7 +113,7 @@ export default function Home() {
         return 0;
       }
       // Linking.openURL(tel:${phone});
-      navigate.navigate('Supplier', { data: item }) 
+      navigate.navigate('Supplier', { data: item })
     }
     else {
       navigate.navigate('Login')
@@ -187,7 +187,7 @@ export default function Home() {
       let { data: res } = await addUserRequirement(obj);
 
       if (res.message) {
-        console.log('xxxxxxx',res.message)
+        console.log('xxxxxxx', res.message)
         toastSuccess(res.message);
         // Alert.alert(res.message)
         setName('');
@@ -343,7 +343,7 @@ export default function Home() {
       }
     } catch (err) {
       errorToast(err);
-    } 
+    }
   };
   const handlestates = async () => {
     try {
@@ -351,7 +351,7 @@ export default function Home() {
       if (res.data) {
 
         setstateDetails(res.data);
-       
+
 
       }
     } catch (err) {
@@ -498,14 +498,16 @@ export default function Home() {
       navigate.navigate('Login')
     }
   }
-  const GotoFlashSaleCallIcon = () => {
+  const GotoFlashSaleCallIcon = (item) => {
+    console.log('calldta',item.productId.createdByObj.phone);
+    
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         errorToast('You do not have a valid subscription to perform this action');
         navigate.navigate('Subscriptions', { register: false })
         return 0;
       }
-      handelcallbtn(item?.phone) 
+      handelcallbtn(item?.productId?.createdByObj?.phone)
     }
     else {
       errorToast('You need to login first to use this feature');
@@ -545,13 +547,13 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <Pressable onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}>
+    return <TouchableOpacity onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}>
       <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} />
-    </Pressable>
+    </TouchableOpacity>
   };
 
   const renderNewArrivals = ({ item, index }) => {
-    console.log('zxcv',JSON.stringify(item))
+    console.log('zxcv', JSON.stringify(item))
     // return <NewArrivalProductCardVertical horizontal newProductItem={{ imagePath: require('../../assets/img/ply_sample.png'), isVerified: true, name: item.productSlug, location: 'Nashik' }} ></NewArrivalProductCardVertical>;
     return <NewArrivalProductCardVertical horizontal newProductItem={item} image={{ uri: generateImageUrl(item?.image) }} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
   };
@@ -583,7 +585,7 @@ export default function Home() {
           offPercentage={item?.discountValue}
           discountType={item?.discountType}
           EndDate={item?.endDate}
-          onCallPress={() => { GotoFlashSaleCallIcon()}}
+          onCallPress={() => { GotoFlashSaleCallIcon(item) }}
         ></FlashSaleItemWithDiscount>
       </View>
     );
@@ -633,14 +635,14 @@ export default function Home() {
   const renderOpportunities = ({ item, index }) => {
     return (
       // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
-      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true ,stateName: item?.stateName }} onApplyPress={()=>{gotoApplyOpportunities(item)}} ></OpportunitiesItem>
+      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
     );
   };
 
 
 
   const GotoProductspage = () => {
-     navigate.navigate('AllProducts', { type: '' })
+    navigate.navigate('AllProducts', { type: '' })
     // if (isAuthorized) {
     //   // if (!currentUserHasActiveSubscription) {
     //   //   errorToast('You do not have a valid subscription to perform this action');
@@ -724,7 +726,7 @@ export default function Home() {
         return 0;
       }
 
-      navigate.navigate('ApplyOppFor', { Data:item })
+      navigate.navigate('ApplyOppFor', { Data: item })
 
     }
     else {
@@ -872,22 +874,18 @@ export default function Home() {
               </LinearGradient>
 
 
-          {isAuthorized==='false' && (
-            <View style={{ marginVertical: wp(5) }}>
-              <StartBusinessBanner />
-            </View>
-          )}
+              {isAuthorized === 'false' && (
+                <View style={{ marginVertical: wp(5) }}>
+                  <StartBusinessBanner />
+                </View>
+              )}
 
-              <ImageBackground
-                source={require('../../assets/img/bgtopprofile.png')}
-                style={styles1.topprofilewrap}
-                imageStyle={styles1.imagebg}
-              >
+         
                 <Text style={styles1.topprofiletext} >Top Profiles</Text>
                 <Carousel
                   data={topprofiles}
                   renderItem={({ item }) => (
-                    <TopProfileHomeCard title={item.name} image={{ uri: generateImageUrl(item.profileImage) }} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} />
+                    <TopProfileHomeCard title={item.companyName} image={{ uri: generateImageUrl(item.bannerImage) }} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
                   )}
                   sliderWidth={wp(100)}
                   itemWidth={wp(80)}
@@ -901,7 +899,6 @@ export default function Home() {
                   contentContainerStyle={{ marginBottom: wp(5) }}
                 />
 
-              </ImageBackground>
 
               <LinearGradient
                 colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']} // Gradient colors (left to right)
@@ -933,8 +930,14 @@ export default function Home() {
                 </View>
 
               </LinearGradient>
+              <LinearGradient
 
-              {/* <View style={styles1.flexbetwen}> 
+                colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 1, y: 1 }}
+                style={{ marginTop: wp(5), paddingBottom: wp(5) }}
+              >
+                {/* <View style={styles1.flexbetwen}> 
                 <Text style={styles1.headingmain}>New Products</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
                   <Text style={styles1.viewall}>View All</Text>
@@ -942,28 +945,28 @@ export default function Home() {
               </View>
               <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} /> */}
 
-              <View style={[styles.padinghr, styles1.flexbetwen]}>
-                <Text style={[styles1.headingmain, { fontWeight: 800, color: 'black', marginBottom: wp(5) }]}>Flash Sales</Text>
-                <Pressable onPress={() => navigate.navigate('AllProducts')}>
-                  <CustomButtonOld textSize={wp(4)} text={"Add"} onPress={() => { GotoFlash() }}></CustomButtonOld>
-                </Pressable>
-              </View>
-              <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), }}
-              >
-                <FlashSaleComponent style={[styles.padinghr, { position: 'absolute' }]}></FlashSaleComponent>
-                <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
-              </View>
+                <View style={[styles.padinghr, styles1.flexbetwen]}>
+                  <Text style={[styles1.headingmain, { fontWeight: 800, color: 'black', marginBottom: wp(5) }]}>Flash Sales</Text>
+                  <Pressable onPress={() => navigate.navigate('AllProducts')}>
+                    <CustomButtonOld textSize={wp(4)} text={"Add"} onPress={() => { GotoFlash() }}></CustomButtonOld>
+                  </Pressable>
+                </View>
+                <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), }}
+                >
+                  <FlashSaleComponent style={[styles.padinghr, { position: 'absolute' }]}></FlashSaleComponent>
+                  <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
+                </View>
 
-
+              </LinearGradient>
 
 
               <View>
 
-                <Text style={{ alignSelf: 'center', fontSize: wp(6), marginVertical: wp(3) }} numberOfLines={1} ellipsizeMode="tail">States</Text>
+                <Text style={[styles1.headingmain, { marginBottom: wp(5) ,alignSelf:'center'}]} numberOfLines={1} ellipsizeMode="tail">States</Text>
                 <Carousel
                   data={stateDetailss}
                   renderItem={({ item }) => (
-                    <StateItem item={item} onPress={() => {navigate.navigate('VendorListByState',{data:item,xState:item?.stateId?._id})}}></StateItem>
+                    <StateItem item={item} onPress={() => { navigate.navigate('VendorListByState', { data: item, xState: item?.stateId?._id }) }}></StateItem>
                   )}
                   sliderWidth={wp(100)}
                   itemWidth={wp(35)}
@@ -980,7 +983,7 @@ export default function Home() {
               </View>
 
               <View style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center', justifyContent: 'space-between', marginBottom: wp(2), paddingBottom: wp(2.5) }]}>
-                <Text style={[styles1.headingmain, { marginBottom: wp(5) }]}>Dealership Opportunities</Text>
+                <Text style={[styles1.headingmain, { marginBottom: wp(5) }]}>Dealership/Franchise Opportunities</Text>
                 <AddOpportunitiesHomeBanner style={{ marginTop: wp(5) }} onPress={() => Gotoopportunities()}></AddOpportunitiesHomeBanner>
               </View>
 
@@ -1023,8 +1026,8 @@ export default function Home() {
                   }
 
                   } inputType='number' maxLength={10} value={phone} /><View style={{ height: wp(1) }} />
-                  <CustomTextInputField placeholder='Address*' onChangeText={value => setAddressInFormFiled(value)}  value={addressInFromFiled}/>
-                  <View style={{ height: wp(1) }}  />
+                  <CustomTextInputField placeholder='Address*' onChangeText={value => setAddressInFormFiled(value)} value={addressInFromFiled} />
+                  <View style={{ height: wp(1) }} />
                   <CustomTextInputField placeholder='Product/Service*' onChangeText={value => setProductName(value)} value={productName} />
                   <View style={{ height: wp(1) }} />
                 </View>
@@ -1053,7 +1056,7 @@ export default function Home() {
                     <Text style={styles1.textStyle}>Apply Form</Text>
                     <View style={styles1.textFieldContainer}>
                       <View style={{ height: wp(1) }} />
-                      <CustomTextInputField placeholder='Organization Name*' onChangeText={value => setOrganizationName(value)} /><View style={{ height: wp(1) }} />
+                      <CustomTextInputField placeholder='Organization Name*' onChangeText={value => setOrganizationName(value)} /><View style={{ height: wp(1)}} />
                       <CustomTextInputField placeholder='Type*' onChangeText={value => setType(value)} /><View style={{ height: wp(1) }} />
                       <CustomTextInputField placeholder='Product' onChangeText={value => setProductName(value)} /><View style={{ height: wp(1) }} />
                       <CustomTextInputField placeholder='Brand' onChangeText={value => setBrand(value)} /><View style={{ height: wp(1) }} />
