@@ -46,7 +46,7 @@ export default Login = () => {
         <View style={styles.container}>
           <View style={styles.logoContainer}>
             <Image
-              source={require('../images/logo1.png')}
+              source={require('../../assets/img/logonew.png')}
               style={styles.logo}
               resizeMode="center"
             />

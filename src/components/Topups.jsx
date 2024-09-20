@@ -14,7 +14,7 @@ export default function Topups(props) {
   const navigation = useNavigation();
 
   const [subscriptionArr, setSubscriptionArr] = useState([]);
-  const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState('');
+  const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
   const getSubscriptions = async () => {
     try {
       let decoded = await getDecodedToken();
@@ -28,25 +28,31 @@ export default function Topups(props) {
     }
   };
 
+  useEffect(() => {
+    if (selectedSubscriptionObj) {
+      handleSubmit(selectedSubscriptionObj);
+    }
+  }, [selectedSubscriptionObj]);
+
+
+
   const handleSubmit = async (item) => {
-    
-    console.log('selectedSubscriptionObj',selectedSubscriptionObj);
-    
+    if (!item) return; // Prevent execution if no subscription is selected
+
+    console.log('Selected Subscription:', item);
+
     try {
-      let obj = {...selectedSubscriptionObj};
-      const {data: res} = await buyTopup(obj);
+      const {data: res} = await buyTopup(item);
       if (res) {
         toastSuccess(res.message);
         if (res?.data && res?.data.instrumentResponse) {
-            let instrumentResponse = res?.data.instrumentResponse;
-            if (instrumentResponse?.redirectInfo) {
-               navigation.navigate("PaymentWebView", { url: instrumentResponse?.redirectInfo.url })
-             return 0
-            }
+          let instrumentResponse = res?.data.instrumentResponse;
+          if (instrumentResponse?.redirectInfo) {
+            navigation.navigate("PaymentWebView", { url: instrumentResponse?.redirectInfo.url });
+            return;
+          }
         } else {
-            errorToast(
-                "Phonepe is not working.Please Try Some another Payment Method"
-            );
+          errorToast("Phonepe is not working. Please Try Some another Payment Method");
         }
       }
     } catch (error) {
@@ -54,37 +60,7 @@ export default function Topups(props) {
     }
   };
 
-  const renderSubscriptionItem = ({item, index}) => {
-    return (
-      <Pressable onPress={() => setSelectedSubscriptionObj(item)} style={[styles1.card_main, {marginTop: 20}, selectedSubscriptionObj?._id == item?._id && {borderColor: '#B08218'}]}>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text style={styles1.nameheading}>{item?.name}</Text>
-        </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text>Description : </Text>
-          <Text>{item?.description}</Text>
-        </View>
-
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text>Price : </Text>
-          <Text>₹ {item?.price}</Text>
-        </View>
-
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text>Number of Advertisement :</Text>
-          <Text>
-            {item?.numberOfAdvertisement} for {item?.advertisementDays} days
-          </Text>
-        </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text>Number Of Sales :</Text>
-          <Text>
-            {item?.numberOfSales ? item?.numberOfSales : 0} for {item?.saleDays} days
-          </Text>
-        </View>
-      </Pressable>
-    );
-  };
+  
   const renderMyTopupItem = ({item, index}) => {
     
     const myItem = {
@@ -97,7 +73,7 @@ export default function Topups(props) {
       numberOfSale: item?.numberOfSales ? item?.numberOfSales : 0,
     };
     return (
-      <MyTopUpItem topUpItem={myItem} onPress={() => {setSelectedSubscriptionObj(item),handleSubmit(item)}}></MyTopUpItem>
+      <MyTopUpItem topUpItem={myItem} onPress={() => {setSelectedSubscriptionObj(item)}}></MyTopUpItem>
     );
   };
 

@@ -105,7 +105,7 @@ export default VerifyOtp = ({route}) => {
       <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../images/logo1.png')} // Replace with your actual logo image
+          source={require('../../assets/img/logonew.png')} // Replace with your actual logo image
           style={styles.logo}
           resizeMode="center"
         />

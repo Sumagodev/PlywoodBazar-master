@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         width: (Dimensions.get('window').width / 1.9) - 10, // Width for two columns
         height: screenWidth * 0.64, // Adjust the height for a fixed but scalable size
-  
         margin: 5,
         overflow: 'hidden',
+        borderColor:'#AEAEAE',
+        borderWidth:wp(0.05)
     },
     elevatedContainer: {
         flex: 1,

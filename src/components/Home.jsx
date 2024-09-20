@@ -825,63 +825,39 @@ export default function Home() {
                 contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
               /> */}
 
-              <View style={[styles.padinghr, styles1.flexbetwen]}>
-                <Text style={styles1.headingmain}>Products You May Like</Text>
-                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => GotoProductspage()} />
-              </View>
-              <FlatList
-                style={styles.mttop10}
-                contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }}
-                data={likeproductarray}
-                horizontal
-                columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
-                renderItem={renderProductsYouMayLike}
-                keyExtractor={(item, index) => `${index}`}
-              />
+<LinearGradient
 
+colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
+start={{ x: 0, y: 1 }}
+end={{ x: 1, y: 1 }}
+style={{ marginTop: wp(5), paddingBottom: wp(5) }}
+>
+<View style={[styles.padinghr, styles1.flexbetwen, { marginBottom: wp(6) }]}>
+  {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
+  <Text style={{ fontSize: wp(6), fontWeight: 800, color: 'white' }}>New Arrivals</Text>
+  <Pressable >
+    <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => GotoAddProduct()} />
+  </Pressable>
+</View>
+<Carousel
+  data={advertisementsArr}
+  renderItem={renderNewArrivals}
+  sliderWidth={wp(100)}
+  itemWidth={wp(45)}
+  loop={true}
+  autoplay={true}
+  autoplayDelay={1000}
+  autoplayInterval={3000}
+  layout={'default'}
+  inactiveSlideScale={0.78}
+  inactiveSlideOpacity={1}
+  contentContainerStyle={{}
 
+  }
+/>
+</LinearGradient>
 
-              <LinearGradient
-
-                colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 1 }}
-                style={{ marginTop: wp(5), paddingBottom: wp(5) }}
-              >
-                <View style={[styles.padinghr, styles1.flexbetwen, { marginBottom: wp(6) }]}>
-                  {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
-                  <Text style={{ fontSize: wp(6), fontWeight: 800, color: 'white' }}>New Arrivals</Text>
-                  <Pressable >
-                    <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => GotoAddProduct()} />
-                  </Pressable>
-                </View>
-                <Carousel
-                  data={advertisementsArr}
-                  renderItem={renderNewArrivals}
-                  sliderWidth={wp(100)}
-                  itemWidth={wp(45)}
-                  loop={true}
-                  autoplay={true}
-                  autoplayDelay={1000}
-                  autoplayInterval={3000}
-                  layout={'default'}
-                  inactiveSlideScale={0.78}
-                  inactiveSlideOpacity={1}
-                  contentContainerStyle={{}
-
-                  }
-                />
-              </LinearGradient>
-
-
-              {isAuthorized === 'false' && (
-                <View style={{ marginVertical: wp(5) }}>
-                  <StartBusinessBanner />
-                </View>
-              )}
-
-         
-                <Text style={styles1.topprofiletext} >Top Profiles</Text>
+<Text style={styles1.topprofiletext} >Top Profiles</Text>
                 <Carousel
                   data={topprofiles}
                   renderItem={({ item }) => (
@@ -899,6 +875,22 @@ export default function Home() {
                   contentContainerStyle={{ marginBottom: wp(5) }}
                 />
 
+              
+
+
+
+            
+
+
+              {isAuthorized === 'false' && (
+                <View style={{ marginVertical: wp(5) }}>
+                  <StartBusinessBanner />
+                </View>
+              )}
+
+         
+               
+
 
               <LinearGradient
                 colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']} // Gradient colors (left to right)
@@ -909,7 +901,8 @@ export default function Home() {
 
 
                 <View style={[styles1.textwrap]}>
-                  <Text style={{ fontSize: wp(3.5) }}>Unlock Endless Possibilities With Our</Text>
+                  <Text style={{ fontSize: wp(3.5) }}>Unlock endless possibilities</Text>
+                  <Text style={{ fontSize: wp(3.5) }}>with our</Text>
                   <View style={{ flexDirection: 'row', marginTop: 0 }}>
                     <Text style={{ fontSize: wp(4.5), color: '#FFFFFF', fontWeight: 'bold' }}>Subscription!</Text>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: wp(1), height: wp(6), width: wp(6) }}>
@@ -924,19 +917,19 @@ export default function Home() {
                 </View>
                 <View style={styles1.imagewrap}>
                   <Image
-                    source={require('../../assets/img/table.png')} // Replace with your image path
+                    source={require('../../assets/img/hero2.png')} // Replace with your image path
                     style={styles1.image1}
                   />
                 </View>
 
               </LinearGradient>
-              <LinearGradient
+              {/* <LinearGradient
 
                 colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 1, y: 1 }}
                 style={{ marginTop: wp(5), paddingBottom: wp(5) }}
-              >
+              > */}
                 {/* <View style={styles1.flexbetwen}> 
                 <Text style={styles1.headingmain}>New Products</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
@@ -957,12 +950,25 @@ export default function Home() {
                   <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
                 </View>
 
-              </LinearGradient>
+              {/* </LinearGradient> */}
 
+              <View style={[styles.padinghr, styles1.flexbetwen]}>
+                <Text style={styles1.headingmain}>Products You May Like</Text>
+                <CustomButtonOld textSize={wp(4)} text="View All" onPress={() => GotoProductspage()} />
+              </View>
+              <FlatList
+                style={styles.mttop10}
+                contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }}
+                data={likeproductarray}
+                horizontal
+                columnWrapperStyle={styles.columnWrapper} // Style for aligning columns
+                renderItem={renderProductsYouMayLike}
+                keyExtractor={(item, index) => `${index}`}
+              />
 
               <View>
 
-                <Text style={[styles1.headingmain, { marginBottom: wp(5) ,alignSelf:'center'}]} numberOfLines={1} ellipsizeMode="tail">States</Text>
+                <Text style={[styles1.headingmain, { marginVertical:wp(5), marginBottom: wp(5) ,alignSelf:'center'}]} numberOfLines={1} ellipsizeMode="tail">States</Text>
                 <Carousel
                   data={stateDetailss}
                   renderItem={({ item }) => (
