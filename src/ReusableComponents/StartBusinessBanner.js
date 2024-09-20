@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   freeStyle: {
-    color: '#5a432f',
+    color: '#cc8d19',
     borderRadius: 50,
     backgroundColor: '#fae1cc',
     paddingHorizontal: wp(4),

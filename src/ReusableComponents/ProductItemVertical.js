@@ -31,10 +31,10 @@ const ProductItemVertical = ({ onEditPress, product,onDeletePress }) => {
                 
             </View>
             <View style={{flexDirection:'row',justifyContent:'flex-end',marginRight:wp(3),flex:1,alignSelf:'flex-end'}}>
-            <TouchableOpacity style={{marginHorizontal: 10, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'#674c35', marginVertical: 2}} onPress={onDeletePress}>
+            <TouchableOpacity style={{marginHorizontal: 10, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'#cc8d19', marginVertical: 2}} onPress={onDeletePress}>
             <FontAwesomeIcon name="trash-o" size={wp(5)}  color='#fff' />
           </TouchableOpacity>
-          <TouchableOpacity style={{marginHorizontal: 1, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'#674c35'}} onPress={onEditPress}>
+          <TouchableOpacity style={{marginHorizontal: 1, width:wp(10), height:wp(10),display:'flex', alignItems:'center', justifyContent:'center',  borderRadius:50, backgroundColor:'#cc8d19'}} onPress={onEditPress}>
             <FontAwesomeIcon name="edit" size={wp(5)} color='#fff' />
           </TouchableOpacity>
           
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     headStyle:{
-        color: '#5a432f',
+        color: '#cc8d19',
         textAlign: 'center',
         fontSize: wp(4),
         fontWeight: 'bold',

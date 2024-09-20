@@ -100,7 +100,7 @@ const styles1 = StyleSheet.create({
     flexDirection: 'row',
   },
   callwrap1: {
-    backgroundColor: CustomColors.mattBrownDark,
+    backgroundColor: CustomColors.colorNewButton,
     borderRadius: wp(9),
     alignItems: 'center',
     marginHorizontal: wp(1.2),

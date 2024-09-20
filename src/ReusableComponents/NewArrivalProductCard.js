@@ -38,7 +38,7 @@ const NewArrivalProductCard = ({ imagePath, name, price, location, isVerified = 
               )}
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={[styles.textPrice]} numberOfLines={1} ellipsizeMode='tail' >₹{price}</Text>
+              <Text style={[styles.textPrice]} numberOfLines={1} ellipsizeMode='tail' >{price}</Text>
           
 
             </View>

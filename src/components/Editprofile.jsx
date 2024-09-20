@@ -44,8 +44,8 @@ export default function Editprofile(props) {
   const [bannerImage, setBannerImage] = useState('');
   const [brandNames, setBrandNames] = useState('');
   const [aniversaryDateModal, setAniversaryDateModal] = useState(false);
-  console.log('stateId', stateId);
-  console.log('cityId', cityId);
+  console.log('stateIdx', stateId);
+  console.log('cityIdx', cityId);
 
   const [profileImage, setProfileImage] = useState('');
   const [signature, setsignature] = useState('');
@@ -69,11 +69,16 @@ export default function Editprofile(props) {
   const [stateArr, setstateArr] = useState([]);
   const [cityArr, setcityArr] = useState([]);
 
+  const [selectedStateName, setSelectedStateName] = useState('');
+
+  const [selectedCityName, setSelectedCityName] = useState('');
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
   const [selected, setSelected] = useState([]);
   console.log('cityyyyy', cityArr);
   const focused = useIsFocused();
+
 
   const getUserObj = async () => {
     try {
@@ -82,7 +87,7 @@ export default function Editprofile(props) {
       console.log("name organation===========", res, "end ===================")
 
       if (res) {
-        console.log(res.data);
+        console.log('updatex',JSON.stringify(res.data));
         setUserObj(res.data);
         setemail(res?.data?.email);
         setName(res?.data?.name);
@@ -105,6 +110,7 @@ export default function Editprofile(props) {
         setgstCertificate(res?.data?.documents[0]?.image);
         setcountryId(res?.data?.countryId);
         setstateId(res?.data?.stateId);
+        console.log('xState',res?.data?.stateId)
         setcityId(res?.data?.cityId);
         setNatureOfBusiness(res?.data?.companyObj?.natureOfBusiness);
         setAnnualTurnover(res?.data?.companyObj?.annualTurnover);
@@ -118,6 +124,8 @@ export default function Editprofile(props) {
         setGoogleMapsLink(res?.data?.companyObj?.googleMapsLink);
         setImagesArr(res?.data?.imagesArr && res?.data?.imagesArr.length > 0 ? res?.data?.imagesArr : [{ image: '' }]);
         setVideoArr(res?.data?.videoArr && res?.data?.videoArr.length > 0 ? res?.data?.videoArr : [{ video: '' }]);
+        setSelectedStateName(res?.data?.stateObj?.name)
+        setSelectedCityName(res?.data?.cityObj?.name)
       }
     } catch (error) {
       errorToast(error);
@@ -610,7 +618,7 @@ export default function Editprofile(props) {
                     setModalVisible(true);
                     setModalFor('State');
                   }}>
-                  <Text style={styles.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
+                  <Text style={styles.borderedPressableText}>{selectedStateName ? selectedStateName : ' State *'}</Text>
                 </Pressable>
                 <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5),bottom:wp(-3) }]}>City</Text>
                 <Pressable
@@ -619,7 +627,7 @@ export default function Editprofile(props) {
                     setModalVisible(true);
                     setModalFor('City');
                   }}>
-                  <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'City *'}</Text>
+                  <Text style={styles.borderedPressableText}>{selectedCityName ? selectedCityName: 'City *'}</Text>
                 </Pressable>
 
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -755,7 +763,9 @@ export default function Editprofile(props) {
                               onPress={() => {
                                 setstateId({ name: item.name, value: item._id });
                                 setModalVisible(false);
+                                setSelectedStateName(item.name)                                
                                 setcityId(null);
+                                setSelectedCityName('')
                               }}
                               style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
                               <Text style={styles1.BorderedPressableText}>{item.name}</Text>
@@ -776,6 +786,7 @@ export default function Editprofile(props) {
                               onPress={() => {
                                 setcityId({ name: item.name, value: item._id });
                                 setModalVisible(false);
+                                setSelectedCityName(item.name)
                               }}
                               style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
                               <Text style={styles1.BorderedPressableText}>{item.name}</Text>

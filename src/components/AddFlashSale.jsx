@@ -330,7 +330,7 @@ export default function AddFlashSale(props) {
               </Pressable>
 
               <View style={{ marginTop: wp(5), marginBottom: wp(7), alignSelf: 'center' }}>
-                <CustomButtonNew paddingHorizontal={wp(5)} paddingVertical={wp(3.5)} buttonBgColor='#58402C' onPress={() => handleCreateFlashSale()} text={"Create a Flash Sale"}></CustomButtonNew>
+                <CustomButtonNew paddingHorizontal={wp(5)} paddingVertical={wp(3.5)} buttonBgColor={CustomColors.mattBrownDark} onPress={() => handleCreateFlashSale()} text={"Create a Flash Sale"}></CustomButtonNew>
               </View>
             </View>
           </ImageBackground>

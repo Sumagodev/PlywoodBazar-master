@@ -835,9 +835,10 @@ export default function AllProducts(props) {
             return (
               <NewArrivalProductCard
                 imagePath={{uri: generateImageUrl(item.mainImage)}}
-                price={item?.price}
+                price={(item.price && item.price !== "null" ? "₹ "+item.price : '')}
                 name={item.name}
-                location={item?.cityName + " "+ item?.stateName }
+                location={ (item.cityName && item.cityName !== "null" ? item.cityName : '') + 
+                  (item.stateName && item.stateName !== "null" ? ' ' + item.stateName : '') }
                 isVerified={item?.isVerified} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
                 onGetQuotePressed={() => {Gotodetailspage(item)}}
                 onCallPressed={() => {

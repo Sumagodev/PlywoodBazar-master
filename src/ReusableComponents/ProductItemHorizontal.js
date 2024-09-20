@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         width: '60%'
     },
     headStyle: {
-        color: '#5a432f',
+        color: '#cc8d19',
         fontSize: wp(5),
         fontWeight: 'bold',
         marginBottom: wp(1),

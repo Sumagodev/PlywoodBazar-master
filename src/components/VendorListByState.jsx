@@ -177,7 +177,7 @@ const VendorListByState = (props) => {
       let response = await getAllUsers(query, source);
       //let { data: res } = await getAllUsers(query,source);
       res = response.data
-      //console.log('AllDataX=>',response)
+      console.log('AllDataX=>',JSON.stringify(res.data))
       if (res.data && res?.data?.length > 0) {
         Promise.resolve()
           .then(() => {
@@ -492,7 +492,9 @@ const VendorListByState = (props) => {
       imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/logo_1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
-      address: item.message
+      address: 
+    (item.cityName && item.cityName !== "null" ? item.cityName : '') + 
+    (item.stateName && item.stateName !== "null" ? ' ' + item.stateName : '')
     };
 
 
@@ -1188,7 +1190,7 @@ const styles1 = StyleSheet.create({
   col2: {
     width: wp(10),
     height: wp(10),
-    backgroundColor: '#6B4E37',
+    backgroundColor: '#cc8d19',
     borderRadius: wp(9),
     justifyContent: 'center',
     alignContent: 'center',

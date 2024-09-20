@@ -110,13 +110,13 @@ export default function MyFlashSales(props) {
         <Image style={{width:'100%',height:'50%',borderRadius:wp(5)}} source={{uri: generateImageUrl(item?.productId?.mainImage)}} />
         <View style={stylesCard.imageStyle}>       
         <Pressable
-          style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35', marginVertical: 2}}
+          style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2}}
           onPress={() => {
             handleDeleteFlashSale(item?._id)
           }}>
           <FontAwesomeIcon name="trash-o" size={wp(5)} color="#fff" />
         </Pressable>
-        <Pressable style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35'}} onPress={() => navigation.navigate('EditFlashSale', {data: item?._id})}>
+        <Pressable style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19'}} onPress={() => navigation.navigate('EditFlashSale', {data: item?._id})}>
           <FontAwesomeIcon name="edit" size={wp(5)} color="#fff" />
         </Pressable>
         </View>
@@ -183,7 +183,25 @@ export default function MyFlashSales(props) {
     <View style={{flexDirection:'row',justifyContent:'center',marginTop:wp(3)}}>
 
     <Text style={{fontSize:wp(6),fontWeight:800,}}>My Flash Sale</Text>
-    <View style={{borderRadius:50,borderColor:'#BC9B80',borderWidth:wp(1),marginLeft:wp(5)} }><CustomButtonNew  textSize={wp(3)} paddingHorizontal={wp(7)} text={"ADD"} onPress={()=>{navigation.navigate('AddFlashSales')}}/></View>
+    <View style={{borderRadius:50,borderColor:'#cc8d19',borderWidth:wp(1),marginLeft:wp(5)} }>
+      <CustomButtonNew  textSize={wp(3)} paddingHorizontal={wp(7)} text={"ADD"} 
+      onPress={
+
+        ()=>
+          
+          {
+            if(!userSubscriptionExpired)
+            {
+              navigation.navigate('AddFlashSales')
+            }else{
+
+              errorToast('You do not have valid subscription to add flash sale')
+            }
+          }
+           
+        
+        }/>
+        </View>
     </View>
     
      <View style={{height:wp(15),justifyContent:'center', marginHorizontal:wp(2)}}>
@@ -303,7 +321,7 @@ const stylesCard = StyleSheet.create({
     width: '100%',
   },
   headStyle: {
-    color: '#5a432f',
+    color: '#cc8d19',
     textAlign: 'center',
     fontSize: wp(4),
     fontWeight: 'bold',

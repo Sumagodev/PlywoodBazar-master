@@ -16,7 +16,7 @@ const SubscriptionCard = ({
 }) => {
   return (
     <View style={stylesCard.cardContainer}>
-      <LinearGradient         colors={['#5A432F', '#C08F64'] } // Adjust gradient colors
+      <LinearGradient         colors={['#cc8d19', '#C08F64'] } // Adjust gradient colors
       
   style={stylesCard.periodContainer}>
         <Text style={stylesCard.periodText}>{period}</Text>
@@ -50,7 +50,7 @@ const stylesCard = StyleSheet.create({
       height:wp(25),
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#5A432F',
+      backgroundColor: '#cc8d19',
       padding: wp(1),
       borderRadius: wp(25),
       position: 'absolute',
@@ -74,12 +74,12 @@ const stylesCard = StyleSheet.create({
     priceText: {
       fontSize: 20,
       fontWeight: 'bold',
-      color: '#5A432F',
+      color: '#cc8d19',
     },
     gstText: {
       fontSize: 14,
       fontWeight: 'normal',
-      color: '#5A432F',
+      color: '#cc8d19',
     },
     durationText: {
       fontSize: wp(3),

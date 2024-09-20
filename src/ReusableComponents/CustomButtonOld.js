@@ -10,7 +10,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 const CustomButtonOld = ({
   text,
   rightIcon = false,
-  buttonBgColor = CustomColors.mattBrownDark,
+  buttonBgColor = CustomColors.colorNewButton,
   rightIconBgColor = CustomColors.accentGreen,
   onPress,
   textSize = wp(5),

@@ -8,7 +8,7 @@ const CustomButtonNew = ({
   text,
   rightIcon = false,
   leftIconPath = null,
-  buttonBgColor = CustomColors.mattBrownDark,
+  buttonBgColor = CustomColors.colorNewButton,
   rightIconBgColor = CustomColors.accentGreen,
   leftIconBgColor = CustomColors.accentGreen,
   onPress,

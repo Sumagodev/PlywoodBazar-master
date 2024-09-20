@@ -23,14 +23,23 @@ const LegalAbouts = (props) => {
     <View style={[styles.container, styles1.bgwhite]}>
       <ScrollView>    
         <Header normal={true} screenName={'Legal & About Us'} rootProps={props} />
-        <View style={{backgroundColor: '#FFFFFF'}}>
+        <View style={{backgroundColor: 'white'}}>
           <View style={styles.profile}>
             <View style={styles.profileImageContainer}>
-              <Image source={require('../../assets/img/legalprofilephoto.png')} style={styles.profileImage} />
+              <Image source={require('../../assets/img/sandip1.png')} resizeMode='contain' style={styles.profileImage} />
             </View>
             <View style={{marginLeft: wp(5), width: wp(60)}}>
               <Text style={styles.profileName}>Sandip Chothave</Text>
               <Text style={styles.profileTitle}>Founder & CEO Plywood Bazar.Com</Text>
+            </View>
+          </View>
+          <View style={styles.profile}>
+            <View style={styles.profileImageContainer}>
+              <Image source={require('../../assets/img/purva.png')} style={styles.profileImage} />
+            </View>
+            <View style={{marginLeft: wp(5), width: wp(60)}}>
+              <Text style={styles.profileName}>Purva Chothave</Text>
+              <Text style={styles.profileTitle}>COO Plywood Bazar.Com</Text>
             </View>
           </View>
           <View style={styles.notifications}> 
@@ -39,6 +48,7 @@ const LegalAbouts = (props) => {
             <Text style={styles.notificationsText}>Plywood Bazar.Com Is A Startup That Is Working To Improve This Unorganized Furniture, Interior And Exterior Industry By Co-Ordinate In Between Them. Providing Large Potential Market Exposure For Business Expansion.</Text>
           </View>
         </View>
+        
         <View style={styles.footer}>
           <View style={{backgroundColor: '#FFFFFF', padding: wp(7), borderRadius: 40, elevation: 30, top: wp(-35)}}>
             <TouchableOpacity style={styles.footerButton} onPress={()=> navigation.navigate('Privacy')}>
@@ -94,19 +104,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: wp(3),
     flexDirection: 'row',
+    backgroundColor:'white'
   },
   profileImageContainer: {
     width: wp(32),
     height: wp(32),
-    borderRadius: 100,
-    backgroundColor: '#FFE2B1',
+    backgroundColor: 'white',
     borderColor: '#ddd',
     overflow: 'hidden',
     marginBottom: wp(1),
-    padding: wp(1.5),
     alignItems: 'center',
+    elevation:wp(50),
+    borderRadius:wp(2),
+    
     justifyContent: 'center',
-    elevation: 75, // For Android shadow
+    elevation: wp(20), // For Android shadow
 
     // Shadow for iOS
     shadowColor: '#000',
@@ -119,9 +131,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'center',
-    borderWidth: 6,
+    borderWidth: 1,
+    elevation:wp(10),
+    borderRadius:wp(2),
     borderColor: '#FFFFFF',
-    borderRadius: 100,
+    
   },
   profileName: {
     fontSize: wp(5),

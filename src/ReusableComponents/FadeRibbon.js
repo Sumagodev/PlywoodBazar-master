@@ -5,7 +5,7 @@ import CustomColors from '../styles/CustomColors.js';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const FadeRibbonText = ({ 
-  text, textColor='white', colorStart=CustomColors.childBackground, colorEnd=CustomColors.mattBrownFaint, reverseDirection=false,
+  text, textColor='white', colorStart=CustomColors.mattBrownDark, colorEnd=CustomColors.colorNewButton, reverseDirection=false,
   fontWeight=100,
   fontSize=wp(4), paddingHorizontal, ...rest
 }) => {

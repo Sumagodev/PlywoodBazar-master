@@ -33,7 +33,7 @@ const NavBar = () => {
           <Icon
             name={item.icon}
             size={wp(6)}
-            color={selectedItem === item.id ? '#5a432f' : 'white'}
+            color={selectedItem === item.id ? '#cc8d19' : 'white'}
             style={selectedItem === item.id ? styles.iconSelected : styles.iconDefault}
           />
           <Text
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#5a432f',
+    backgroundColor: '#cc8d19',
     borderRadius: 50,
     elevation: 5,
     margin: wp(2),
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
   },
   selectedLabel: {
-    color: '#5a432f',
+    color: '#cc8d19',
     fontSize: wp(4),
   },
 });

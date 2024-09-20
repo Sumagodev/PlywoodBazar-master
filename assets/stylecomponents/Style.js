@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:wp(2),
     },
     btnbg:{
-        backgroundColor:'#58402C',
+        backgroundColor:'#ebbb60',
         borderRadius:wp(10),
         
     },

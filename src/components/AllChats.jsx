@@ -14,6 +14,7 @@ import TicketItem from '../ReusableComponents/TicketItem';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import { Input } from 'react-native-elements';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 export default function AllChats(props) {
   const navigation = useNavigation();
   const [ticketsArr, setTicketsArr] = useState([]);
@@ -153,7 +154,7 @@ export default function AllChats(props) {
               <View style={reviewStyle.container}>
                 <Text style={reviewStyle.title}>Your Tickets</Text>
                 <View style={reviewStyle.addBtn}>
-                  <CustomButtonOld onPress={() => { setModal(true) }} text={"Add"} />
+                  <CustomButtonNew  paddingHorizontal={wp(6)} onPress={() => { setModal(true) }} text={"Add"} />
                 </View>
               </View>
             </>
@@ -239,7 +240,7 @@ const reviewStyle = StyleSheet.create({
 
   },
   addBtn: {
-    borderRadius: 50, borderColor: '#BC9B80',
+    borderRadius: 50, borderColor: '#cc8d19',
     borderWidth: wp(1),
     position: 'absolute',
     right: 0

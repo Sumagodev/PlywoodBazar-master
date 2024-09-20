@@ -22,7 +22,7 @@ export default OpportunitiesItem = ({ opportunityItem, onApplyPress }) => {
                             text='Apply'
                             onPress={onApplyPress}
                             hasBorder={true}
-                            buttonBgColor='#573C26'
+                            buttonBgColor='#ebbb60'
                             paddingVertical={wp(2)}
                             textSize={wp(3.5)}
                             paddingHorizontal={wp(4)}

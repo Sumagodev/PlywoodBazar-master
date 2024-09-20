@@ -815,7 +815,7 @@ const styles1 = StyleSheet.create({
     color: 'black',
   },
   yellowButton: {
-    backgroundColor: '#6C4F37',
+    backgroundColor: '#cc8d19',
     paddingVertical: 13,
     paddingHorizontal: 40,
 

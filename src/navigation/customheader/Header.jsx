@@ -21,7 +21,7 @@ export default function Header(props) {
         <Text style={styles.categry}>Product Name</Text>
       )}
 
-      <Icon onPress={()=>navigation.goBack()} style={styles.iconStyle} name='arrow-left' color={CustomColors.glossBrownDark} size={wp(8)}/>
+      <Icon onPress={()=>navigation.goBack()} style={styles.iconStyle} name='arrow-left' color={CustomColors.mattBrownDark} size={wp(8)}/>
     </View>
   );
 }

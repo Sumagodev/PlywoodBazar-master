@@ -457,7 +457,7 @@ export default function Productdetails(props) {
 
 
 
-          <LinearGradient colors={['#5a432f', '#5a432f', '#f1e8d1']} style={gradientStyle.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+          <LinearGradient colors={['#cc8d19', '#cc8d19', '#f1e8d1']} style={gradientStyle.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
             <View style={gradientStyle.card}>
               <View style={{ flexDirection: 'row' }}>
                 {productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{ width: wp(15), height: wp(15) }} />}
@@ -996,7 +996,7 @@ const styles2 = StyleSheet.create({
     color: 'black',
   },
   yellowButton: {
-    backgroundColor: '#6C4F37',
+    backgroundColor: '#cc8d19',
     paddingVertical: 13,
     paddingHorizontal: 40,
 

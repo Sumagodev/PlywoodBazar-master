@@ -303,6 +303,7 @@ export default function Home() {
       let { data: res } = await getAllFlashSales('endDate=' + endDate);
       if (res.data) {
         setFlashSalesArr(res.data);
+        console.log('flashArr',JSON.stringify(res.data))
       }
     } catch (err) {
       errorToast(err);
@@ -827,7 +828,7 @@ export default function Home() {
 
 <LinearGradient
 
-colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
+colors={['#ebbb60', '#E0C7AD', '#F1E8D1']}
 start={{ x: 0, y: 1 }}
 end={{ x: 1, y: 1 }}
 style={{ marginTop: wp(5), paddingBottom: wp(5) }}
@@ -893,7 +894,7 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
 
 
               <LinearGradient
-                colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']} // Gradient colors (left to right)
+                colors={['#cc8d19', '#ebbb60', '#F1E8D1']} // Gradient colors (left to right)
                 style={[styles1.tableimagewrap, styles1.padinghr]} // Apply the gradient to this style
                 start={{ x: 0, y: 1 }} // Start point of the gradient
               // end={{ x: 1, y: 1 }}   // End point of the gradient (horizontal)
@@ -925,7 +926,7 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
               </LinearGradient>
               {/* <LinearGradient
 
-                colors={['#6C4F37', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
+                colors={['#cc8d19', '#E0C7AD', '#F1E8D1', '#FFFFFF']}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 1, y: 1 }}
                 style={{ marginTop: wp(5), paddingBottom: wp(5) }}
@@ -1423,7 +1424,8 @@ const styles1 = StyleSheet.create({
     width: wp(60),  // Set your desired width
     height: wp(50), // Set your desired height
     resizeMode: 'contain', // Optional: control how the image fits,
-    bottom: wp(8),
+    bottom: wp(5),
+    
 
   },
   imagewrap: {
@@ -1476,7 +1478,7 @@ const styles1 = StyleSheet.create({
   },
   btnContainer: {
     position: 'absolute',
-    backgroundColor: '#6c4f37',
+    backgroundColor: CustomColors.colorNewButton,
     bottom: 0,
     width: '100%',
     justifyContent: 'center'

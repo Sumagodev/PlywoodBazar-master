@@ -388,7 +388,7 @@ const styles1 = StyleSheet.create({
   },
   btnContainer: {
     position: 'absolute',
-    backgroundColor: '#6c4f37',
+    backgroundColor: '#cc8d19',
     bottom: 0,
     width: '100%',
     justifyContent: 'center',

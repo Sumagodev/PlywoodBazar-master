@@ -15,10 +15,10 @@ const FlashSaleItem = ({imagePath, name, actualPrice, salePrice, duration, onDel
         <Image style={{}} source={imagePath} />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp(3), marginVertical: wp(3), marginHorizontal: wp(3)}}>
-          <TouchableOpacity style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35', marginVertical: 2}} onPress={onDeletePress}>
+          <TouchableOpacity style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2}} onPress={onDeletePress}>
             <FontAwesomeIcon name="trash-o" size={wp(5)} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35'}} onPress={() => navigation.navigate('EditFlashSale', {data: id})}>
+          <TouchableOpacity style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19'}} onPress={() => navigation.navigate('EditFlashSale', {data: id})}>
             <FontAwesomeIcon name="edit" size={wp(5)} color="#fff" />
           </TouchableOpacity>
         </View>

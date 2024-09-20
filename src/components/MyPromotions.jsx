@@ -107,19 +107,28 @@ export default function MyPromotions(props) {
     );
   };
   const renderItem = ({item, index}) => {
+
+    console.log('itemx',JSON.stringify(item))
     return (
       <Pressable style={stylesCard.container}>
        
-        <Image style={{width:'100%',height:'50%',borderRadius:wp(5)}} source={{uri: generateImageUrl(item?.productId?.mainImage)}} />
+        <Image style={{width:'100%',height:'50%',borderRadius:wp(5)}} 
+        
+        source={
+          item?.image && item?.image !== "null"
+            ? { uri: generateImageUrl(item.image) }
+            : {uri: generateImageUrl(item?.productId?.mainImage)}
+        }
+        />
         <View style={stylesCard.imageStyle}>       
         <Pressable
-          style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35', marginVertical: 2}}
+          style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2}}
           onPress={() => {
             handleDeletePromotions(item?._id);
           }}>
           <FontAwesomeIcon name="trash-o" size={wp(5)} color="#fff" />
         </Pressable>
-        <Pressable style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#674c35'}} onPress={() => navigation.navigate('EditPromotions', {data: item?._id})}>
+        <Pressable style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19'}} onPress={() => navigation.navigate('EditPromotions', {data: item?._id})}>
           <FontAwesomeIcon name="edit" size={wp(5)} color="#fff" />
         </Pressable>
         </View>

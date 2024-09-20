@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Image, Pressable ,TouchableOpacity} from 'react
 import CustomButton from './CustomButton';
 import { generateImageUrl } from '../services/url.service';
 import { useNavigation } from '@react-navigation/native';
+import CustomColors from '../styles/CustomColors';
 const BlogsItem = ({ item }) => {
     const navigate=useNavigation();
     return (
@@ -18,7 +19,7 @@ const BlogsItem = ({ item }) => {
                     text="Read more" 
                     textSize={wp(2.5)}
                     fontWeight='bold'
-                    buttonBgColor='#624832'
+                    buttonBgColor={CustomColors.colorNewButton}
                 />
                 </View>
             </TouchableOpacity>

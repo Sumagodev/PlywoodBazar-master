@@ -132,7 +132,7 @@ export default function Chat(props) {
 
           ListHeaderComponent={
             <>
-              <Header stackHeader={true} screenName={'Chat'} rootProps={props} />
+              <Header normal={true} screenName={'Chat'} rootProps={props} />
               <View style={[styles1.chatheader, { paddingBottom: 20 }]}>
                 <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
                   <Image source={require('../../assets/img/help1.png')} style={{ width: wp(8), height: hp(4) }} />

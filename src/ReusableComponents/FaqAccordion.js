@@ -7,7 +7,7 @@ const FaqAccordion = ({ item }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <View style={{margin: wp(1), backgroundColor: '#6c4f37', borderRadius: wp(10), overflow:'hidden', elevation: 10,}}>
+    <View style={{margin: wp(1), backgroundColor: '#cc8d19', borderRadius: wp(10), overflow:'hidden', elevation: 10,}}>
       <ListItem.Accordion style={styles.bgContainer}
         content={
           <ListItem.Content>
@@ -32,10 +32,10 @@ const FaqAccordion = ({ item }) => {
 
 const styles = StyleSheet.create({
   bgContainer:{
-    backgroundColor: '#6C4F37',
+    backgroundColor: '#cc8d19',
   },
   container: {
-    backgroundColor: '#6c4f37',
+    backgroundColor: '#cc8d19',
     overflow: 'hidden',
   },
   headerText: {

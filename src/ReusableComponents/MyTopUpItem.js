@@ -12,7 +12,7 @@ const MyTopUpItem = ({
     return(
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <FadeRibbonText paddingHorizontal={wp(5)} text='TOPUP FOR PROMOTION' fontWeight={800} fontSize={wp(4.2)} colorStart='#926139' colorEnd="#e1cebd" />
+                <FadeRibbonText paddingHorizontal={wp(5)} text='TOPUP FOR PROMOTION' fontWeight={800} fontSize={wp(4.2)} />
                 <Text style={styles.priceText}>{topUpItem.price}₹</Text>
                 <Text style={styles.validityStyle}>{topUpItem.validity}</Text>
                 <View style={{marginVertical: wp(2)}}>

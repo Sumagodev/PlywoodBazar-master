@@ -316,7 +316,7 @@ const profileStyle = StyleSheet.create({
   },
 
   iconContainer: {
-    backgroundColor: CustomColors.mattBrownDark,
+    backgroundColor: CustomColors.colorNewButton,
     width: wp(15),
     height: wp(15),
     borderRadius: wp(15),

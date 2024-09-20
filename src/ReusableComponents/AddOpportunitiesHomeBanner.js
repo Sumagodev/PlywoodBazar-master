@@ -10,7 +10,7 @@ const AddOpportunitiesHomeBanner = ({onPress}) => {
         <View style={{ flexDirection: 'row' ,alignSelf:'center'}}>
           <Text style={styles.textStyle}>Fill Now The</Text>
           <Text style={[styles.textStyle, { fontWeight:800 }]}> Form</Text>
-         <View style={{alignSelf:'center',marginLeft:wp(5),borderRadius:50,borderColor:'#BC9B80',borderWidth:wp(1)}}>
+         <View style={{alignSelf:'center',marginLeft:wp(5),borderRadius:50,borderColor:'white',borderWidth:wp(1)}}>
          <CustomButton text={"Add Opportunities"} onPress={onPress}></CustomButton>
          </View>
         </View>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     padding: wp(2),
     width: wp(100),
-    backgroundColor: '#9D7B5F',
+    backgroundColor: '#ab7100',
   },
   textStyle: {
     fontSize: wp(4.6),
@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     alignSelf:'center'
   },
   freeStyle: {
-    color: '#5a432f',
+    color: '#cc8d19',
     borderRadius: 50,
-    backgroundColor: '#fae1cc',
+    backgroundColor: 'white',
     paddingHorizontal: wp(4),
     paddingVertical: wp(1),
     textAlign: 'center',
