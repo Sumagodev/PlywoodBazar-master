@@ -35,7 +35,7 @@ const LegalAbouts = (props) => {
           </View>
           <View style={styles.profile}>
             <View style={styles.profileImageContainer}>
-              <Image source={require('../../assets/img/purva.png')} style={styles.profileImage} />
+              <Image source={require('../../assets/img/purva.jpg')} style={styles.profileImage} />
             </View>
             <View style={{marginLeft: wp(5), width: wp(60)}}>
               <Text style={styles.profileName}>Purva Chothave</Text>

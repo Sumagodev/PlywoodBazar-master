@@ -304,6 +304,8 @@ export default function Home() {
       if (res.data) {
         setFlashSalesArr(res.data);
         console.log('flashArr',JSON.stringify(res.data))
+        console.log('flashArr',res.data.length)
+
       }
     } catch (err) {
       errorToast(err);
@@ -981,7 +983,7 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
                   autoplay={true}
                   autoplayDelay={1000}
 
-                  autoplayInterval={3000}
+                  autoplayInterval={5000}
                   layout={'default'}
                   inactiveSlideScale={0.60}
                   inactiveSlideOpacity={0.9}
