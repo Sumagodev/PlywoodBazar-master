@@ -72,6 +72,10 @@ const ApplyOppFor = ({route,navigation}) => {
       name: ROLES_CONSTANT.DEALER,
       checked: false,
     },
+    {
+      name: ROLES_CONSTANT.RETAILER,
+      checked: false,
+    },
   ]);
 
 

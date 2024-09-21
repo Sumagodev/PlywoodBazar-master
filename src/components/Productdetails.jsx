@@ -27,9 +27,11 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 export default function Productdetails(props) {
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [supplierObj, setSupplierObj] = useState({});
-  console.log('supplierObj', supplierObj);
+  console.log('productObj', productObj);
 
   const [productObj, setProductObj] = useState(null);
+  
+  
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
 
@@ -72,6 +74,7 @@ export default function Productdetails(props) {
       }
     } catch (err) {
       errorToast(err);
+      console.log('errorToast4',err);
     }
   };
 
@@ -85,7 +88,9 @@ export default function Productdetails(props) {
     setIsloding(true)
     try {
 
+
       const { data: res } = await getProductById(props?.route?.params?.data);
+      console.log('props?.route?.params?.data',res);
       setuserid(res.data._id);
       setsellingprice(res.data.sellingprice);
 
@@ -158,8 +163,23 @@ export default function Productdetails(props) {
   };
   const handelcallbtn = (phone) => {
     if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+      Alert.alert(
+        'Subscription Required',
+        'You do not have a valid subscription to perform this action.',
+        [
+          {
+            text: 'Go to Subscriptions',
+            style: { color: "red" },
+            onPress: () => navigation.navigate('Subscriptions', { register: false }),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
+      return;
     }
 
     Linking.openURL(`tel:${phone}`);
@@ -216,20 +236,54 @@ export default function Productdetails(props) {
 
         if (isAuthorized) {
           toastSuccess(res.message);
+          console.log('res.message',res.message);
+          (res.message);
           setLoading(false)
           if (!currentUserHasActiveSubscription) {
-            errorToast('You do not have a valid subscription to perform this action');
-            return 0;
+            Alert.alert(
+              'Subscription Required',
+              'You do not have a valid subscription to perform this action.',
+              [
+                {
+                  text: 'Go to Subscriptions',
+                  style: { color: "red" },
+                  onPress: () => navigation.navigate('Subscriptions', { register: false }),
+                },
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+              ],
+              { cancelable: true }
+            );
+            return;
           }
-          Linking.openURL(`tel:${decodedToken?.user?.phone}`);
+          Linking.openURL(`tel:${productObj?.createdByObj?.phone}`);
+          // Linking.openURL(`tel:${decodedToken?.user?.phone}`);
         }
         else {
-          navigation.navigate('Login')
+          Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
         }
 
       }
     } catch (err) {
       errorToast(err);
+      console.log('errorToast2',err);
+      
     }
   };
 
@@ -248,21 +302,52 @@ export default function Productdetails(props) {
       }
     } catch (err) {
       errorToast(err);
+      console.log('errorToast2',errorToast);
     }
   };
   const handleModelshow = () => {
-    if (!currentUserHasActiveSubscription) {
-      errorToast('You do not have a valid subscription to perform this action');
-      return 0;
+  if (!currentUserHasActiveSubscription) {
+      Alert.alert(
+        'Subscription Required',
+        'You do not have a valid subscription to perform this action.',
+        [
+          {
+            text: 'Go to Subscriptions',
+            style: { color: "red" },
+            onPress: () => navigation.navigate('Subscriptions', { register: false }),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
+      return;
     }
     setModalVisible(true);
   };
   const handleSubmitReview = async e => {
     try {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        return 0;
-      }
+      Alert.alert(
+        'Subscription Required',
+        'You do not have a valid subscription to perform this action.',
+        [
+          {
+            text: 'Go to Subscriptions',
+            style: { color: "red" },
+            onPress: () => navigation.navigate('Subscriptions', { register: false }),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
+      return;
+    }
       if (nameForReview == '') {
         errorToast('Please enter a name');
         Alert.alert('Validation Error', 'Please enter a Name.');
@@ -334,34 +419,91 @@ export default function Productdetails(props) {
   
     if (isAuthorized) {
 
-      if (!currentUserHasActiveSubscription) {
-        navigation.navigate('Subscriptions', { register: false })
-        errorToast('You do not have a valid subscription to perform this action');
-        setLoading(false)
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+     setLoading(false)
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigation.navigate('Subscriptions', { register: false }),
+              
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       handleContactSupplier()
      
 
     }
     else {
-      navigation.navigate('Login')
-      setLoading(false)
+    setLoading(false)
+    Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const handleGetQuoteClick = (item) => {
     console.log('item?.slug ',item?.slug );
     
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigation.navigate('Subscriptions', { register: false })
-        return 0;
+    if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigation.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       navigation.navigate('Productdetails', { data: item?.slug })
     }
     else {
-      navigation.navigate('Login')
+    Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const renderSimilarProducts = ({ item, index }) => {
@@ -383,15 +525,43 @@ export default function Productdetails(props) {
     console.log('***')
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigation.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigation.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       console.log('selling price')
       setvalue(price)
     }
     else {
-      navigation.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   const ListHeader = () => {
@@ -480,11 +650,11 @@ export default function Productdetails(props) {
             </View>
           </LinearGradient>
           <View>
-            {isAuthorized && (
-              <View style={{ marginVertical: wp(5) }}>
-                <StartBusinessBanner></StartBusinessBanner>
-              </View>
-            )}
+           {isAuthorized === 'false' && (
+                <View style={{ marginVertical: wp(5) }}>
+                  <StartBusinessBanner />
+                </View>
+              )}
           </View>
 
           {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}

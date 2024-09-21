@@ -1,6 +1,6 @@
 import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground } from 'react-native';
+import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground,Alert } from 'react-native';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
 import { Checkbox } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -53,6 +53,10 @@ export default function Register() {
       name: ROLES_CONSTANT.DEALER,
       checked: false,
     },
+    {
+      name: ROLES_CONSTANT.RETAILER,
+      checked: false,
+    },
   ]);
 
   const handleSetRole = selectedbusitype => {
@@ -100,7 +104,7 @@ export default function Register() {
   const [annualTurnover, setAnnualTurnover] = useState();
   const [legalStatus, setLegalStatus] = useState();
   const [companyCeo, setCompanyCeo] = useState();
-  const [googleMapsLink, setGoogleMapsLink] = useState();
+  // const [googleMapsLink, setGoogleMapsLink] = useState();
 
   const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
 
@@ -230,12 +234,12 @@ export default function Register() {
         yearOfEstablishment,
         legalStatus,
         companyCeo,
-        googleMapsLink,
+        // googleMapsLink,
       },
       gstCertificate,
     };
 
-    console.log(JSON.stringify(obj, null, 2), '>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    console.log(obj, '>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 
     try {
       let { data: res } = await registerUser(obj);
@@ -687,6 +691,8 @@ export default function Register() {
               }}>
               <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'City *'}</Text>
             </Pressable>
+            <Pressable onPress={() => handlePickProfileImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={profileImage} editable={false} placeholder="Profile Photo" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
+                <Pressable onPress={() => handlePickBannerImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={bannerImage} editable={false} placeholder="Banner Image" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
 
             {/* <TextInput
             style={styles1.mbboot}
@@ -720,9 +726,8 @@ export default function Register() {
             {role !== ROLES_CONSTANT.USER && (
               <>
                 {/* <Text style={{ marginTop: hp(4), color: "black", fontSize: 18, paddingLeft: 5 }}>Company Details</Text> */}
-                <TextInput style={styles1.mbboot} placeholderTextColor={'#000'} onChangeText={e => setname(e)} value={name} placeholder="Name" selectionColor={CustomColors.mattBrownDark} />
-
-                <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setemail(e)} value={email} label="Email Id *" keyboardType="email-address" placeholder="Email Id *" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+                <TextInput style={styles1.mbboot} placeholderTextColor={'#000'} onChangeText={e => setname(e)} value={name} placeholder="Name *" selectionColor={CustomColors.mattBrownDark} />
+ 
                 {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
@@ -752,6 +757,7 @@ export default function Register() {
               /> */}
                 <TextInput style={styles1.mbboot} mode="outlined" maxLength={10} onChangeText={e => setmobile(e)} value={mobile} keyboardType="number-pad" selectionColor={CustomColors.mattBrownDark} placeholder="Mobile No. *" placeholderTextColor="#000" />
                 <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setwhatsapp(e)} value={whatsapp} maxLength={10} keyboardType="numeric" selectionColor={CustomColors.mattBrownDark} placeholder="Whatsapp No." placeholderTextColor="#000" />
+                <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setemail(e)} value={email} label="Email Id *" keyboardType="email-address" placeholder="Email Id *" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
 
                 {/* <TextInput
                 style={styles1.mbboot}
@@ -894,9 +900,7 @@ export default function Register() {
                 underlineColor="#E7E7E8"
                 underlineColorAndroid="#E7E7E8"
               /> */}
-                <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setGoogleMapsLink(e)} value={googleMapsLink} placeholder="Google Maps Link" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
-                <Pressable onPress={() => handlePickProfileImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={profileImage} editable={false} placeholder="Profile Photo" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
-                <Pressable onPress={() => handlePickBannerImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={bannerImage} editable={false} placeholder="Banner Image" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
+                
                 
 
 

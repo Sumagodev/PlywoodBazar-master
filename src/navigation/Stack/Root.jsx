@@ -114,9 +114,9 @@ export default function RootStack() {
       <isAuthorisedContext.Provider value={[isAuthorized, setIsAuthorized]}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="BottomBar">
-          {/* <Stack.Navigator initialRouteName="Writeareview"> */}
-            
-          <Stack.Screen
+            {/* <Stack.Navigator initialRouteName="Writeareview"> */}
+
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -450,7 +450,7 @@ export default function RootStack() {
               name="PaymentSuccess"
               component={PaymentSuccess}
             />
-              <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -458,7 +458,7 @@ export default function RootStack() {
               name="TermsAndConditions"
               component={TermsAndConditions}
             />
-             <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -466,7 +466,7 @@ export default function RootStack() {
               name="Privacy"
               component={Privacy}
             />
-              <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -474,7 +474,7 @@ export default function RootStack() {
               name="Aboutus"
               component={Aboutus}
             />
-               <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -482,7 +482,7 @@ export default function RootStack() {
               name="LegalAbouts"
               component={LegalAbouts}
             />
-                <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -491,7 +491,7 @@ export default function RootStack() {
               component={Chkdropdown}
             />
 
-           <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -507,7 +507,7 @@ export default function RootStack() {
               name="ReviewsPage"
               component={ReviewsPage}
             />
-             <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -515,7 +515,7 @@ export default function RootStack() {
               name="EventsOrActivitiesPage"
               component={EventsOrActivitiesPage}
             />
-             <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -523,7 +523,7 @@ export default function RootStack() {
               name="AddDealershipOpportunitiesForm"
               component={AddDealershipOpportunitiesForm}
             />
-             <Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -532,7 +532,7 @@ export default function RootStack() {
               component={ApplyOppFor}
             />
 
-<Stack.Screen
+            <Stack.Screen
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
@@ -540,6 +540,7 @@ export default function RootStack() {
               name="VendorListByState"
               component={VendorListByState}
             />
+          
 
 
 

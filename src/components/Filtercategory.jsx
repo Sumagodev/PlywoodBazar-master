@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Linking } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Linking,Alert } from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -488,16 +488,44 @@ const Filtercategory = (props) => {
     console.log('item',item);
     
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigation.navigate('Subscriptions', { register: false })
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigation.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       Linking.openURL(`tel:${item?.phone}`);
 
     }
     else {
-      navigation.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const handleCheckCategoryOnRender = (id, arr) => {

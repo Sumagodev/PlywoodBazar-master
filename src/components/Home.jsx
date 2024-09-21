@@ -1,4 +1,5 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import React, { useEffect, useState, useContext } from 'react';
 import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Alert } from 'react-native';
@@ -108,15 +109,43 @@ export default function Home() {
   const gototopprofile = (item) => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       // Linking.openURL(tel:${phone});
       navigate.navigate('Supplier', { data: item })
     }
     else {
-      navigate.navigate('Login')
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   const getauthuser = async () => {
@@ -251,23 +280,64 @@ export default function Home() {
     }
   };
 
+  // const handelcallbtn = (phone) => {
+  //   if (isAuthorized) {
+  //     if (!currentUserHasActiveSubscription) {
+  //       errorToast('You do not have a valid subscription to perform this action');
+  //       showSubscriptionToast();
+  //       // navigate.navigate('Subscriptions', { register: false })
+  //       return 0;
+  //     }
+  //     Linking.openURL(`tel:${phone}`);
+  //   }
+  //   else {
+  //     // navigate.navigate('Login')
+  //     errorToast('Please login to access this feature');
+  //     showLoginToast();
+
+  //   }
+  // };
+
   const handelcallbtn = (phone) => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       Linking.openURL(`tel:${phone}`);
-    }
-    else {
-      navigate.navigate('Login')
-      errorToast('Please login to access this feature');
-
+    } else {
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
-
-
   useEffect(() => {
     HandleCheckValidSubscription();
   }, [isAuthorized])
@@ -489,16 +559,44 @@ export default function Home() {
   };
   const GotoFlash = () => {
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       navigate.navigate('MyFlashSales')
 
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const GotoFlashSaleCallIcon = (item) => {
@@ -506,15 +604,42 @@ export default function Home() {
     
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       handelcallbtn(item?.productId?.createdByObj?.phone)
     }
     else {
-      errorToast('You need to login first to use this feature');
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const GotoGetQuote = (item) => {
@@ -522,7 +647,21 @@ export default function Home() {
       navigate.navigate('Productdetails', { data: item?.product?.slug })
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const renderHighlights = ({ item, index }) => {
@@ -550,9 +689,8 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <TouchableOpacity onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}>
-      <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} />
-    </TouchableOpacity>
+    return <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}/>
+  
   };
 
   const renderNewArrivals = ({ item, index }) => {
@@ -678,16 +816,44 @@ export default function Home() {
   const GotoAddProduct = () => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
 
       navigate.navigate('AddAdvertisement')
 
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   const applymodal = () => {
@@ -708,32 +874,88 @@ export default function Home() {
   const Gotoopportunities = () => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
 
       navigate.navigate('AddDealershipOpportunitiesForm')
 
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
 
   const gotoApplyOpportunities = (item) => {
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
 
       navigate.navigate('ApplyOppFor', { Data: item })
 
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
 

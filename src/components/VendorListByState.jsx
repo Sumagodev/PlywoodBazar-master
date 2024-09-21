@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect, useRef, useState,Linking } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View ,Alert,Linking} from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -424,16 +424,44 @@ const VendorListByState = (props) => {
   const gotoCallBtn = (item) => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigation.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigation.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       Linking.openURL(`tel:${item?.phone}`);
 
     }
     else {
       errorToast('You need to login to access this feature');
-      navigate.navigate('Login')
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
   // useEffect(() => {

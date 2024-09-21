@@ -122,14 +122,42 @@ export default function Supplier(props) {
   const handelwhatappclick = () => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       Linking.openURL(`https://api.whatsapp.com/send/?phone=${supplierObj?.phone}`);
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
 
@@ -137,31 +165,85 @@ export default function Supplier(props) {
     console.log('xxxx ---------')
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       navigate.navigate('Supplier', { data: item }) 
     }
     else {
-      errorToast('You need to login to access this feature');
-      navigate.navigate('Login')
+    Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
 
   
   const handelcallbtn = () => {
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+   if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
-
       Linking.openURL(`tel:${supplierObj?.phone}`);
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
 
   }
@@ -170,23 +252,65 @@ export default function Supplier(props) {
 
 const handelclickcmail = () => {
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       Linking.openURL(`mailto:${supplierObj?.email}`);
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   const handeleClickShare = async () => {
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       try {
         const result = await Share.share({
@@ -210,17 +334,45 @@ const handelclickcmail = () => {
       }
     }
     else {
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   const handleGetQuoteClick = (item) => {
 
     console.log(JSON.stringify(item),'zzzzzzxv');
     if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+     if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       //navigate.navigate('Productdetails', {data: item.productSlug})
       navigate.navigate('Productdetails', {data: item?.product?.slug})
@@ -228,7 +380,21 @@ const handelclickcmail = () => {
     }
     else {
       errorToast('You need to login to access this feature');
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
 
@@ -237,9 +403,23 @@ const handelclickcmail = () => {
     console.log(JSON.stringify(item),'zzzzzzxv');
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       //navigate.navigate('Productdetails', {data: item.productSlug})
       navigate.navigate('Productdetails', {data: item?.slug})
@@ -247,7 +427,21 @@ const handelclickcmail = () => {
     }
     else {
       errorToast('You need to login to access this feature');
-      navigate.navigate('Login')
+     Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   const handleGetProductReview = async id => {
@@ -503,12 +697,7 @@ const handelclickcmail = () => {
               <Text style={{fontSize:wp(4), fontFamily:'Poppins-Medium', fontSize:wp(3),  color:'#000'}}>  {supplierObj?.email}</Text>
               </TouchableOpacity> */}
 
-              <View style={styles1.infoadd}>
-                <Pressable onPress={() => Linking.openURL(`${supplierObj?.companyObj?.googleMapsLink}`)} style={[styles1.infoadd]}>
-                  <FontAwesomeIcon name="map-marker" style={{marginHorizontal: wp(3)}} size={wp(5)} color={CustomColors.mattBrownDark} />
-                  <Text style={[styles1.infotext, {width: wp(70), fontSize: 14}]}>{supplierObj?.companyObj?.address}</Text>
-                </Pressable>
-              </View>
+         
 
               <View style={[styles1.infoadd, {justifyContent: 'flex-start'}]}>
                 <FontAwesomeIcon name="star" style={{marginHorizontal: wp(3)}} size={wp(5)} color={CustomColors.mattBrownDark} />

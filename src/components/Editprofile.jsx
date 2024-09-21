@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, StyleSheet, Pressable, ScrollView, Modal, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TextInput, StyleSheet, Pressable, ScrollView, Modal, ImageBackground, TouchableOpacity, FlatList,Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -63,7 +63,7 @@ export default function Editprofile(props) {
   const [legalStatus, setLegalStatus] = useState();
   const [cinNo, setCinNo] = useState();
   const [companyCeo, setCompanyCeo] = useState();
-  const [googleMapsLink, setGoogleMapsLink] = useState();
+  // const [googleMapsLink, setGoogleMapsLink] = useState();
   const [userObj, setUserObj] = useState(null);
   const [countryArr, setcountryArr] = useState([]);
   const [stateArr, setstateArr] = useState([]);
@@ -121,7 +121,7 @@ export default function Editprofile(props) {
         setBannerImage(res?.data?.bannerImage);
         setwhatsapp(res?.data?.whatsapp ? res?.data?.whatsapp : '');
         setCompanyCeo(res?.data?.companyObj?.companyCeo);
-        setGoogleMapsLink(res?.data?.companyObj?.googleMapsLink);
+        // setGoogleMapsLink(res?.data?.companyObj?.googleMapsLink);
         setImagesArr(res?.data?.imagesArr && res?.data?.imagesArr.length > 0 ? res?.data?.imagesArr : [{ image: '' }]);
         setVideoArr(res?.data?.videoArr && res?.data?.videoArr.length > 0 ? res?.data?.videoArr : [{ video: '' }]);
         setSelectedStateName(res?.data?.stateObj?.name)
@@ -215,10 +215,10 @@ export default function Editprofile(props) {
         errorToast('Company Ceo Name is Required');
         return 0;
       }
-      if (`${googleMapsLink}` === '') {
-        errorToast('Google Maps Link Name is Required');
-        return 0;
-      }
+      // if (`${googleMapsLink}` === '') {
+      //   errorToast('Google Maps Link Name is Required');
+      //   return 0;
+      // }
       if (`${address}` === '') {
         errorToast('Address is Required');
         return 0;
@@ -260,7 +260,7 @@ export default function Editprofile(props) {
           legalStatus,
           cinNo,
           companyCeo,
-          googleMapsLink,
+          // googleMapsLink,
         },
 
         whatsapp,
@@ -560,11 +560,7 @@ export default function Editprofile(props) {
                 </View>
 
 
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Google Maps Link</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={googleMapsLink} onChangeText={setGoogleMapsLink} placeholder="Google Maps `Link" />
-                </View>
-
+          
                 <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>GST Number</Text>
                 <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
                   <TextInput style={styles1.card_main} value={gstNumber} placeholder="GST Number" />

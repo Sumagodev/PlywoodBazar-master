@@ -1,7 +1,7 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {useEffect} from 'react';
-import {FlatList, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -198,10 +198,7 @@ export default function Userprofile1(props) {
             <Text style={[styles1.nameheading, {color:'#797979'}]}>Established in Year</Text>
               <Text style={styles1.nameheading}>{userObj?.companyObj?.yearOfEstablishment}</Text>
             </Pressable> */}
-                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Google Maps Link</Text>
-                <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15, borderRadius: 25}]}>
-                  <Text style={styles1.nameheading}>{userObj?.companyObj?.googleMapsLink}</Text>
-                </Pressable>
+        
 
                 <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Your Images</Text>
                 {userObj?.imagesArr && userObj?.imagesArr.length > 0 ? (

@@ -1,22 +1,29 @@
 import {View, Text, ScrollView, Pressable, Image, StyleSheet, FlatList} from 'react-native';
-import React, {useEffect, useState,useCallback} from 'react';
+import React, {useEffect, useState,useCallback,useContext} from 'react';
 import styles from '../../assets/stylecomponents/Style';
 import {Switch} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-
+import {useFocusEffect, useNavigation,useIsFocused} from '@react-navigation/native';
+import {isAuthorisedContext} from '../navigation/Stack/Root';
 import Header from '../navigation/customheader/Header';
 import { getDecodedToken, getUserNotifications } from '../services/User.service';
 import { errorToast } from '../utils/toastutill';
-
-
+import useRedirectToLoginIfNotLoggedIn from '../utils/RedirectToLoginIfNotLoggedIn';
 
 export default function Notification(props) {
 
   const [Notification, setNotification] = useState([]);
   const navigation = useNavigation(props);
+  const [isAuthorized] = useContext(isAuthorisedContext);
+  const focused = useIsFocused();
 
+  useEffect(() => {
+    if (isAuthorized) {
+    } else {
+    
+    }
+  }, [isAuthorized,focused]);
   const handleGetProducts = async (skipValue, limitValue, searchQuery) => {
     try {
 

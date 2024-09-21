@@ -1,4 +1,4 @@
-import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity,Alert} from 'react-native';
 import React, {useState, useRef, useEffect,useContext} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import {TextInput, useTheme} from 'react-native-paper';
@@ -85,14 +85,42 @@ export default function AllProducts(props) {
   const Gotodetailspage = (item) => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       navigate.navigate('Productdetails', {data: item?.slug})
     }
     else {
-      navigate.navigate('Login')
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   useEffect(() => {
@@ -108,14 +136,42 @@ export default function AllProducts(props) {
   const handelcallbtn = (phone) => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        navigate.navigate('Subscriptions', { register: false })
-        return 0;
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
       }
       Linking.openURL(`tel:${phone}`);
     }
     else {
-      navigate.navigate('Login')
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
     }
   };
   const HandleCheckValidSubscription = async () => {

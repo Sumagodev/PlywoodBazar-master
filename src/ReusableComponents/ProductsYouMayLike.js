@@ -9,9 +9,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }) => {
+const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress ,onPress}) => {
     return (
-      <View>
+      <TouchableOpacity onPress={onPress}>
         <View style={styles.container}>
             <View style={styles.elevatedContainer}>
                 <Image style={styles.upperImageStyle} source={imagePath} />
@@ -33,7 +33,7 @@ const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress }
         <View style={styles.buttonContainer}>
         <CustomButtonOld  paddingHorizontal={screenWidth*0.01} text='Get Quote' textSize={screenWidth*0.040} style={styles.button} onPress={onGetQuotePress}/>
     </View>
-    </View>
+    </TouchableOpacity>
     );
 };
 

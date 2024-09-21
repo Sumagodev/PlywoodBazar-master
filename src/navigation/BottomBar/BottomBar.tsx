@@ -144,7 +144,7 @@ export function BottomTabNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Shop" component={Filtercategory} />
       <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Notification" component={Notification} />
+      <Tab.Screen name="Notification" component={isAuthorized ? Notification : Login} />
       <Tab.Screen name="Account" component={isAuthorized ? Userprofile : Login} />
     </Tab.Navigator>
   );
