@@ -15,6 +15,7 @@ import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import { Input } from 'react-native-elements';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 export default function AllChats(props) {
   const navigation = useNavigation();
   const [ticketsArr, setTicketsArr] = useState([]);
@@ -154,7 +155,7 @@ export default function AllChats(props) {
               <View style={reviewStyle.container}>
                 <Text style={reviewStyle.title}>Your Tickets</Text>
                 <View style={reviewStyle.addBtn}>
-                  <CustomButtonNew  paddingHorizontal={wp(6)} onPress={() => { setModal(true) }} text={"Add"} />
+                  <CustomButtonNew paddingHorizontal={wp(6)} onPress={() => { setModal(true) }} text={"Add"} />
                 </View>
               </View>
             </>
@@ -174,8 +175,12 @@ export default function AllChats(props) {
 
 
           <View style={internal_styles.bottom_container}>
-            <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
-
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+           <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
+              <Pressable style={[{ right: wp(-25) }]} onPress={() => setModal(!applyFormModal)}>
+                <FontAwesome5Icon  name="times" size={wp(6)} color="black" />
+              </Pressable>
+            </View>
             <Input
               placeholder="Please Enter Message..."
               value={message}

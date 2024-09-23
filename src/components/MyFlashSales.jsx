@@ -188,7 +188,7 @@ export default function MyFlashSales(props) {
       onPress={
 
         ()=>
-          
+           
           {
             if(!userSubscriptionExpired)
             {
@@ -202,6 +202,8 @@ export default function MyFlashSales(props) {
         
         }/>
         </View>
+
+        
     </View>
     
      <View style={{height:wp(15),justifyContent:'center', marginHorizontal:wp(2)}}>

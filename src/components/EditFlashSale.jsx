@@ -331,8 +331,8 @@ export default function EditFlashSale(props) {
             <Text style={styles.textbtn}>Update</Text>
           </TouchableOpacity> */}
 
-            <View style={{ marginTop: wp(5), marginBottom: wp(7), alignSelf: 'center' }}>
-              <CustomButtonNew paddingHorizontal={wp(10)} paddingVertical={wp(3.5)} buttonBgColor='#58402C' onPress={() => handleCreateFlashSale()} text={"Update"}></CustomButtonNew>
+            <View style={{ marginTop: wp(5), marginBottom: wp(17), alignSelf: 'center' }}>
+              <CustomButtonNew paddingHorizontal={wp(10)} paddingVertical={wp(3.5)}  onPress={() => handleCreateFlashSale()} text={"Update"}></CustomButtonNew>
             </View>
           </ScrollView>
         </ImageBackground>

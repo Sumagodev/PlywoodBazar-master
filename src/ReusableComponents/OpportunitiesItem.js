@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CustomColors from '../styles/CustomColors';
 import { color } from 'react-native-elements/dist/helpers';
 import CustomButtonNew from './CustomButtonNew';
-
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 export default OpportunitiesItem = ({ opportunityItem, onApplyPress }) => {
     return (
         <View style={styles.wrapper}>
@@ -30,8 +30,11 @@ export default OpportunitiesItem = ({ opportunityItem, onApplyPress }) => {
                             
                         />
                     </View>
-                    <Text style={{fontSize:wp(4), color:'white', fontWeight:'bold'}}>{opportunityItem.stateName}</Text>
                     <Text style={styles.titleStyle} numberOfLines={2} ellipsizeMode='tail'>{opportunityItem.title} </Text>
+                    <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                    <FontAwesome5Icon  name="map-marker-alt" size={wp(4)} color="#ffffff" />
+                    <Text style={{fontSize:wp(4), color:'white', fontWeight:'bold',marginHorizontal:wp(2)}}>{opportunityItem.stateName}</Text>
+                  </View>
                 </LinearGradient>
             </ImageBackground>
         </View>

@@ -76,6 +76,10 @@ const ApplyOppFor = ({route,navigation}) => {
       name: ROLES_CONSTANT.RETAILER,
       checked: false,
     },
+    {
+      name: ROLES_CONSTANT.CONTRACTOR,
+      checked: false,
+    },
   ]);
 
 

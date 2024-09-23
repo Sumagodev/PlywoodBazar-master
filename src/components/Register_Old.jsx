@@ -56,6 +56,10 @@ export default function Register() {
       name: ROLES_CONSTANT.RETAILER,
       checked: false,
     },
+    {
+      name: ROLES_CONSTANT.CONTRACTOR,
+      checked: false,
+    },
   ]);
 
 

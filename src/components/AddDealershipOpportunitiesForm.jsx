@@ -71,6 +71,10 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
       name: ROLES_CONSTANT.RETAILER,
       checked: false,
     },
+    {
+      name: ROLES_CONSTANT.CONTRACTOR,
+      checked: false,
+    },
   ]);
 
   const handleGeyUserDetails = async id => {

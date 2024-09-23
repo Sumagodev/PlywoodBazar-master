@@ -279,7 +279,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -311,7 +311,7 @@ export default function AddProducts(props) {
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
               <Text style={styles1.nameheading}>Brand</Text>
               <Pressable onPress={() => setBrandModal(true)}>
-                <Text style={{ color: CustomColors.glossBrownDark, borderBottomWidth: 1, borderBottomColor: CustomColors.glossBrownDark, fontSize:wp(4.5), fontWeight: 'bold' }}>Add new Brand</Text>
+                <Text style={{ color: CustomColors.glossBrownDark, borderBottomWidth: 1, borderBottomColor: CustomColors.glossBrownDark, fontSize: wp(4.5), fontWeight: 'bold' }}>Add new Brand</Text>
               </Pressable>
             </View>
 
@@ -334,10 +334,10 @@ export default function AddProducts(props) {
               value={price}
               placeholder="Price "
               mode='outlined'
-              
+
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -355,7 +355,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -371,7 +371,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -387,7 +387,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -403,23 +403,23 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
               selectionColor={CustomColors.mattBrownDark}
             />
 
-<Text style={styles1.nameheading}>Enter Color </Text>
+            <Text style={styles1.nameheading}>Enter Color </Text>
 
-<TextInput
+            <TextInput
               onChangeText={e => setcolor(e)}
               value={color}
               placeholder="Color"
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -434,7 +434,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -450,7 +450,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -466,7 +466,7 @@ export default function AddProducts(props) {
               mode='outlined'
               activeOutlineColor='transparent'
               outlineColor='white'
-              outlineStyle={{borderRadius: 50}}
+              outlineStyle={{ borderRadius: 50 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -484,7 +484,7 @@ export default function AddProducts(props) {
               activeOutlineColor='transparent'
               placeholder="Long Description"
               outlineColor='white'
-              outlineStyle={{borderRadius: 20}}
+              outlineStyle={{ borderRadius: 20 }}
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
@@ -493,26 +493,26 @@ export default function AddProducts(props) {
 
             <Text style={styles1.nameheading}>Product Image </Text>
             <Pressable
-              style={[styles1.dropdownStyle, {paddingVertical: wp(3), paddingStart: wp(2),flexDirection:'row',flex:1,justifyContent:'space-between'}]}
+              style={[styles1.dropdownStyle, { paddingVertical: wp(3), paddingStart: wp(2), flexDirection: 'row', flex: 1, justifyContent: 'space-between' }]}
               onPress={() => {
                 handleDocumentPicker();
               }}>
               <Text style={styles.borderedPressableText}>{file && file.name ? file?.name : 'Please Upload Image'}</Text>
-              <FontAwesome5Icon style={{right:wp(5)}} name="caret-square-up" size={wp(6)} color="black" />
-              
+              <FontAwesome5Icon style={{ right: wp(5) }} name="caret-square-up" size={wp(6)} color="black" />
+
             </Pressable>
             <Text style={styles1.nameheading}>Product Multiple Images </Text>
 
             <Pressable
-              style={[styles1.dropdownStyle, {paddingVertical: wp(3), paddingStart: wp(2),flexDirection:'row',flex:1,justifyContent:'space-between'}]}
+              style={[styles1.dropdownStyle, { paddingVertical: wp(3), paddingStart: wp(2), flexDirection: 'row', flex: 1, justifyContent: 'space-between' }]}
               onPress={() => {
                 handleDocumentMultiplePicker();
               }}>
               <Text style={styles.borderedPressableText}>{imageArr && imageArr.length > 0 ? `${imageArr.length} Files Selected` : 'Please Upload Multiple Image'}</Text>
-              <FontAwesome5Icon style={{right:wp(5)}} name="caret-square-up" size={wp(6)} color="black" />
+              <FontAwesome5Icon style={{ right: wp(5) }} name="caret-square-up" size={wp(6)} color="black" />
             </Pressable>
-            <View style={{alignSelf: 'center', marginVertical:wp(5)}}>
-              <CustomButton onPress={() => handleCreateFlashSale()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)}  paddingVertical={wp(3)}/>
+            <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
+              <CustomButton onPress={() => handleCreateFlashSale()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
             </View>
           </View>
         </ImageBackground>
@@ -527,28 +527,35 @@ export default function AddProducts(props) {
         }}>
         <View style={styles1.centeredView}>
           <View style={styles1.modalView}>
-            <Text style={styles1.modalText}>Add Brand</Text>
-            <Pressable style={[styles1.button, styles1.buttonClose]} onPress={() => setBrandModal(!brandModal)}>
-              <TextInput
-                style={{ width: wp(90) }}
-                onChangeText={e => setBrandName(e)}
-                value={brandName}
-                multiline={true}
-                placeholder="Brand Name"
-                mode='outlined'
-                activeOutlineColor='transparent'
-                outlineColor='white'
-                outlineStyle={{borderRadius: 50}}
-                underlineColor='transparent'
-                backgroundColor='white'
-                borderRadius={50}
-              />
-
-            <View style={{alignSelf: 'center', marginVertical:wp(5)}}>
-              <CustomButton onPress={() => handleCreateBrand()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)}  paddingVertical={wp(3)}/>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={styles1.modalText}>Add Brand</Text>
+              <Pressable style={[{ right: wp(-25) }]} onPress={() => setBrandModal(!brandModal)}>
+                <FontAwesome5Icon style={{}} name="times" size={wp(8)} color="black" />
+              </Pressable>
             </View>
-              
-            </Pressable>
+
+            <TextInput
+              onChangeText={e => setBrandName(e)}
+              value={brandName}
+              placeholder="Brand Name"
+              selectionColor={CustomColors.mattBrownDark}
+              mode='outlined'
+              activeOutlineColor='transparent'
+              outlineColor='white'
+              outlineStyle={{ borderRadius: 50 }}
+              underlineColor='transparent'
+              backgroundColor='white'
+              borderRadius={50}
+              style={{
+                width: wp(90),
+
+              }}
+            />
+            <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
+              <CustomButton onPress={() => handleCreateBrand()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
+            </View>
+
+
           </View>
         </View>
       </Modal>

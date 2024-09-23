@@ -1,4 +1,4 @@
-import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
+import { DarkTheme, useIsFocused, useNavigation,CommonActions } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground,Alert } from 'react-native';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
@@ -55,6 +55,10 @@ export default function Register() {
     },
     {
       name: ROLES_CONSTANT.RETAILER,
+      checked: false,
+    },
+    {
+      name: ROLES_CONSTANT.CONTRACTOR,
       checked: false,
     },
   ]);
@@ -250,8 +254,34 @@ export default function Register() {
         toastSuccess(res.message);
         await setToken(res.token);
         setIsAuthorized(true);
-
-        navigation.navigate('Subscriptions', { register: true });
+        Alert.alert(
+          "Navigate",
+          "Where would you like to go?",
+          [
+            {
+              text: "Subscriptions",
+              onPress: () => navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Subscriptions', params: { register: true } }],
+                })
+              ),
+            },
+            {
+              text: "Home",
+              onPress: () => navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Home' }],
+                })
+              ),
+            },
+           
+          ]
+        );
+        // navigation.navigate('BottomBar', { register: true });
+        // navigation.navigate('Subscriptions', { register: true });
+        
       }
     } catch (error) {
       console.log(error);

@@ -27,10 +27,10 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 export default function Productdetails(props) {
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [supplierObj, setSupplierObj] = useState({});
-  console.log('productObj', productObj);
+  
 
   const [productObj, setProductObj] = useState(null);
-  
+  console.log('productObjj', productObj?.createdByObj);
   
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
@@ -628,11 +628,11 @@ export default function Productdetails(props) {
 
 
           <LinearGradient colors={['#cc8d19', '#cc8d19', '#f1e8d1']} style={gradientStyle.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-            <View style={gradientStyle.card}>
-              <View style={{ flexDirection: 'row' }}>
+            <View  style={gradientStyle.card}>
+              <TouchableOpacity onPress={() => { navigation.navigate('Supplier', { data: productObj?.createdByObj })}} style={{ flexDirection: 'row' }} >
                 {productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{ width: wp(15), height: wp(15) }} />}
                 <Text style={gradientStyle.title}>{currentUserHasActiveSubscription ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `${productObj?.createdByObj?.userObj?.companyObj?.name}`.slice(0, 4) + '***'}</Text>
-              </View>
+              </TouchableOpacity>
 
               <View style={{ flexDirection: 'row', marginTop: wp(1) }}>
                 <Icon name="map-marker-radius" color="white" size={wp(8)} />
