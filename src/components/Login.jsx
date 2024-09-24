@@ -1,18 +1,45 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState,useEffect,useContext } from 'react';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, KeyboardAvoidingView, Platform ,Alert} from 'react-native';
 import { Image } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation ,CommonActions,useIsFocused} from '@react-navigation/native';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
 import CustomColors from '../styles/CustomColors';
 import CustomInputWithLeftIcon from '../ReusableComponents/CustomInputWithLeftIcon';
 import { sendOtpService } from '../services/User.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { heightPercentageToDP,widthPercentageToDP } from 'react-native-responsive-screen';
-
+import {isAuthorisedContext} from '../navigation/Stack/Root';
 export default Login = () => {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [error, setError] = useState(false); 
+  const focused = useIsFocused();
+  const [isAuthorized] = useContext(isAuthorisedContext);
+  useEffect(() => {
+    if (isAuthorized ) {
+      // User is authorized, proceed as normal
+    } else {
+      Alert.alert(
+        "Login/Registration Required",
+        "You need to be logged in to access this feature.",
+        [
+          {
+            text: "Login",
+            // Optionally, you can navigate to the Login screen here
+            // onPress: () => navigation.navigate('Login'),
+            onPress: () => {},
+            // onPress: () => navigation.dispatch(
+            //   CommonActions.reset({
+            //     index: 0,
+            //     routes: [{ name: 'Login'}],
+            //   })
+            // ),
+          },
+         
+        ]
+      );
+    }
+  }, []);
 
   const handleSendOTP = async () => {
     const mobileNumberPattern = /^[6-9][0-9]{9}$/;

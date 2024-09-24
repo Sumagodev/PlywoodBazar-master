@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../navigation/customheader/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {searchProduct} from '../services/Product.service';
+import {getAllProducts, searchProduct} from '../services/Product.service';
 import {getDecodedToken, searchVendorFromDb} from '../services/User.service';
 import {errorToast} from '../utils/toastutill';
 import ProductItemHorizontal from '../ReusableComponents/ProductItemHorizontal';

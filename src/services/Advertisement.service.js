@@ -35,6 +35,16 @@ export const GetDealershipOpportunities = async () => {
  
     return /*apiinstance*/ axios.get(`${serverUrl1}/getDelearshipOpportunities`)
 }
+export const GetDealershiplist = async (id) => {
+ console.log('dataaaa',id);
+ 
+    return /*apiinstance*/ axios.get(`${serverUrl1}/getDealershipOwnerByUserId/${id}`)
+}
+export const DeleteOpp = async (id) => {
+ console.log('dataaaa',id);
+ 
+    return /*apiinstance*/ axios.delete(`${serverUrl1}/dealership-owners/${id}`)
+}
 
 
 export const deleteAdvertisement = async (id) => {

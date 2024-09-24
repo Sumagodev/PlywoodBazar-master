@@ -16,45 +16,40 @@ import styles from '../../assets/stylecomponents/Style';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import {  ApplyForDealershipOpportunitiy } from '../services/Advertisement.service';
+import { AddDealershipOpportunities } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-const ApplyOppFor = ({route,navigation}) => {
-  const { Data } = route.params;
-  console.log('Datax',Data);
-  console.log('DataxCities',Data.cities);
-  const State= Data.stateId
-
-  
+const EditdealershipOpp = ({ props, navigation }) => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
   const [userID, setuserID] = useState('');
-  console.log('userIDuserID',userID);
-  
+  console.log('userIDuserID', userID);
+
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [productsArray, setproductsArray] = useState([]);
-  console.log('productsArray',productsArray);
-  
-  const [selectedBusinessType, setSelectedBusinessType] = useState(Data.Type);
+  console.log('productsArray', productsArray);
+
+  const [selectedBusinessType, setSelectedBusinessType] = useState();
   const [selectedproductsArray, setSelectedproductsArray] = useState();
   const [countryArr, setcountryArr] = useState([]);
   const [stateArr, setstateArr] = useState([]);
   const [cityArr, setcityArr] = useState([]);
   const [countryId, setcountryId] = useState('648d5b79f79a9ff6f10a82fb');
-  const [stateId, setstateId] = useState(State);
+  const [stateId, setstateId] = useState(null);
   const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
   const [selected, setSelected] = useState([]);
   const [file, setFile] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
-  console.log('selectedproductsArray', selectedproductsArray);
+
+  console.log('loggg', stateId);
   const debounceTimeout = useRef(null);
 
   const [selectedItems, setSelectedItems] = useState([]);
-  console.log('selectedItems',selectedItems);
+  console.log('selectedItems', selectedItems);
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
@@ -82,21 +77,13 @@ const ApplyOppFor = ({route,navigation}) => {
     },
   ]);
 
-
-
-
-
-  //setcityArr(Data.cities)
-
-
-
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
     let res = await getUserById(decodedToken?.userId);
-    console.log('decodedToken?.userId',decodedToken?.userId);
+    console.log('decodedToken?.userId', decodedToken?.userId);
     if (res?.data) {
-     setuserID(res?.data.data._id);
-      
+      setuserID(res?.data.data._id);
+
       setName(res.data.data.companyObj.name);
       setEmail(res.data.data.companyObj.email);
     }
@@ -167,8 +154,7 @@ const ApplyOppFor = ({route,navigation}) => {
 
   useEffect(() => {
     if (stateId) {
-      console.log(stateId,'zzzz');
-      //handleGetCities(stateId);
+      handleGetCities(stateId.value);
     }
   }, [stateId]);
 
@@ -199,54 +185,199 @@ const ApplyOppFor = ({route,navigation}) => {
     setSelectedItems([]);
   };
 
- 
+
+
+  // const handleSubmit = async () => {
+  //   try {
+
+  //     if (!name) {
+  //       errorToast('Name is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a business type is selected
+  //     if (!selectedBusinessType) {
+  //       errorToast('Business Type is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a brand is provided
+  //     if (!brand) {
+  //       errorToast('Brand is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a product is selected
+  //     if (!selectedproductsArray) {
+  //       errorToast('Product is Required');
+  //       return;
+  //     }
+
+  //     // Validate if a city is selected
+  //     if (!selectedItems || selectedItems.length === 0) {
+  //       errorToast('City is Required');
+  //       return;
+  //     }
+
+  //     // Validate if an image is selected
+  //     if (!fileBase64) {
+  //       errorToast('Image is Required');
+  //       return;
+  //     }
+
+  //     // Validate if an image is selected
+  //     if (!cityId.length < 1) {
+  //       errorToast('City is Required');
+  //       return;
+  //     }
+  //     // Validate if an image is selected
+  //     if (!stateId) {
+  //       errorToast('State is Required');
+  //       return;
+  //     }
+
+  //     let obj = {
+  //       Organisation_name: name,
+  //       Type: selectedBusinessType,
+  //       Brand: brand,
+  //       productId: selectedproductsArray._id,
+  //       userId: userID,
+  //       cityId: selectedItems,
+  //       stateId: stateId.value,
+  //       image: fileBase64,
+  //       Product: selectedproductsArray.name
+  //     };
+  //     console.log('obj', obj);
+
+  //     const { data: res } = await AddDealershipOpportunities(obj);
+  //     if (res) {
+  //       toastSuccess(res.message);
+  //       console.log('');
+
+  //       navigation.goBack();
+  //       resetForm();
+  //     }
+  //   } catch (error) {
+  //     errorToast(error);
+  //     console.log('errorToast', errorToast);
+
+  //   }
+  // };
   const handleSubmit = async () => {
-   
     try {
-      if (`${name}` === '') {
+      // Validate if a name is provided
+      if (!name) {
         errorToast('Name is Required');
-        return 0;
+        return;
       }
-     
-      if (`${selectedBusinessType}` === '') {
+  
+      // Validate if a business type is selected
+      if (!selectedBusinessType) {
         errorToast('Business Type is Required');
-        return 0;
+        return;
       }
-      if (`${brand}` === '') {
+  
+      // Validate if a brand is provided
+      if (!brand) {
         errorToast('Brand is Required');
-        return 0;
+        return;
       }
-      if (`${selectedproductsArray}` === '') {
+  
+      // Validate if a product is selected
+      if (!selectedproductsArray || !selectedproductsArray._id) {
         errorToast('Product is Required');
-        return 0;
+        return;
       }
-      if (`${selectedItems}` === '') {
+  
+      // Validate if a city is selected
+      if (!selectedItems || selectedItems.length === 0) {
         errorToast('City is Required');
-        return 0;
+        return;
       }
-     
+  
+      // Validate if an image is selected
+      if (!fileBase64) {
+        errorToast('Image is Required');
+        return;
+      }
+  
+   
+      if (!cityId < 1) {
+        errorToast('City is Required');
+        return;
+      }
+  
+      // Validate if stateId is selected
+      if (!stateId || !stateId.value) {
+        errorToast('State is Required');
+        return;
+      }
+  
+      // Prepare the object
       let obj = {
         Organisation_name: name,
         Type: selectedBusinessType,
-        dealershipOwnerId:Data._id,
-        Brand:brand,
-        productId:selectedproductsArray,
-        userId:userID,
-        cityId:selectedItems,
-        stateId:stateId,
-     
+        Brand: brand,
+        productId: selectedproductsArray._id,
+        userId: userID,
+        cityId: selectedItems,
+        stateId: stateId.value,
+        image: fileBase64,
+        Product: selectedproductsArray.name
       };
-      const { data: res } = await ApplyForDealershipOpportunitiy(obj);
+  
+      console.log('Submitting object:', obj);
+  
+      // Submit data
+      const { data: res } = await AddDealershipOpportunities(obj);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
         resetForm();
       }
     } catch (error) {
-      errorToast(error);
+      errorToast('An error occurred while submitting.');
+      console.log('Error:', error);
     }
   };
+  
+  const handleDocumentPicker = async () => {
+    try {
+      ImagePicker.openPicker({
+        // width: 300,
+        // height: 400,
+        cropping: true,
+        freeStyleCropEnabled: true,
 
+        includeBase64: true,
+      }).then(image => {
+        console.log(image, image.path.split('/')[image.path.split('/').length - 1]);
+        setFile({ name: image.path.split('/')[image.path.split('/').length - 1] });
+        setFileBase64(`data:${image.mime};base64,${image.data}`);
+      });
+
+      // let file = await DocumentPicker.pickSingle({
+      //   presentationStyle: 'fullScreen',
+
+      //   type: DocumentPicker.types.images,
+      // });
+      // if (file) {
+      //   console.log(file, 'file');
+      //   let base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
+      //   if (base64) {
+      //     console.log('SETTING BASE ^$', file);
+      //     setFile(file);
+      //     setFileBase64(`data:${file.type};base64,${base64}`);
+      //   }
+      //   // getBase64(file, (result) => {
+      //   //     setGstCertificateName(file);
+      //   //     setgstCertificate(result);
+      //   // })
+      // }
+    } catch (error) {
+      handleError(error);
+    }
+  };
   const removeItem = (itemId) => {
     // Filter out the item that matches the itemId and update the state
     const updatedItems = selectedItems.filter((id) => id !== itemId);
@@ -254,40 +385,72 @@ const ApplyOppFor = ({route,navigation}) => {
   };
   return (
     <>
-      <Header normal={true} screenName={'Dealership Opportunities'}  />
+      <Header normal={true} screenName={'Dealership Opportunities'} rootProps={props} />
       <ScrollView>
         <View style={styles1.containerForm}>
-          <Text style={styles1.textStyle}>Apply Dealership Opportunities</Text>
+          <Text style={styles1.textStyle}>Add Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)}    editable={false}
-            />
+            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)} />
             <View style={{ height: wp(1) }} />
 
-            <TextInput style={styles1.BorderedPressable} placeholder="Business Type*" value={Data.Type}    editable={false}
-            />
-            <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Product*" value={Data.Product} onChangeText={value => setSelectedproductsArray(Data.Product)}    editable={false}
-            />
-            <View style={{ height: wp(1) }} />
-        
-           
+            <Dropdown
+              style={styles1.dropdown}
+              placeholderStyle={styles1.placeholderStyle}
+              data={rolesArr}
+              maxHeight={300}
+              labelField="name"
+              valueField="name" // Ensure this matches your data structure
+              placeholder="Business Type *"
+              search
+              searchPlaceholder="Search..."
+              value={selectedBusinessType} // Make sure this is the correct format (string or object)
+              selectedTextStyle={{ fontSize: 13, }}
+              onChange={item => {
+                console.log(item, 'uuuuu');
 
-            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)}    editable={false}
+                setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
+              }}
             />
+            <Dropdown
+              style={styles1.dropdown}
+              placeholderStyle={styles1.placeholderStyle}
+              data={productsArray}
+              maxHeight={300}
+              labelField="name"
+              valueField="name" // Ensure this matches your data structure
+              placeholder="Product *"
+              search
+              selectedTextStyle={{ fontSize: 13, }}
+              searchPlaceholder="Search..."
+              value={selectedproductsArray} // Make sure this is the correct format (string or object)
+              onChange={item => {
+                console.log(item, 'uuuuu');
+
+                setSelectedproductsArray(item); // Use `item.value` to match the `valueField`
+              }}
+            />
+
+            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)}    editable={false}/>
-            <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="State*" value={Data.stateName} onChangeText={value => setstateId(Data.stateName)}   editable={false}
- />
+            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />
 
-      
+            <Pressable
+              style={styles1.BorderedPressable}
+              onPress={() => {
+                setModalVisible(true);
+                setModalFor('State');
+              }}>
+              <View style={{ height: wp(1.5) }} />
+              <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
+              <View style={{ height: wp(1.5) }} />
+            </Pressable>
             <View style={{ marginVertical: wp(2) }}>
               <MultiSelect
                 hideTags
-                items={Data.cities}
-                uniqueKey="cityId"
+                items={cityArr}
+                uniqueKey="_id"
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={selectedItems}
                 selectText="     Select Cities"
@@ -299,7 +462,7 @@ const ApplyOppFor = ({route,navigation}) => {
                 selectedItemTextColor="#000"
                 selectedItemIconColor="#000"
                 itemTextColor="#000"
-                displayKey="cityName"
+                displayKey="name"
                 searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
                 submitButtonColor={CustomColors.mattBrownDark}
                 submitButtonText="Select"
@@ -312,11 +475,11 @@ const ApplyOppFor = ({route,navigation}) => {
             <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
               {selectedItems.length > 0 ? (
                 selectedItems.map(itemId => {
-                  const item = Data.cities.find(i => i.cityId === itemId);
+                  const item = cityArr.find(i => i._id === itemId);
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.cityName}
+                        {item.name}
                       </Text>
                       <TouchableOpacity onPress={() => removeItem(itemId)}>
                         <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
@@ -325,11 +488,20 @@ const ApplyOppFor = ({route,navigation}) => {
                   );
                 })
               ) : (
-                <Text>No cities selected</Text>
+                <Text>No items selected</Text>
               )}
             </View>
 
-     
+            <Text style={styles1.nameheading}> Image </Text>
+            <Pressable
+              style={[styles1.dropdownStyle, { paddingVertical: wp(3), paddingStart: wp(2), flexDirection: 'row', flex: 1, justifyContent: 'space-between' }]}
+              onPress={() => {
+                handleDocumentPicker();
+              }}>
+              <Text style={styles.borderedPressableText}>{file && file.name ? file?.name : 'Please Upload Image'}</Text>
+              <FontAwesome5Icon style={{ right: wp(5) }} name="caret-square-up" size={wp(6)} color="black" />
+
+            </Pressable>
           </View>
           <View style={styles1.btnContainer}>
             <TouchableOpacity
@@ -394,7 +566,7 @@ const ApplyOppFor = ({route,navigation}) => {
                   <>
                     <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>City</Text>
                     <FlatList
-                      data={Data.cities}
+                      data={cityArr}
                       keyExtractor={(item, index) => index}
                       renderItem={({ item, index }) => {
                         return (
@@ -424,11 +596,11 @@ const styles1 = StyleSheet.create({
     elevation: 5,
     backgroundColor: '#f4eddb',
     borderRadius: 25,
-    width: wp(99),
+    width: wp(96),
     alignItems: 'center',
     overflow: 'hidden',
     alignSelf: 'center',
-    marginTop: wp(3),
+    marginTop: wp(7),
   },
   textStyle: {
     color: '#000000',
@@ -442,7 +614,6 @@ const styles1 = StyleSheet.create({
     marginBottom: wp(15),
   },
   btnContainer: {
-    paddingTop:wp(-10),
     position: 'absolute',
     backgroundColor: '#cc8d19',
     bottom: 0,
@@ -457,7 +628,7 @@ const styles1 = StyleSheet.create({
     borderColor: CustomColors.searchBgColor,
     backgroundColor: CustomColors.mattBrownFaint,
     shadowColor: CustomColors.shadowColorGray,
-    height: wp(10),
+    height: wp(15),
 
     marginBottom: 4,
   },
@@ -470,7 +641,6 @@ const styles1 = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 25,
     elevation: 3,
-    color:'black'
   },
   borderedPressableText: {},
   centeredView: {
@@ -594,4 +764,4 @@ const stylesMul = StyleSheet.create({
   },
 });
 
-export default ApplyOppFor;
+export default EditdealershipOpp;

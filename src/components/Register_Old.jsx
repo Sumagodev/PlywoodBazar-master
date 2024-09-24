@@ -41,15 +41,7 @@ export default function Register() {
   const [modalFor, setModalFor] = useState('Country');
   const [rolesArr, setRolesArr] = useState([
     {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
-    },
-    {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DEALER,
+      name: ROLES_CONSTANT.CONTRACTOR,
       checked: false,
     },
     {
@@ -57,8 +49,16 @@ export default function Register() {
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.CONTRACTOR,
+      name: ROLES_CONSTANT.DEALER,
       checked: false,
+    },
+    {
+      name: ROLES_CONSTANT.DISTRIBUTOR,
+      checked: false,
+    },
+    {
+      name: ROLES_CONSTANT.MANUFACTURER,
+      checked: true,
     },
   ]);
 

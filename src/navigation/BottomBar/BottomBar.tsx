@@ -76,7 +76,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             {
               label.toLowerCase() === 'home' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="home-variant" style={isFocused ? styles.iconSelected : styles.iconDefault} />) :
               label.toLowerCase() === 'shop' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="store" style={isFocused ? styles.iconSelected : styles.iconDefault} />) : 
-              label.toLowerCase() === 'search' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
+              label.toLowerCase() === 'product' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
               label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
               (
                 <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name={isAuthorized ? "account-check" : "account-arrow-right"} style={isFocused ? styles.iconSelected : styles.iconDefault} />
@@ -143,7 +143,7 @@ export function BottomTabNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Shop" component={Filtercategory} />
-      <Tab.Screen name="Search" component={Search} />
+      <Tab.Screen name="Product" component={Search} />
       <Tab.Screen name="Notification" component={isAuthorized ? Notification : Login} />
       <Tab.Screen name="Account" component={isAuthorized ? Userprofile : Login} />
     </Tab.Navigator>

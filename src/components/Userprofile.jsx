@@ -54,6 +54,7 @@ export default function Userprofile(props) {
   const handleLogout = async () => {
     await removeToken();
     setIsAuthorized(false);
+    navigate.navigate('Home');
   };
 
   const handleDeleteAccount = async () => {
@@ -89,6 +90,18 @@ export default function Userprofile(props) {
             <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
           </View>
           <Text style={profileStyle.title}>My Products</Text>
+        </Pressable>
+        <Pressable onPress={() => navigate.navigate('DealershipOppolisting')} style={profileStyle.container}>
+          <View style={profileStyle.iconContainer}>
+            <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
+          </View>
+          <Text style={profileStyle.title}>Dealership Opportunities</Text>
+        </Pressable>
+        <Pressable onPress={() => navigate.navigate('AppliedOpportunitieslist')} style={profileStyle.container}>
+          <View style={profileStyle.iconContainer}>
+            <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
+          </View>
+          <Text style={profileStyle.title}>Applied Opportunities</Text>
         </Pressable>
 
         <Pressable onPress={() => navigate.navigate('Leads')} style={profileStyle.container}>

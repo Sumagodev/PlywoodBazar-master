@@ -1,4 +1,4 @@
-import { DarkTheme, useIsFocused, useNavigation,CommonActions } from '@react-navigation/native';
+import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground,Alert } from 'react-native';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
@@ -42,15 +42,7 @@ export default function Register() {
   const [modalFor, setModalFor] = useState('Country');
   const [rolesArr, setRolesArr] = useState([
     {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
-    },
-    {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DEALER,
+      name: ROLES_CONSTANT.CONTRACTOR,
       checked: false,
     },
     {
@@ -58,8 +50,16 @@ export default function Register() {
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.CONTRACTOR,
+      name: ROLES_CONSTANT.DEALER,
       checked: false,
+    },
+    {
+      name: ROLES_CONSTANT.DISTRIBUTOR,
+      checked: false,
+    },
+    {
+      name: ROLES_CONSTANT.MANUFACTURER,
+      checked: true,
     },
   ]);
 
@@ -130,10 +130,15 @@ export default function Register() {
       //   errorToast("Company Phone is Required");
       //   return 0
       // }
-      // if (`${gstNumber}` === "") {
-      //   errorToast("Gst is Required");
-      //   return 0;
-      // };
+      if (`${gstNumber}` === "") {
+        errorToast("Gst is Required");
+        return 0;
+      };
+      const gstNumberPattern = /^[0-9]{15}$/;
+      if (!gstNumberPattern.test(gstNumber)) {
+        errorToast("GST Number must be a 15-digit number");
+        return 0;
+      }
       if (!yearOfEstablishment || `${yearOfEstablishment}` === '') {
         errorToast('Year of Establishment is Required');
         return 0;
@@ -254,33 +259,9 @@ export default function Register() {
         toastSuccess(res.message);
         await setToken(res.token);
         setIsAuthorized(true);
-        Alert.alert(
-          "Navigate",
-          "Where would you like to go?",
-          [
-            {
-              text: "Subscriptions",
-              onPress: () => navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: 'Subscriptions', params: { register: true } }],
-                })
-              ),
-            },
-            {
-              text: "Home",
-              onPress: () => navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: 'Home' }],
-                })
-              ),
-            },
-           
-          ]
-        );
+
         // navigation.navigate('BottomBar', { register: true });
-        // navigation.navigate('Subscriptions', { register: true });
+        navigation.navigate('Subscriptions', { register: true });
         
       }
     } catch (error) {
@@ -693,7 +674,7 @@ export default function Register() {
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setBrandNames(e)} value={brandNames} placeholder="Dealing With Brand Names*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
 
-            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setgstNumber(e)} value={gstNumber} placeholder="GST NO.*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setgstNumber(e)} value={gstNumber} placeholder="GST NO.*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} keyboardType='name-phone-pad' maxLength={15} />
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setaddress(e)} value={address} selectionColor={CustomColors.mattBrownDark} placeholder="Address *" placeholderTextColor="#000" />
 

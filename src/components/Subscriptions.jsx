@@ -153,7 +153,7 @@ export default function Subscriptions(props) {
           <CustomButtonNew
             paddingHorizontal={wp(8)}
             paddingVertical={wp(3)}
-            text='Skip'
+            text='Skip Now'
             onPress={() => navigation.dispatch(
               CommonActions.reset({
                 index: 0,
