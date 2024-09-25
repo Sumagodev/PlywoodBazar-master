@@ -16,40 +16,43 @@ import styles from '../../assets/stylecomponents/Style';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { AddDealershipOpportunities } from '../services/Advertisement.service';
+import { AddDealershipOpportunities, Updateopp } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-const EditdealershipOpp = ({ props, navigation }) => {
-  const focused = useIsFocused();
-  const [name, setName] = useState('');
-  const [userID, setuserID] = useState('');
-  console.log('userIDuserID', userID);
 
+const EditdealershipOpp = ( props ) => {
+  console.log('loggg',props?.route?.params.data);
+  const Data=props?.route?.params.data
+  const Did =Data._id;
+  const focused = useIsFocused();
+  const [name, setName] = useState(Data.Organisation_name);
+  const [userID, setuserID] = useState('');
+  
+const navigation=useNavigation();
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
-  const [brand, setBrand] = useState('');
+  const [brand, setBrand] = useState(Data.Brand);
   const [email, setEmail] = useState('');
   const [productsArray, setproductsArray] = useState([]);
-  console.log('productsArray', productsArray);
 
-  const [selectedBusinessType, setSelectedBusinessType] = useState();
+
+  const [selectedBusinessType, setSelectedBusinessType] = useState(Data.Type);
   const [selectedproductsArray, setSelectedproductsArray] = useState();
   const [countryArr, setcountryArr] = useState([]);
   const [stateArr, setstateArr] = useState([]);
   const [cityArr, setcityArr] = useState([]);
   const [countryId, setcountryId] = useState('648d5b79f79a9ff6f10a82fb');
-  const [stateId, setstateId] = useState(null);
+  const [stateId, setstateId] = useState(Data.stateId);
   const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
   const [selected, setSelected] = useState([]);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(Data.image);
   const [fileBase64, setFileBase64] = useState(null);
 
-  console.log('loggg', stateId);
   const debounceTimeout = useRef(null);
 
   const [selectedItems, setSelectedItems] = useState([]);
-  console.log('selectedItems', selectedItems);
+
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
@@ -84,8 +87,8 @@ const EditdealershipOpp = ({ props, navigation }) => {
     if (res?.data) {
       setuserID(res?.data.data._id);
 
-      setName(res.data.data.companyObj.name);
-      setEmail(res.data.data.companyObj.email);
+      // setName(res.data.data.companyObj.name);
+      // setEmail(res.data.data.companyObj.email);
     }
   };
 
@@ -93,7 +96,7 @@ const EditdealershipOpp = ({ props, navigation }) => {
     let decodedToken = await getDecodedToken();
     let res = await getAllProductsBySupplierId(decodedToken?.userId);
     if (res?.data) {
-      setBrand(res.data.data[0].createdByObj.brandNames);
+      // setBrand(res.data.data[0].createdByObj.brandNames);
       setproductsArray(res.data.data);
     } else {
       console.log('elsssssss');
@@ -187,7 +190,7 @@ const EditdealershipOpp = ({ props, navigation }) => {
 
 
 
-  // const handleSubmit = async () => {
+
   //   try {
 
   //     if (!name) {
@@ -318,18 +321,19 @@ const EditdealershipOpp = ({ props, navigation }) => {
         Organisation_name: name,
         Type: selectedBusinessType,
         Brand: brand,
-        productId: selectedproductsArray._id,
+        // productId: selectedproductsArray._id,
         userId: userID,
         cityId: selectedItems,
         stateId: stateId.value,
-        image: fileBase64,
-        Product: selectedproductsArray.name
+        // image: fileBase64,
+        Product: selectedproductsArray.name,
+       
       };
   
       console.log('Submitting object:', obj);
   
       // Submit data
-      const { data: res } = await AddDealershipOpportunities(obj);
+      const { data: res } = await Updateopp(obj,Data._id);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
@@ -385,10 +389,9 @@ const EditdealershipOpp = ({ props, navigation }) => {
   };
   return (
     <>
-      <Header normal={true} screenName={'Dealership Opportunities'} rootProps={props} />
       <ScrollView>
         <View style={styles1.containerForm}>
-          <Text style={styles1.textStyle}>Add Dealership Opportunities</Text>
+          <Text style={styles1.textStyle}> Edit Promoted Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)} />
@@ -418,7 +421,7 @@ const EditdealershipOpp = ({ props, navigation }) => {
               data={productsArray}
               maxHeight={300}
               labelField="name"
-              valueField="name" // Ensure this matches your data structure
+              valueField= "name"// Ensure this matches your data structure
               placeholder="Product *"
               search
               selectedTextStyle={{ fontSize: 13, }}

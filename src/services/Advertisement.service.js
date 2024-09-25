@@ -40,10 +40,20 @@ export const GetDealershiplist = async (id) => {
  
     return /*apiinstance*/ axios.get(`${serverUrl1}/getDealershipOwnerByUserId/${id}`)
 }
+export const GetAppliedlist = async (id) => {
+ console.log('dataaaa',id);
+ 
+    return /*apiinstance*/ axios.get(`${serverUrl2}/getDealershipApplicationByUserId/${id}`)
+}
 export const DeleteOpp = async (id) => {
  console.log('dataaaa',id);
  
     return /*apiinstance*/ axios.delete(`${serverUrl1}/dealership-owners/${id}`)
+}
+export const Updateopp = async (obj,id) => {
+ console.log('updatee',id);
+ 
+    return /*apiinstance*/ axios.put(`${serverUrl1}/dealership-owners/${id}`,obj)
 }
 
 

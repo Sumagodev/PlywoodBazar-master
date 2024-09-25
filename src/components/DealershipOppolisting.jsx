@@ -32,7 +32,7 @@ export default function DealershipOppolisting(props) {
             let decodedObj = await getDecodedToken();
             const { data: res } = await GetDealershiplist(decodedObj?.userId);
             if (res) {
-                console.log(JSON.stringify(res.data, ),'raviiii');
+                console.log(JSON.stringify(res.data,), 'raviiii');
                 setSubscriptionArr(res.data);
             }
         } catch (error) {
@@ -50,7 +50,7 @@ export default function DealershipOppolisting(props) {
     //         let { data: res } = await GetDealershiplist(decodedToken?.userId);
 
     //         console.log('userIdd', res);
-      
+
     //         if (res.data) {
     //             setSubscriptionArr(res.data);
     //         }
@@ -58,7 +58,9 @@ export default function DealershipOppolisting(props) {
     //         console.log(err);
     //     }
     // };
-
+    const Editdata = (item) => {
+        navigation.navigate("EditdealershipOpp", { data: item })
+    }
     const handleDeleteProduct = (id) => {
         try {
             Alert.alert('Alert', 'Do you really want to delete this product.', [
@@ -87,17 +89,21 @@ export default function DealershipOppolisting(props) {
     const renderMyProductItem = ({ item, index }) => {
 
         console.log('00000000', item);
-console.log('generateImageUrl(item?.image)',generateImageUrl(item?.image));
+        console.log('generateImageUrl(item?.image)', generateImageUrl(item?.image));
 
         const productItem = {
             name: item?.Organisation_name,
             imagePath: { uri: generateImageUrl(item?.image) },
-            state: item?.stateName
+            state: item?.stateName,
+            Type: item?.Type,
+            brand: item?.Brand,
+            ProductName: item?.Product,
+            Cities: item?.cities,
 
 
         }
         return (
-            <DealershipData onDeletePress={() => {handleDeleteProduct(item?._id) }} product={productItem} onEditPress={() => { }} ></DealershipData>
+            <DealershipData onDeletePress={() => { handleDeleteProduct(item?._id) }} product={productItem} onEditPress={() => Editdata(item)} editable={true}  ></DealershipData>
             // <ProductItemVertical onDeletePress={() => handleDeleteProduct(item?._id)} product={productItem} onEditPress={() => navigation.navigate("EditProduct", { data: item?._id })} ></ProductItemVertical>
         );
     };
@@ -106,13 +112,13 @@ console.log('generateImageUrl(item?.image)',generateImageUrl(item?.image));
 
     return (
         <View style={styles1.mainContainer}>
-            <Header normal={true}  rootProps={props} />
+            <Header normal={true} rootProps={props} />
             <View style={reviewStyle.container}>
                 <Text style={reviewStyle.title}>Dealership Opportunities List</Text>
             </View>
 
             {
-                subscriptionArr? <FlatList data={subscriptionArr} numColumns={2} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
+                subscriptionArr ? <FlatList data={subscriptionArr} numColumns={1} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
                     :
                     <View style={{ height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Product </Text>

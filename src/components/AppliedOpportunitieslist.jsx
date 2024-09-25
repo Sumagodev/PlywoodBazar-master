@@ -12,9 +12,8 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
-import { GetDealershipOpportunities } from '../services/Advertisement.service';
+import { GetAppliedlist, GetDealershipOpportunities } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
-
 export default function AppliedOpportunitieslist(props) {
     const focused = useIsFocused()
     const navigation = useNavigation();
@@ -37,7 +36,8 @@ export default function AppliedOpportunitieslist(props) {
 
     const handleopportunitydata = async () => {
         try {
-            let { data: res } = await GetDealershipOpportunities();
+            let decodedObj = await getDecodedToken();
+            let { data: res } = await GetAppliedlist(decodedObj?.userId);
             if (res.data) {
                 setSubscriptionArr(res.data);
             }
@@ -112,12 +112,16 @@ export default function AppliedOpportunitieslist(props) {
         const productItem = {
             name: item?.Organisation_name,
             imagePath: { uri: generateImageUrl(item?.image) },
-            state:item?.stateName
-         
+            state: item?.stateName,
+            Type: item?.Type,
+            brand: item?.Brand,
+            ProductName: item?.Product,
+            Cities: item?.cities,
+
 
         }
         return (
-            <DealershipData onDeletePress={() => {}} product={productItem} onEditPress={() => {}} ></DealershipData>
+            <DealershipData onDeletePress={() => {}} product={productItem} editable={false} ></DealershipData>
             // <ProductItemVertical onDeletePress={() => handleDeleteProduct(item?._id)} product={productItem} onEditPress={() => navigation.navigate("EditProduct", { data: item?._id })} ></ProductItemVertical>
         );
     };
@@ -138,7 +142,7 @@ export default function AppliedOpportunitieslist(props) {
             </View>
 
             {
-                subscriptionArr.length > 0 ? <FlatList data={subscriptionArr} numColumns={2} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
+                subscriptionArr.length > 0 ? <FlatList data={subscriptionArr} numColumns={1} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
                     :
                     <View style={{ height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Product </Text>
