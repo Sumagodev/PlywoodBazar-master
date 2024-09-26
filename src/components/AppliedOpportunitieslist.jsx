@@ -145,7 +145,7 @@ export default function AppliedOpportunitieslist(props) {
                 subscriptionArr.length > 0 ? <FlatList data={subscriptionArr} numColumns={1} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
                     :
                     <View style={{ height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Product </Text>
+                        <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Data Available </Text>
 
                     </View>
 

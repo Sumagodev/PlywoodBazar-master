@@ -59,6 +59,7 @@ import VendorListByState from '../../components/VendorListByState';
 import DealershipOppolisting from '../../components/DealershipOppolisting';
 import AppliedOpportunitieslist from '../../components/AppliedOpportunitieslist';
 import EditdealershipOpp from '../../components/EditdealershipOpp';
+import SelfAppliedOpportunitiesList from '../../components/SelfAppliedOpportunitiesList';
 
 
 
@@ -566,6 +567,14 @@ export default function RootStack() {
               }}
               name="EditdealershipOpp"
               component={EditdealershipOpp}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="SelfAppliedOpportunitiesList"
+              component={SelfAppliedOpportunitiesList}
             />
           
 

@@ -15,7 +15,7 @@ import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
 
-export default function DealershipOppolisting(props) {
+export default function SelfAppliedOpportunitiesList(props) {
     const focused = useIsFocused()
     const navigation = useNavigation();
 
@@ -26,7 +26,7 @@ export default function DealershipOppolisting(props) {
     useEffect(() => {
         // handleopportunitydata();
         getSubscriptions()
-    }, [subscriptionArr]);
+    }, []);
     const getSubscriptions = async () => {
         try {
             let decodedObj = await getDecodedToken();
@@ -103,7 +103,7 @@ export default function DealershipOppolisting(props) {
 
         }
         return (
-            <DealershipData onDeletePress={() => { handleDeleteProduct(item?._id) }} product={productItem} onEditPress={() => Editdata(item)} editable={true}  ></DealershipData>
+            <DealershipData onDeletePress={() => { handleDeleteProduct(item?._id) }} product={productItem} onEditPress={() => Editdata(item)} editable={false}  ></DealershipData>
             // <ProductItemVertical onDeletePress={() => handleDeleteProduct(item?._id)} product={productItem} onEditPress={() => navigation.navigate("EditProduct", { data: item?._id })} ></ProductItemVertical>
         );
     };
@@ -114,7 +114,7 @@ export default function DealershipOppolisting(props) {
         <View style={styles1.mainContainer}>
             <Header normal={true} rootProps={props} />
             <View style={reviewStyle.container}>
-                <Text style={reviewStyle.title}>Dealership Opportunities List</Text>
+                <Text style={reviewStyle.title}>My Applied Opportunities List</Text>
             </View>
 
             {

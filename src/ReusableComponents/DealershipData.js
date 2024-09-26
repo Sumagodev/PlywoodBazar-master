@@ -37,20 +37,20 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
                     <Text style={[styles.headStyle, { width: '30%' }]}>Brand:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%' }}>{product.brand}</Text>
+                    <Text style={{ fontWeight: "400", width: '70%',paddingRight:wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.brand}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
                     <Text style={[styles.headStyle, { width: '30%' }]}>State:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={2} ellipsizeMode="tail">{product.state}</Text>
+                    <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={1} ellipsizeMode="tail">{product.state}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
                     <Text style={[styles.headStyle, { width: '30%' }]}>Product:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
+                    <Text style={{ fontWeight: "400", width: '70%', paddingRight:wp(4)}} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
                 </View>
                 <TouchableOpacity style={{ flexDirection: 'row', width: '80%' }} onPress={() => { setModalVisible(true), setcities(product.Cities) }}>
                     <Text style={[styles.headStyle, { width: '70%', color: '#cc8d19', fontSize: wp(4) }]}>View Cities</Text>
-                    
-                    <View style={{ alignContent: 'center', justifyContent: 'center',right:wp(5) }}>
+
+                    <View style={{ alignContent: 'center', justifyContent: 'center', right: wp(5) }}>
                         <FontAwesomeIcon name="eye" size={wp(5.4)} color='#000' />
                     </View>
 
@@ -83,11 +83,18 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
 
                             {/* ScrollView for rendering cities */}
                             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                                {cities.map((city, index) => (
-                                    <TouchableOpacity key={index} style={styles.cityItem}>
-                                        <Text style={styles.cityText}>{city.cityName}</Text>
-                                    </TouchableOpacity>
-                                ))}
+
+                                {cities.length > 0 ? (
+                                    cities.map((city, index) => (
+                                        city? ( // Check if the city object exists
+                                            <TouchableOpacity key={index} style={styles.cityItem}>
+                                                <Text style={styles.cityText}>{city.cityName}</Text>
+                                            </TouchableOpacity>
+                                        ) : null // Optionally handle null or undefined city cases
+                                    ))
+                                ) : (
+                                    <Text style={[styles.modalTitle, { fontWeight: '400', fontSize: 18 }]}>No city available</Text>
+                                )}
                             </ScrollView>
 
                             {/* Button to close Modal */}

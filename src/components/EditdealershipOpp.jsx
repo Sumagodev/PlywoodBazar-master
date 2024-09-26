@@ -325,7 +325,7 @@ const navigation=useNavigation();
         userId: userID,
         cityId: selectedItems,
         stateId: stateId.value,
-        // image: fileBase64,
+        image: fileBase64,
         Product: selectedproductsArray.name,
        
       };
