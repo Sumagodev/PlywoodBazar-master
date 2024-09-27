@@ -14,7 +14,8 @@ const { width, height } = Dimensions.get('window');
 const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cities, setcities] = useState([])
-    console.log('citiess', cities);
+    const [Categories, setCategories] = useState([])
+    console.log('citiess', Categories);
 
     console.log('upppp', modalVisible);
 
@@ -23,7 +24,7 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
 
         <View style={styles.container} >
             <View style={{
-                backgroundColor: 'black', width: '45%', height: '100%', borderRadius: wp(5),
+                backgroundColor: 'black', width: '36%', height: '100%', borderRadius: wp(5),
             }}>
                 <Image style={styles.imageStyle} source={product.imagePath} />
             </View>
@@ -32,21 +33,21 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                     <Text style={[styles.headStyle, { fontSize: wp(4.5), color: '#cc8d19', width: '100%', textAlign: "left" }]} numberOfLines={2} ellipsizeMode="tail">{product.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '30%' }]}>Type:</Text>
+                    <Text style={[styles.headStyle, { width: '38%' }]}>Type:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }}>{product.Type}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '30%' }]}>Brand:</Text>
+                    <Text style={[styles.headStyle, { width: '38%' }]}>Brand:</Text>
                     <Text style={{ fontWeight: "400", width: '70%',paddingRight:wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.brand}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '30%' }]}>State:</Text>
+                    <Text style={[styles.headStyle, { width: '38%' }]}>State:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={1} ellipsizeMode="tail">{product.state}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '30%' }]}>Product:</Text>
+                <TouchableOpacity style={{ flexDirection: 'row', width: '100%' }} onPress={() => { setModalVisible(true), setCategories(product.Categories)}}>
+                    <Text style={[styles.headStyle, { width: '38%' }]}>Category:</Text>
                     <Text style={{ fontWeight: "400", width: '70%', paddingRight:wp(4)}} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={{ flexDirection: 'row', width: '80%' }} onPress={() => { setModalVisible(true), setcities(product.Cities) }}>
                     <Text style={[styles.headStyle, { width: '70%', color: '#cc8d19', fontSize: wp(4) }]}>View Cities</Text>
 
@@ -57,7 +58,7 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
 
                 </TouchableOpacity>
                 {
-                    editable ? <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: "flex-end", right: wp(2), alignSelf: 'flex-end', alignItems: "flex-end" }}>
+                    editable ? <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: "flex-end", right: wp(2), alignSelf: 'flex-end', alignItems: "flex-end" ,position:'absolute',bottom:wp(3),right:wp(-4)}}>
 
                         <TouchableOpacity style={{ marginHorizontal: 10, width: wp(8), height: wp(8), alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2 }} onPress={onDeletePress}>
                             <FontAwesomeIcon name="trash-o" size={wp(4)} color='#fff' />
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     container: {
         margin: wp(2),
         width: wp(90),
-        height: wp(45),
+        height: wp(40),
         elevation: 10,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
@@ -128,6 +129,7 @@ const styles = StyleSheet.create({
         height: '55%',
         borderTopRightRadius: wp(5),
         borderTopLeftRadius: wp(5),
+        resizeMode:"contain"
 
     },
     table: {

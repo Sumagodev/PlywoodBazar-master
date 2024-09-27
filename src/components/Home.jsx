@@ -987,7 +987,7 @@ export default function Home() {
   return (
     <>
       <View style={[styles.bgwhite]}>
-        <Pressable onPress={() => navigate.navigate('Search')}>
+        <Pressable onPress={() => navigate.navigate('Product')}>
           <View style={{ width: wp(90), alignSelf: 'center', marginTop: wp(3) }} onPress={() => navigate.navigate('Search')}>
             <CustomTextInputField placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} editable={false}  ></CustomTextInputField>
           </View>

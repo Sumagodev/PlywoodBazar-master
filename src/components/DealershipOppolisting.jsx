@@ -14,6 +14,7 @@ import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
+import Categories from './Categories';
 
 export default function DealershipOppolisting(props) {
     const focused = useIsFocused()
@@ -99,6 +100,7 @@ export default function DealershipOppolisting(props) {
             brand: item?.Brand,
             ProductName: item?.Product,
             Cities: item?.cities,
+            Categories: item?.categories,
 
 
         }
