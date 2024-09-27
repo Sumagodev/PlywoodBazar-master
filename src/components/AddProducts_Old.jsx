@@ -68,7 +68,7 @@ export default function AddProducts(props) {
       errorToast(err);
     }
   };
-
+ 
   const handleCreateFlashSale = async () => {
     console.log('asdlfkhasdfh');
     try {

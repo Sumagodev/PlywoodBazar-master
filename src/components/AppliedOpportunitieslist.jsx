@@ -117,6 +117,7 @@ export default function AppliedOpportunitieslist(props) {
             brand: item?.Brand,
             ProductName: item?.Product,
             Cities: item?.cities,
+            Categories: item?.categories,
 
 
         }

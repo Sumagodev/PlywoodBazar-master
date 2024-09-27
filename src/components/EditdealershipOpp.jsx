@@ -18,6 +18,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { AddDealershipOpportunities, Updateopp } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
+import { getAllCategories } from '../services/Category.service';
 
 const EditdealershipOpp = ( props ) => {
   console.log('loggg',props?.route?.params.data);
@@ -46,6 +47,7 @@ const navigation=useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
   const [selected, setSelected] = useState([]);
+  const [CategoryArr, setCategoryArr] = useState([]);
   const [file, setFile] = useState(Data.image);
   const [fileBase64, setFileBase64] = useState(null);
 
@@ -55,6 +57,12 @@ const navigation=useNavigation();
 
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
+  };
+
+  const [selectedItemscate, setSelectedItemscate] = useState([]);
+
+  const onSelectedItemsChangeCate = selectedItemscate => {
+    setSelectedItemscate(selectedItemscate);
   };
 
   const [rolesArr, setRolesArr] = useState([
@@ -79,7 +87,16 @@ const navigation=useNavigation();
       checked: true,
     },
   ]);
-
+  const handleGetCategory = async () => {
+    try {
+      let {data: res} = await getAllCategories();
+      if (res.data) {
+        setCategoryArr(res.data);
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
     let res = await getUserById(decodedToken?.userId);
@@ -133,6 +150,7 @@ const navigation=useNavigation();
   useEffect(() => {
     if (countryId) {
       handleDebouncedGetStates(countryId);
+      handleGetCategory();
     }
   }, [countryId]);
 
@@ -191,7 +209,7 @@ const navigation=useNavigation();
 
 
 
-  //   try {
+
 
   //     if (!name) {
   //       errorToast('Name is Required');
@@ -326,7 +344,8 @@ const navigation=useNavigation();
         cityId: selectedItems,
         stateId: stateId.value,
         image: fileBase64,
-        Product: selectedproductsArray.name,
+        categories: selectedproductsArray.name,
+        // Product: selectedproductsArray.name,
        
       };
   
@@ -478,6 +497,51 @@ const navigation=useNavigation();
             <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
               {selectedItems.length > 0 ? (
                 selectedItems.map(itemId => {
+                  const item = cityArr.find(i => i._id === itemId);
+                  return (
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
+                      <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
+                        {item.name}
+                      </Text>
+                      <TouchableOpacity onPress={() => removeItem(itemId)}>
+                        <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })
+              ) : (
+                <Text>No items selected</Text>
+              )}
+            </View>
+            <View style={{ marginVertical: wp(2) }}>
+              <MultiSelect
+                hideTags
+                items={cityArr}
+                uniqueKey="_id"
+                onSelectedItemsChange={onSelectedItemsChangeCate}
+                selectedItems={selectedItemscate}
+                selectText="     Select Categories"
+                searchInputPlaceholderText="Search Category..."
+                onChangeInput={text => console.log(text)}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#000"
+                selectedItemTextColor="#000"
+                selectedItemIconColor="#000"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
+                submitButtonColor={CustomColors.mattBrownDark}
+                submitButtonText="Select"
+                styleDropdownMenuSubsection={stylesMul.multiSelect} // Style for the dropdown
+                styleInputGroup={stylesMul.multiSelectInput} // Style for the input section
+                styleItemsContainer={stylesMul.multiSelectItems} // Sty
+              />
+            </View>
+
+            <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
+              {selectedItemscate.length > 0 ? (
+                selectedItemscate.map(itemId => {
                   const item = cityArr.find(i => i._id === itemId);
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>

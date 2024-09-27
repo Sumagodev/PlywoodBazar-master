@@ -15,6 +15,7 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cities, setcities] = useState([])
     const [Categories, setCategories] = useState([])
+    const [type, setType] = useState(null);
     console.log('citiess', Categories);
 
     console.log('upppp', modalVisible);
@@ -24,42 +25,41 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
 
         <View style={styles.container} >
             <View style={{
-                backgroundColor: 'black', width: '36%', height: '100%', borderRadius: wp(5),
+                backgroundColor: 'black', width: '100%', height: wp(40), borderRadius: wp(5),
             }}>
                 <Image style={styles.imageStyle} source={product.imagePath} />
             </View>
-            <View style={{ width: '55%', alignItems: 'flex-start', height: '100%', marginVertical: wp(2) }}>
-                <View style={{ flexDirection: 'row', width: '100%', }}>
-                    <Text style={[styles.headStyle, { fontSize: wp(4.5), color: '#cc8d19', width: '100%', textAlign: "left" }]} numberOfLines={2} ellipsizeMode="tail">{product.name}</Text>
+            <View style={{ width: '90%', alignItems: 'center', height: '100%', marginVertical: wp(2), marginHorizontal: wp(3) }}>
+                <View style={{ flexDirection: 'row', }}>
+                    <Text style={[styles.headStyle, { fontSize: wp(4.5), color: '#cc8d19', width: '100%' }]} numberOfLines={1} ellipsizeMode="tail">{product.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '38%' }]}>Type:</Text>
+                    <Text style={[styles.headStyle, { width: '25%' }]}>Type:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }}>{product.Type}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '38%' }]}>Brand:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%',paddingRight:wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.brand}</Text>
+                    <Text style={[styles.headStyle, { width: '25%' }]}>Brand:</Text>
+                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.brand}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '38%' }]}>State:</Text>
+                    <Text style={[styles.headStyle, { width: '25%' }]}>State:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={1} ellipsizeMode="tail">{product.state}</Text>
                 </View>
-                <TouchableOpacity style={{ flexDirection: 'row', width: '100%' }} onPress={() => { setModalVisible(true), setCategories(product.Categories)}}>
-                    <Text style={[styles.headStyle, { width: '38%' }]}>Category:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%', paddingRight:wp(4)}} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'row', width: '80%' }} onPress={() => { setModalVisible(true), setcities(product.Cities) }}>
-                    <Text style={[styles.headStyle, { width: '70%', color: '#cc8d19', fontSize: wp(4) }]}>View Cities</Text>
-
-                    <View style={{ alignContent: 'center', justifyContent: 'center', right: wp(5) }}>
+                <TouchableOpacity style={{ flexDirection: 'row', width: '100%', alignSelf: 'center' }} onPress={() => { setModalVisible(true), setCategories(product.Categories), setType('Categories') }}>
+                    <Text style={[styles.headStyle, { width: '40%', color: '#cc8d19', fontSize: wp(4) }]} >View Categories</Text>
+                    <View style={{ alignContent: 'center', justifyContent: 'center', }}>
                         <FontAwesomeIcon name="eye" size={wp(5.4)} color='#000' />
                     </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flexDirection: 'row', width: '100%', }} onPress={() => { setModalVisible(true), setcities(product.Cities), setType('Cities') }}>
+                    <Text style={[styles.headStyle, { width: '40%', color: '#cc8d19', fontSize: wp(4) }]}>View Cities</Text>
 
-
+                    <View style={{ alignContent: 'flex-start', justifyContent: 'flex-start', }}>
+                        <FontAwesomeIcon name="eye" size={wp(5.4)} color='#000' />
+                    </View>
                 </TouchableOpacity>
                 {
-                    editable ? <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: "flex-end", right: wp(2), alignSelf: 'flex-end', alignItems: "flex-end" ,position:'absolute',bottom:wp(3),right:wp(-4)}}>
-
+                    editable ? <View style={{ flexDirection: 'row',  alignItems: "center", position:'absolute',justifyContent:'flex-end',alignSelf:'flex-end',right:wp(10),top:wp(25)}}>
                         <TouchableOpacity style={{ marginHorizontal: 10, width: wp(8), height: wp(8), alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2 }} onPress={onDeletePress}>
                             <FontAwesomeIcon name="trash-o" size={wp(4)} color='#fff' />
                         </TouchableOpacity>
@@ -68,7 +68,6 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                         </TouchableOpacity>
                     </View> : null}
             </View>
-
             <View style={styles.container1}>
                 <Modal
                     animationType="slide"
@@ -80,26 +79,47 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                 >
                     <View style={styles.modalBackground}>
                         <View style={styles.modalContainer}>
-                            <Text style={styles.modalTitle}> Cities</Text>
+                            <Text style={styles.modalTitle}>
+                                {type === 'Cities' ? 'Cities' : 'Categories'}
+                            </Text>
 
-                            {/* ScrollView for rendering cities */}
+                            {/* ScrollView for rendering cities or categories */}
                             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-
-                                {cities.length > 0 ? (
-                                    cities.map((city, index) => (
-                                        city? ( // Check if the city object exists
-                                            <TouchableOpacity key={index} style={styles.cityItem}>
-                                                <Text style={styles.cityText}>{city.cityName}</Text>
-                                            </TouchableOpacity>
-                                        ) : null // Optionally handle null or undefined city cases
-                                    ))
+                                {/* Conditional rendering based on the type */}
+                                {type === 'Cities' ? (
+                                    cities.length > 0 ? (
+                                        cities.map((city, index) => (
+                                            city ? ( // Check if the city object exists
+                                                <TouchableOpacity key={index} style={styles.cityItem}>
+                                                    <Text style={styles.cityText}>{city.cityName}</Text>
+                                                </TouchableOpacity>
+                                            ) : null // Handle null or undefined city cases
+                                        ))
+                                    ) : (
+                                        <Text style={[styles.modalTitle, { fontWeight: '400', fontSize: 18 }]}>No city available</Text>
+                                    )
                                 ) : (
-                                    <Text style={[styles.modalTitle, { fontWeight: '400', fontSize: 18 }]}>No city available</Text>
+                                    Categories.length > 0 ? (
+                                        Categories.map((category, index) => (
+                                            category ? ( // Check if the category object exists
+                                                <TouchableOpacity key={index} style={styles.cityItem}>
+                                                    <Text style={styles.cityText}>{category.categoryName}</Text>
+                                                </TouchableOpacity>
+                                            ) : null // Handle null or undefined category cases
+                                        ))
+                                    ) : (
+                                        <Text style={[styles.modalTitle, { fontWeight: '400', fontSize: 18 }]}>No categories available</Text>
+                                    )
                                 )}
                             </ScrollView>
 
                             {/* Button to close Modal */}
-                            <CustomButtonNew text={'close'} paddingHorizontal={wp(10)} onPress={() => setModalVisible(false)} alignSelf={'center'}></CustomButtonNew>
+                            <CustomButtonNew
+                                text={'Close'}
+                                paddingHorizontal={wp(10)}
+                                onPress={() => { setModalVisible(false), setType(null) }}
+                                alignSelf={'center'}
+                            />
                         </View>
                     </View>
                 </Modal>
@@ -114,13 +134,13 @@ const styles = StyleSheet.create({
     container: {
         margin: wp(2),
         width: wp(90),
-        height: wp(40),
+        height: wp(80),
         elevation: 10,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         backgroundColor: 'white',
         borderRadius: wp(5),
-        flexDirection: 'row',
+        // flexDirection: 'row',
         overflow: 'hidden'
     },
     imageStyle: {
@@ -129,7 +149,7 @@ const styles = StyleSheet.create({
         height: '55%',
         borderTopRightRadius: wp(5),
         borderTopLeftRadius: wp(5),
-        resizeMode:"contain"
+        resizeMode: "contain"
 
     },
     table: {
