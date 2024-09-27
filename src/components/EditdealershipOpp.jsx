@@ -20,29 +20,32 @@ import { AddDealershipOpportunities, Updateopp } from '../services/Advertisement
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { getAllCategories } from '../services/Category.service';
 
-const EditdealershipOpp = ( props ) => {
-  console.log('loggg',props?.route?.params.data);
-  const Data=props?.route?.params.data
-  const Did =Data._id;
+const EditdealershipOpp = (props) => {
+  console.log('loggg', props?.route?.params.data);
+  const Data = props?.route?.params.data
+  const prevSelectedCategory=Data.categories;
+  const prevSelectedCities=Data.cities;
+  const stateid=Data.stateId
+
+  console.log('prevSelectedCities',prevSelectedCities);
+  
+  const Did = Data._id;
   const focused = useIsFocused();
   const [name, setName] = useState(Data.Organisation_name);
   const [userID, setuserID] = useState('');
-  
-const navigation=useNavigation();
+  const navigation = useNavigation();
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState(Data.Brand);
   const [email, setEmail] = useState('');
   const [productsArray, setproductsArray] = useState([]);
-
-
   const [selectedBusinessType, setSelectedBusinessType] = useState(Data.Type);
   const [selectedproductsArray, setSelectedproductsArray] = useState();
   const [countryArr, setcountryArr] = useState([]);
   const [stateArr, setstateArr] = useState([]);
   const [cityArr, setcityArr] = useState([]);
   const [countryId, setcountryId] = useState('648d5b79f79a9ff6f10a82fb');
-  const [stateId, setstateId] = useState(Data.stateId);
+  const [stateId, setstateId] = useState(Data.stateName);
   const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
@@ -50,21 +53,20 @@ const navigation=useNavigation();
   const [CategoryArr, setCategoryArr] = useState([]);
   const [file, setFile] = useState(Data.image);
   const [fileBase64, setFileBase64] = useState(null);
-
   const debounceTimeout = useRef(null);
-
   const [selectedItems, setSelectedItems] = useState([]);
+console.log('selectedItems',stateId);
+
 
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
-
   const [selectedItemscate, setSelectedItemscate] = useState([]);
+  console.log('cityArr', selectedItemscate);
 
   const onSelectedItemsChangeCate = selectedItemscate => {
     setSelectedItemscate(selectedItemscate);
   };
-
   const [rolesArr, setRolesArr] = useState([
     {
       name: ROLES_CONSTANT.CONTRACTOR,
@@ -89,12 +91,28 @@ const navigation=useNavigation();
   ]);
   const handleGetCategory = async () => {
     try {
-      let {data: res} = await getAllCategories();
+      let { data: res } = await getAllCategories();
       if (res.data) {
         setCategoryArr(res.data);
+        const selectedIds = prevSelectedCategory.map(item => item._id);
+        setSelectedItemscate(selectedIds)
       }
     } catch (err) {
       errorToast(err);
+    }
+  };
+  const handleGetCities = async stateId => {
+    try {
+      let { data: res } = await getCityByStateApi(`stateId=${stateId}`);
+      if (res.data) {
+        setcityArr(res.data);
+        const selectedId = prevSelectedCities.map(item => item._id);
+        setSelectedItems(selectedId)
+      } else {
+        setcityArr([]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const handleGeyUserDetails = async id => {
@@ -154,18 +172,7 @@ const navigation=useNavigation();
     }
   }, [countryId]);
 
-  const handleGetCities = async stateId => {
-    try {
-      let { data: res } = await getCityByStateApi(`stateId=${stateId}`);
-      if (res.data) {
-        setcityArr(res.data);
-      } else {
-        setcityArr([]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   // useEffect(() => {
   //   if (countryId) {
@@ -291,49 +298,49 @@ const navigation=useNavigation();
         errorToast('Name is Required');
         return;
       }
-  
+
       // Validate if a business type is selected
       if (!selectedBusinessType) {
         errorToast('Business Type is Required');
         return;
       }
-  
+
       // Validate if a brand is provided
       if (!brand) {
         errorToast('Brand is Required');
         return;
       }
-  
+
       // Validate if a product is selected
-      if (!selectedproductsArray || !selectedproductsArray._id) {
-        errorToast('Product is Required');
-        return;
-      }
-  
+      // if (!selectedproductsArray || !selectedproductsArray._id) {
+      //   errorToast('Product is Required');
+      //   return;
+      // }
+
       // Validate if a city is selected
       if (!selectedItems || selectedItems.length === 0) {
         errorToast('City is Required');
         return;
       }
-  
+
       // Validate if an image is selected
       if (!fileBase64) {
         errorToast('Image is Required');
         return;
       }
-  
-   
+
+
       if (!cityId < 1) {
         errorToast('City is Required');
         return;
       }
-  
+
       // Validate if stateId is selected
       if (!stateId || !stateId.value) {
         errorToast('State is Required');
         return;
       }
-  
+
       // Prepare the object
       let obj = {
         Organisation_name: name,
@@ -344,15 +351,15 @@ const navigation=useNavigation();
         cityId: selectedItems,
         stateId: stateId.value,
         image: fileBase64,
-        categories: selectedproductsArray.name,
+        categories: selectedItemscate
         // Product: selectedproductsArray.name,
-       
+
       };
-  
+
       console.log('Submitting object:', obj);
-  
+
       // Submit data
-      const { data: res } = await Updateopp(obj,Data._id);
+      const { data: res } = await Updateopp(obj, Data._id);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
@@ -363,7 +370,7 @@ const navigation=useNavigation();
       console.log('Error:', error);
     }
   };
-  
+
   const handleDocumentPicker = async () => {
     try {
       ImagePicker.openPicker({
@@ -406,6 +413,11 @@ const navigation=useNavigation();
     const updatedItems = selectedItems.filter((id) => id !== itemId);
     setSelectedItems(updatedItems);
   };
+  const removeItem1 = (itemId) => {
+    // Filter out the item that matches the itemId and update the state
+    const updatedItems = selectedItemscate.filter((id) => id !== itemId);
+    setSelectedItemscate(updatedItems);
+  };
   return (
     <>
       <ScrollView>
@@ -434,6 +446,7 @@ const navigation=useNavigation();
                 setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
               }}
             />
+            {/*
             <Dropdown
               style={styles1.dropdown}
               placeholderStyle={styles1.placeholderStyle}
@@ -452,11 +465,57 @@ const navigation=useNavigation();
                 setSelectedproductsArray(item); // Use `item.value` to match the `valueField`
               }}
             />
+            */}
+            <View style={{ marginVertical: wp(2) }}>
+              <MultiSelect
+                hideTags
+                items={CategoryArr}
+                uniqueKey="_id"
+                onSelectedItemsChange={onSelectedItemsChangeCate}
+                selectedItems={selectedItemscate}
+                selectText="     Select Categories"
+                searchInputPlaceholderText="Search Category..."
+                onChangeInput={text => console.log(text)}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#000"
+                selectedItemTextColor="#000"
+                selectedItemIconColor="#000"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
+                submitButtonColor={CustomColors.mattBrownDark}
+                submitButtonText="Select"
+                styleDropdownMenuSubsection={stylesMul.multiSelect} // Style for the dropdown
+                styleInputGroup={stylesMul.multiSelectInput} // Style for the input section
+                styleItemsContainer={stylesMul.multiSelectItems} // Sty
+              />
+            </View>
 
+            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap',left:wp(3) }}>
+              {selectedItemscate ? (
+                selectedItemscate.map(itemId => {
+                  const item = CategoryArr.find(i => i._id === itemId);
+                  return (
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
+                      <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
+                        {item.name}
+                      </Text>
+                      <TouchableOpacity onPress={() => removeItem1(itemId)}>
+                        <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })
+              ) : (
+                <Text>No Category selected</Text>
+              )}
+            </View>
             <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
+          {/*  <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />
+            */}
 
             <Pressable
               style={styles1.BorderedPressable}
@@ -465,7 +524,7 @@ const navigation=useNavigation();
                 setModalFor('State');
               }}>
               <View style={{ height: wp(1.5) }} />
-              <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
+              <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? Data.stateName : ' State *'}</Text>
               <View style={{ height: wp(1.5) }} />
             </Pressable>
             <View style={{ marginVertical: wp(2) }}>
@@ -501,7 +560,7 @@ const navigation=useNavigation();
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.name}
+                        {item?.name}
                       </Text>
                       <TouchableOpacity onPress={() => removeItem(itemId)}>
                         <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
@@ -512,52 +571,8 @@ const navigation=useNavigation();
               ) : (
                 <Text>No items selected</Text>
               )}
-            </View>
-            <View style={{ marginVertical: wp(2) }}>
-              <MultiSelect
-                hideTags
-                items={cityArr}
-                uniqueKey="_id"
-                onSelectedItemsChange={onSelectedItemsChangeCate}
-                selectedItems={selectedItemscate}
-                selectText="     Select Categories"
-                searchInputPlaceholderText="Search Category..."
-                onChangeInput={text => console.log(text)}
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#000"
-                selectedItemTextColor="#000"
-                selectedItemIconColor="#000"
-                itemTextColor="#000"
-                displayKey="name"
-                searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
-                submitButtonColor={CustomColors.mattBrownDark}
-                submitButtonText="Select"
-                styleDropdownMenuSubsection={stylesMul.multiSelect} // Style for the dropdown
-                styleInputGroup={stylesMul.multiSelectInput} // Style for the input section
-                styleItemsContainer={stylesMul.multiSelectItems} // Sty
-              />
             </View>
 
-            <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
-              {selectedItemscate.length > 0 ? (
-                selectedItemscate.map(itemId => {
-                  const item = cityArr.find(i => i._id === itemId);
-                  return (
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
-                      <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.name}
-                      </Text>
-                      <TouchableOpacity onPress={() => removeItem(itemId)}>
-                        <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
-                      </TouchableOpacity>
-                    </View>
-                  );
-                })
-              ) : (
-                <Text>No items selected</Text>
-              )}
-            </View>
 
             <Text style={styles1.nameheading}> Image </Text>
             <Pressable

@@ -91,7 +91,7 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                                         cities.map((city, index) => (
                                             city ? ( // Check if the city object exists
                                                 <TouchableOpacity key={index} style={styles.cityItem}>
-                                                    <Text style={styles.cityText}>{city.cityName}</Text>
+                                                    <Text style={styles.cityText}>{city.name}</Text>
                                                 </TouchableOpacity>
                                             ) : null // Handle null or undefined city cases
                                         ))
@@ -99,11 +99,11 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                                         <Text style={[styles.modalTitle, { fontWeight: '400', fontSize: 18 }]}>No city available</Text>
                                     )
                                 ) : (
-                                    Categories.length > 0 ? (
+                                    Categories?.length > 0 ? (
                                         Categories.map((category, index) => (
                                             category ? ( // Check if the category object exists
                                                 <TouchableOpacity key={index} style={styles.cityItem}>
-                                                    <Text style={styles.cityText}>{category.categoryName}</Text>
+                                                    <Text style={styles.cityText}>{category.name}</Text>
                                                 </TouchableOpacity>
                                             ) : null // Handle null or undefined category cases
                                         ))
