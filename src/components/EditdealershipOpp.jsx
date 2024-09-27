@@ -23,12 +23,12 @@ import { getAllCategories } from '../services/Category.service';
 const EditdealershipOpp = (props) => {
   console.log('loggg', props?.route?.params.data);
   const Data = props?.route?.params.data
-  const prevSelectedCategory=Data.categories;
-  const prevSelectedCities=Data.cities;
-  const stateid=Data.stateId
+  const prevSelectedCategory = Data.categories;
+  const prevSelectedCities = Data.cities;
+  const stateid = Data.stateId
 
-  console.log('prevSelectedCities',prevSelectedCities);
-  
+  console.log('prevSelectedCities', prevSelectedCities);
+
   const Did = Data._id;
   const focused = useIsFocused();
   const [name, setName] = useState(Data.Organisation_name);
@@ -45,7 +45,7 @@ const EditdealershipOpp = (props) => {
   const [stateArr, setstateArr] = useState([]);
   const [cityArr, setcityArr] = useState([]);
   const [countryId, setcountryId] = useState('648d5b79f79a9ff6f10a82fb');
-  const [stateId, setstateId] = useState(Data.stateName);
+  const [stateId, setstateId] = useState('');
   const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
@@ -55,9 +55,10 @@ const EditdealershipOpp = (props) => {
   const [fileBase64, setFileBase64] = useState(null);
   const debounceTimeout = useRef(null);
   const [selectedItems, setSelectedItems] = useState([]);
-console.log('selectedItems',stateId);
+  console.log('selectedItems', stateId);
 
-
+  const Statedata = { name: Data.stateName, value: Data.stateId }
+  
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
@@ -169,6 +170,7 @@ console.log('selectedItems',stateId);
     if (countryId) {
       handleDebouncedGetStates(countryId);
       handleGetCategory();
+      setstateId(Statedata)
     }
   }, [countryId]);
 
@@ -492,7 +494,7 @@ console.log('selectedItems',stateId);
               />
             </View>
 
-            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap',left:wp(3) }}>
+            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', left: wp(3) }}>
               {selectedItemscate ? (
                 selectedItemscate.map(itemId => {
                   const item = CategoryArr.find(i => i._id === itemId);
@@ -513,7 +515,7 @@ console.log('selectedItems',stateId);
             </View>
             <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
-          {/*  <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
+            {/*  <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />
             */}
 
