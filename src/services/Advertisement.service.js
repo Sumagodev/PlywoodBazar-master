@@ -32,6 +32,11 @@ export const AddDealershipOpportunities = async (obj) => {
 export const ApplyForDealershipOpportunitiy = async (obj) => {
     return /*apiinstance*/ axios.post(`${serverUrl2}/applyForDealershipOpportunitiy`, obj)
 }
+export const AddBaner = async (obj) => {
+    console.log('AddBaner',obj);
+    
+    return /*apiinstance*/ axios.post(`${url}/BannerImage/postbanner`, obj)
+}
 export const GetDealershipOpportunities = async () => {
  
     return /*apiinstance*/ axios.get(`${serverUrl1}/getDelearshipOpportunities`)

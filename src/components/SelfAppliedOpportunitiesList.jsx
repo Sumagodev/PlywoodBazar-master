@@ -99,7 +99,7 @@ export default function SelfAppliedOpportunitiesList(props) {
             brand: item?.Brand,
             ProductName: item?.Product,
             Cities: item?.cities,
-
+            Categories: item?.categories,
 
         }
         return (

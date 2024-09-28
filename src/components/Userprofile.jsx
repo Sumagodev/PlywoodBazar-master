@@ -137,6 +137,12 @@ export default function Userprofile(props) {
           </View>
           <Text style={profileStyle.title}>Topups</Text>
         </Pressable>
+        <Pressable onPress={() => navigate.navigate('AddBannerfrom')} style={profileStyle.container}>
+          <View style={profileStyle.iconContainer}>
+            <FontAwesome5Icon style={profileStyle.icon} name="money-bill-wave" size={wp(6)} color="white" />
+          </View>
+          <Text style={profileStyle.title}>Add Banner</Text>
+        </Pressable>
 
         <Pressable onPress={() => navigate.navigate('MyFlashSales')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
