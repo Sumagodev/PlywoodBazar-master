@@ -17,11 +17,11 @@ export default function AddBannerForm(props) {
   const navigation = useNavigation();
   const [bannerImage, setBannerImage] = useState('');
   const [productArr, setProductArr] = useState([]);
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedType, setSelectedType] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [userId, setuserid] = useState(null);
   const [selectedproductsArray, setSelectedproductsArray] = useState('');
-  console.log('selectedproductsArray', selectedproductsArray);
+  console.log('selectedType', selectedType);
   const focused = useIsFocused()
   const [Bannertype, setBannertype] = useState([
     {

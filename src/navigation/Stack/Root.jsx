@@ -61,6 +61,7 @@ import AppliedOpportunitieslist from '../../components/AppliedOpportunitieslist'
 import EditdealershipOpp from '../../components/EditdealershipOpp';
 import SelfAppliedOpportunitiesList from '../../components/SelfAppliedOpportunitiesList';
 import AddBannerfrom from '../../components/AddBannerfrom';
+import AllBannerslisting from '../../components/AllBannerslisting';
 
 
 
@@ -584,6 +585,15 @@ export default function RootStack() {
               }}
               name="AddBannerfrom"
               component={AddBannerfrom}
+            />
+          
+            <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="AllBannerslisting"
+              component={AllBannerslisting}
             />
           
 
