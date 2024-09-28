@@ -12,7 +12,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
-import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../services/Advertisement.service';
+import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities, MyappliedList } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
 
 export default function SelfAppliedOpportunitiesList(props) {
@@ -30,7 +30,7 @@ export default function SelfAppliedOpportunitiesList(props) {
     const getSubscriptions = async () => {
         try {
             let decodedObj = await getDecodedToken();
-            const { data: res } = await GetDealershiplist(decodedObj?.userId);
+            const { data: res } = await MyappliedList(decodedObj?.userId);
             if (res) {
                 console.log(JSON.stringify(res.data,), 'raviiii');
                 setSubscriptionArr(res.data);
@@ -94,7 +94,7 @@ export default function SelfAppliedOpportunitiesList(props) {
         const productItem = {
             name: item?.Organisation_name,
             imagePath: { uri: generateImageUrl(item?.image) },
-            state: item?.stateName,
+            state: item?.state?.name,
             Type: item?.Type,
             brand: item?.Brand,
             ProductName: item?.Product,

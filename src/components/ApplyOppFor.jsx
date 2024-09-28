@@ -287,7 +287,7 @@ const ApplyOppFor = ({route,navigation}) => {
               <MultiSelect
                 hideTags
                 items={Data.cities}
-                uniqueKey="cityId"
+                uniqueKey="_id"
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={selectedItems}
                 selectText="     Select Cities"
@@ -299,7 +299,7 @@ const ApplyOppFor = ({route,navigation}) => {
                 selectedItemTextColor="#000"
                 selectedItemIconColor="#000"
                 itemTextColor="#000"
-                displayKey="cityName"
+                displayKey="name"
                 searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
                 submitButtonColor={CustomColors.mattBrownDark}
                 submitButtonText="Select"
@@ -312,11 +312,11 @@ const ApplyOppFor = ({route,navigation}) => {
             <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
               {selectedItems.length > 0 ? (
                 selectedItems.map(itemId => {
-                  const item = Data.cities.find(i => i.cityId === itemId);
+                  const item = Data.cities.find(i => i._id === itemId);
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.cityName}
+                        {item.name}
                       </Text>
                       <TouchableOpacity onPress={() => removeItem(itemId)}>
                         <AntDesign style={styles1.icon} color="black" name="delete" size={20} />

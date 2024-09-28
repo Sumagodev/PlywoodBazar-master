@@ -24,6 +24,7 @@ export const getAdvertisementById = async (id) => {
     return /*apiinstance*/ axios.get(`${serverUrl}/getById/${id}`)
 }
 export const AddDealershipOpportunities = async (obj) => {
+    console.log('addobj',obj);
     
 
     return axios.post(`${serverUrl1}/addDealershipOpportunity/`, obj)
@@ -39,6 +40,11 @@ export const GetDealershiplist = async (id) => {
  console.log('dataaaa',id);
  
     return /*apiinstance*/ axios.get(`${serverUrl1}/getDealershipOwnerByUserId/${id}`)
+}
+export const MyappliedList = async (id) => {
+ console.log('dataaaa',id);
+ 
+    return /*apiinstance*/ axios.get(`${serverUrl2}/getApplicationByUserId/${id}`)
 }
 export const GetAppliedlist = async (id) => {
  console.log('dataaaa',id);
