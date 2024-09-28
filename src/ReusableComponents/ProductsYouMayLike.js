@@ -9,7 +9,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress ,onPress}) => {
+const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress ,onPress,dataItem}) => {
+    console.log('zxx',dataItem)
     return (
       <TouchableOpacity onPress={onPress}>
         <View style={styles.container}>

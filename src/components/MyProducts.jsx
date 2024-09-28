@@ -88,11 +88,12 @@ export default function MyProducts(props) {
         </View>
 
       </View>
+
     );
   };
   const renderMyProductItem = ({ item, index }) => {
 
-    console.log('&&&&&&', item);
+    console.log('&&&&&&', JSON.stringify(item));
 
     const productItem = {
       name: item?.name,

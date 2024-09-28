@@ -1,28 +1,27 @@
-import { Picker } from '@react-native-picker/picker';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, ImageBackground } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {Image, Pressable, ScrollView, StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, ImageBackground} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RNFetchBlob from 'rn-fetch-blob';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
-import { addBrandApi, getBrandApi } from '../services/brand.service';
-import { getAllCategories } from '../services/Category.service';
-import { AddProduct, getById, updateProductApi } from '../services/Product.service';
-import { generateImageUrl } from '../services/url.service';
-import { errorToast, toastSuccess } from '../utils/toastutill';
+import {addBrandApi, getBrandApi} from '../services/brand.service';
+import {getAllCategories} from '../services/Category.service';
+import {AddProduct, getById, updateProductApi} from '../services/Product.service';
+import {generateImageUrl} from '../services/url.service';
+import {errorToast, toastSuccess} from '../utils/toastutill';
 import ImagePicker from 'react-native-image-crop-picker';
 import CustomColors from '../styles/CustomColors';
 import CustomButton from '../ReusableComponents/CustomButton';
 export default function EditProduct(props) {
   const navigation = useNavigation();
-  const focused = useIsFocused()
+  const focused = useIsFocused();
 
   const [brandModal, setBrandModal] = useState(false);
-  const [brandName, setBrandName] = useState("");
-
+  const [brandName, setBrandName] = useState('');
 
   const [price, setPrice] = useState(0);
   const [productObj, setProductObj] = useState(null);
@@ -41,7 +40,7 @@ export default function EditProduct(props) {
   const [shortDescription, setshortDescription] = useState('best');
   const [longDescription, setLongDescription] = useState();
   const [image, setimage] = useState();
-  const [pricetype, setpricetype] = useState("per Nos/sheet");
+  const [pricetype, setpricetype] = useState('per Nos/sheet');
   const [file, setFile] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
   const [status, setstatus] = useState(false);
@@ -50,9 +49,14 @@ export default function EditProduct(props) {
   const [imageArr, setimageArr] = useState([
     {
       image: '',
-      prevImage: ''
+      prevImage: '',
     },
   ]);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const handleBrandNameChange = e => {
+    setBrandName(e);
+    setIsSubmitDisabled(e.length <= 1); // Disable if brandName is 1 character or less
+  };
 
   const [open, setOpen] = useState(false);
   const [endDatePickerModal, setEndDatePickerModal] = useState(false);
@@ -62,10 +66,9 @@ export default function EditProduct(props) {
 
   const [prevImage, setPrevImage] = useState(null);
 
-
   const handleGetBrands = async () => {
     try {
-      let { data: res } = await getBrandApi('status=true&page=1&perPage=1000');
+      let {data: res} = await getBrandApi('status=true&page=1&perPage=1000');
       if (res.data) {
         setBrandArr(res.data);
       }
@@ -76,7 +79,7 @@ export default function EditProduct(props) {
 
   const handleGetCategory = async () => {
     try {
-      let { data: res } = await getAllCategories();
+      let {data: res} = await getAllCategories();
       if (res.data) {
         setCategoryArr(res.data);
       }
@@ -154,18 +157,17 @@ export default function EditProduct(props) {
         image: image,
         // image:productObj?.mainImage,
         imageArr: imageArr,
-        categoryArr: [{ categoryId: category }],
+        categoryArr: [{categoryId: category}],
       };
-      let { data: res } = await updateProductApi(obj, productObj?._id);
+      let {data: res} = await updateProductApi(obj, productObj?._id);
       if (res) {
         toastSuccess(res.message);
-        navigation.navigate("MyProducts")
+        navigation.navigate('MyProducts');
       }
     } catch (error) {
       errorToast(error);
     }
   };
-
 
   const handleCreateBrand = async () => {
     try {
@@ -176,9 +178,9 @@ export default function EditProduct(props) {
 
       let obj = {
         name: brandName,
-        status: true
+        status: true,
       };
-      let { data: res } = await addBrandApi(obj);
+      let {data: res} = await addBrandApi(obj);
       if (res) {
         toastSuccess(res.message);
         handleGetBrands();
@@ -189,12 +191,11 @@ export default function EditProduct(props) {
     }
   };
 
-
   useEffect(() => {
     if (focused) {
       handleGetBrands();
       handleGetCategory();
-      getProductData()
+      getProductData();
     }
   }, [focused]);
 
@@ -205,13 +206,12 @@ export default function EditProduct(props) {
         // height: 400,
         cropping: true,
         freeStyleCropEnabled: true,
-        includeBase64: true
+        includeBase64: true,
       }).then(image => {
-        console.log(image, image.path.split("/")[image.path.split("/").length - 1]);
-        setFile({ name: image.path.split("/")[image.path.split("/").length - 1] });
+        console.log(image, image.path.split('/')[image.path.split('/').length - 1]);
+        setFile({name: image.path.split('/')[image.path.split('/').length - 1]});
         setimage(`data:${image.mime};base64,${image.data}`);
       });
-
 
       // let file = await DocumentPicker.pickSingle({
       //   presentationStyle: 'fullScreen',
@@ -235,19 +235,19 @@ export default function EditProduct(props) {
       handleError(error);
     }
   };
-  const handleDocumentPickerArr = async (index) => {
+  const handleDocumentPickerArr = async index => {
     try {
       ImagePicker.openPicker({
         // width: 300,
         // height: 400,
         cropping: true,
         freeStyleCropEnabled: true,
-        includeBase64: true
+        includeBase64: true,
       }).then(image => {
-        console.log(image, image.path.split("/")[image.path.split("/").length - 1]);
-        let tempArr = imageArr
-        tempArr[index].image = `data:${image.mime};base64,${image.data}`
-        setimageArr([...tempArr])
+        console.log(image, image.path.split('/')[image.path.split('/').length - 1]);
+        let tempArr = imageArr;
+        tempArr[index].image = `data:${image.mime};base64,${image.data}`;
+        setimageArr([...tempArr]);
         // setFile({ name: image.path.split("/")[image.path.split("/").length - 1] });
         // setimage();
       });
@@ -270,7 +270,6 @@ export default function EditProduct(props) {
     }
   };
 
-
   const handleDocumentMultiplePicker = async () => {
     try {
       let files = await DocumentPicker.pickMultiple({
@@ -283,100 +282,82 @@ export default function EditProduct(props) {
         for (let el of files) {
           let base64 = await RNFetchBlob.fs.readFile(el.uri, 'base64');
           if (base64) {
-            tempArr.push({ image: `data:${file.type};base64,${base64}` });
+            tempArr.push({image: `data:${file.type};base64,${base64}`});
           }
           console.log(tempArr);
           setimageArr(tempArr);
         }
-
       }
     } catch (error) {
       handleError(error);
     }
   };
 
-
-
   const getProductData = async () => {
     try {
       if (props?.route?.params?.data) {
-        const { data: res } = await getById(props.route.params.data);
+        const {data: res} = await getById(props.route.params.data);
         if (res) {
-
           setProductObj(res.data);
-          prefillStates(res.data)
+          prefillStates(res.data);
         }
       }
     } catch (error) {
-      errorToast(error)
+      errorToast(error);
     }
-  }
+  };
 
-  const prefillStates = (obj) => {
+  const prefillStates = obj => {
     if (obj) {
-      setname(obj?.name)
-      setsellingprice(`${obj?.sellingprice}`)
-      setPrice(`${obj?.price}`)
-      setthickness(`${obj?.specification?.thickness}`)
-      setapplication(`${obj?.specification?.application}`)
-      setgrade(`${obj?.specification?.grade}`)
-      setcolor(`${obj?.specification?.color}`)
-      setwood(`${obj?.specification?.wood}`)
-      setglue(`${obj?.specification?.glue}`)
-      setwarranty(`${obj?.specification?.warranty}`)
-      setshortDescription(`${obj.shortDescription}`)
-      setLongDescription(`${obj.longDescription}`)
+      setname(obj?.name);
+      setsellingprice(`${obj?.sellingprice}`);
+      setPrice(`${obj?.price}`);
+      setthickness(`${obj?.specification?.thickness}`);
+      setapplication(`${obj?.specification?.application}`);
+      setgrade(`${obj?.specification?.grade}`);
+      setcolor(`${obj?.specification?.color}`);
+      setwood(`${obj?.specification?.wood}`);
+      setglue(`${obj?.specification?.glue}`);
+      setwarranty(`${obj?.specification?.warranty}`);
+      setshortDescription(`${obj.shortDescription}`);
+      setLongDescription(`${obj.longDescription}`);
       if (obj?.categoryId) {
-        setcategory(obj.categoryId)
+        setcategory(obj.categoryId);
       }
       if (obj?.brand) {
-        setbrand(obj?.brand)
+        setbrand(obj?.brand);
       }
       if (obj?.mainImage) {
-
-        setimage(obj?.mainImage)
+        setimage(obj?.mainImage);
       }
-      setimageArr(obj.imageArr)
+      setimageArr(obj.imageArr);
     }
-  }
+  };
 
   const handleAddImage = () => {
     if (imageArr.length < 3) {
-      setimageArr([...imageArr, { image: "" }])
+      setimageArr([...imageArr, {image: ''}]);
     }
-  }
+  };
 
   const handleRemoveImage = () => {
-    if ((imageArr.length - 1) > 0) {
-      let tempArr = imageArr
-      tempArr = tempArr.filter((el, index) => index != (tempArr.length - 1))
-      setimageArr([...tempArr])
+    if (imageArr.length - 1 > 0) {
+      let tempArr = imageArr;
+      tempArr = tempArr.filter((el, index) => index != tempArr.length - 1);
+      setimageArr([...tempArr]);
     }
-  }
-
-
+  };
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff' }}>
+    <ScrollView style={{backgroundColor: '#fff'}}>
       <Header normal={true} rootProps={props} />
-      <View style={{ backgroundColor: '#fff', flex: 1, }}>
+      <View style={{backgroundColor: '#fff', flex: 1}}>
         <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
           <View style={styles1.card_main}>
-            <Text style={{ textAlign: 'center', fontSize: wp(6.0), fontWeight: 'bold' }}>Edit Product</Text>
+            <Text style={{textAlign: 'center', fontSize: wp(6.0), fontWeight: 'bold'}}>Edit Product</Text>
             <Text style={styles1.nameheading}>Enter Name </Text>
 
-            <TextInput
-              onChangeText={e => setname(e)}
-              value={name}
-              placeholder="Name"
-              paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
-              borderRadius={50}
-            />
+            <TextInput onChangeText={e => setname(e)} value={name} placeholder="Name" paddingHorizontal={15} activeOutlineColor="transparent" outlineColor="white" outlineStyle={{borderRadius: 50}} underlineColor="transparent" backgroundColor="white" borderRadius={50} />
             <Text style={styles1.nameheading}>Select Type</Text>
             <View style={styles1.dropdownStyle}>
               <Picker selectedValue={pricetype} onValueChange={(itemValue, itemIndex) => setPrice(itemValue)}>
@@ -388,7 +369,6 @@ export default function EditProduct(props) {
                 <Picker.Item label="p per Cu.mt" value="p per Cu.mt" />
               </Picker>
             </View>
-
 
             <Text style={styles1.nameheading}>Category</Text>
             <View style={styles1.dropdownStyle}>
@@ -402,11 +382,10 @@ export default function EditProduct(props) {
               )}
             </View>
 
-
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10}}>
               <Text style={styles1.nameheading}>Brand</Text>
               <Pressable onPress={() => setBrandModal(true)}>
-                <Text style={{ color: CustomColors.glossBrownDark, borderBottomWidth: 1, borderBottomColor: CustomColors.glossBrownDark, fontSize: wp(4.5), fontWeight: 'bold' }}>Add new Brand</Text>
+                <Text style={{color: CustomColors.glossBrownDark, borderBottomWidth: 1, borderBottomColor: CustomColors.glossBrownDark, fontSize: wp(4.5), fontWeight: 'bold'}}>Add new Brand</Text>
               </Pressable>
             </View>
 
@@ -427,34 +406,31 @@ export default function EditProduct(props) {
               onChangeText={e => setPrice(e)}
               keyboardType="number-pad"
               value={price}
-               paddingHorizontal={15}
+              paddingHorizontal={15}
               placeholder="Price "
-              mode='outlined'
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
+              mode="outlined"
+              activeOutlineColor="transparent"
+              outlineColor="white"
+              outlineStyle={{borderRadius: 50}}
+              underlineColor="transparent"
+              backgroundColor="white"
               borderRadius={50}
               selectionColor={CustomColors.mattBrownDark}
-
             />
             <Text style={styles1.nameheading}>Enter Selling Price </Text>
-
-
 
             <TextInput
               keyboardType="numeric"
               onChangeText={e => setsellingprice(e)}
               value={sellingprice}
               placeholder="Selling Price "
-               paddingHorizontal={15}
-              mode='outlined'
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
+              paddingHorizontal={15}
+              mode="outlined"
+              activeOutlineColor="transparent"
+              outlineColor="white"
+              outlineStyle={{borderRadius: 50}}
+              underlineColor="transparent"
+              backgroundColor="white"
               borderRadius={50}
             />
             <Text style={styles1.nameheading}>Enter Thickness </Text>
@@ -463,114 +439,51 @@ export default function EditProduct(props) {
               onChangeText={e => setthickness(e)}
               value={thickness}
               placeholder="Thickness"
-               paddingHorizontal={15}
-              mode='outlined'
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
+              paddingHorizontal={15}
+              mode="outlined"
+              activeOutlineColor="transparent"
+              outlineColor="white"
+              outlineStyle={{borderRadius: 50}}
+              underlineColor="transparent"
+              backgroundColor="white"
               borderRadius={50}
             />
 
             <Text style={styles1.nameheading}>Enter Usage/Application </Text>
 
-
             <TextInput
               onChangeText={e => setapplication(e)}
               value={application}
               placeholder="Usage"
-              mode='outlined'
-               paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
+              mode="outlined"
+              paddingHorizontal={15}
+              activeOutlineColor="transparent"
+              outlineColor="white"
+              outlineStyle={{borderRadius: 50}}
+              underlineColor="transparent"
+              backgroundColor="white"
               borderRadius={50}
             />
 
             <Text style={styles1.nameheading}>Enter Grade </Text>
 
-            <TextInput
-              onChangeText={e => setgrade(e)}
-              value={grade}
-              placeholder="Grade"
-              mode='outlined'
-               paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
-              borderRadius={50}
-            />
+            <TextInput onChangeText={e => setgrade(e)} value={grade} placeholder="Grade" mode="outlined" paddingHorizontal={15} activeOutlineColor="transparent" outlineColor="white" outlineStyle={{borderRadius: 50}} underlineColor="transparent" backgroundColor="white" borderRadius={50} />
 
             <Text style={styles1.nameheading}>Enter Color </Text>
 
-            <TextInput
-              onChangeText={e => setcolor(e)}
-              value={color}
-              placeholder="Color"
-              mode='outlined'
-               paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
-              borderRadius={50}
-            />
+            <TextInput onChangeText={e => setcolor(e)} value={color} placeholder="Color" mode="outlined" paddingHorizontal={15} activeOutlineColor="transparent" outlineColor="white" outlineStyle={{borderRadius: 50}} underlineColor="transparent" backgroundColor="white" borderRadius={50} />
 
             <Text style={styles1.nameheading}>Enter Wood Type </Text>
 
-            <TextInput
-              onChangeText={e => setwood(e)}
-              value={wood}
-              placeholder="Wood"
-              mode='outlined'
-               paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
-              borderRadius={50}
-            />
+            <TextInput onChangeText={e => setwood(e)} value={wood} placeholder="Wood" mode="outlined" paddingHorizontal={15} activeOutlineColor="transparent" outlineColor="white" outlineStyle={{borderRadius: 50}} underlineColor="transparent" backgroundColor="white" borderRadius={50} />
 
             <Text style={styles1.nameheading}>Enter Glue Used </Text>
 
-            <TextInput
-              onChangeText={e => setglue(e)}
-              value={glue}
-              placeholder="Glue"
-              mode='outlined'
-               paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
-              borderRadius={50}
-            />
+            <TextInput onChangeText={e => setglue(e)} value={glue} placeholder="Glue" mode="outlined" paddingHorizontal={15} activeOutlineColor="transparent" outlineColor="white" outlineStyle={{borderRadius: 50}} underlineColor="transparent" backgroundColor="white" borderRadius={50} />
 
             <Text style={styles1.nameheading}>Enter Warranty </Text>
 
-            <TextInput
-              onChangeText={e => setwarranty(e)}
-              value={warranty}
-              placeholder="Warranty"
-              mode='outlined'
-               paddingHorizontal={15}
-              activeOutlineColor='transparent'
-              outlineColor='white'
-              outlineStyle={{ borderRadius: 50 }}
-              underlineColor='transparent'
-              backgroundColor='white'
-              borderRadius={50}
-            />
-
-
+            <TextInput onChangeText={e => setwarranty(e)} value={warranty} placeholder="Warranty" mode="outlined" paddingHorizontal={15} activeOutlineColor="transparent" outlineColor="white" outlineStyle={{borderRadius: 50}} underlineColor="transparent" backgroundColor="white" borderRadius={50} />
 
             <Text style={styles1.nameheading}>Enter Long Description </Text>
 
@@ -579,51 +492,44 @@ export default function EditProduct(props) {
               value={longDescription}
               numberOfLines={3}
               multiline={true}
-              mode='outlined'
-              activeOutlineColor='transparent'
+              mode="outlined"
+              activeOutlineColor="transparent"
               placeholder="Long Description"
-              outlineColor='white'
-               paddingHorizontal={15}
-              outlineStyle={{ borderRadius: 20 }}
-              underlineColor='transparent'
-              backgroundColor='white'
+              outlineColor="white"
+              paddingHorizontal={15}
+              outlineStyle={{borderRadius: 20}}
+              underlineColor="transparent"
+              backgroundColor="white"
               borderRadius={50}
             />
             <Text style={styles1.nameheading}>Product Image </Text>
-
 
             <Pressable
               style={styles1.BorderedPressable}
               onPress={() => {
                 handleDocumentPicker();
               }}>
-              {
-                image ?
-                  <>
-                    {
-
-                      `${image}`.includes("base64") ?
-                        <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: image }} />
-                        :
-
-                        <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: generateImageUrl(image) }} />
-                    }
-                  </>
-                  :
-                  <Text style={styles.borderedPressableText}>Please Upload Image</Text>
-              }
+              {image ? (
+                <>{`${image}`.includes('base64') ? <Image style={{height: 200}} resizeMode="contain" source={{uri: image}} /> : <Image style={{height: 200}} resizeMode="contain" source={{uri: generateImageUrl(image)}} />}</>
+              ) : (
+                <Text style={styles.borderedPressableText}>Please Upload Image</Text>
+              )}
             </Pressable>
 
-
-            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 10 }}>
-              <Text style={{ color: "black", fontSize: 17, marginLeft: 5 }}>Product Multiple Images</Text>
-              <View style={{ display: "flex", flexDirection: "row" }}>
-                <Pressable onPress={() => handleAddImage()} style={[styles.btnbg, { paddingVertical: 7, paddingHorizontal: 15, marginRight: 10 }]}><Text style={{ color: "white", fontSize: 18 }}>+</Text></Pressable>
-                <Pressable onPress={() => handleRemoveImage()} style={[styles.btnbg, { paddingVertical: 7, paddingHorizontal: 17, marginRight: 10 }]}><Text style={{ color: "white", fontSize: 18 }}>-</Text></Pressable>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10}}>
+              <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>Product Multiple Images</Text>
+              <View style={{display: 'flex', flexDirection: 'row'}}>
+                <Pressable onPress={() => handleAddImage()} style={[styles.btnbg, {paddingVertical: 7, paddingHorizontal: 15, marginRight: 10}]}>
+                  <Text style={{color: 'white', fontSize: 18}}>+</Text>
+                </Pressable>
+                <Pressable onPress={() => handleRemoveImage()} style={[styles.btnbg, {paddingVertical: 7, paddingHorizontal: 17, marginRight: 10}]}>
+                  <Text style={{color: 'white', fontSize: 18}}>-</Text>
+                </Pressable>
               </View>
             </View>
-            {
-              imageArr && imageArr.length > 0 && imageArr.map((el, index) => {
+            {imageArr &&
+              imageArr.length > 0 &&
+              imageArr.map((el, index) => {
                 return (
                   <Pressable
                     key={index}
@@ -631,76 +537,91 @@ export default function EditProduct(props) {
                     onPress={() => {
                       handleDocumentPickerArr(index);
                     }}>
-                    {
-                      el && el.image ?
-                        <>
-                          {
-
-                            `${el.image}`.includes("base64") ?
-                              <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: el.image }} />
-                              :
-
-                              <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: generateImageUrl(el.image) }} />
-                          }
-                        </>
-                        :
-                        <Text style={styles.borderedPressableText}>Please Upload Image</Text>
-                    }
+                    {el && el.image ? (
+                      <>{`${el.image}`.includes('base64') ? <Image style={{height: 200}} resizeMode="contain" source={{uri: el.image}} /> : <Image style={{height: 200}} resizeMode="contain" source={{uri: generateImageUrl(el.image)}} />}</>
+                    ) : (
+                      <Text style={styles.borderedPressableText}>Please Upload Image</Text>
+                    )}
                   </Pressable>
+                );
+              })}
 
-                )
-              })
-            }
-
-            <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
+            <View style={{alignSelf: 'center', marginVertical: wp(5)}}>
               <CustomButton onPress={() => handleCreateFlashSale()} text={'UPDATE'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
             </View>
           </View>
 
           <Modal
-        animationType="slide"
-        transparent={true}
-        visible={brandModal}
-        onRequestClose={() => {
-          setBrandModal(!brandModal);
-        }}>
-        <View style={styles1.centeredView}>
-          <View style={styles1.modalView}>
-            <Text style={styles1.modalText}>Add Brand</Text>
-            <Pressable style={[styles1.button, styles1.buttonClose]} onPress={() => setBrandModal(!brandModal)}>
-              <TextInput
-                style={{ width: wp(90) }}
-                onChangeText={e => setBrandName(e)}
-                value={brandName}
-                multiline={true}
-                placeholder="Brand Name"
-                mode='outlined'
-                activeOutlineColor='transparent'
-                outlineColor='white'
-                outlineStyle={{borderRadius: 50}}
-                underlineColor='transparent'
-                backgroundColor='white'
-                borderRadius={50}
-              />
+            animationType="slide"
+            transparent={true}
+            visible={brandModal}
+            onRequestClose={() => {
+              setBrandModal(!brandModal);
+              setBrandName('');
+            }}>
+            <View style={styles1.centeredView}>
+              <View style={styles1.modalView}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Text style={styles1.modalText}>Add Brand</Text>
+                  <Pressable style={[{right: wp(-25)}]} onPress={() => setBrandModal(!brandModal)}>
+                    <FontAwesome5Icon style={{}} name="times" size={wp(8)} color="black" />
+                  </Pressable>
+                </View>
 
-            <View style={{alignSelf: 'center', marginVertical:wp(5)}}>
-              <CustomButton onPress={() => handleCreateBrand()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)}  paddingVertical={wp(3)}/>
+                <Pressable
+                  style={[styles1.button, styles1.buttonClose]}
+                  onPress={() => {
+                    setBrandModal(!brandModal), setBrandName('');
+                  }}>
+                  <TextInput
+                    style={{width: wp(90), paddingLeft: wp(5)}}
+                    onChangeText={e => handleBrandNameChange(e)}
+                    value={brandName}
+                    multiline={true}
+                    placeholder="Brand Name"
+                    mode="outlined"
+                    activeOutlineColor="transparent"
+                    outlineColor="white"
+                    outlineStyle={{borderRadius: 50}}
+                    underlineColor="transparent"
+                    backgroundColor="white"
+                    borderRadius={50}
+                  />
+
+                  {isSubmitDisabled && <Text style={{color: 'red', fontSize: wp(3), marginVertical: wp(2)}}>Please enter brand name.</Text>}
+
+                  {!isSubmitDisabled ? (
+                    <View style={{alignSelf: 'center', marginVertical: wp(5)}}>
+                      {/* Button is active */}
+                      <CustomButton onPress={handleCreateBrand} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
+                    </View>
+                  ) : (
+                    <View style={{alignSelf: 'center', marginVertical: wp(5), opacity: 0.5}}>
+                      {/* Disabled button, with reduced opacity */}
+                      <TouchableOpacity disabled={true}>
+                        <View
+                          style={{
+                            backgroundColor: 'gray',
+                            paddingVertical: wp(3),
+                            paddingHorizontal: wp(8),
+                            borderRadius: 10,
+                            alignItems: 'center',
+                          }}>
+                          <Text style={{fontSize: wp(5), color: '#fff'}}>SUBMIT</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </Pressable>
+              </View>
             </View>
-              
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+          </Modal>
         </ImageBackground>
       </View>
     </ScrollView>
   );
 }
 const styles1 = StyleSheet.create({
-  
-
-
-
   // new design
   centeredView: {
     height: hp(100),
@@ -753,12 +674,8 @@ const styles1 = StyleSheet.create({
     borderColor: 'white',
     backgroundColor: 'white',
     borderRadius: wp(100),
-  }
+  },
 });
-
-
-
-
 
 // import { Picker } from '@react-native-picker/picker';
 // import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -783,7 +700,6 @@ const styles1 = StyleSheet.create({
 
 //   const [brandModal, setBrandModal] = useState(false);
 //   const [brandName, setBrandName] = useState("");
-
 
 //   const [price, setPrice] = useState(0);
 //   const [productObj, setProductObj] = useState(null);
@@ -821,7 +737,6 @@ const styles1 = StyleSheet.create({
 //   const [brandArr, setBrandArr] = useState([]);
 
 //   const [prevImage, setPrevImage] = useState(null);
-
 
 //   const handleGetBrands = async () => {
 //     try {
@@ -926,7 +841,6 @@ const styles1 = StyleSheet.create({
 //     }
 //   };
 
-
 //   const handleCreateBrand = async () => {
 //     try {
 //       if (`${brandName}` === '') {
@@ -949,7 +863,6 @@ const styles1 = StyleSheet.create({
 //     }
 //   };
 
-
 //   useEffect(() => {
 //     if (focused) {
 //       handleGetBrands();
@@ -971,7 +884,6 @@ const styles1 = StyleSheet.create({
 //         setFile({ name: image.path.split("/")[image.path.split("/").length - 1] });
 //         setimage(`data:${image.mime};base64,${image.data}`);
 //       });
-
 
 //       // let file = await DocumentPicker.pickSingle({
 //       //   presentationStyle: 'fullScreen',
@@ -1030,7 +942,6 @@ const styles1 = StyleSheet.create({
 //     }
 //   };
 
-
 //   const handleDocumentMultiplePicker = async () => {
 //     try {
 //       let files = await DocumentPicker.pickMultiple({
@@ -1054,8 +965,6 @@ const styles1 = StyleSheet.create({
 //       handleError(error);
 //     }
 //   };
-
-
 
 //   const getProductData = async () => {
 //     try {
@@ -1113,8 +1022,6 @@ const styles1 = StyleSheet.create({
 //       setimageArr([...tempArr])
 //     }
 //   }
-
-
 
 //   return (
 //     <ScrollView style={{backgroundColor:'#fff'}}>
@@ -1178,7 +1085,6 @@ const styles1 = StyleSheet.create({
 //           </Picker>
 //         )}
 // </View>
-
 
 //         <Text style={styles1.nameheading}>Enter Price </Text>
 
@@ -1515,7 +1421,6 @@ const styles1 = StyleSheet.create({
 //         />
 //         <Text style={styles1.nameheading}>Product Image </Text>
 
-
 //         <Pressable
 //           style={styles1.BorderedPressable}
 //           onPress={() => {
@@ -1665,7 +1570,6 @@ const styles1 = StyleSheet.create({
 //                 underlineColor="#E7E7E8"
 //                 underlineColorAndroid="#E7E7E8"
 //               />
-
 
 //               <Pressable onPress={() => handleCreateBrand()} style={[styles.btnbg, { marginHorizontal: 20, marginBottom: 15, marginTop: 20 }]}>
 //                 <Text style={styles.textbtn}>Submit</Text>

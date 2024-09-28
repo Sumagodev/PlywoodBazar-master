@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View, Modal, ImageBackground } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View, Modal, ImageBackground, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -14,9 +14,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import CustomColors from '../styles/CustomColors';
 import CustomButton from '../ReusableComponents/CustomButton';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import LoadingOverlay from '../ReusableComponents/LoadingOverlay';
+import { Touchable } from 'react-native';
 
 export default function AddProducts(props) {
-
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigation = useNavigation();
   const [price, setPrice] = useState(0);
   const [brandModal, setBrandModal] = useState(false);
@@ -41,6 +43,13 @@ export default function AddProducts(props) {
   const [categoryArr, setCategoryArr] = useState([]);
   const [pricetype, setpricetype] = useState("per Nos/sheet");
   const [brandArr, setBrandArr] = useState([]);
+
+  const [loadingIndicator, setLoadingIndicator] = useState(false)
+
+  const handleBrandNameChange = (e) => {
+    setBrandName(e);
+    setIsSubmitDisabled(e.length <= 1); // Disable if brandName is 1 character or less
+  };
 
   const handleGetBrands = async () => {
     try {
@@ -157,14 +166,19 @@ export default function AddProducts(props) {
         name: brandName,
         status: true,
       };
+      setLoadingIndicator(true);
       let { data: res } = await addBrandApi(obj);
       if (res) {
         toastSuccess(res.message);
         handleGetBrands();
         setBrandModal(false);
+        setLoadingIndicator(false);
+        setIsSubmitDisabled(true);
+        setBrandName('')
       }
     } catch (error) {
       errorToast(error);
+      setLoadingIndicator(false);
     }
   };
   useEffect(() => {
@@ -267,12 +281,14 @@ export default function AddProducts(props) {
       <Header normal={true} screenName={'Add Products'} rootProps={props} />
 
       <View style={{ backgroundColor: '#fff', flex: 1, }}>
+      <LoadingOverlay visible={loadingIndicator} message="Please wait..." />
         <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
           <View style={styles1.card_main}>
             <Text style={{ textAlign: 'center', fontSize: wp(6.0), fontWeight: 'bold' }}>Add Product</Text>
             <Text style={styles1.nameheading}>Enter Name </Text>
             <TextInput
-              onChangeText={e => setname(e)}
+              
+              onChangeText={handleBrandNameChange}
               value={name}
               placeholder="Name"
               selectionColor={CustomColors.mattBrownDark}
@@ -524,19 +540,21 @@ export default function AddProducts(props) {
         visible={brandModal}
         onRequestClose={() => {
           setBrandModal(!brandModal);
+          setBrandName('')
         }}>
         <View style={styles1.centeredView}>
           <View style={styles1.modalView}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles1.modalText}>Add Brand</Text>
-              <Pressable style={[{ right: wp(-25) }]} onPress={() => setBrandModal(!brandModal)}>
+              <Pressable style={[{ right: wp(-25) }]} onPress={() => {setBrandModal(!brandModal) ,setBrandName('')}}>
                 <FontAwesome5Icon style={{}} name="times" size={wp(8)} color="black" />
               </Pressable>
             </View>
 
             <TextInput
-              onChangeText={e => setBrandName(e)}
-              value={brandName}
+                            style={{ width: wp(90), paddingLeft:wp(5)}}
+          onChangeText={handleBrandNameChange}
+          value={brandName}
               placeholder="Brand Name"
               selectionColor={CustomColors.mattBrownDark}
               mode='outlined'
@@ -546,14 +564,42 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
-              style={{
-                width: wp(90),
-
-              }}
+              
             />
-            <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
-              <CustomButton onPress={() => handleCreateBrand()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
+            {isSubmitDisabled && (
+        <Text style={{color: 'red', fontSize: wp(3) ,marginVertical:wp(2)}}>
+          Please enter brand name.
+        </Text>
+      )} 
+
+{!isSubmitDisabled ? (
+        <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
+          {/* Button is active */}
+          <CustomButton 
+            onPress={handleCreateBrand}
+            text={'SUBMIT'}
+            textSize={wp(5)}
+            paddingHorizontal={wp(8)}
+            paddingVertical={wp(3)}
+          />
+        </View>
+      ) : (
+        <View style={{ alignSelf: 'center', marginVertical: wp(5), opacity: 0.5 }}>
+          {/* Disabled button, with reduced opacity */}
+          <TouchableOpacity disabled={true}>
+            <View style={{ 
+              backgroundColor: 'gray', 
+              paddingVertical: wp(3), 
+              paddingHorizontal: wp(8), 
+              borderRadius: 10,
+              alignItems: 'center'
+            }}>
+              <Text style={{ fontSize: wp(5), color: '#fff' }}>SUBMIT</Text>
             </View>
+          </TouchableOpacity>
+        </View>
+      )}
+          
 
 
           </View>

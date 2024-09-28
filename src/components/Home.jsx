@@ -689,7 +689,7 @@ export default function Home() {
     );
   };
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}/>
+    return <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}/>
   
   };
 
