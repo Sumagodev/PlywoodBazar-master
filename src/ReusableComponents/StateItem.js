@@ -6,7 +6,6 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { generateImageUrl } from "../services/url.service";
 
 const StateItem = ({ item ,onPress}) => {
-    console.log('item.image', generateImageUrl(item.image));
     const [imageFailed, setImageFailed] = useState(false);
     return (
         <TouchableOpacity style={stateStyle.container} onPress={onPress}>

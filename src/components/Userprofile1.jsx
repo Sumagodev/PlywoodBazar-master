@@ -152,9 +152,9 @@ export default function Userprofile1(props) {
 
             {userObj?.role != ROLES_CONSTANT.USER && (
               <>
-                <Text style={{color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium'}}>Company Details</Text>
+                <Text style={{color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium'}}>Organization Details</Text>
 
-                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Company Name</Text>
+                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Organization Name</Text>
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={styles1.nameheading}>{userObj?.companyObj?.name}</Text>
                 </Pressable>
@@ -164,12 +164,12 @@ export default function Userprofile1(props) {
               <Text style={styles1.nameheading}>{userObj?.companyObj?.name}</Text>
             </Pressable> */}
 
-                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Company Email:</Text>
+                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Email:</Text>
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={styles1.nameheading}>{userObj?.companyObj?.email}</Text>
                 </Pressable>
 
-                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Company Phone:</Text>
+                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Organization Phone:</Text>
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={styles1.nameheading}>{userObj?.companyObj?.phone}</Text>
                 </Pressable>
@@ -184,7 +184,7 @@ export default function Userprofile1(props) {
                   <Text style={styles1.nameheading}>{userObj?.companyObj?.gstNumber}</Text>
                 </Pressable>
 
-                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Company address</Text>
+                <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Organization address</Text>
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={[styles1.nameheading, {maxWidth: '50%'}]}>{userObj?.companyObj?.address}</Text>
                 </Pressable>

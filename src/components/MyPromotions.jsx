@@ -112,7 +112,7 @@ export default function MyPromotions(props) {
     return (
       <Pressable style={stylesCard.container}>
        
-        <Image style={{width:'100%',height:'50%',borderRadius:wp(5)}} 
+        <Image style={{width:'100%',height:wp(45),borderRadius:wp(5)}} 
         
         source={
           item?.image && item?.image !== "null"
@@ -149,12 +149,11 @@ export default function MyPromotions(props) {
           </View>
         </View>
         <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2)}}>
-          <Text style={{fontSize:wp(3)}}>From : </Text>
-          <Text style={{fontSize:wp(3)}}>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
-        </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2)}}>
-          <Text style={{fontSize:wp(3)}}>To      : </Text>
-          <Text style={{fontSize:wp(3)}}>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
+          <Text style={{fontSize:wp(3.5)}}>From : </Text>
+          <Text style={{fontSize:wp(3.5)}}>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
+       
+          <Text style={{fontSize:wp(3.5), marginHorizontal: wp(2)}}>To : </Text>
+          <Text style={{fontSize:wp(3.5)}}>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
         </View>
       </Pressable>
     );
@@ -181,7 +180,7 @@ export default function MyPromotions(props) {
         </View>
 
         {saleArr && saleArr.length > 0 ? (
-          <FlatList data={saleArr} renderItem={renderItem} numColumns={2} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: hp(10)}} />
+          <FlatList data={saleArr} renderItem={renderItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: hp(10)}} />
         ) : (
           <View style={{height: hp(85), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{fontSize: wp(5), color: '#000'}}>No Promotions</Text>
@@ -252,8 +251,8 @@ const styles1 = StyleSheet.create({
 const stylesCard = StyleSheet.create({
   container: {
     margin: wp(2),
-    width: wp(46),
-    height: wp(60),
+    flex:1,
+    height: wp(75),
     elevation: 10,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -278,7 +277,7 @@ const stylesCard = StyleSheet.create({
   headStyle: {
     color: '#5a432f',
     textAlign: 'center',
-    fontSize: wp(4),
+    fontSize: wp(4.5),
     fontWeight: 'bold',
     marginVertical: wp(2),
     marginStart: wp(2),
