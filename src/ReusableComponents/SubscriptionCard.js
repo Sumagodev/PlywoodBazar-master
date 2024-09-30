@@ -44,6 +44,10 @@ const stylesCard = StyleSheet.create({
       borderRadius: 10,
       elevation: 2,
       marginLeft: 40, // Space for the floating circle
+      marginVertical:wp(5),
+      justifyContent:'center',
+      alignItems:'center',
+      alignSelf:'center'
     },
     periodContainer: {
       width:wp(25),

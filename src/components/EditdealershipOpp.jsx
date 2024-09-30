@@ -428,6 +428,7 @@ const EditdealershipOpp = (props) => {
   return (
     <>
       <ScrollView>
+      <Header normal={true} rootProps={props} />
         <View style={styles1.containerForm}>
           <Text style={styles1.textStyle}> Edit Promoted Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>

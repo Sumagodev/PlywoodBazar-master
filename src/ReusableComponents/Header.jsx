@@ -10,17 +10,32 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { getDecodedToken, getToken } from '../services/User.service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getHomeBannerNew } from '../services/Banner.service';
 export default function Header(props) {
-  const navigate = useNavigation();
 
   const [categoryArr, setCategoryArr] = useState([]);
   const focused = useIsFocused()
   const [displayChat, setDisplayChat] = useState(false)
-  const handleNestedcategories = async () => {
+  // const handleNestedcategories = async () => {
+  //   try {
+  //     let { data: res } = await getHomePageBannersApi();
+  //     if (res.data && res.data?.length > 0) {
+  //       setCategoryArr(res.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const navigation = useNavigation();
+
+  const handleGetHomeBanner = async () => {
     try {
-      let { data: res } = await getHomePageBannersApi();
-      if (res.data && res.data?.length > 0) {
-        setCategoryArr(res.data);
+      let { data: res } = await getHomeBannerNew();
+      if (res.bannerImages && res.bannerImages?.length > 0) {
+        setCategoryArr(res.bannerImages);
+        console.log('xxxxx',res.bannerImages)
+      }else{
+        console.log('xxxxx','No data')
       }
     } catch (error) {
       console.log(error);
@@ -44,8 +59,25 @@ export default function Header(props) {
     // console.log(...categoryArr.map(el => generateImageUrl(`${el?.image}`)), '...categoryArr.map(el => generateImageUrl(`${el?.image}`))');
   }, [categoryArr]);
   useEffect(() => {
-    handleNestedcategories();
+    handleGetHomeBanner();
   }, []);
+  const naviateFurther=(item)=>{
+
+   
+    if(item.type==='productbanner')
+      {
+
+      navigation.navigate('Productdetails',{data:item.productId.slug})
+    }else{
+      const modifiedItem = {
+        ...item,
+        _id: item.userId._id,
+      };
+      navigation.navigate('Supplier',{data:modifiedItem})
+  
+    }
+    
+  }
   return (
     <>
       {/* <View style={styles1.headermain}>
@@ -77,7 +109,7 @@ export default function Header(props) {
             paginationBoxStyle={styles1.paginationBoxStyle}
             ImageComponentStyle={styles1.imageStyle}
             imageLoadingColor="#2196F3"
-            onCurrentImagePressed={index => console.log('Image pressed:', categoryArr[index]?._id)}
+            onCurrentImagePressed={item => {naviateFurther(categoryArr[item])}}
             resizeMode={'stretch'}
           />
         </View>
@@ -85,6 +117,8 @@ export default function Header(props) {
     </>
   );
 };
+
+
 
 const styles1 = StyleSheet.create({
   sliderhome1: {

@@ -136,7 +136,6 @@ const customStyle = StyleSheet.create({
   },
   dateText: {
     marginTop: wp(1),
-    fontStyle: 'italic',
     color: CustomColors.darkGray,
   },
 });

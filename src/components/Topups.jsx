@@ -71,6 +71,7 @@ export default function Topups(props) {
       daysOfAdvertisement: item?.advertisementDays,
       daysOfSale: item?.saleDays,
       numberOfSale: item?.numberOfSales ? item?.numberOfSales : 0,
+      fullItem:item
     };
     return (
       <MyTopUpItem topUpItem={myItem} onPress={() => {setSelectedSubscriptionObj(item)}}></MyTopUpItem>

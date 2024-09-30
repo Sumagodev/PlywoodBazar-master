@@ -63,13 +63,14 @@ import ProfileViewNote from '../ReusableComponents/NotificationCards/ProfileView
 import ContactsNote from '../ReusableComponents/NotificationCards/ContactsNote';
 import ProfileCompletionNote from '../ReusableComponents/NotificationCards/ProfileCompletionNote';
 import ProductUnderReviewNote from '../ReusableComponents/NotificationCards/ProductUnderReviewNote';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function Notification(props) {
   const [Notification, setNotification] = useState([]);
   const [isAuthorized] = useContext(isAuthorisedContext);
   console.log('isAuthorized', isAuthorized);
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
-
+  const[loadingDialog,setLoadingDialog]=useState(false);
   const focused = useIsFocused();
   useEffect(() => {
     if (isAuthorized) {
@@ -98,6 +99,7 @@ export default function Notification(props) {
   };
   const handleGetProducts = async (skipValue, limitValue, searchQuery) => {
     try {
+      setLoadingDialog(true)
       const decodedToken = await getDecodedToken();
 
       if (!decodedToken) {
@@ -108,9 +110,13 @@ export default function Notification(props) {
       let {data: res} = await getUserNotifications(query);
       if (res.data) {
         setNotification(res.data);
+        setLoadingDialog(false)
+
       }
     } catch (err) {
       errorToast(err);
+      setLoadingDialog(false)
+
     }
   };
   useFocusEffect(
@@ -149,6 +155,7 @@ export default function Notification(props) {
           <Text style={{fontSize: wp(5)}}>No Notification Found</Text>
         </View>
       )}
+      <LoadingDialog visible={loadingDialog}></LoadingDialog>
     </View>
   );
 }

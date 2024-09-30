@@ -85,9 +85,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,250,0.5)',
   },
   textContainer: {
-    backgroundColor: '#1B4C76',
+    backgroundColor: 'red',
     height: wp(30),
-    width:wp(20),
+    width:wp(30),
     justifyContent: 'center',
     borderRadius: wp(30),
     alignItems: 'center',

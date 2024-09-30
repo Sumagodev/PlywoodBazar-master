@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
+import CustomColors from '../styles/CustomColors';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { Image } from '@rneui/base';
 
 const LoadingDialog = ({ visible, message }) => {
     return (
@@ -12,7 +15,8 @@ const LoadingDialog = ({ visible, message }) => {
         >
             <View style={styles.container}>
                 <View style={styles.dialog}>
-                    <ActivityIndicator size="large" color="#0000ff" />
+                    <Image source={require('../../assets/img/logo_1.png')} style={styles.logo}></Image>
+                    <ActivityIndicator size="small" color={CustomColors.mattBrownDark}  style={{marginTop:widthPercentageToDP(5)}}/>
                     <Text style={styles.message}>{message}</Text>
                 </View>
             </View>
@@ -34,20 +38,24 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent background
     },
     dialog: {
-        width: 250,
-        padding: 20,
+        paddingHorizontal: widthPercentageToDP(10),
+        paddingVertical:widthPercentageToDP(5),
         borderRadius: 10,
-        backgroundColor: 'white',
         alignItems: 'center',
     },
     message: {
         marginTop: 10,
-        fontSize: 16,
+        fontSize: widthPercentageToDP(2),
         textAlign: 'center',
     },
+    logo:{
+        resizeMode:'center',
+        width:widthPercentageToDP(15),
+        height:widthPercentageToDP(15)
+    }
 });
 
 export default LoadingDialog;

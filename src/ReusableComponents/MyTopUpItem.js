@@ -7,8 +7,10 @@ const { StyleSheet, View, Text } = require("react-native")
 
 const MyTopUpItem = ({
     topUpItem,
-    onPress
+    onPress,
+    fullItem
 })=>{
+    console.log('topUpItem',topUpItem)
     return(
         <View style={styles.container}>
             <View style={styles.mainContainer}>
@@ -30,6 +32,13 @@ const MyTopUpItem = ({
                         <Text style={styles.valueText}>FOR {topUpItem.daysOfAdvertisement} DAY(S)</Text>
                     </View>
                 </View>
+               {topUpItem.fullItem.includesBannerImages? <View style={styles.rowContainer}>
+                    <Icon size={wp(4)} name="check" color='white' backgroundColor='#ba9576' borderRadius={wp(5)} padding={wp(1)}/>
+                    <View style={styles.columnContainer}>
+                        <Text style={styles.keyText}>{topUpItem.fullItem.numberOfBannerImages} Banner Images(S)</Text>
+                        <Text style={styles.valueText}>FOR {topUpItem.fullItem.bannerimagesDays} DAY(S)</Text>
+                    </View>
+                </View>:null}
                 </View>
             </View>
             <View style={styles.buttonStyle}>
@@ -48,6 +57,8 @@ const styles = StyleSheet.create({
     container: {
         margin:wp(1),
         width: wp(80),
+        marginVertical:wp(5),
+        justifyContent:'center'
     },
     mainContainer: {
         paddingTop: wp(3),

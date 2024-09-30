@@ -84,6 +84,7 @@ export default function Home() {
   const [blogVideoArr, setBlogVideoArr] = useState([]);
   const [likeproductarray, setlikeproductarray] = useState([]);
   const [addressInFromFiled, setAddressInFormFiled] = useState('');
+  const [currentUserId, setCurrentUserId] = useState('');
 
 
 
@@ -153,6 +154,7 @@ export default function Home() {
     if (decoded && decoded?._id) {
       setuserid(decoded?._id);
       getUserById(decoded?._id);
+      setCurrentUserId(decoded?._id)
     }
   };
 
@@ -184,6 +186,7 @@ export default function Home() {
       handleproductyoumaylike();
       handleopportunitydata();
       handlestates();
+      // getauthuser();
     }
   }, [focused]);
 
@@ -345,6 +348,7 @@ export default function Home() {
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
+      setCurrentUserId(decoded?.userId)
       if (decoded) {
         if (decoded?.user?.name) {
           setName(decoded?.user?.name);
@@ -775,11 +779,18 @@ export default function Home() {
   };
   const renderOpportunities = ({ item, index }) => {
     console.log('datiii',item);
+    console.log('datiii',item.userId);
+    console.log('datiii',currentUserId);
     
-    return (
-      // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
-      <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
-    );
+    if(item.userId===currentUserId){
+      return null;
+    }else{
+      return (
+        // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
+        <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
+      );
+    }
+    
   };
 
 

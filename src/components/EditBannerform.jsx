@@ -53,7 +53,7 @@ const EditBannerform = (props) => {
 
 
   const [bannerImage, setBannerImage] = useState('');
-  const [selectedType, setSelectedType] = useState();
+  const [selectedType, setSelectedType] = useState(Data.type);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [userId, setuserid] = useState(null);
   const [selectedproductsArray, setSelectedproductsArray] = useState('');
@@ -73,6 +73,13 @@ const EditBannerform = (props) => {
 
 
   ]);
+
+  
+  if(selectedType==='profilebanner'){
+    Bannertype[0].checked=true
+  }else{
+    Bannertype[1].checked=true
+  }
 
 
   const handleGeyUserDetails = async id => {
@@ -102,10 +109,10 @@ const EditBannerform = (props) => {
   useEffect(() => {
     handleGeyUserDetails();
     handleGetProdductsBySupplierId();
-    if(selectedType ==='profilebanner'){
-      setSelectedproductsArray(null)
-      setSelectedType(null)
-    }
+    // if(selectedType ==='profilebanner'){
+    //   setSelectedproductsArray(null)
+    //   setSelectedType(null)
+    // }
   }, [focused]);
 
 
@@ -211,6 +218,7 @@ const EditBannerform = (props) => {
   return (
     <>
       <ScrollView>
+      <Header normal={true} rootProps={props} />
         <View style={styles1.containerForm}>
           <Text style={styles1.textStyle}> Edit Banner</Text>
           <View style={styles1.textFieldContainer}>

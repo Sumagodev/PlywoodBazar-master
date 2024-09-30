@@ -37,6 +37,11 @@ export const getTeams = (query) => {
     return axios.get(`${url}/team/getTeams?${query}`);
 }
 
+export const getHomeBannerNew = (query) => {
+    
+    return axios.get(`${url}/BannerImage/getbanner`);
+}
+
 
 
 
