@@ -18,6 +18,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { AddDealershipOpportunities } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
+import { getAllCategories } from '../services/Category.service';
 const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
@@ -44,16 +45,19 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const [selected, setSelected] = useState([]);
   const [file, setFile] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
+  const [selectedItemscate, setSelectedItemscate] = useState([]);
+  console.log('selectedItemscate', selectedItemscate);
 
+  const [CategoryArr, setCategoryArr] = useState([]);
   console.log('loggg', stateId);
   const debounceTimeout = useRef(null);
-
   const [selectedItems, setSelectedItems] = useState([]);
-  console.log('selectedItems', selectedItems);
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
-
+  const onSelectedItemsChangeCate = selectedItemscate => {
+    setSelectedItemscate(selectedItemscate);
+  };
   const [rolesArr, setRolesArr] = useState([
     {
       name: ROLES_CONSTANT.CONTRACTOR,
@@ -112,6 +116,17 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   //     console.log(error);
   //   }
   // };
+  const handleGetCategory = async () => {
+    try {
+      let { data: res } = await getAllCategories();
+      if (res.data) {
+        setCategoryArr(res.data);
+      
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
   const handleGetStates = async (countrysId) => {
     try {
       let { data: res } = await getStateByCountryApi(`countryId=${countrysId}`);
@@ -130,8 +145,9 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   useEffect(() => {
     if (countryId) {
       handleDebouncedGetStates(countryId);
+      handleGetCategory()
     }
-  }, [countryId]);
+  }, [countryId,focused]);
 
   const handleGetCities = async stateId => {
     try {
@@ -173,7 +189,6 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
     }
     return null;
   };
-
   const resetForm = () => {
     setName('');
     setType('');
@@ -283,12 +298,6 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         return;
       }
   
-      // Validate if a product is selected
-      if (!selectedproductsArray || !selectedproductsArray._id) {
-        errorToast('Product is Required');
-        return;
-      }
-  
       // Validate if a city is selected
       if (!selectedItems || selectedItems.length === 0) {
         errorToast('City is Required');
@@ -301,9 +310,9 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         return;
       }
   
-   
-      if (!cityId < 1) {
-        errorToast('City is Required');
+      // Validate if a category is selected
+      if (!selectedItemscate || selectedItemscate.length === 0) {
+        errorToast('Category is Required');
         return;
       }
   
@@ -318,29 +327,29 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         Organisation_name: name,
         Type: selectedBusinessType,
         Brand: brand,
-        productId: selectedproductsArray._id,
+        productId: selectedproductsArray?._id, // Optional chaining to avoid errors
         userId: userID,
         cityId: selectedItems,
         stateId: stateId.value,
         image: fileBase64,
-        Product: selectedproductsArray.name
+        Product: selectedproductsArray?.name, // Optional chaining for safety
+        categoryArr: selectedItemscate
       };
   
-      console.log('Submitting object:', obj);
+      console.log('Submitting', obj);
   
       // Submit data
       const { data: res } = await AddDealershipOpportunities(obj);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
-        resetForm();
+        resetForm(); // Reset the form after success
       }
     } catch (error) {
       errorToast('An error occurred while submitting.');
       console.log('Error:', error);
     }
   };
-  
   const handleDocumentPicker = async () => {
     try {
       ImagePicker.openPicker({
@@ -383,6 +392,11 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
     const updatedItems = selectedItems.filter((id) => id !== itemId);
     setSelectedItems(updatedItems);
   };
+  const removeItem1 = (itemId) => {
+    // Filter out the item that matches the itemId and update the state
+    const updatedItems = selectedItemscate.filter((id) => id !== itemId);
+    setSelectedItemscate(updatedItems);
+  };
   return (
     <>
       <Header normal={true} screenName={'Dealership Opportunities'} rootProps={props} />
@@ -412,7 +426,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
               }}
             />
-            <Dropdown
+            {/*<Dropdown
               style={styles1.dropdown}
               placeholderStyle={styles1.placeholderStyle}
               data={productsArray}
@@ -430,7 +444,52 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 setSelectedproductsArray(item); // Use `item.value` to match the `valueField`
               }}
             />
+*/}
+<View style={{ marginVertical: wp(2) }}>
+              <MultiSelect
+                hideTags
+                items={CategoryArr}
+                uniqueKey="_id"
+                onSelectedItemsChange={onSelectedItemsChangeCate}
+                selectedItems={selectedItemscate}
+                selectText="     Select Categories"
+                searchInputPlaceholderText="Search Category..."
+                onChangeInput={text => console.log(text)}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#000"
+                selectedItemTextColor="#000"
+                selectedItemIconColor="#000"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
+                submitButtonColor={CustomColors.mattBrownDark}
+                submitButtonText="Select"
+                styleDropdownMenuSubsection={stylesMul.multiSelect} // Style for the dropdown
+                styleInputGroup={stylesMul.multiSelectInput} // Style for the input section
+                styleItemsContainer={stylesMul.multiSelectItems} // Sty
+              />
+            </View>
 
+            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', left: wp(3) }}>
+              {selectedItemscate ? (
+                selectedItemscate.map(itemId => {
+                  const item = CategoryArr.find(i => i._id === itemId);
+                  return (
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
+                      <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
+                        {item.name}
+                      </Text>
+                      <TouchableOpacity onPress={() => removeItem1(itemId)}>
+                        <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })
+              ) : (
+                <Text>No Category selected</Text>
+              )}
+            </View>
             <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />

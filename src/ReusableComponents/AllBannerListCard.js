@@ -11,7 +11,7 @@ import CustomButtonNew from "./CustomButtonNew";
 //     'Moscow', 'Dubai', 'Seoul', 'Singapore', 'Hong Kong', 'Bangkok',
 // ];
 const { width, height } = Dimensions.get('window');
-const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
+const AllBannerListCard = ({ onEditPress, product, onDeletePress, editable }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cities, setcities] = useState([])
     const [Categories, setCategories] = useState([])
@@ -37,11 +37,16 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                     <Text style={[styles.headStyle, { width: '25%' }]}>Type:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }}>{product.Type}</Text>
                 </View>
+                {product.ProductName? <View style={{ flexDirection: 'row', width: '100%' }}>
+                <Text style={[styles.headStyle, { width: '25%' }]}>Product:</Text>
+                <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
+            </View>:null}
+               
                 <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <Text style={[styles.headStyle, { width: '25%' }]}>Brand:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.brand}</Text>
+                    <Text style={[styles.headStyle, { width: '25%' }]}>Created At:</Text>
+                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.createdAt}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', width: '100%' }}>
+               {/* <View style={{ flexDirection: 'row', width: '100%' }}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>State:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={1} ellipsizeMode="tail">{product.state}</Text>
                 </View>
@@ -58,8 +63,9 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                         <FontAwesomeIcon name="eye" size={wp(5.4)} color='#000' />
                     </View>
                 </TouchableOpacity>
+                */}
                 {
-                    editable ? <View style={{ flexDirection: 'row',  alignItems: "center", position:'absolute',justifyContent:'flex-end',alignSelf:'flex-end',right:wp(10),top:wp(25)}}>
+                    editable ? <View style={{ flexDirection: 'row',  alignItems: "center", position:'absolute',justifyContent:'flex-end',alignSelf:'flex-end',right:wp(-3),top:wp(1)}}>
                         <TouchableOpacity style={{ marginHorizontal: 10, width: wp(8), height: wp(8), alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2 }} onPress={onDeletePress}>
                             <FontAwesomeIcon name="trash-o" size={wp(4)} color='#fff' />
                         </TouchableOpacity>
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     container: {
         margin: wp(2),
         width: wp(90),
-        height: wp(80),
+        height: wp(70),
         elevation: 10,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
@@ -254,4 +260,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default DealershipData
+export default AllBannerListCard

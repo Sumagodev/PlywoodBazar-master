@@ -12,10 +12,12 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
-import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities, MyappliedList } from '../services/Advertisement.service';
+import {  AllBanerByUserId, DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
+import Categories from './Categories';
+import AllBannerListCard from '../ReusableComponents/AllBannerListCard';
 
-export default function SelfAppliedOpportunitiesList(props) {
+export default function AllBannerslisting(props) {
     const focused = useIsFocused()
     const navigation = useNavigation();
 
@@ -26,14 +28,14 @@ export default function SelfAppliedOpportunitiesList(props) {
     useEffect(() => {
         // handleopportunitydata();
         getSubscriptions()
-    }, []);
+    }, [focused]);
     const getSubscriptions = async () => {
         try {
             let decodedObj = await getDecodedToken();
-            const { data: res } = await MyappliedList(decodedObj?.userId);
+            const { data: res } = await AllBanerByUserId(decodedObj?.userId);
             if (res) {
                 console.log(JSON.stringify(res.data,), 'raviiii');
-                setSubscriptionArr(res.data);
+                setSubscriptionArr(res.bannerImages);
             }
         } catch (error) {
             errorToast(error);
@@ -94,16 +96,17 @@ export default function SelfAppliedOpportunitiesList(props) {
         const productItem = {
             name: item?.Organisation_name,
             imagePath: { uri: generateImageUrl(item?.image) },
-            state: item?.state?.name,
-            Type: item?.Type,
-            brand: item?.Brand,
-            ProductName: item?.Product,
-            Cities: item?.cities,
-            Categories: item?.categories,
+            // state: item?.stateName,
+            Type: item?.type,
+            createdAt: item?.createdAt,
+            ProductName: item?.productId?.slug,
+            // Cities: item?.cities,
+            // Categories: item?.categories,
+
 
         }
         return (
-            <DealershipData onDeletePress={() => { handleDeleteProduct(item?._id) }} product={productItem} onEditPress={() => Editdata(item)} editable={false}  ></DealershipData>
+            <AllBannerListCard onDeletePress={() => { handleDeleteProduct(item?._id) }} product={productItem} onEditPress={() => Editdata(item)} editable={true}  ></AllBannerListCard>
             // <ProductItemVertical onDeletePress={() => handleDeleteProduct(item?._id)} product={productItem} onEditPress={() => navigation.navigate("EditProduct", { data: item?._id })} ></ProductItemVertical>
         );
     };
@@ -114,7 +117,7 @@ export default function SelfAppliedOpportunitiesList(props) {
         <View style={styles1.mainContainer}>
             <Header normal={true} rootProps={props} />
             <View style={reviewStyle.container}>
-                <Text style={reviewStyle.title}>My Applied Opportunities List</Text>
+                <Text style={reviewStyle.title}>My Banner List</Text>
             </View>
 
             {

@@ -41,8 +41,10 @@ export const getUserById = async id => {
   return /*apiinstance*/ axiosApiInstance.get(`${serverUrl}/getUserById/${decoded?.userId}`);
 };
 export const getUserUserById = async (id) => {
-  // let decoded = await getDecodedToken();
-  return /*apiinstance*/ axiosApiInstance.get(`${serverUrl}/getUserById/${id}`);
+   let decoded = await getDecodedToken();
+  // return /*apiinstance*/ axiosApiInstance.get(`${serverUrl}/getUserById/${id}`);
+  return axiosApiInstance.get(`${serverUrl}/getUserById/${id}?visitorUserId=${decoded?.userId}`);
+
 };
 
 export const getUserNotifications = async (obj) => {

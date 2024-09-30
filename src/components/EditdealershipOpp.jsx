@@ -213,6 +213,7 @@ const EditdealershipOpp = (props) => {
     setSelectedBusinessType(null);
     setSelectedproductsArray(null);
     setSelectedItems([]);
+    setSelectedItemscate([]);
   };
 
 
@@ -324,6 +325,10 @@ const EditdealershipOpp = (props) => {
         errorToast('City is Required');
         return;
       }
+      if (!selectedItemscate || selectedItemscate.length === 0) {
+        errorToast('Category is Required');
+        return;
+      }
 
       // Validate if an image is selected
       if (!fileBase64) {
@@ -353,7 +358,7 @@ const EditdealershipOpp = (props) => {
         cityId: selectedItems,
         stateId: stateId.value,
         image: fileBase64,
-        categories: selectedItemscate
+        categoryArr: selectedItemscate
         // Product: selectedproductsArray.name,
 
       };
