@@ -66,10 +66,20 @@ export const DeleteOpp = async (id) => {
 
     return /*apiinstance*/ axios.delete(`${serverUrl1}/dealership-owners/${id}`)
 }
+export const DeleteBanner = async (id) => {
+    console.log('dataaaa', id);
+
+    return /*apiinstance*/ axios.delete(`${url}/BannerImage/deletebanner/${id}`)
+}
 export const Updateopp = async (obj, id) => {
     console.log('updatee', id);
 
     return /*apiinstance*/ axios.put(`${serverUrl1}/dealership-owners/${id}`, obj)
+}
+export const UpdatBannerform = async (obj, id) => {
+    console.log('updatee', id);
+
+    return /*apiinstance*/ axios.put(`${url}/BannerImage/updatebanner/${id}`, obj)
 }
 
 
