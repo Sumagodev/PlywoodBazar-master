@@ -53,7 +53,7 @@ const EditBannerform = (props) => {
 
 
   const [bannerImage, setBannerImage] = useState('');
-  const [selectedType, setSelectedType] = useState(Data.type);
+  const [selectedType, setSelectedType] = useState();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [userId, setuserid] = useState(null);
   const [selectedproductsArray, setSelectedproductsArray] = useState('');
@@ -102,6 +102,10 @@ const EditBannerform = (props) => {
   useEffect(() => {
     handleGeyUserDetails();
     handleGetProdductsBySupplierId();
+    if(selectedType ==='profilebanner'){
+      setSelectedproductsArray(null)
+      setSelectedType(null)
+    }
   }, [focused]);
 
 
@@ -124,7 +128,7 @@ const EditBannerform = (props) => {
     setBannertype(updatedBannertype);
     setSelectedType(updatedBannertype[index].name);
   };
-  console.log('selectedType', selectedType);
+  console.log('selectedproductsArray', selectedproductsArray);
 
 
 

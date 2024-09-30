@@ -59,7 +59,7 @@ export default function AppliedOpportunitieslist(props) {
                         let { data: res } = await deleteById(id);
                         if (res) {
                             toastSuccess(res.message);
-                            getSubscriptions()
+                            handleopportunitydata()
                         }
                     }
                 },
