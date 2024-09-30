@@ -95,13 +95,13 @@ export default function Userprofile(props) {
           <View style={profileStyle.iconContainer}>
             <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
           </View>
-          <Text style={profileStyle.title}>Dealership Opportunities</Text>
+          <Text style={profileStyle.title}>Promoted Dealership Opportunities</Text>
         </Pressable>
         <Pressable onPress={() => navigate.navigate('AppliedOpportunitieslist')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
             <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
           </View>
-          <Text style={profileStyle.title}>Applied Opportunities</Text>
+          <Text style={profileStyle.title}>Dealership Opportunities Leads</Text>
         </Pressable>
         <Pressable onPress={() => navigate.navigate('SelfAppliedOpportunitiesList')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
@@ -343,7 +343,8 @@ const profileStyle = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FFF1E6',
     borderRadius: wp(20),
-    alignContent: 'center',
+    alignSelf:'center',
+    overflow:'hidden'
   },
 
   iconContainer: {
@@ -361,6 +362,7 @@ const profileStyle = StyleSheet.create({
     marginLeft: wp(2),
     fontSize: wp(5),
     fontWeight: 800,
+    width: wp(75),
     color: CustomColors.mattBrownDark,
   },
 });

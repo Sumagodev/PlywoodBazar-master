@@ -139,7 +139,7 @@ export default function AppliedOpportunitieslist(props) {
         <View style={styles1.mainContainer}>
             <Header normal={true} screenName={'Your Products'} rootProps={props} />
             <View style={reviewStyle.container}>
-                <Text style={reviewStyle.title}>Applied Opportunities</Text>
+                <Text style={reviewStyle.title}>Dealership Opportunities Leads</Text>
             </View>
 
             {

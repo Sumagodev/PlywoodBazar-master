@@ -218,6 +218,8 @@ const stylesCard = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
     marginLeft: 40, // Space for the floating circle
+    alignSelf:'center',
+    marginVertical:wp(5)
   },
   periodContainer: {
     width: wp(25),

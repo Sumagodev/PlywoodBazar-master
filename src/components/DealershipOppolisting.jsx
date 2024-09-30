@@ -116,7 +116,7 @@ export default function DealershipOppolisting(props) {
         <View style={styles1.mainContainer}>
             <Header normal={true} rootProps={props} />
             <View style={reviewStyle.container}>
-                <Text style={reviewStyle.title}>Dealership Opportunities List</Text>
+                <Text style={reviewStyle.title}>Promoted Dealership Opportunities</Text>
             </View>
 
             {
@@ -196,7 +196,7 @@ const reviewStyle = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: wp(6),
+        fontSize: wp(5),
         fontWeight: 'bold',
 
     },
