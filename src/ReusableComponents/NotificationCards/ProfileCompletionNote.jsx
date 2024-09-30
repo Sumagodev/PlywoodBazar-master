@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment'; // You'll need to install moment.js for this
-import { updateReadStatus } from '../../services/Notifications.service';
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
 
@@ -37,7 +36,7 @@ const getRelativeTime = (dateString) => {
   return `${diffInDays}D`;
 };
 
-const ContactsNote = ({ item, productName, organizationName, date, isSubscriber=false }) => {
+const ProfileCompletionNote = ({ item, productName, organizationName, date, isSubscriber=false }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
@@ -48,7 +47,8 @@ const ContactsNote = ({ item, productName, organizationName, date, isSubscriber=
     let userId=item.userId;
     let notificationId=item._id;
      updateReadStatusApiCall(userId,notificationId);
-    navigation.navigate('Supplier', { data: modifiedItem });
+    () => navigate.navigate('Userprofile1');
+    
   };
   const updateReadStatusApiCall =  async (userId,notificationId) => {
 
@@ -58,17 +58,17 @@ const ContactsNote = ({ item, productName, organizationName, date, isSubscriber=
  }
 
   // Conditionally rendering different views based on isSubscriber
-  if (!isSubscriber) {
+  if (isSubscriber) {
     return (
-        <View style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]}>
-        <View style={customStyle.rowContainer}>
+<View style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]}>
+<View style={customStyle.rowContainer}>
           <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
           <View style={customStyle.contentContainer}>
             
           <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
         {/* Content section taking 90% of the width */}
         <Text style={{ width:'88%' }}>
-          <Text>Someone contacted you to know please subscribe</Text>
+        <Text>Thanks for joining us! To get started and make the most of our features, please complete your profile setup.</Text>
           
         </Text>
         
@@ -83,14 +83,14 @@ const ContactsNote = ({ item, productName, organizationName, date, isSubscriber=
     );
   } else {
     return (
-  <Pressable style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]} onPress={handlePress}>
-  <View style={customStyle.rowContainer}>
+<Pressable style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]}  onPress={handlePress}>
+<View style={customStyle.rowContainer}>
     <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
     <View style={customStyle.contentContainer}>
       <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
         {/* Content section taking 90% of the width */}
         <Text style={{ width:'88%' }}>
-          <Text style={customStyle.textBold}>{organizationName}</Text> viewed contacted you{' '}
+          <Text>Thanks for joining us! To get started and make the most of our features, please complete your profile setup.</Text>
         </Text>
         
         {/* Last access time taking 10% of the width */}
@@ -122,10 +122,10 @@ const customStyle = StyleSheet.create({
     marginHorizontal:wp(1),
     borderRadius: wp(10),
     resizeMode: 'contain',
+    resizeMode: 'contain',
     alignContent:'center',
     justifyContent:'center',
-    alignItems:'center',
-    alignSelf:'center'
+    alignItems:'center'
   },
   contentContainer: {
     marginHorizontal: wp(3),
@@ -143,4 +143,4 @@ const customStyle = StyleSheet.create({
 });
 
 
-export default ContactsNote;
+export default ProfileCompletionNote;

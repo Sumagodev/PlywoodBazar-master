@@ -288,7 +288,7 @@ export default function AddProducts(props) {
             <Text style={styles1.nameheading}>Enter Name </Text>
             <TextInput
               
-              onChangeText={handleBrandNameChange}
+              onChangeText={e => setname(e)}
               value={name}
               placeholder="Name"
               selectionColor={CustomColors.mattBrownDark}

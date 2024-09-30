@@ -14,12 +14,11 @@
 //   { id: '6', type: 'contacts', content: 'Another contacts notification', contactName: 'Emma Watson', date: '2024-09-21' },
 // ];
 
-
 // const Notification = () => {
 
 //   const notificationItem = ({ item }) => {
 //     // Dynamic rendering based on item type
-    
+
 //     switch (item.type) {
 //       case 'profile':
 //         return <ProfileViewNote content={item.content} name={item.name} date={item.date} />;
@@ -31,7 +30,6 @@
 //         return <Text>Unknown notification type</Text>;
 //     }
 //   };
-  
 
 //   return (
 
@@ -42,174 +40,116 @@
 //           keyExtractor={(item) => item.id}
 //         />
 //       </View>
- 
+
 //   );
 // };
 
 // export default Notification;
 
-import {View, Text, ScrollView, Pressable, Image, StyleSheet, FlatList,Alert} from 'react-native';
-import React, {useEffect, useState,useCallback,useContext} from 'react';
+import {View, Text, ScrollView, Pressable, Image, StyleSheet, FlatList, Alert} from 'react-native';
+import React, {useEffect, useState, useCallback, useContext} from 'react';
 import styles from '../../assets/stylecomponents/Style';
 import {Switch} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useFocusEffect, useNavigation,useIsFocused,CommonActions} from '@react-navigation/native';
+import {useFocusEffect, useNavigation, useIsFocused, CommonActions} from '@react-navigation/native';
 import {isAuthorisedContext} from '../navigation/Stack/Root';
 import Header from '../navigation/customheader/Header';
-import { getDecodedToken, getUserNotifications } from '../services/User.service';
-import { errorToast } from '../utils/toastutill';
+import {checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getUserNotifications} from '../services/User.service';
+import {errorToast} from '../utils/toastutill';
 import useRedirectToLoginIfNotLoggedIn from '../utils/RedirectToLoginIfNotLoggedIn';
+import ProductViewNote from '../ReusableComponents/NotificationCards/ProductViewNote';
+import ProfileViewNote from '../ReusableComponents/NotificationCards/ProfileViewNote';
+import ContactsNote from '../ReusableComponents/NotificationCards/ContactsNote';
+import ProfileCompletionNote from '../ReusableComponents/NotificationCards/ProfileCompletionNote';
+import ProductUnderReviewNote from '../ReusableComponents/NotificationCards/ProductUnderReviewNote';
 
 export default function Notification(props) {
-
   const [Notification, setNotification] = useState([]);
-  const navigation = useNavigation(props);
   const [isAuthorized] = useContext(isAuthorisedContext);
-  console.log('isAuthorized',isAuthorized);
-  
+  console.log('isAuthorized', isAuthorized);
+  const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
+
   const focused = useIsFocused();
   useEffect(() => {
-    if (isAuthorized ) {
-      // User is authorized, proceed as normal
+    if (isAuthorized) {
     } else {
-      
     }
   }, [isAuthorized, focused]);
-  
+
+  const HandleCheckValidSubscription = async () => {
+    try {
+      let decoded = await getDecodedToken();
+      if (decoded) {
+        if (decoded?.user?.name) {
+          //setName(decoded?.user?.name);
+        }
+
+        let {data: res} = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        if (res.data) {
+          console.log('XX', res.data, 'XX');
+          setCurrentUserHasActiveSubscription(res.data);
+          handleGetProducts(); // Fetch data every time the screen is focused
+        }
+      }
+    } catch (err) {
+      errorToast(err);
+    }
+  };
   const handleGetProducts = async (skipValue, limitValue, searchQuery) => {
     try {
-
       const decodedToken = await getDecodedToken();
 
-      if(!decodedToken){
-        return 
+      if (!decodedToken) {
+        return;
       }
-
-
-        let query = `?page=${skipValue}&perPage=${limitValue}&userId=${decodedToken?.user?._id}`
-
-        console.log(query)
-
-        let { data: res } = await getUserNotifications(query)
-        console.log("start notifaction", res.data , "end notifaction===========================",res.data.length)
-        if (res.data) {
-            // setTotalElements(res.totalElements)
-            setNotification(res.data)
-        }
+      let query = `?page=${skipValue}&perPage=${limitValue}&userId=${decodedToken?.user?._id}`;
+      console.log(query);
+      let {data: res} = await getUserNotifications(query);
+      if (res.data) {
+        setNotification(res.data);
+      }
+    } catch (err) {
+      errorToast(err);
     }
-    catch (err) {
-        errorToast(err)
+  };
+  useFocusEffect(
+    useCallback(() => {
+      HandleCheckValidSubscription();
+    }, []),
+  );
+
+  const notificationItem = ({item}) => {
+    console.log('notifx', JSON.stringify(item));
+    switch (item.type) {
+      case 'profile_view':
+        return <ProfileViewNote  isSubscriber={currentUserHasActiveSubscription} item={item} organizationName={item.payload.organizationName} content={item.content} name={item.name} date={item.date} />;
+      case 'product_view':
+        return <ProductViewNote  isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'contact':
+        return <ContactsNote isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'profile_completion':
+        return <ProfileCompletionNote isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'product_under_review':
+        return <ProductUnderReviewNote isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      default:
+        return null;
     }
-}
-
-// useEffect(() => {
-//   handleGetProducts()
-// }, [])
-
-useFocusEffect(
-  useCallback(() => {
-    handleGetProducts(); // Fetch data every time the screen is focused
-  }, [])
-);
+  };
 
   return (
-    <View style={[styles.padinghr, styles.bgwhite, {flex:1,}]}>
-      <Header stackHeader={true} screenName={'Notification'} rootProps={props} />
-
-
-
-        {
-          Notification && Notification?.length >  0  ?
-    <>
-          <View style={{flexDirection: 'row', width: wp(100), alignSelf: 'center',justifyContent:'space-between', paddingVertical:10,paddingHorizontal:10, borderBottomWidth:1, borderBottomColor:'#ccc'}}>
-          {/* <View style={{width:wp(15)}}>
-            <Text>S.no</Text>
-          </View> */}
-          <View style={{width:wp(30)}}>
-            <Text>Title</Text>
-          </View>
-          <View style={{width:wp(30)}}>
-            <Text>Content</Text>
-          </View>
-          <View style={{width:wp(16)}}>
-            <Text>Date</Text>
-          </View>
+    <View style={[styles.bgwhite, {flex: 1}]}>
+      <Header normal={true} screenName={'Notification'} rootProps={props} />
+      {Notification && Notification?.length > 0 ? (
+        <>
+          <FlatList data={Notification} contentContainerStyle={{marginTop: hp(1)}} renderItem={notificationItem} />
+        </>
+      ) : (
+        <View style={{height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{fontSize: wp(5)}}>No Notification Found</Text>
         </View>
-
-
-      <FlatList
-      data={Notification}
-      contentContainerStyle={{marginTop:hp(1)}}
-      renderItem={({item,index})=>{
-        return(
-          <View style={{flexDirection: 'row', width: wp(95), alignSelf: 'center', marginBottom:hp(0.5), justifyContent:'space-between'}}>
-        {/* <View style={{width:wp(15)}}>
-          <Text>{index + 1} </Text>
-        </View> */}
-        <View style={{width:wp(30)}}>
-          <Text>{item.title}</Text>
-        </View>
-        <View style={{width:wp(30)}}>
-          <Text>{item.content}</Text>
-        </View>
-        <View style={{width:wp(16)}}>
-          <Text> {item.createdAt}</Text>
-        </View>
-      </View>
-        )
-      }}
-      
-      />
-      </>
-      :
-      <View style={{height:hp(80), display:'flex', alignItems:'center', justifyContent:'center'}}>
-        <Text style={{fontSize:wp(5), }}>
-        No Notification Found
-        </Text>
-      </View>
-    }
+      )}
     </View>
   );
 }
-const styles1 = StyleSheet.create({
-  flexbetween: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingVertical: 10,
-    // justifyContent: 'space-between',
-  },
-  imgsmall: {
-    width: wp(6),
-    height: hp(3),
-  },
-  categry: {
-    fontSize: 18,
-    color: '#000',
-    fontFamily: 'Manrope-Medium',
-  },
-  imgfluid: {
-    width: wp(6),
-    height: hp(3),
-    marginRight: 10,
-  },
-  card_main: {
-    borderWidth: 1,
-    borderColor: '#D9D9D9',
-    borderStyle: 'solid',
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    borderRadius: 16,
-    marginBottom: 10,
-    fontFamily: 'Manrope-Medium',
-    color: '#000',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  nameheading: {
-    color: '#000000',
-    fontFamily: 'Manrope-Medium',
-  },
-});
+
