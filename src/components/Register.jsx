@@ -134,7 +134,8 @@ export default function Register() {
         errorToast("Gst is Required");
         return 0;
       };
-      const gstNumberPattern = /^[0-9]{15}$/;
+      const gstNumberPattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-7])[A-Z0-9]{13}$/;
+    
       if (!gstNumberPattern.test(gstNumber)) {
         errorToast("GST Number must be a 15-digit number");
         return 0;
