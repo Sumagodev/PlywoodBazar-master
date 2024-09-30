@@ -9,6 +9,11 @@ export const ROLES_CONSTANT = {
   RETAILER: 'RETAILER',
   CONTRACTOR:'CONTRACTOR',
 };
+export const Banner_Type = {
+  PROFILE: 'profilebanner',
+  PRODUCT: 'productbanner',
+ 
+};
 
 export const PRIMARY_COLOR = '#B08218';
 export const WHITE_COLOR = '#FFFFFF';

@@ -27,7 +27,7 @@ export default function DealershipOppolisting(props) {
     useEffect(() => {
         // handleopportunitydata();
         getSubscriptions()
-    }, [focused]);
+    }, [focused,subscriptionArr]);
     const getSubscriptions = async () => {
         try {
             let decodedObj = await getDecodedToken();

@@ -5,7 +5,7 @@ import Header from '../navigation/customheader/Header';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import { getDecodedToken, getUserById } from '../services/User.service';
 import { getAllProductsBySupplierId } from '../services/Product.service';
-import { ROLES_CONSTANT } from '../utils/constants';
+import { Banner_Type, ROLES_CONSTANT } from '../utils/constants';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
@@ -16,70 +16,64 @@ import styles from '../../assets/stylecomponents/Style';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { AddDealershipOpportunities } from '../services/Advertisement.service';
+import { AddDealershipOpportunities, UpdatBannerform, Updateopp } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { getAllCategories } from '../services/Category.service';
-const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
-  const focused = useIsFocused();
-  const [name, setName] = useState('');
-  const [userID, setuserID] = useState('');
-  console.log('userIDuserID', userID);
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+const EditBannerform = (props) => {
+  console.log('loggg', props?.route?.params.data);
+  const Data = props?.route?.params.data
+  const prevSelectedCategory = Data.categories;
+  const prevSelectedCities = Data.cities;
+  const stateid = Data.stateId
 
+  console.log('prevSelectedCities', prevSelectedCities);
+
+  const Did = Data._id;
+  const [name, setName] = useState(Data.Organisation_name);
+  const [userID, setuserID] = useState('');
+  const navigation = useNavigation();
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
-  const [brand, setBrand] = useState('');
+  const [brand, setBrand] = useState(Data.Brand);
   const [email, setEmail] = useState('');
   const [productsArray, setproductsArray] = useState([]);
-  console.log('productsArray', productsArray);
 
-  const [selectedBusinessType, setSelectedBusinessType] = useState();
-  const [selectedproductsArray, setSelectedproductsArray] = useState();
-  const [countryArr, setcountryArr] = useState([]);
-  const [stateArr, setstateArr] = useState([]);
-  const [cityArr, setcityArr] = useState([]);
-  const [countryId, setcountryId] = useState('648d5b79f79a9ff6f10a82fb');
-  const [stateId, setstateId] = useState(null);
-  const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
-  const [selected, setSelected] = useState([]);
-  const [file, setFile] = useState(null);
+ 
+  const [file, setFile] = useState(Data.image);
   const [fileBase64, setFileBase64] = useState(null);
-  const [selectedItemscate, setSelectedItemscate] = useState([]);
-  console.log('selectedItemscate', selectedItemscate);
-
-  const [CategoryArr, setCategoryArr] = useState([]);
-  console.log('loggg', stateId);
   const debounceTimeout = useRef(null);
   const [selectedItems, setSelectedItems] = useState([]);
-  const onSelectedItemsChange = selectedItems => {
-    setSelectedItems(selectedItems);
-  };
-  const onSelectedItemsChangeCate = selectedItemscate => {
-    setSelectedItemscate(selectedItemscate);
-  };
-  const [rolesArr, setRolesArr] = useState([
+
+
+  const [selectedItemscate, setSelectedItemscate] = useState([]);
+  console.log('cityArr', selectedItemscate);
+
+
+  const [bannerImage, setBannerImage] = useState('');
+  const [selectedType, setSelectedType] = useState(Data.type);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [userId, setuserid] = useState(null);
+  const [selectedproductsArray, setSelectedproductsArray] = useState('');
+  console.log('selectedType', selectedType);
+  const focused = useIsFocused()
+  const [Bannertype, setBannertype] = useState([
     {
-      name: ROLES_CONSTANT.CONTRACTOR,
+      name: Banner_Type.PROFILE,
       checked: false,
+      showname: 'PROFILE'
     },
     {
-      name: ROLES_CONSTANT.RETAILER,
+      name: Banner_Type.PRODUCT,
       checked: false,
+      showname: 'PRODUCT'
     },
-    {
-      name: ROLES_CONSTANT.DEALER,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
-    },
+
+
   ]);
+
 
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
@@ -88,268 +82,107 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
     if (res?.data) {
       setuserID(res?.data.data._id);
 
-      setName(res.data.data.companyObj.name);
-      setEmail(res.data.data.companyObj.email);
+      // setName(res.data.data.companyObj.name);
+      // setEmail(res.data.data.companyObj.email);
     }
   };
 
   const handleGetProdductsBySupplierId = async id => {
     let decodedToken = await getDecodedToken();
+    setuserid(decodedToken?.userId)
     let res = await getAllProductsBySupplierId(decodedToken?.userId);
     if (res?.data) {
-      setBrand(res.data.data[0].createdByObj.brandNames);
+      // setBrand(res.data.data[0].createdByObj.brandNames);
       setproductsArray(res.data.data);
     } else {
       console.log('elsssssss');
     }
   };
-  // const handleGetStates = async countrysId => {
-  //   try {
-  //     let {data: res} = await getStateByCountryApi(`countryId=${countrysId}`);
-  //     if (res.data) {
-  //       console.log(res.data, 'asd');
-  //       setstateArr(res.data);
-  //     } else {
-  //       setstateArr([]);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  const handleGetCategory = async () => {
-    try {
-      let { data: res } = await getAllCategories();
-      if (res.data) {
-        setCategoryArr(res.data);
-      
-      }
-    } catch (err) {
-      errorToast(err);
-    }
-  };
-  const handleGetStates = async (countrysId) => {
-    try {
-      let { data: res } = await getStateByCountryApi(`countryId=${countrysId}`);
-      setstateArr(res.data || []);
-    } catch (error) {
-      Alert.alert("Error", "Failed to fetch states. Please try again.");
-    }
-  };
-  const handleDebouncedGetStates = (countryId) => {
-    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
-    debounceTimeout.current = setTimeout(() => {
-      handleGetStates(countryId);
-    }, 300); // 300ms delay
-  };
-
-  useEffect(() => {
-    if (countryId) {
-      handleDebouncedGetStates(countryId);
-      handleGetCategory()
-    }
-  }, [countryId,focused]);
-
-  const handleGetCities = async stateId => {
-    try {
-      let { data: res } = await getCityByStateApi(`stateId=${stateId}`);
-      if (res.data) {
-        setcityArr(res.data);
-      } else {
-        setcityArr([]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // useEffect(() => {
-  //   if (countryId) {
-  //     handleGetStates(countryId);
-  //   }
-  // }, [countryId]);
-
-  useEffect(() => {
-    if (stateId) {
-      handleGetCities(stateId.value);
-    }
-  }, [stateId]);
 
   useEffect(() => {
     handleGeyUserDetails();
     handleGetProdductsBySupplierId();
-  }, []);
+  }, [focused]);
 
-  const validateForm = () => {
-    if (!name || !selectedBusinessType || !selectedproductsArray || !brand || !stateId || !selectedItems) {
-      return 'All fields marked with * are required.';
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return 'Please enter a valid email address.';
-    }
-    return null;
-  };
+
+
   const resetForm = () => {
-    setName('');
-    setType('');
-    setProductName('');
-    setBrand('');
-    setEmail('');
-    setSelectedBusinessType(null);
-    setSelectedproductsArray(null);
-    setSelectedItems([]);
+
+
+    setSelectedType(null);
+    setuserid(null);
+    setBannerImage('');
+    setSelectedproductsArray('');
+    // setSelectedItems([]);
+  }
+
+  const handleSelectType = (index) => {
+    const updatedBannertype = Bannertype.map((item, i) => ({
+      ...item,
+      checked: i === index,
+    }));
+    setBannertype(updatedBannertype);
+    setSelectedType(updatedBannertype[index].name);
   };
+  console.log('selectedType', selectedType);
 
 
 
-  // const handleSubmit = async () => {
-  //   try {
 
-  //     if (!name) {
-  //       errorToast('Name is Required');
-  //       return;
-  //     }
-
-  //     // Validate if a business type is selected
-  //     if (!selectedBusinessType) {
-  //       errorToast('Business Type is Required');
-  //       return;
-  //     }
-
-  //     // Validate if a brand is provided
-  //     if (!brand) {
-  //       errorToast('Brand is Required');
-  //       return;
-  //     }
-
-  //     // Validate if a product is selected
-  //     if (!selectedproductsArray) {
-  //       errorToast('Product is Required');
-  //       return;
-  //     }
-
-  //     // Validate if a city is selected
-  //     if (!selectedItems || selectedItems.length === 0) {
-  //       errorToast('City is Required');
-  //       return;
-  //     }
-
-  //     // Validate if an image is selected
-  //     if (!fileBase64) {
-  //       errorToast('Image is Required');
-  //       return;
-  //     }
-
-  //     // Validate if an image is selected
-  //     if (!cityId.length < 1) {
-  //       errorToast('City is Required');
-  //       return;
-  //     }
-  //     // Validate if an image is selected
-  //     if (!stateId) {
-  //       errorToast('State is Required');
-  //       return;
-  //     }
-
-  //     let obj = {
-  //       Organisation_name: name,
-  //       Type: selectedBusinessType,
-  //       Brand: brand,
-  //       productId: selectedproductsArray._id,
-  //       userId: userID,
-  //       cityId: selectedItems,
-  //       stateId: stateId.value,
-  //       image: fileBase64,
-  //       Product: selectedproductsArray.name
-  //     };
-  //     console.log('obj', obj);
-
-  //     const { data: res } = await AddDealershipOpportunities(obj);
-  //     if (res) {
-  //       toastSuccess(res.message);
-  //       console.log('');
-
-  //       navigation.goBack();
-  //       resetForm();
-  //     }
-  //   } catch (error) {
-  //     errorToast(error);
-  //     console.log('errorToast', errorToast);
-
-  //   }
-  // };
   const handleSubmit = async () => {
     try {
       // Validate if a name is provided
-      if (!name) {
-        errorToast('Name is Required');
-        return;
+      // if (!name) {
+      //   errorToast('Name is Required');
+      //   return;
+      // }
+
+      if (`${selectedType}` === '') {
+        errorToast('Select Type');
+        return 0;
       }
-  
-      // Validate if a business type is selected
-      if (!selectedBusinessType) {
-        errorToast('Business Type is Required');
-        return;
+      if (selectedType === 'productbanner') {
+        if (`${selectedproductsArray}` === '') {
+          errorToast('Product is Required');
+          return 0;
+        }
       }
-  
-      // Validate if a brand is provided
-      if (!brand) {
-        errorToast('Brand is Required');
-        return;
-      }
-  
-      // Validate if a city is selected
-      if (!selectedItems || selectedItems.length === 0) {
-        errorToast('City is Required');
-        return;
-      }
-  
+ 
       // Validate if an image is selected
       if (!fileBase64) {
         errorToast('Image is Required');
         return;
       }
-  
-      // Validate if a category is selected
-      if (!selectedItemscate || selectedItemscate.length === 0) {
-        errorToast('Category is Required');
-        return;
-      }
-  
-      // Validate if stateId is selected
-      if (!stateId || !stateId.value) {
-        errorToast('State is Required');
-        return;
-      }
-  
+
+
+    
+
       // Prepare the object
       let obj = {
-        Organisation_name: name,
-        Type: selectedBusinessType,
-        Brand: brand,
-        productId: selectedproductsArray?._id, // Optional chaining to avoid errors
-        userId: userID,
-        cityId: selectedItems,
-        stateId: stateId.value,
+        type: selectedType,
+        userId: userId,
         image: fileBase64,
-        Product: selectedproductsArray?.name, // Optional chaining for safety
-        categoryArr: selectedItemscate
+        ...(selectedType === 'productbanner' && {
+          productId: selectedproductsArray?._id,
+        }),
+
       };
-  
-      console.log('Submitting', obj);
-  
+
+      console.log('Submitting object:', obj);
+
       // Submit data
-      const { data: res } = await AddDealershipOpportunities(obj);
+      const { data: res } = await UpdatBannerform(obj, Data._id);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
-        resetForm(); // Reset the form after success
+        resetForm();
       }
     } catch (error) {
       errorToast('An error occurred while submitting.');
       console.log('Error:', error);
     }
   };
+
   const handleDocumentPicker = async () => {
     try {
       ImagePicker.openPicker({
@@ -365,87 +198,67 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         setFileBase64(`data:${image.mime};base64,${image.data}`);
       });
 
-      // let file = await DocumentPicker.pickSingle({
-      //   presentationStyle: 'fullScreen',
 
-      //   type: DocumentPicker.types.images,
-      // });
-      // if (file) {
-      //   console.log(file, 'file');
-      //   let base64 = await RNFetchBlob.fs.readFile(file.uri, 'base64');
-      //   if (base64) {
-      //     console.log('SETTING BASE ^$', file);
-      //     setFile(file);
-      //     setFileBase64(`data:${file.type};base64,${base64}`);
-      //   }
-      //   // getBase64(file, (result) => {
-      //   //     setGstCertificateName(file);
-      //   //     setgstCertificate(result);
-      //   // })
-      // }
     } catch (error) {
       handleError(error);
     }
   };
-  const removeItem = (itemId) => {
-    // Filter out the item that matches the itemId and update the state
-    const updatedItems = selectedItems.filter((id) => id !== itemId);
-    setSelectedItems(updatedItems);
-  };
-  const removeItem1 = (itemId) => {
-    // Filter out the item that matches the itemId and update the state
-    const updatedItems = selectedItemscate.filter((id) => id !== itemId);
-    setSelectedItemscate(updatedItems);
-  };
+
   return (
     <>
-      <Header normal={true} screenName={'Dealership Opportunities'} rootProps={props} />
       <ScrollView>
         <View style={styles1.containerForm}>
-          <Text style={styles1.textStyle}>Add Dealership Opportunities</Text>
+          <Text style={styles1.textStyle}> Edit Banner</Text>
           <View style={styles1.textFieldContainer}>
+          <Text style={styles1.nameheading}> Banner Type </Text>
+            <View style={{ flexDirection: 'row', alignItems: "center", marginTop: wp(5) }}>
+
+              {Bannertype.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles1.radioButtonContainer}
+                  onPress={() => handleSelectType(index)}
+                >
+                  <View style={styles1.radioButton}>
+                    {item.checked ? (
+                      <FontAwesome name="circle" size={wp(6)} color={CustomColors.mattBrownDark} />
+                    ) : (
+                      <FontAwesome name="circle-o" size={wp(6)} color="#603200" />
+                    )}
+                  </View>
+                  <Text style={styles1.radioLabel}>{item.showname}</Text>
+                </TouchableOpacity>
+
+              ))}
+            </View>
+
+
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)} />
-            <View style={{ height: wp(1) }} />
+            {
+              selectedType === 'productbanner' ?
+                <Dropdown
+                  style={styles1.dropdown}
+                  placeholderStyle={styles1.placeholderStyle}
+                  data={productsArray}
+                  maxHeight={300}
+                  labelField="name"
+                  valueField="name"// Ensure this matches your data structure
+                  placeholder="Product *"
+                  search
+                  selectedTextStyle={{ fontSize: 13, }}
+                  searchPlaceholder="Search..."
+                  value={selectedproductsArray} // Make sure this is the correct format (string or object)
+                  onChange={item => {
+                    console.log(item, 'uuuuu');
 
-            <Dropdown
-              style={styles1.dropdown}
-              placeholderStyle={styles1.placeholderStyle}
-              data={rolesArr}
-              maxHeight={300}
-              labelField="name"
-              valueField="name" // Ensure this matches your data structure
-              placeholder="Business Type *"
-              search
-              searchPlaceholder="Search..."
-              value={selectedBusinessType} // Make sure this is the correct format (string or object)
-              selectedTextStyle={{ fontSize: 13, }}
-              onChange={item => {
-                console.log(item, 'uuuuu');
+                    setSelectedproductsArray(item); // Use `item.value` to match the `valueField`
+                  }}
+                />
+                : null
+            }
 
-                setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
-              }}
-            />
-            {/*<Dropdown
-              style={styles1.dropdown}
-              placeholderStyle={styles1.placeholderStyle}
-              data={productsArray}
-              maxHeight={300}
-              labelField="name"
-              valueField="name" // Ensure this matches your data structure
-              placeholder="Product *"
-              search
-              selectedTextStyle={{ fontSize: 13, }}
-              searchPlaceholder="Search..."
-              value={selectedproductsArray} // Make sure this is the correct format (string or object)
-              onChange={item => {
-                console.log(item, 'uuuuu');
-
-                setSelectedproductsArray(item); // Use `item.value` to match the `valueField`
-              }}
-            />
-*/}
-<View style={{ marginVertical: wp(2) }}>
+            {/*
+            <View style={{ marginVertical: wp(2) }}>
               <MultiSelect
                 hideTags
                 items={CategoryArr}
@@ -492,8 +305,9 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
             </View>
             <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
+            {/*  <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />
+           
 
             <Pressable
               style={styles1.BorderedPressable}
@@ -502,7 +316,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 setModalFor('State');
               }}>
               <View style={{ height: wp(1.5) }} />
-              <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
+              <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? Data.stateName : ' State *'}</Text>
               <View style={{ height: wp(1.5) }} />
             </Pressable>
             <View style={{ marginVertical: wp(2) }}>
@@ -538,7 +352,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.name}
+                        {item?.name}
                       </Text>
                       <TouchableOpacity onPress={() => removeItem(itemId)}>
                         <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
@@ -550,6 +364,27 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 <Text>No items selected</Text>
               )}
             </View>
+             */}
+            {/*
+            <Dropdown
+              style={styles1.dropdown}
+              placeholderStyle={styles1.placeholderStyle}
+              data={rolesArr}
+              maxHeight={300}
+              labelField="name"
+              valueField="name" // Ensure this matches your data structure
+              placeholder="Business Type *"
+              search
+              searchPlaceholder="Search..."
+              value={selectedBusinessType} // Make sure this is the correct format (string or object)
+              selectedTextStyle={{ fontSize: 13, }}
+              onChange={item => {
+                console.log(item, 'uuuuu');
+
+                setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
+              }}
+            />
+            */}
 
             <Text style={styles1.nameheading}> Image </Text>
             <Pressable
@@ -570,7 +405,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
             </TouchableOpacity>
           </View>
-
+{/*
           <Modal
             animationType="slide"
             transparent={true}
@@ -645,6 +480,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               </View>
             </View>
           </Modal>
+          */}
         </View>
       </ScrollView>
     </>
@@ -671,6 +507,7 @@ const styles1 = StyleSheet.create({
   textFieldContainer: {
     width: '95%',
     marginBottom: wp(15),
+    // alignItems:'center'
   },
   btnContainer: {
     position: 'absolute',
@@ -770,6 +607,28 @@ const styles1 = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: wp(2.5),
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  radioButton: {
+    height: wp(8),
+    width: wp(8),
+    borderRadius: wp(4),
+    borderWidth: 1,
+    borderColor: '#603200',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: wp(2),
+  },
+  radioLabel: {
+    fontSize: wp(4.3),
+    color: '#000',
+    fontWeight: "bold"
+  },
 });
 
 const stylesMul = StyleSheet.create({
@@ -823,4 +682,4 @@ const stylesMul = StyleSheet.create({
   },
 });
 
-export default AddDealershipOpportunitiesForm;
+export default EditBannerform;

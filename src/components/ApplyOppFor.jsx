@@ -23,6 +23,7 @@ const ApplyOppFor = ({route,navigation}) => {
   console.log('Datax',Data);
   console.log('DataxCities',Data.cities);
   const State= Data.stateId
+  const Category=Data.categories;
 
   
   const focused = useIsFocused();
@@ -47,10 +48,9 @@ const ApplyOppFor = ({route,navigation}) => {
   const [cityId, setcityId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFor, setModalFor] = useState('Country');
-  const [selected, setSelected] = useState([]);
-  const [file, setFile] = useState(null);
-  const [fileBase64, setFileBase64] = useState(null);
-  console.log('selectedproductsArray', selectedproductsArray);
+  const [CategoryArr, setCategoryArr] = useState([]);
+  
+  console.log('CategoryArr', CategoryArr);
   const debounceTimeout = useRef(null);
 
   const [selectedItems, setSelectedItems] = useState([]);
@@ -175,6 +175,11 @@ const ApplyOppFor = ({route,navigation}) => {
   useEffect(() => {
     handleGeyUserDetails();
     handleGetProdductsBySupplierId();
+    if(Category){
+    const selectedId = Category.map(item => item._id);
+    setCategoryArr(selectedId)
+    }
+
   }, []);
 
   const validateForm = () => {
@@ -197,6 +202,7 @@ const ApplyOppFor = ({route,navigation}) => {
     setSelectedBusinessType(null);
     setSelectedproductsArray(null);
     setSelectedItems([]);
+    setCategoryArr([]);
   };
 
  
@@ -216,10 +222,14 @@ const ApplyOppFor = ({route,navigation}) => {
         errorToast('Brand is Required');
         return 0;
       }
-      if (`${selectedproductsArray}` === '') {
-        errorToast('Product is Required');
+      if (`${CategoryArr}` === '') {
+        errorToast('Categories is Required');
         return 0;
       }
+      // if (`${selectedproductsArray}` === '') {
+      //   errorToast('Product is Required');
+      //   return 0;
+      // }
       if (`${selectedItems}` === '') {
         errorToast('City is Required');
         return 0;
@@ -234,6 +244,8 @@ const ApplyOppFor = ({route,navigation}) => {
         userId:userID,
         cityId:selectedItems,
         stateId:stateId,
+        categoryArr: CategoryArr,
+
      
       };
       const { data: res } = await ApplyForDealershipOpportunitiy(obj);
@@ -267,8 +279,18 @@ const ApplyOppFor = ({route,navigation}) => {
             <TextInput style={styles1.BorderedPressable} placeholder="Business Type*" value={Data.Type}    editable={false}
             />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Product*" value={Data.Product} onChangeText={value => setSelectedproductsArray(Data.Product)}    editable={false}
-            />
+            <Text style={styles1.nameheading}> Categories </Text>
+            <View style={[styles1.BorderedPressable,{flexDirection:'row',flexWrap:'wrap',}]}>
+            {
+              Category.map((item)=>{
+                return(
+                  <View key={item._id} style={{}}>
+                  <Text style={{marginRight:wp(2)}}>{item.name},</Text>
+                  </View>
+                )
+              })
+            }
+            </View>
             <View style={{ height: wp(1) }} />
         
            
@@ -287,7 +309,7 @@ const ApplyOppFor = ({route,navigation}) => {
               <MultiSelect
                 hideTags
                 items={Data.cities}
-                uniqueKey="cityId"
+                uniqueKey="_id"
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={selectedItems}
                 selectText="     Select Cities"
@@ -299,7 +321,7 @@ const ApplyOppFor = ({route,navigation}) => {
                 selectedItemTextColor="#000"
                 selectedItemIconColor="#000"
                 itemTextColor="#000"
-                displayKey="cityName"
+                displayKey="name"
                 searchInputStyle={{ color: '#CCC', paddingRight: wp(6), borderRadius: 25, color: '#000' }}
                 submitButtonColor={CustomColors.mattBrownDark}
                 submitButtonText="Select"
@@ -312,11 +334,11 @@ const ApplyOppFor = ({route,navigation}) => {
             <View style={{ marginTop: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
               {selectedItems.length > 0 ? (
                 selectedItems.map(itemId => {
-                  const item = Data.cities.find(i => i.cityId === itemId);
+                  const item = Data.cities.find(i => i._id === itemId);
                   return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
-                        {item.cityName}
+                        {item.name}
                       </Text>
                       <TouchableOpacity onPress={() => removeItem(itemId)}>
                         <AntDesign style={styles1.icon} color="black" name="delete" size={20} />
@@ -496,6 +518,7 @@ const styles1 = StyleSheet.create({
     fontSize: wp(4),
     fontFamily: 'Manrope-Bold',
     marginVertical: hp(1),
+    marginLeft:wp(4)
   },
   BorderedPressableText: {},
   selectedStyle: {

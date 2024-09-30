@@ -60,6 +60,9 @@ import DealershipOppolisting from '../../components/DealershipOppolisting';
 import AppliedOpportunitieslist from '../../components/AppliedOpportunitieslist';
 import EditdealershipOpp from '../../components/EditdealershipOpp';
 import SelfAppliedOpportunitiesList from '../../components/SelfAppliedOpportunitiesList';
+import AddBannerfrom from '../../components/AddBannerfrom';
+import AllBannerslisting from '../../components/AllBannerslisting';
+import EditBannerform from '../../components/EditBannerform';
 
 
 
@@ -575,6 +578,31 @@ export default function RootStack() {
               }}
               name="SelfAppliedOpportunitiesList"
               component={SelfAppliedOpportunitiesList}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="AddBannerfrom"
+              component={AddBannerfrom}
+            />
+          
+            <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="AllBannerslisting"
+              component={AllBannerslisting}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="EditBannerform"
+              component={EditBannerform}
             />
           
 
