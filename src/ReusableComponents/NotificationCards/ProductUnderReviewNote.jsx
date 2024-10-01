@@ -18,12 +18,12 @@ const getRelativeTime = (dateString) => {
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
   if (diffInMinutes < 60) {
-    return `${diffInMinutes}M`;
+    return `${diffInMinutes}m`;
   }
   if (diffInDays === 0) {
-    return `${diffInHours}H`;
+    return `${diffInHours}h`;
   }
-  return `${diffInDays}D`;
+  return `${diffInDays}d`;
 };
 
 const ProductUnderReviewNote = ({ item, isSubscriber = false }) => {

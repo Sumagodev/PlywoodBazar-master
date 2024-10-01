@@ -563,7 +563,7 @@ export default function Editprofile(props) {
           
                 <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>GST Number</Text>
                 <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={gstNumber} placeholder="GST Number" />
+                  <TextInput style={styles1.card_main} value={gstNumber} placeholder="GST Number" editable={false} />
                 </View>
 
 

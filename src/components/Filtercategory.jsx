@@ -456,8 +456,10 @@ const Filtercategory = (props) => {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
     // }
-
+    console.log('vendorItemm',item);
     const someShopData = {
+
+    
       name: item.companyName,
       imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/logo_1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',

@@ -121,7 +121,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
       let { data: res } = await getAllCategories();
       if (res.data) {
         setCategoryArr(res.data);
-      
+
       }
     } catch (err) {
       errorToast(err);
@@ -147,7 +147,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
       handleDebouncedGetStates(countryId);
       handleGetCategory()
     }
-  }, [countryId,focused]);
+  }, [countryId, focused]);
 
   const handleGetCities = async stateId => {
     try {
@@ -285,43 +285,43 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         errorToast('Name is Required');
         return;
       }
-  
+
       // Validate if a business type is selected
       if (!selectedBusinessType) {
         errorToast('Business Type is Required');
         return;
       }
-  
+
       // Validate if a brand is provided
       if (!brand) {
         errorToast('Brand is Required');
         return;
       }
-  
+
       // Validate if a city is selected
       if (!selectedItems || selectedItems.length === 0) {
         errorToast('City is Required');
         return;
       }
-  
+
       // Validate if an image is selected
       if (!fileBase64) {
         errorToast('Image is Required');
         return;
       }
-  
+
       // Validate if a category is selected
       if (!selectedItemscate || selectedItemscate.length === 0) {
         errorToast('Category is Required');
         return;
       }
-  
+
       // Validate if stateId is selected
       if (!stateId || !stateId.value) {
         errorToast('State is Required');
         return;
       }
-  
+
       // Prepare the object
       let obj = {
         Organisation_name: name,
@@ -335,9 +335,9 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         Product: selectedproductsArray?.name, // Optional chaining for safety
         categoryArr: selectedItemscate
       };
-  
+
       console.log('Submitting', obj);
-  
+
       // Submit data
       const { data: res } = await AddDealershipOpportunities(obj);
       if (res) {
@@ -426,6 +426,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 setSelectedBusinessType(item.name); // Use `item.value` to match the `valueField`
               }}
             />
+            <View style={{ height: wp(1) }} />
             {/*<Dropdown
               style={styles1.dropdown}
               placeholderStyle={styles1.placeholderStyle}
@@ -445,7 +446,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               }}
             />
 */}
-<View style={{ marginVertical: wp(2) }}>
+            <View style={{ marginVertical: wp(2) }}>
               <MultiSelect
                 hideTags
                 items={CategoryArr}
@@ -471,12 +472,12 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               />
             </View>
 
-            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', left: wp(3) }}>
+            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', left: wp(3) ,marginBottom:wp(2)}}>
               {selectedItemscate ? (
                 selectedItemscate.map(itemId => {
                   const item = CategoryArr.find(i => i._id === itemId);
                   return (
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) }}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) ,marginLeft: wp(0)}}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
                         {item.name}
                       </Text>
@@ -490,6 +491,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 <Text>No Category selected</Text>
               )}
             </View>
+            <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
@@ -501,10 +503,10 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
                 setModalVisible(true);
                 setModalFor('State');
               }}>
-              <View style={{ height: wp(1.5) }} />
               <Text style={styles1.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
-              <View style={{ height: wp(1.5) }} />
+
             </Pressable>
+            <View style={{ height: wp(1) }} />
             <View style={{ marginVertical: wp(2) }}>
               <MultiSelect
                 hideTags

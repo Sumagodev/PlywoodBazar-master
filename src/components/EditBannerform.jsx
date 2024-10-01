@@ -57,7 +57,7 @@ const EditBannerform = (props) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [userId, setuserid] = useState(null);
   const [selectedproductsArray, setSelectedproductsArray] = useState('');
-  console.log('selectedType', selectedType);
+  console.log('selectedType', selectedproductsArray);
   const focused = useIsFocused()
   const [Bannertype, setBannertype] = useState([
     {
@@ -101,6 +101,7 @@ const EditBannerform = (props) => {
     if (res?.data) {
       // setBrand(res.data.data[0].createdByObj.brandNames);
       setproductsArray(res.data.data);
+   
     } else {
       console.log('elsssssss');
     }
@@ -113,6 +114,7 @@ const EditBannerform = (props) => {
     //   setSelectedproductsArray(null)
     //   setSelectedType(null)
     // }
+   
   }, [focused]);
 
 

@@ -13,7 +13,7 @@ const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPres
 
   return (
     <View style={styles1.card1}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', overflow: 'hidden', width: '87%', right: wp(-11) }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', overflow: 'hidden', width: '100%', paddingLeft: wp(17) }}>
         <View>
           <Text style={styles1.cardTitle1} numberOfLines={1} ellipsizeMode="tail">
             {title}
@@ -90,7 +90,8 @@ const styles1 = StyleSheet.create({
     fontSize: wp(4),
     fontWeight: 'bold',
     marginVertical: 5,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width:'70%'
   },
   callwrap: {
     backgroundColor: '#white',

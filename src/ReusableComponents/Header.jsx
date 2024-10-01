@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet, View, Pressable } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -11,11 +11,15 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { getDecodedToken, getToken } from '../services/User.service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getHomeBannerNew } from '../services/Banner.service';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 export default function Header(props) {
 
   const [categoryArr, setCategoryArr] = useState([]);
   const focused = useIsFocused()
   const [displayChat, setDisplayChat] = useState(false)
+  const [isAuthorized] = useContext(isAuthorisedContext);
+  console.log('isAuthorized', isAuthorized);
+
   // const handleNestedcategories = async () => {
   //   try {
   //     let { data: res } = await getHomePageBannersApi();
@@ -33,9 +37,9 @@ export default function Header(props) {
       let { data: res } = await getHomeBannerNew();
       if (res.bannerImages && res.bannerImages?.length > 0) {
         setCategoryArr(res.bannerImages);
-        console.log('xxxxx',res.bannerImages)
-      }else{
-        console.log('xxxxx','No data')
+        console.log('xxxxx', res.bannerImages)
+      } else {
+        console.log('xxxxx', 'No data')
       }
     } catch (error) {
       console.log(error);
@@ -55,29 +59,87 @@ export default function Header(props) {
   }
 
   checkAuth()
-  useEffect(() => {
-    // console.log(...categoryArr.map(el => generateImageUrl(`${el?.image}`)), '...categoryArr.map(el => generateImageUrl(`${el?.image}`))');
-  }, [categoryArr]);
+
   useEffect(() => {
     handleGetHomeBanner();
-  }, []);
-  const naviateFurther=(item)=>{
+  }, [focused]);
+  // const naviateFurther = (item) => {
 
-   
-    if(item.type==='productbanner')
-      {
 
-      navigation.navigate('Productdetails',{data:item.productId.slug})
-    }else{
-      const modifiedItem = {
-        ...item,
-        _id: item.userId._id,
-      };
-      navigation.navigate('Supplier',{data:modifiedItem})
-  
-    }
-    
-  }
+  //   if (item.type === 'productbanner') {
+
+  //     navigation.navigate('Productdetails', { data: item.productId.slug })
+  //   } else {
+  //     const modifiedItem = {
+  //       ...item,
+  //       _id: item.userId._id,
+  //     };
+  //     navigation.navigate('Supplier', { data: modifiedItem })
+
+  //   }
+
+  // }
+  const naviateFurther = (item) => {
+    if (item.type === 'productbanner') {
+      if (isAuthorized) {
+        navigation.navigate('Productdetails', { data: item.productId.slug });
+      }
+      else {
+        Alert.alert(
+          'Login Required',
+          'Please login to access this feature.',
+          [
+            {
+              text: 'Go to Login',
+              onPress: () => navigation.navigate('Login'),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+      }
+    } else if (item.type === 'Adminbanner') {
+      if (isAuthorized === false) {
+        navigation.navigate('Register'); // Navigate to the Register page for Adminbanner
+      } else {
+        
+        console.log("User is authorized, no action defined.");
+       return 0;
+
+      }
+    } else {
+      if (isAuthorized) {
+        const modifiedItem = {
+          ...item,
+          _id: item.userId._id,
+        };
+        navigation.navigate('Supplier', { data: modifiedItem });
+      }
+      else {
+        Alert.alert(
+          'Login Required',
+          'Please login to access this feature.',
+          [
+            {
+              text: 'Go to Login',
+              onPress: () => navigation.navigate('Login'),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+      }
+      }
+      
+  };
+
+
   return (
     <>
       {/* <View style={styles1.headermain}>
@@ -94,14 +156,14 @@ export default function Header(props) {
           </Pressable>
         </View>
       </View> */}
-{props.slidersection && (
+      {props.slidersection && (
         <View style={styles1.sliderhome1}>
           <SliderBox
             images={categoryArr.map(el => generateImageUrl(`${el?.image}`))}
             sliderBoxHeight={hp(25)}
             autoplay
             circleLoop
-            autoplayInterval={5000} 
+            autoplayInterval={5000}
             dotStyle={styles1.dotStyle}
             paginationBoxVerticalPadding={0}
             dotColor="#725842"
@@ -109,7 +171,7 @@ export default function Header(props) {
             paginationBoxStyle={styles1.paginationBoxStyle}
             ImageComponentStyle={styles1.imageStyle}
             imageLoadingColor="#2196F3"
-            onCurrentImagePressed={item => {naviateFurther(categoryArr[item])}}
+            onCurrentImagePressed={item => { naviateFurther(categoryArr[item]) }}
             resizeMode={'stretch'}
           />
         </View>
@@ -139,7 +201,7 @@ const styles1 = StyleSheet.create({
   },
   paginationBoxStyle: {
     position: 'relative', // Position relative so it stays within the layout flow
-    bottom:0, // Adjust as needed to move dots below the image slider without affecting other views
+    bottom: 0, // Adjust as needed to move dots below the image slider without affecting other views
     alignSelf: 'center',
     justifyContent: 'center',
     paddingVertical: 10,

@@ -138,7 +138,7 @@ export default function Subscriptions(props) {
 
 
 
-          {props.route?.params?.register && props.route?.params?.register == true ? (
+     {/*   {props.route?.params?.register && props.route?.params?.register == true ? (
             <TouchableOpacity onPress={() => navigation.navigate('BottomBar', { screen: 'Home' })} style={[{ width: wp(90), display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }]}>
               <Text style={[styles.textbtn, { color: '#ddc99b' }]}>
                 Skip <FontAwesome name="angle-double-right" size={21} color="#ddc99b" />{' '}
@@ -147,7 +147,7 @@ export default function Subscriptions(props) {
           ) : (
             <></>
           )}
-
+*/}  
         </View>
         <View style={[{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginVertical: wp(5) }]} >
           <CustomButtonNew

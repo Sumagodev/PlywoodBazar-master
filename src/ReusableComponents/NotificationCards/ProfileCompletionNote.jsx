@@ -24,16 +24,16 @@ const getRelativeTime = (dateString) => {
 
   // If the difference is less than 1 hour, show it in minutes (e.g., "45M")
   if (diffInMinutes < 60) {
-    return `${diffInMinutes}M`;
+    return `${diffInMinutes}m`;
   }
 
   // If the difference is less than 24 hours, show it in hours (e.g., "5H")
   if (diffInDays === 0) {
-    return `${diffInHours}H`;
+    return `${diffInHours}h`;
   }
 
   // If the difference is more than a day, show days (e.g., "1D", "2D")
-  return `${diffInDays}D`;
+  return `${diffInDays}d`;
 };
 
 const ProfileCompletionNote = ({ item, productName, organizationName, date, isSubscriber=false }) => {

@@ -7,6 +7,7 @@ import CustomButton from "./CustomButton";
 import CustomColors from "../styles/CustomColors";
 
 const ShopListItem = ({vendorItem,onItemPress,onCotactPress})=>{
+    console.log('vendorItem',vendorItem);
     
     return(
         <Pressable style={styles.container} onPress={onItemPress}>

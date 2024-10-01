@@ -377,8 +377,8 @@ export default function Home() {
       let { data: res } = await getAllFlashSales('endDate=' + endDate);
       if (res.data) {
         setFlashSalesArr(res.data);
-        console.log('flashArr',JSON.stringify(res.data))
-        console.log('flashArr',res.data.length)
+        console.log('flashArr', JSON.stringify(res.data))
+        console.log('flashArr', res.data.length)
 
       }
     } catch (err) {
@@ -435,78 +435,7 @@ export default function Home() {
       errorToast(err);
     }
   };
-  var dummyData = [
-    {
-      __v: 0,
-      _id: '66068293dab9276daca9279a',
-      createdAt: '2024-03-29T08:57:55.419Z',
-      endDate: '2024-04-09T23:59:59.059Z',
-      image: '1711703286896.png',
-      isVideo: false,
-      message: 'Best Quality Product Made In very High Standard Wood ',
-      productId: '65ded48f4052bcfbe3438127',
-      productSlug: 'royal-forest-plywood',
-      startDate: '2024-03-29T00:00:00.000Z',
-      updatedAt: '2024-03-29T09:08:06.899Z',
-      userId: '64f07c1522ee5f347112f95f',
-    },
-    {
-      __v: 0,
-      _id: '66068293dab9276daca9279a',
-      createdAt: '2024-03-29T08:57:55.419Z',
-      endDate: '2024-04-09T23:59:59.059Z',
-      image: '1711703286896.png',
-      isVideo: false,
-      message: 'Best Quality Product Made In very High Standard Wood ',
-      productId: '65ded48f4052bcfbe3438127',
-      productSlug: 'royal-forest-plywood',
-      startDate: '2024-03-29T00:00:00.000Z',
-      updatedAt: '2024-03-29T09:08:06.899Z',
-      userId: '64f07c1522ee5f347112f95f',
-    },
-    {
-      __v: 0,
-      _id: '66068293dab9276daca9279a',
-      createdAt: '2024-03-29T08:57:55.419Z',
-      endDate: '2024-04-09T23:59:59.059Z',
-      image: '1711703286896.png',
-      isVideo: false,
-      message: 'Best Quality Product Made In very High Standard Wood ',
-      productId: '65ded48f4052bcfbe3438127',
-      productSlug: 'royal-forest-plywood',
-      startDate: '2024-03-29T00:00:00.000Z',
-      updatedAt: '2024-03-29T09:08:06.899Z',
-      userId: '64f07c1522ee5f347112f95f',
-    },
-    {
-      __v: 0,
-      _id: '66068293dab9276daca9279a',
-      createdAt: '2024-03-29T08:57:55.419Z',
-      endDate: '2024-04-09T23:59:59.059Z',
-      image: '1711703286896.png',
-      isVideo: false,
-      message: 'Best Quality Product Made In very High Standard Wood ',
-      productId: '65ded48f4052bcfbe3438127',
-      productSlug: 'royal-forest-plywood',
-      startDate: '2024-03-29T00:00:00.000Z',
-      updatedAt: '2024-03-29T09:08:06.899Z',
-      userId: '64f07c1522ee5f347112f95f',
-    },
-    {
-      __v: 0,
-      _id: '66068293dab9276daca9279a',
-      createdAt: '2024-03-29T08:57:55.419Z',
-      endDate: '2024-04-09T23:59:59.059Z',
-      image: '1711703286896.png',
-      isVideo: false,
-      message: 'Best Quality Product Made In very High Standard Wood ',
-      productId: '65ded48f4052bcfbe3438127',
-      productSlug: 'royal-forest-plywood',
-      startDate: '2024-03-29T00:00:00.000Z',
-      updatedAt: '2024-03-29T09:08:06.899Z',
-      userId: '64f07c1522ee5f347112f95f',
-    },
-  ];
+
   useEffect(() => {
     if (focused) {
       handleGetAdvvertisementForHomepage();
@@ -563,7 +492,7 @@ export default function Home() {
   };
   const GotoFlash = () => {
     if (isAuthorized) {
-     if (!currentUserHasActiveSubscription) {
+      if (!currentUserHasActiveSubscription) {
         Alert.alert(
           'Subscription Required',
           'You do not have a valid subscription to perform this action.',
@@ -586,7 +515,7 @@ export default function Home() {
 
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -604,8 +533,8 @@ export default function Home() {
     }
   }
   const GotoFlashSaleCallIcon = (item) => {
-    console.log('calldta',item.productId.createdByObj.phone);
-    
+    console.log('calldta', item.productId.createdByObj.phone);
+
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
         Alert.alert(
@@ -629,7 +558,7 @@ export default function Home() {
       handelcallbtn(item?.productId?.createdByObj?.phone)
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -651,7 +580,7 @@ export default function Home() {
       navigate.navigate('Productdetails', { data: item?.product?.slug })
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -668,33 +597,10 @@ export default function Home() {
       );
     }
   }
-  const renderHighlights = ({ item, index }) => {
-    return (
-      <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} style={styles1.boxproduct}>
-        <Image source={require('../../assets/img/call.png')} style={styles1.imgphone} />
-        {item.isVideo ? (
-          <Video source={{ uri: generateImageUrl(item.image) }} style={{ height: 140, width: '100%' }} resizeMode="cover" loop paused={false} />
-        ) : (
-          // <AutoHeightWebView
-          //   //               javaScriptEnabled={true}
-          //   //               scrollEnabled={false}
-          //   //               allowsFullscreenVideo={true}
-          //   //               userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36
-          //   //  (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
-          //   source={{uri: generateImageUrl(item.image)}}
-          //   style={{height: 170, width: '100%'}}
-          // />
-          <Image source={{ uri: generateImageUrl(item.image) }} style={styles1.imgfluid} />
-        )}
-        <View style={styles1.infoproduct}>
-          <Text style={styles1.producthead}>{item.message}</Text>
-        </View>
-      </Pressable>
-    );
-  };
+
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })}/>
-  
+    return <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })} />
+
   };
 
   const renderNewArrivals = ({ item, index }) => {
@@ -703,21 +609,7 @@ export default function Home() {
     return <NewArrivalProductCardVertical horizontal newProductItem={item} image={{ uri: generateImageUrl(item?.image) }} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
   };
 
-  const renderProduct = ({ item, index }) => {
-    return (
-      <Pressable onPress={() => navigate.navigate('Productdetails', { data: item.slug })} style={styles1.boxproduct}>
-        <Image source={require('../../assets/img/call.png')} style={styles1.imgphone} />
-        <Image source={{ uri: generateImageUrl(item.mainImage) }} style={styles1.imgfluid} />
-        <View style={styles1.infoproduct}>
-          <Text style={styles1.producthead}>{item.name}</Text>
-          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={[styles1.producthead, { textDecorationLine: 'line-through' }]}>₹{item?.price}</Text>
-            <Text style={[styles1.producthead, { color: '#B08218', paddingLeft: 5 }]}>₹{item?.sellingprice}</Text>
-          </View>
-        </View>
-      </Pressable>
-    );
-  };
+
 
   const renderFlashSale = ({ item, index }) => {
     return (
@@ -778,19 +670,19 @@ export default function Home() {
     );
   };
   const renderOpportunities = ({ item, index }) => {
-    console.log('datiii',item);
-    console.log('datiii',item.userId);
-    console.log('datiii',currentUserId);
-    
-    if(item.userId===currentUserId){
+    console.log('datiii', item);
+    console.log('datiii', item.userId);
+    console.log('datiii', currentUserId);
+
+    if (item.userId === currentUserId) {
       return null;
-    }else{
+    } else {
       return (
         // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
         <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
       );
     }
-    
+
   };
 
 
@@ -811,21 +703,7 @@ export default function Home() {
     //   navigate.navigate('Login')
     // }
   }
-  const StartBusiness = () => {
-    if (isAuthorized) {
-      // if (!currentUserHasActiveSubscription) {
-      //   errorToast('You do not have a valid subscription to perform this action');
-      //   navigate.navigate('Subscriptions', { register: false })
-      //   return 0;
-      // }
 
-      navigate.navigate('AllProducts', { type: '' })
-
-    }
-    else {
-      navigate.navigate('Login')
-    }
-  }
   const GotoAddProduct = () => {
     if (isAuthorized) {
       if (!currentUserHasActiveSubscription) {
@@ -852,7 +730,7 @@ export default function Home() {
 
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -910,7 +788,7 @@ export default function Home() {
 
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -930,7 +808,7 @@ export default function Home() {
 
   const gotoApplyOpportunities = (item) => {
     if (isAuthorized) {
-     if (!currentUserHasActiveSubscription) {
+      if (!currentUserHasActiveSubscription) {
         Alert.alert(
           'Subscription Required',
           'You do not have a valid subscription to perform this action.',
@@ -954,7 +832,7 @@ export default function Home() {
 
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -1063,61 +941,61 @@ export default function Home() {
                 contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
               /> */}
 
-<LinearGradient
+              <LinearGradient
 
-colors={['#ebbb60', '#E0C7AD', '#F1E8D1']}
-start={{ x: 0, y: 1 }}
-end={{ x: 1, y: 1 }}
-style={{ marginTop: wp(5), paddingBottom: wp(5) }}
->
-<View style={[styles.padinghr, styles1.flexbetwen, { marginBottom: wp(6) }]}>
-  {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
-  <Text style={{ fontSize: wp(6), fontWeight: 800, color: 'white' }}>New Arrivals</Text>
-  <Pressable >
-    <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => GotoAddProduct()} />
-  </Pressable>
-</View>
-<Carousel
-  data={advertisementsArr}
-  renderItem={renderNewArrivals}
-  sliderWidth={wp(100)}
-  itemWidth={wp(45)}
-  loop={true}
-  autoplay={true}
-  autoplayDelay={1000}
-  autoplayInterval={3000}
-  layout={'default'}
-  inactiveSlideScale={0.78}
-  inactiveSlideOpacity={1}
-  contentContainerStyle={{}
-
-  }
-/>
-</LinearGradient>
-
-<Text style={styles1.topprofiletext} >Top Profiles</Text>
+                colors={['#ebbb60', '#E0C7AD', '#F1E8D1']}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 1, y: 1 }}
+                style={{ marginTop: wp(5), paddingBottom: wp(5) }}
+              >
+                <View style={[styles.padinghr, styles1.flexbetwen, { marginBottom: wp(6) }]}>
+                  {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
+                  <Text style={{ fontSize: wp(6), fontWeight: 800, color: 'white' }}>New Arrivals</Text>
+                  <Pressable >
+                    <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => GotoAddProduct()} />
+                  </Pressable>
+                </View>
                 <Carousel
-                  data={topprofiles}
-                  renderItem={({ item }) => (
-                    <TopProfileHomeCard title={item.companyName} image={{ uri: generateImageUrl(item.bannerImage) }} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
-                  )}
+                  data={advertisementsArr}
+                  renderItem={renderNewArrivals}
                   sliderWidth={wp(100)}
-                  itemWidth={wp(80)}
+                  itemWidth={wp(45)}
                   loop={true}
                   autoplay={true}
                   autoplayDelay={1000}
                   autoplayInterval={3000}
                   layout={'default'}
-                  inactiveSlideScale={0.9}
+                  inactiveSlideScale={0.78}
                   inactiveSlideOpacity={1}
-                  contentContainerStyle={{ marginBottom: wp(5) }}
+                  contentContainerStyle={{}
+
+                  }
                 />
+              </LinearGradient>
 
-              
+              <Text style={styles1.topprofiletext} >Top Profiles</Text>
+              <Carousel
+                data={topprofiles}
+                renderItem={({ item }) => (
+                  <TopProfileHomeCard title={item.companyName} image={{ uri: generateImageUrl(item.bannerImage) }} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
+                )}
+                sliderWidth={wp(100)}
+                itemWidth={wp(80)}
+                loop={true}
+                autoplay={true}
+                autoplayDelay={1000}
+                autoplayInterval={3000}
+                layout={'default'}
+                inactiveSlideScale={0.9}
+                inactiveSlideOpacity={1}
+                contentContainerStyle={{ marginBottom: wp(5) }}
+              />
 
 
 
-            
+
+
+
 
 
               {isAuthorized === 'false' && (
@@ -1126,8 +1004,8 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
                 </View>
               )}
 
-         
-               
+
+
 
 
               <LinearGradient
@@ -1168,7 +1046,7 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
                 end={{ x: 1, y: 1 }}
                 style={{ marginTop: wp(5), paddingBottom: wp(5) }}
               > */}
-                {/* <View style={styles1.flexbetwen}> 
+              {/* <View style={styles1.flexbetwen}> 
                 <Text style={styles1.headingmain}>New Products</Text>
                 <Pressable onPress={() => navigate.navigate('AllProducts', {type: ''})}>
                   <Text style={styles1.viewall}>View All</Text>
@@ -1176,17 +1054,17 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
               </View>
               <FlatList style={styles.mttop10} contentContainerStyle={{paddingTop: 5, paddingBottom: 10}} data={advertisementsArr} horizontal renderItem={renderHighlights} keyExtractor={(item, index) => `${index}`} /> */}
 
-                <View style={[styles.padinghr, styles1.flexbetwen]}>
-                  <Text style={[styles1.headingmain, { fontWeight: 800, color: 'black', marginBottom: wp(5) }]}>Flash Sales</Text>
-                  <Pressable onPress={() => navigate.navigate('AllProducts')}>
-                    <CustomButtonOld textSize={wp(4)} text={"Add"} onPress={() => { GotoFlash() }}></CustomButtonOld>
-                  </Pressable>
-                </View>
-                <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), }}
-                >
-                  <FlashSaleComponent style={[styles.padinghr, { position: 'absolute' }]}></FlashSaleComponent>
-                  <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
-                </View>
+              <View style={[styles.padinghr, styles1.flexbetwen]}>
+                <Text style={[styles1.headingmain, { fontWeight: 800, color: 'black', marginBottom: wp(5) }]}>Flash Sales</Text>
+                <Pressable onPress={() => navigate.navigate('AllProducts')}>
+                  <CustomButtonOld textSize={wp(4)} text={"Add"} onPress={() => { GotoFlash() }}></CustomButtonOld>
+                </Pressable>
+              </View>
+              <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), }}
+              >
+                <FlashSaleComponent style={[styles.padinghr, { position: 'absolute' }]}></FlashSaleComponent>
+                <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
+              </View>
 
               {/* </LinearGradient> */}
 
@@ -1206,7 +1084,7 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
 
               <View>
 
-                <Text style={[styles1.headingmain, { marginVertical:wp(5), marginBottom: wp(5) ,alignSelf:'center'}]} numberOfLines={1} ellipsizeMode="tail">States</Text>
+                <Text style={[styles1.headingmain, { marginVertical: wp(5), marginBottom: wp(5), alignSelf: 'center' }]} numberOfLines={1} ellipsizeMode="tail">States</Text>
                 <Carousel
                   data={stateDetailss}
                   renderItem={({ item }) => (
@@ -1300,7 +1178,7 @@ style={{ marginTop: wp(5), paddingBottom: wp(5) }}
                     <Text style={styles1.textStyle}>Apply Form</Text>
                     <View style={styles1.textFieldContainer}>
                       <View style={{ height: wp(1) }} />
-                      <CustomTextInputField placeholder='Organization Name*' onChangeText={value => setOrganizationName(value)} /><View style={{ height: wp(1)}} />
+                      <CustomTextInputField placeholder='Organization Name*' onChangeText={value => setOrganizationName(value)} /><View style={{ height: wp(1) }} />
                       <CustomTextInputField placeholder='Type*' onChangeText={value => setType(value)} /><View style={{ height: wp(1) }} />
                       <CustomTextInputField placeholder='Product' onChangeText={value => setProductName(value)} /><View style={{ height: wp(1) }} />
                       <CustomTextInputField placeholder='Brand' onChangeText={value => setBrand(value)} /><View style={{ height: wp(1) }} />
@@ -1662,7 +1540,7 @@ const styles1 = StyleSheet.create({
     height: wp(50), // Set your desired height
     resizeMode: 'contain', // Optional: control how the image fits,
     bottom: wp(5),
-    
+
 
   },
   imagewrap: {

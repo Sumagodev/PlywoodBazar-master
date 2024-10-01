@@ -5,6 +5,8 @@ import CustomColors from "../styles/CustomColors";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from "react";
 import CustomButtonNew from "./CustomButtonNew";
+import { formatDate } from "../utils/formatDate";
+
 // const citiess = [
 //     'New York', 'London', 'Paris', 'Tokyo', 'Sydney', 'Toronto',
 //     'Berlin', 'Madrid', 'Rome', 'Mumbai', 'Shanghai', 'Los Angeles',
@@ -33,18 +35,18 @@ const AllBannerListCard = ({ onEditPress, product, onDeletePress, editable }) =>
                 <View style={{ flexDirection: 'row', }}>
                     <Text style={[styles.headStyle, { fontSize: wp(4.5), color: '#cc8d19', width: '100%' }]} numberOfLines={1} ellipsizeMode="tail">{product.name}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', width: '100%' }}>
+                <View style={{ flexDirection: 'row', width: '100%',justifyContent:'center', alignItems:"center" }}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>Type:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }}>{product.Type}</Text>
                 </View>
-                {product.ProductName? <View style={{ flexDirection: 'row', width: '100%' }}>
+                {product.ProductName? <View style={{ flexDirection: 'row', width: '100%',justifyContent:'center', alignItems:"center"}}>
                 <Text style={[styles.headStyle, { width: '25%' }]}>Product:</Text>
                 <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
             </View>:null}
                
-                <View style={{ flexDirection: 'row', width: '100%' }}>
+                <View style={{ flexDirection: 'row', width: '100%',justifyContent:'center', alignItems:"center"}}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>Created At:</Text>
-                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.createdAt}</Text>
+                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{formatDate(product.createdAt)}</Text>
                 </View>
                {/* <View style={{ flexDirection: 'row', width: '100%' }}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>State:</Text>

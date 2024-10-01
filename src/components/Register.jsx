@@ -1,6 +1,6 @@
 import { DarkTheme, useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground,Alert } from 'react-native';
+import { FlatList, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground, Alert } from 'react-native';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
 import { Checkbox } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -79,7 +79,7 @@ export default function Register() {
     setRolesArr([...tempRoleArr]);
   };
 
-  const [role, setRole] = useState(ROLES_CONSTANT.MANUFACTURER);
+  const [role, setRole] = useState();
 
   const [gstCertificateName, setGstCertificateName] = useState('');
   const [name, setname] = useState('');
@@ -126,19 +126,18 @@ export default function Register() {
         errorToast('Company Name is Required');
         return 0;
       }
-      // if (`${companyPhone}` === "") {
-      //   errorToast("Company Phone is Required");
-      //   return 0
-      // }
-      if (`${gstNumber}` === "") {
-        errorToast("Gst is Required");
-        return 0;
-      };
-      const gstNumberPattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-7])[A-Z0-9]{13}$/;
+
+      if (!(selectedbusitype === "RETAILER" || selectedbusitype === "CONTRACTOR")) {
+        if (`${gstNumber}` === "") {
+          errorToast("GST is Required");
+          return 0;
+        }
     
-      if (!gstNumberPattern.test(gstNumber)) {
-        errorToast("GST Number must be a 15-digit number");
-        return 0;
+        const gstNumberPattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-7])[A-Z0-9]{13}$/;
+        if (!gstNumberPattern.test(gstNumber)) {
+          errorToast("Enter 15-digit Valid GST Number");
+          return 0;
+        }
       }
       if (!yearOfEstablishment || `${yearOfEstablishment}` === '') {
         errorToast('Year of Establishment is Required');
@@ -223,7 +222,7 @@ export default function Register() {
       whatsapp,
       dob,
       brandNames,
-      role: type,
+      role: selectedbusitype,
       gstNumber,
       countryId: countryId?.value,
       stateId: stateId?.value,
@@ -249,7 +248,7 @@ export default function Register() {
       gstCertificate,
     };
 
-    console.log(obj, '>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    console.log(obj, 'Sayali');
 
     try {
       let { data: res } = await registerUser(obj);
@@ -263,7 +262,7 @@ export default function Register() {
 
         // navigation.navigate('BottomBar', { register: true });
         navigation.navigate('Subscriptions', { register: true });
-        
+
       }
     } catch (error) {
       console.log(error);
@@ -703,8 +702,8 @@ export default function Register() {
               }}>
               <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'City *'}</Text>
             </Pressable>
-            <Pressable onPress={() => handlePickProfileImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={profileImage} editable={false} placeholder="Profile Photo" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
-                <Pressable onPress={() => handlePickBannerImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={bannerImage} editable={false} placeholder="Banner Image" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark}  /></Pressable>
+            <Pressable onPress={() => handlePickProfileImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={profileImage} editable={false} placeholder="Profile Photo" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} /></Pressable>
+            <Pressable onPress={() => handlePickBannerImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={bannerImage} editable={false} placeholder="Banner Image" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} /></Pressable>
 
             {/* <TextInput
             style={styles1.mbboot}
@@ -739,7 +738,7 @@ export default function Register() {
               <>
                 {/* <Text style={{ marginTop: hp(4), color: "black", fontSize: 18, paddingLeft: 5 }}>Company Details</Text> */}
                 <TextInput style={styles1.mbboot} placeholderTextColor={'#000'} onChangeText={e => setname(e)} value={name} placeholder="Name *" selectionColor={CustomColors.mattBrownDark} />
- 
+
                 {/* <TextInput
                 style={styles1.mbboot}
                 mode="outlined"
@@ -912,8 +911,8 @@ export default function Register() {
                 underlineColor="#E7E7E8"
                 underlineColorAndroid="#E7E7E8"
               /> */}
-                
-                
+
+
 
 
               </>
