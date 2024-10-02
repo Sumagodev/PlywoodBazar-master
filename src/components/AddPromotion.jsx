@@ -372,6 +372,7 @@ const styles1 = StyleSheet.create({
     borderTopLeftRadius: wp(10),
     overflow: 'hidden',
     height: '100%'
+    ,backgroundColor:"#5647871a"
   },
   card_main: {
     borderTopRightRadius: wp(10),

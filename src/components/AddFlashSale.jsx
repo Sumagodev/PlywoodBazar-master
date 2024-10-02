@@ -128,7 +128,7 @@ export default function AddFlashSale(props) {
 
 
         <View style={{ flex: 1, borderTopLeftRadius: wp(10), borderTopRightRadius: wp(10), marginTop: wp(0), width: wp(100), overflow: 'hidden' }}>
-          <ImageBackground style={{ flex: 1, borderRadius: wp(15) }} source={require('../../assets/img/main_bg.jpg')}>
+          <ImageBackground style={{ flex: 1, borderRadius: wp(15),backgroundColor:"#5647871a" }} source={require('../../assets/img/main_bg.jpg')}>
             <Text style={{ fontSize: wp(5), fontWeight: 800, alignSelf: 'center', marginTop: wp(5) }}>Create a Flash Sale</Text>
 
             <View style={styles1.card_main}>

@@ -281,13 +281,13 @@ export default function AddProducts(props) {
       <Header normal={true} screenName={'Add Products'} rootProps={props} />
 
       <View style={{ backgroundColor: '#fff', flex: 1, }}>
-      <LoadingOverlay visible={loadingIndicator} message="Please wait..." />
-        <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
+        <LoadingOverlay visible={loadingIndicator} message="Please wait..." />
+        <View style={styles1.cardContainer} >
           <View style={styles1.card_main}>
             <Text style={{ textAlign: 'center', fontSize: wp(6.0), fontWeight: 'bold' }}>Add Product</Text>
             <Text style={styles1.nameheading}>Enter Name </Text>
             <TextInput
-              
+
               onChangeText={e => setname(e)}
               value={name}
               placeholder="Name"
@@ -299,6 +299,8 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
+              autoCorrect={false}
+              autoCapitalize="none"
             />
             <Text style={styles1.nameheading}>Select Type</Text>
             <View style={styles1.dropdownStyle}>
@@ -531,7 +533,7 @@ export default function AddProducts(props) {
               <CustomButton onPress={() => handleCreateFlashSale()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
             </View>
           </View>
-        </ImageBackground>
+        </View>
       </View>
 
       <Modal
@@ -546,15 +548,15 @@ export default function AddProducts(props) {
           <View style={styles1.modalView}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles1.modalText}>Add Brand</Text>
-              <Pressable style={[{ right: wp(-25) }]} onPress={() => {setBrandModal(!brandModal) ,setBrandName('')}}>
+              <Pressable style={[{ right: wp(-25) }]} onPress={() => { setBrandModal(!brandModal), setBrandName('') }}>
                 <FontAwesome5Icon style={{}} name="times" size={wp(8)} color="black" />
               </Pressable>
             </View>
 
             <TextInput
-                            style={{ width: wp(90), paddingLeft:wp(5)}}
-          onChangeText={handleBrandNameChange}
-          value={brandName}
+              style={{ width: wp(90), paddingLeft: wp(5) }}
+              onChangeText={handleBrandNameChange}
+              value={brandName}
               placeholder="Brand Name"
               selectionColor={CustomColors.mattBrownDark}
               mode='outlined'
@@ -564,42 +566,42 @@ export default function AddProducts(props) {
               underlineColor='transparent'
               backgroundColor='white'
               borderRadius={50}
-              
+
             />
             {isSubmitDisabled && (
-        <Text style={{color: 'red', fontSize: wp(3) ,marginVertical:wp(2)}}>
-          Please enter brand name.
-        </Text>
-      )} 
+              <Text style={{ color: 'red', fontSize: wp(3), marginVertical: wp(2) }}>
+                Please enter brand name.
+              </Text>
+            )}
 
-{!isSubmitDisabled ? (
-        <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
-          {/* Button is active */}
-          <CustomButton 
-            onPress={handleCreateBrand}
-            text={'SUBMIT'}
-            textSize={wp(5)}
-            paddingHorizontal={wp(8)}
-            paddingVertical={wp(3)}
-          />
-        </View>
-      ) : (
-        <View style={{ alignSelf: 'center', marginVertical: wp(5), opacity: 0.5 }}>
-          {/* Disabled button, with reduced opacity */}
-          <TouchableOpacity disabled={true}>
-            <View style={{ 
-              backgroundColor: 'gray', 
-              paddingVertical: wp(3), 
-              paddingHorizontal: wp(8), 
-              borderRadius: 10,
-              alignItems: 'center'
-            }}>
-              <Text style={{ fontSize: wp(5), color: '#fff' }}>SUBMIT</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-          
+            {!isSubmitDisabled ? (
+              <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
+                {/* Button is active */}
+                <CustomButton
+                  onPress={handleCreateBrand}
+                  text={'SUBMIT'}
+                  textSize={wp(5)}
+                  paddingHorizontal={wp(8)}
+                  paddingVertical={wp(3)}
+                />
+              </View>
+            ) : (
+              <View style={{ alignSelf: 'center', marginVertical: wp(5), opacity: 0.5 }}>
+                {/* Disabled button, with reduced opacity */}
+                <TouchableOpacity disabled={true}>
+                  <View style={{
+                    backgroundColor: 'gray',
+                    paddingVertical: wp(3),
+                    paddingHorizontal: wp(8),
+                    borderRadius: 10,
+                    alignItems: 'center'
+                  }}>
+                    <Text style={{ fontSize: wp(5), color: '#fff' }}>SUBMIT</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+
 
 
           </View>
@@ -644,6 +646,7 @@ const styles1 = StyleSheet.create({
     borderTopRightRadius: wp(10),
     borderTopLeftRadius: wp(10),
     overflow: 'hidden',
+    backgroundColor:"#5647871a"
   },
   card_main: {
     borderTopRightRadius: wp(10),

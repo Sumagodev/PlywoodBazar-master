@@ -27,11 +27,11 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 export default function Productdetails(props) {
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [supplierObj, setSupplierObj] = useState({});
-  
+
 
   const [productObj, setProductObj] = useState(null);
   console.log('productObjj', productObj?.createdByObj);
-  
+
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
 
@@ -74,7 +74,7 @@ export default function Productdetails(props) {
       }
     } catch (err) {
       errorToast(err);
-      console.log('errorToast4',err);
+      console.log('errorToast4', err);
     }
   };
 
@@ -90,7 +90,7 @@ export default function Productdetails(props) {
 
 
       const { data: res } = await getProductById(props?.route?.params?.data);
-      console.log('props?.route?.params?.data',res);
+      console.log('props?.route?.params?.data', res);
       setuserid(res.data._id);
       setsellingprice(res.data.sellingprice);
 
@@ -236,7 +236,7 @@ export default function Productdetails(props) {
 
         if (isAuthorized) {
           toastSuccess(res.message);
-          console.log('res.message',res.message);
+          console.log('res.message', res.message);
           (res.message);
           setLoading(false)
           if (!currentUserHasActiveSubscription) {
@@ -263,27 +263,27 @@ export default function Productdetails(props) {
         }
         else {
           Alert.alert(
-        'Login Required',
-        'Please login to access this feature.',
-        [
-          {
-            text: 'Go to Login',
-            onPress: () => navigation.navigate('Login'),
-          },
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-        ],
-        { cancelable: true }
-      );
+            'Login Required',
+            'Please login to access this feature.',
+            [
+              {
+                text: 'Go to Login',
+                onPress: () => navigation.navigate('Login'),
+              },
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+            ],
+            { cancelable: true }
+          );
         }
 
       }
     } catch (err) {
       errorToast(err);
-      console.log('errorToast2',err);
-      
+      console.log('errorToast2', err);
+
     }
   };
 
@@ -302,19 +302,21 @@ export default function Productdetails(props) {
       }
     } catch (err) {
       errorToast(err);
-      console.log('errorToast2',errorToast);
+      console.log('errorToast2', errorToast);
     }
   };
   const handleModelshow = () => {
-  if (!currentUserHasActiveSubscription) {
+    if (isAuthorized) {
+
+      setModalVisible(true);
+    } else {
       Alert.alert(
-        'Subscription Required',
-        'You do not have a valid subscription to perform this action.',
+        'Login Required',
+        'Please login to access this feature.',
         [
           {
-            text: 'Go to Subscriptions',
-            style: { color: "red" },
-            onPress: () => navigation.navigate('Subscriptions', { register: false }),
+            text: 'Go to Login',
+            onPress: () => navigation.navigate('Login'),
           },
           {
             text: 'Cancel',
@@ -323,31 +325,34 @@ export default function Productdetails(props) {
         ],
         { cancelable: true }
       );
-      return;
+
     }
-    setModalVisible(true);
   };
+
+
+
+
   const handleSubmitReview = async e => {
     try {
-      if (!currentUserHasActiveSubscription) {
-      Alert.alert(
-        'Subscription Required',
-        'You do not have a valid subscription to perform this action.',
-        [
-          {
-            text: 'Go to Subscriptions',
-            style: { color: "red" },
-            onPress: () => navigation.navigate('Subscriptions', { register: false }),
-          },
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-        ],
-        { cancelable: true }
-      );
-      return;
-    }
+      //   if (!currentUserHasActiveSubscription) {
+      //   Alert.alert(
+      //     'Subscription Required',
+      //     'You do not have a valid subscription to perform this action.',
+      //     [
+      //       {
+      //         text: 'Go to Subscriptions',
+      //         style: { color: "red" },
+      //         onPress: () => navigation.navigate('Subscriptions', { register: false }),
+      //       },
+      //       {
+      //         text: 'Cancel',
+      //         style: 'cancel',
+      //       },
+      //     ],
+      //     { cancelable: true }
+      //   );
+      //   return;
+      // }
       if (nameForReview == '') {
         errorToast('Please enter a name');
         Alert.alert('Validation Error', 'Please enter a Name.');
@@ -416,11 +421,11 @@ export default function Productdetails(props) {
   };
 
   const handleContactSupplierClick = () => {
-  
+
     if (isAuthorized) {
 
-     if (!currentUserHasActiveSubscription) {
-     setLoading(false)
+      if (!currentUserHasActiveSubscription) {
+        setLoading(false)
         Alert.alert(
           'Subscription Required',
           'You do not have a valid subscription to perform this action.',
@@ -429,7 +434,7 @@ export default function Productdetails(props) {
               text: 'Go to Subscriptions',
               style: { color: "red" },
               onPress: () => navigation.navigate('Subscriptions', { register: false }),
-              
+
             },
             {
               text: 'Cancel',
@@ -441,12 +446,12 @@ export default function Productdetails(props) {
         return;
       }
       handleContactSupplier()
-     
+
 
     }
     else {
-    setLoading(false)
-    Alert.alert(
+      setLoading(false)
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -464,10 +469,10 @@ export default function Productdetails(props) {
     }
   }
   const handleGetQuoteClick = (item) => {
-    console.log('item?.slug ',item?.slug );
-    
+    console.log('item?.slug ', item?.slug);
+
     if (isAuthorized) {
-    if (!currentUserHasActiveSubscription) {
+      if (!currentUserHasActiveSubscription) {
         Alert.alert(
           'Subscription Required',
           'You do not have a valid subscription to perform this action.',
@@ -489,7 +494,7 @@ export default function Productdetails(props) {
       navigation.navigate('Productdetails', { data: item?.slug })
     }
     else {
-    Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -547,7 +552,7 @@ export default function Productdetails(props) {
       setvalue(price)
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
@@ -617,19 +622,19 @@ export default function Productdetails(props) {
             <CustomButtonNew
               text={value}
               paddingHorizontal={wp(5)}
-              onPress={() => {  TakeSellingPrice(sellingprice),console.log('7777') }}
+              onPress={() => { TakeSellingPrice(sellingprice), console.log('7777') }}
             />
 
           </TouchableOpacity>) : (<TouchableOpacity style={{ alignSelf: 'center', marginVertical: wp(6) }}>
-           
+
           </TouchableOpacity>)}
 
 
 
 
           <LinearGradient colors={['#cc8d19', '#cc8d19', '#f1e8d1']} style={gradientStyle.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-            <View  style={gradientStyle.card}>
-              <TouchableOpacity onPress={() => { navigation.navigate('Supplier', { data: productObj?.createdByObj })}} style={{ flexDirection: 'row' }} >
+            <View style={gradientStyle.card}>
+              <TouchableOpacity onPress={() => { navigation.navigate('Supplier', { data: productObj?.createdByObj }) }} style={{ flexDirection: 'row' }} >
                 {productObj?.createdByObj?.userObj?.isVerified && <Image source={require('../../assets/img/verified.png')} resizeMode="contain" style={{ width: wp(15), height: wp(15) }} />}
                 <Text style={gradientStyle.title}>{currentUserHasActiveSubscription ? `${productObj?.createdByObj?.userObj?.companyObj?.name} (${productObj?.brandObj?.name})` : `${productObj?.createdByObj?.userObj?.companyObj?.name}`.slice(0, 4) + '***'}</Text>
               </TouchableOpacity>
@@ -644,17 +649,17 @@ export default function Productdetails(props) {
                 <Text style={{ color: 'white', marginLeft: wp(1) }}>{currentUserHasActiveSubscription ? productObj?.createdByObj?.userObj?.companyObj?.gstNumber || 'NA' : `${productObj?.createdByObj?.userObj?.companyObj?.gstNumber}`.slice(0, 2) + '***'}</Text>
               </View>
               <View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end', flex: 1, marginTop: wp(2) }}>
-                {loading === 'true'? (<ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />) : (<CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={() => { handleContactSupplierClick(), setLoading(true) }}></CustomButtonNew>)}
+                {loading === 'true' ? (<ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />) : (<CustomButtonNew text={'Contact Supplier'} textSize={wp(4)} paddingHorizontal={wp(5)} onPress={() => { handleContactSupplierClick(), setLoading(true) }}></CustomButtonNew>)}
 
               </View>
             </View>
           </LinearGradient>
           <View>
-           {isAuthorized === 'false' && (
-                <View style={{ marginVertical: wp(5) }}>
-                  <StartBusinessBanner />
-                </View>
-              )}
+            {isAuthorized === 'false' && (
+              <View style={{ marginVertical: wp(5) }}>
+                <StartBusinessBanner />
+              </View>
+            )}
           </View>
 
           {/* <ImageBackground source={require('../../assets/img/bg_similar_products.png')}> */}

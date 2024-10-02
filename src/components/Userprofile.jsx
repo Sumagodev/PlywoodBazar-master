@@ -341,7 +341,7 @@ const profileStyle = StyleSheet.create({
     flex: 1,
     width: wp(90),
     flexDirection: 'row',
-    backgroundColor: '#FFF1E6',
+    // backgroundColor: '#FFF1E6',
     borderRadius: wp(20),
     alignSelf:'center',
     overflow:'hidden'
@@ -363,6 +363,6 @@ const profileStyle = StyleSheet.create({
     fontSize: wp(5),
     fontWeight: 800,
     width: wp(75),
-    color: CustomColors.mattBrownDark,
+    color: '#000',
   },
 });

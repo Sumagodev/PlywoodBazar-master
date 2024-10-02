@@ -28,25 +28,7 @@ const FlashSaleComponent = () => {
   return (
     <View style={styles.container}>
       {/* Rotating lines */}
-      <Animated.View style={[styles.linesContainer, { transform: [{ rotate: rotateInterpolate }] }]}>
-        {Array.from({ length: numberOfLines }).map((_, index) => {
-          const angle = (360 / numberOfLines) * index; // Calculate the angle for each line
-          return (
-            <View
-              key={index}
-              style={[
-                styles.line,
-                {
-                  transform: [
-                    { rotate: `${angle}deg` }, // Rotate each line based on its position in the circle
-                    { translateY: -50 }, // Move the line outward from the center
-                  ],
-                },
-              ]}
-            />
-          );
-        })}
-      </Animated.View>
+ 
 
       {/* Static Flash Sale Text */}
       <TouchableOpacity onPress={()=>{}}>
@@ -64,8 +46,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: wp(35),
-    height: wp(58),
+    width: wp(42),
+    height: wp(68),
     borderRadius: 10,
     backgroundColor: 'red',
     overflow: 'hidden',
@@ -86,8 +68,8 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     backgroundColor: 'red',
-    height: wp(30),
-    width:wp(30),
+    height: wp(40),
+    width:wp(40),
     justifyContent: 'center',
     borderRadius: wp(30),
     alignItems: 'center',
@@ -95,7 +77,7 @@ const styles = StyleSheet.create({
   text: {
     padding: wp(1),
     textAlign: 'center',
-    fontSize:width * 0.045,
+    fontSize:width * 0.075,
     color: 'white',
     fontWeight: 'bold',
   },

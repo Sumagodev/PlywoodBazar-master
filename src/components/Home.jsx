@@ -599,14 +599,14 @@ export default function Home() {
   }
 
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <LikeProduct imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })} />
+    return <LikeProduct imagePath={item?.product?.mainImage && item?.product?.mainImage != " "? { uri: generateImageUrl(item?.product?.mainImage) }:require('../../assets/img/logo_1.png')} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })} />
 
   };
 
   const renderNewArrivals = ({ item, index }) => {
     console.log('zxcv', JSON.stringify(item))
     // return <NewArrivalProductCardVertical horizontal newProductItem={{ imagePath: require('../../assets/img/ply_sample.png'), isVerified: true, name: item.productSlug, location: 'Nashik' }} ></NewArrivalProductCardVertical>;
-    return <NewArrivalProductCardVertical horizontal newProductItem={item} image={{ uri: generateImageUrl(item?.image) }} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
+    return <NewArrivalProductCardVertical horizontal newProductItem={item} image={item?.image &&item?.image!= ""?{ uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png')} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
   };
 
 
@@ -614,7 +614,7 @@ export default function Home() {
   const renderFlashSale = ({ item, index }) => {
     return (
       <View style={{ marginHorizontal: wp(1) }}>
-        <FlashSaleItemWithDiscount imagePath={{ uri: generateImageUrl(item?.productId?.mainImage) }}
+        <FlashSaleItemWithDiscount imagePath={item?.productId?.mainImage && item?.productId?.mainImage !=""?{ uri: generateImageUrl(item?.productId?.mainImage)}:require('../../assets/img/logo_1.png') }
           actualPrice={item?.price}
           name={item?.productId?.name}
           salePrice={item?.salePrice}
@@ -679,7 +679,7 @@ export default function Home() {
     } else {
       return (
         // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
-        <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item?.image) }, title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
+        <OpportunitiesItem opportunityItem={{ imagePath:item?.image && item?.image !=""? { uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png'), title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
       );
     }
 
@@ -977,7 +977,7 @@ export default function Home() {
               <Carousel
                 data={topprofiles}
                 renderItem={({ item }) => (
-                  <TopProfileHomeCard title={item.companyName} image={{ uri: generateImageUrl(item.bannerImage) }} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
+                  <TopProfileHomeCard title={item.companyName} image={item.bannerImage && item.bannerImage !=" "?{ uri: generateImageUrl(item.bannerImage) }:require('../../assets/img/logo_1.png')} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
                 )}
                 sliderWidth={wp(100)}
                 itemWidth={wp(80)}
@@ -1003,11 +1003,6 @@ export default function Home() {
                   <StartBusinessBanner />
                 </View>
               )}
-
-
-
-
-
               <LinearGradient
                 colors={['#cc8d19', '#ebbb60', '#F1E8D1']} // Gradient colors (left to right)
                 style={[styles1.tableimagewrap, styles1.padinghr]} // Apply the gradient to this style
@@ -1066,7 +1061,7 @@ export default function Home() {
                 <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
               </View>
 
-              {/* </LinearGradient> */}
+          
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Products You May Like</Text>
@@ -1104,10 +1099,10 @@ export default function Home() {
                 />
               </View>
 
-              <View style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center', justifyContent: 'space-between', marginBottom: wp(2), paddingBottom: wp(2.5) }]}>
-                <Text style={[styles1.headingmain, { marginBottom: wp(5) }]}>Dealership/Franchise Opportunities</Text>
-                <AddOpportunitiesHomeBanner style={{ marginTop: wp(5) }} onPress={() => Gotoopportunities()}></AddOpportunitiesHomeBanner>
-              </View>
+              <TouchableOpacity style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center' ,width:'100%',height:wp(40)}]} onPress={() => Gotoopportunities()}>
+               
+                <Image source={require('../../assets/img/deal3.png')} style={{ width:'100%', height:'100%' }} resizeMode="contain" />
+              </TouchableOpacity>
 
 
               <FlatList data={oppdata} horizontal renderItem={renderOpportunities} keyExtractor={(item, index) => `${index}`} />

@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         borderWidth: wp(0.5),
         height: wp(23),
         width: wp(23),
-        backgroundColor: 'black',
+        backgroundColor: '#ffffff',
         shadowColor: 'black',
         shadowOffset: { width: 15, height: 15 },
         shadowOpacity: 1,

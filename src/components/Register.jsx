@@ -128,11 +128,8 @@ export default function Register() {
       }
 
       if (!(selectedbusitype === "RETAILER" || selectedbusitype === "CONTRACTOR")) {
-        if (`${gstNumber}` === "") {
-          errorToast("GST is Required");
-          return 0;
-        }
-    
+
+
         const gstNumberPattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-7])[A-Z0-9]{13}$/;
         if (!gstNumberPattern.test(gstNumber)) {
           errorToast("Enter 15-digit Valid GST Number");
@@ -489,7 +486,7 @@ export default function Register() {
       </View>
 
       <ScrollView contentContainerStyle={[styles.bgwhite]}>
-        <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ borderRadius: 30, flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden' }}>
+        <View style={{ borderRadius: 30, flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden' ,backgroundColor:"#5647871a"}}>
           <View style={{ paddingHorizontal: wp(2.5), borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingBottom: wp(20) }}>
             <View style={[{ flex: 1, alignSelf: 'center', alignItems: 'center' }]}>
               <View>
@@ -516,7 +513,7 @@ export default function Register() {
               }}
             />
 
-            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setcompanyName(e)} value={companyName} placeholder="Business Name*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setcompanyName(e)} value={companyName} placeholder="Business Name*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} autoCorrect={false} autoCapitalize="none" />
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setYearOfEstablishment(e)} value={yearOfEstablishment} selectionColor={CustomColors.mattBrownDark} placeholder="Year of Establishment *" placeholderTextColor="#000" />
 
@@ -667,12 +664,12 @@ export default function Register() {
                 borderWidth: '1',
                 fontSize: 8,
               },
-            }}
+            }}  
             underlineColor="#E7E7E8"
             underlineColorAndroid="#E7E7E8"
           /> */}
 
-            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setBrandNames(e)} value={brandNames} placeholder="Dealing With Brand Names*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setBrandNames(e)} value={brandNames} placeholder="Dealing With Brand Names*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} autoCorrect={false} autoCapitalize="none" />
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setgstNumber(e)} value={gstNumber} placeholder="GST NO.*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} keyboardType='name-phone-pad' maxLength={15} />
 
@@ -1104,7 +1101,7 @@ export default function Register() {
               </View>
             </View>
           </Modal>
-        </ImageBackground>
+        </View>
       </ScrollView>
     </View>
   );

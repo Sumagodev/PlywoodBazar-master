@@ -15,6 +15,7 @@ import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
 import Categories from './Categories';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 
 export default function DealershipOppolisting(props) {
     const focused = useIsFocused()
@@ -118,6 +119,9 @@ export default function DealershipOppolisting(props) {
             <View style={reviewStyle.container}>
                 <Text style={reviewStyle.title}>Promoted Dealership Opportunities</Text>
             </View>
+            <Pressable  style={{alignSelf:'flex-end',right:wp(5)}}>
+            <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => navigation.navigate('AddDealershipOpportunitiesForm')}/>
+          </Pressable>
 
             {
                 subscriptionArr ? <FlatList data={subscriptionArr} numColumns={1} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />

@@ -92,7 +92,7 @@ export default function Leads(props) {
   return (
     <>
       <Header normal={true} screenName={'Leads'} rootProps={props} />
-    <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1}}>
+    <View style={{flex:1,backgroundColor:"#5647871a"}}>
     <View style={{flex:1, paddingHorizontal:10,alignItems:'center'}}>
 
       <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Leads</Text>
@@ -119,7 +119,7 @@ export default function Leads(props) {
 
       }
       </View>
-      </ImageBackground>
+      </View>
     </>
   );
 }

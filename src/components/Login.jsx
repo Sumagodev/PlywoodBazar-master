@@ -15,31 +15,31 @@ export default Login = () => {
   const [error, setError] = useState(false); 
   const focused = useIsFocused();
   const [isAuthorized] = useContext(isAuthorisedContext);
-  useEffect(() => {
-    if (isAuthorized ) {
-      // User is authorized, proceed as normal
-    } else {
-      Alert.alert(
-        "Login/Registration Required",
-        "You need to be logged in to access this feature.",
-        [
-          {
-            text: "Login",
-            // Optionally, you can navigate to the Login screen here
-            // onPress: () => navigation.navigate('Login'),
-            onPress: () => {},
-            // onPress: () => navigation.dispatch(
-            //   CommonActions.reset({
-            //     index: 0,
-            //     routes: [{ name: 'Login'}],
-            //   })
-            // ),
-          },
+  // useEffect(() => {
+  //   if (isAuthorized ) {
+  //     // User is authorized, proceed as normal
+  //   } else {
+  //     Alert.alert(
+  //       "Login/Registration Required",
+  //       "You need to be logged in to access this feature.",
+  //       [
+  //         {
+  //           text: "Login",
+  //           // Optionally, you can navigate to the Login screen here
+  //           // onPress: () => navigation.navigate('Login'),
+  //           onPress: () => {},
+  //           // onPress: () => navigation.dispatch(
+  //           //   CommonActions.reset({
+  //           //     index: 0,
+  //           //     routes: [{ name: 'Login'}],
+  //           //   })
+  //           // ),
+  //         },
          
-        ]
-      );
-    }
-  }, []);
+  //       ]
+  //     );
+  //   }
+  // }, []);
 
   const handleSendOTP = async () => {
     const mobileNumberPattern = /^[6-9][0-9]{9}$/;

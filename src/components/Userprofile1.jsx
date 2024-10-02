@@ -50,7 +50,7 @@ export default function Userprofile1(props) {
   const [singleFile, setSingleFile] = useState('');
 
   const renderImage = ({item, index}) => {
-    return <Image source={{uri: generateImageUrl(item.image)}} style={{height: 100, width: 100}} resizeMode="contain" />;
+    return <Image source={item.image && item.image !=" "?{uri: generateImageUrl(item.image)}:require('../../assets/img/logo_1.png')} style={{height: 100, width: 100}} resizeMode="contain" />;
   };
 
   const onBuffer = val => console.log(val);
@@ -83,8 +83,8 @@ export default function Userprofile1(props) {
 
         {/* <ImageBackground source={{uri: generateImageUrl(userObj?.bannerImage)}} style={[styles1.paddinghor10, {height: hp(20), borderRadius:20, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center',}]} resizeMode='stretch'></ImageBackground> */}
 
-        <View style={{flex: 1, zIndex: 1}}>
-          <Image source={{uri: generateImageUrl(userObj?.bannerImage)}} style={{height: wp(50), borderRadius: 0}} resizeMode="cover" />
+        <View style={{flex: 1, zIndex: 1,backgroundColor:'#ffffff'}}>
+          <Image source={userObj?.bannerImage && userObj?.bannerImage !=''?{uri: generateImageUrl(userObj?.bannerImage)}:require('../../assets/img/logo_1.png')} style={{height: wp(50), borderRadius: 0}} resizeMode="cover" />
           <View style={{flex: 1, gap: 10, alignSelf: 'center', marginTop: wp(15), zIndex: 1, position: 'absolute'}}>
             <TouchableOpacity style={{bottom: wp(-14), alignSelf: 'center'}}>
               <Image source={userObj && userObj.profileImage ? {uri: generateImageUrl(userObj?.profileImage)} : require('../../assets/img/userpic.png')} style={styles1.imgfluid} resizeMode="stretch" />

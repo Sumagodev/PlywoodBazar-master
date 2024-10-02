@@ -405,7 +405,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
           <Text style={styles1.textStyle}>Add Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} onChangeText={value => setName(value)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Organization Name*" value={name} editable={false} onChangeText={value => setName(value)} />
             <View style={{ height: wp(1) }} />
 
             <Dropdown
@@ -492,7 +492,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               )}
             </View>
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} editable={false} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />

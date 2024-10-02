@@ -30,6 +30,8 @@ import ProductsCardWithoutLocation from '../ReusableComponents/ProductsCardWitho
 export default function Supplier(props) {
   const navigate = useNavigation();
   const focused = useIsFocused();
+  console.log('propss',props?.route?.params?.data);
+  
   const [productReviewArr, setProductReviewArr] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -65,6 +67,7 @@ export default function Supplier(props) {
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [whatappnumber, setWhatappnumber] = useState();
   const roletype = ['DISTRIBUTOR', 'MANUFACTURER/IMPORTER', 'DEALER'];
+console.log('productReviewArr',productReviewArr);
 
   const activetab = index => {
     let temp = [...infolist];
@@ -459,6 +462,8 @@ export default function Supplier(props) {
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
+      console.log('decoded',decoded);
+      
       if (decoded) {
         if (decoded?.user?.name) {
           setName(decoded?.user?.name);
@@ -513,15 +518,18 @@ export default function Supplier(props) {
 
   const onBuffer = val => console.log(val);
   const videoError = val => console.error(val);
+
+
   const getauthuser = async () => {
     let decoded = await getDecodedToken();
-    if (decoded && decoded?._id) {
-      setuserid(decoded?._id);
-      getUserById(decoded?._id);
+    if (decoded && decoded?.userId) {
+      setuserid(decoded?.userId);
+   
     }
   };
 
   useEffect(() => {
+    getauthuser();
     if (focused) {
       console.log(JSON.stringify(props.route.params.data, null, 2), 'props.route.params.data');
       if (props?.route?.params?.data?._id) {
@@ -565,7 +573,7 @@ export default function Supplier(props) {
 
 
   const rendershopcategory = ({ item, index }) => {
-    return <ImageBackground source={{ uri: generateImageUrl(item.image) }} imageStyle={{ borderRadius: 10 }} style={styles1.category} resizeMode="cover"></ImageBackground>;
+    return <ImageBackground source={item.image && item.image !=""?{ uri: generateImageUrl(item.image) }:require('../../assets/img/logo_1.png')} imageStyle={{ borderRadius: 10 }} style={styles1.category} resizeMode="cover"></ImageBackground>;
   };
 
   const ReviewsItem1 = ({ item, index }) => {
@@ -573,11 +581,11 @@ export default function Supplier(props) {
     return <ReviewsItem reviewItem={item} />;
   };
   const ProductsYouMayLike1 = ({ item, index }) => {
-    return <NewArrivalProductCard onCallPressed={() => { handelcallbtn(item) }} onGetQuotePressed={() => { handleGetQuoteClick(item) }} onCardPressed={() => navigate.navigate('Productdetails', { data: item.productSlug })} imagePath={{ uri: generateImageUrl(item?.product?.mainImage) }} isVerified={item.isVerified} name={item.productName} location={item.cityName} price={item?.price}></NewArrivalProductCard>;
+    return <NewArrivalProductCard onCallPressed={() => { handelcallbtn(item) }} onGetQuotePressed={() => { handleGetQuoteClick(item) }} onCardPressed={() => navigate.navigate('Productdetails', { data: item.productSlug })} imagePath={item?.product?.mainImage && item?.product?.mainImage !=''?{ uri: generateImageUrl(item?.product?.mainImage) }:require('../../assets/img/logo_1.png')} isVerified={item.isVerified} name={item.productName} location={item.cityName} price={item?.price}></NewArrivalProductCard>;
   };
   const Products1 = ({ item, index }) => {
     console.log('QAZXC', generateImageUrl(item?.mainImage))
-    return <ProductsCardWithoutLocation onGetQuotePressed={() => { handleGetQuoteClick2(item) }} onCallPressed={() => { handelcallbtn(item) }} onPress={() => navigate.navigate('Productdetails', { data: item.slug })} imagePath={{ uri: generateImageUrl(item?.mainImage) }} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice} />
+    return <ProductsCardWithoutLocation onGetQuotePressed={() => { handleGetQuoteClick2(item) }} onCallPressed={() => { handelcallbtn(item) }} onPress={() => navigate.navigate('Productdetails', { data: item.slug })} imagePath={item?.mainImage && item?.mainImage !='' ?{ uri: generateImageUrl(item?.mainImage) }:require('../../assets/img/logo_1.png')} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice} />
   };
   const Topprofiles = ({ item, index }) => {
     console.log('xx', item.name);
@@ -589,7 +597,7 @@ export default function Supplier(props) {
 
     // Return the combined address, trimming any extra spaces
     const location = `${validCity} ${validState}`.trim();
-    return <TopProfilesVerticalCard onViewPress={() => { handleViewProfileClick(item) }} name={item?.companyName} imagePath={{ uri: generateImageUrl(item.profileImage) }} rating={item.rating} Product={item?.productsCount} address={location} onPress={{}} onCallPress={() => handelcallbtn(item?.phone)} />;
+    return <TopProfilesVerticalCard onViewPress={() => { handleViewProfileClick(item) }} name={item?.companyName} imagePath={item.profileImage && item.profileImage !=''?{ uri: generateImageUrl(item.profileImage) }:require('../../assets/img/logo_1.png')} rating={item.rating} Product={item?.productsCount} address={location} onPress={{}} onCallPress={() => handelcallbtn(item?.phone)} />;
   };
   const handlePauseAndUnpause = index => {
     let tempArr = videoArr;
@@ -606,7 +614,7 @@ export default function Supplier(props) {
             onError={videoError}
             minLoadRetryCount={5}
             paused={item.isPaused}
-            source={{ uri: generateImageUrl(item.video) }}
+            source={item.video && item.video !=""?{ uri: generateImageUrl(item.video) }:require('../../assets/img/logo_1.png')}
             style={{ borderWidth: 0.5, borderColor: '#D9D9D9', borderStyle: 'solid', padding: 2, borderRadius: 10, width: wp(95), height: 250, overflow: 'hidden' }}
             resizeMode="cover"
           />
@@ -654,13 +662,14 @@ export default function Supplier(props) {
         rating,
         message,
         name,
-        userId: supplierObj._id,
+        userId: supplerid,
+        addedby:userid
       };
       let { data: res } = await addReview(obj);
       if (res.message) {
         toastSuccess(res.message);
         setModalVisible(false);
-        handleGetProductReview(supplierObj?._id);
+        handleGetProductReview(supplerid);
       }
     } catch (err) {
       errorToast(err);
@@ -676,8 +685,8 @@ export default function Supplier(props) {
               <AntDesign name="edit" size={17} color="#848993" />
             </Pressable>
           )}
-          {supplierObj.bannerImage && supplierObj.bannerImage && supplierObj.bannerImage ? <Image source={{ uri: generateImageUrl(supplierObj.bannerImage) }} style={styles1.imgfluid} /> : <Image source={require('../../assets/img/cover.png')} style={[styles1.imgfluid]} />}
-          {supplierObj?.profileImage && supplierObj.profileImage != '' ? <Image source={{ uri: generateImageUrl(supplierObj?.profileImage) }} style={styles1.logo} /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.logo]} />}
+          {supplierObj.bannerImage && supplierObj.bannerImage && supplierObj.bannerImage ? <Image source={supplierObj.bannerImage && supplierObj.bannerImage !=''?{ uri: generateImageUrl(supplierObj.bannerImage) }:require('../../assets/img/logo_1.png')} style={styles1.imgfluid} /> : <Image source={require('../../assets/img/cover.png')} style={[styles1.imgfluid]} />}
+          {supplierObj?.profileImage && supplierObj.profileImage != '' ? <Image source={supplierObj?.profileImage && supplierObj?.profileImage !=''?{ uri: generateImageUrl(supplierObj?.profileImage) }:require('../../assets/img/logo_1.png')} style={styles1.logo} /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.logo]} />}
         </View>
 
         <View style={[styles1.padinghr, { marginTop: wp(17), paddingHorizontal: 10 }]}>
@@ -690,14 +699,14 @@ export default function Supplier(props) {
          
               <Pressable style={[styles1.infoadd,{alignSelf:"center"}]}>
               <FontAwesomeIcon name="map-marker" style={{ marginHorizontal: wp(3) ,alignSelf:'center'}} size={wp(5)} color={CustomColors.mattBrownDark} />
-                <Text style={[styles1.infotext,]}>{supplierObj?.companyObj?.address}</Text>
+                <Text style={[styles1.infotext,{textTransform: 'uppercase'}]}>{supplierObj?.companyObj?.address}</Text>
               </Pressable>
 
 
               <View style={[styles1.infoadd, { justifyContent: 'flex-start' }]}>
               
                 <FontAwesomeIcon name="star" style={{ marginHorizontal: wp(3) }} size={wp(5)} color={CustomColors.mattBrownDark} />
-                <Text style={{ fontFamily: 'Poppins-Medium', marginHorizontal: wp(1) }}>{supplierObj?.rating}</Text>
+                <Text style={{ fontFamily: 'Poppins-Medium', marginHorizontal: wp(2) }}>{supplierObj?.rating}</Text>
                 {supplierObj?.companyObj?.gstNumber ? (
                   <>
                     <Image source={require('../../assets/img/addcheck.png')} style={styles1.imgsmall} resizeMode="center" />
@@ -1304,32 +1313,6 @@ const styles1 = StyleSheet.create({
   },
 });
 
-const datadata = [
-  {
-    imagePath: require('../../assets/img/g1.png'),
-    name: 'Sakshi Malik',
-    rating: 4.5,
-    message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.',
-  },
-  {
-    imagePath: require('../../assets/img/india.png'),
-    name: 'dsds Malik',
-    rating: 4.5,
-    message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.',
-  },
-  {
-    imagePath: require('../../assets/img/india.png'),
-    name: 'dsds Malik',
-    rating: 4.5,
-    message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.',
-  },
-  {
-    imagePath: require('../../assets/img/india.png'),
-    name: 'asdsa Malik',
-    rating: 4.5,
-    message: 'Business today online offering latest news or Read about the reviews of the latest products launched, their prices, performances and durability.',
-  },
-];
 
 const dataArray = [
   {

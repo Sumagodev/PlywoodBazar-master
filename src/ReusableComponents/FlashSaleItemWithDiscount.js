@@ -84,37 +84,38 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
         <Pressable style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
                 <Image style={styles.imageStyle} source={imagePath} />
+
+            </View>
+            <View style={{ marginTop: wp(2) }}>
+                <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
+                <Text style={[styles.nameStyle, { fontSize: wp(3), color: CustomColors.accentBrownFaint }]} ellipsizeMode='tail' numberOfLines={1}>{timeDiff}</Text>
                 <View style={styles.starContainer1}>
                     <View style={styles.timerwrap}>
-                        <Text style={[styles.starText, { fontWeight: 'bold', fontSize: wp(4), color: '#ffffff' }]}>{time.days}</Text>
+                        <Text style={[styles.starText, { fontWeight: '400', fontSize: wp(4), color: '#000' }]}>{time.days}</Text>
                         <View style={{ position: 'absolute', alignItems: 'flex-end', bottom: wp(-5) }}>
-                            <Text style={[styles.starText, { fontWeight: '500', fontSize: wp(3.2), color: '#ffffff' }]}>D</Text>
+                            <Text style={[styles.starText,]}>D</Text>
                         </View>
                     </View>
                     <View style={styles.timerwrap}>
-                        <Text style={[styles.starText, { fontWeight: 'bold', fontSize: wp(4), color: '#ffffff' }]}>{time.hours}</Text>
+                        <Text style={[styles.starText, { fontWeight: '400', fontSize: wp(4), color: '#000' }]}>{time.hours}</Text>
                         <View style={{ position: 'absolute', alignItems: 'flex-end', bottom: wp(-5) }}>
-                            <Text style={[styles.starText, { fontWeight: '500',fontSize: wp(3.2), color: '#ffffff' }]}>H</Text>
+                            <Text style={[styles.starText,]}>H</Text>
                         </View>
                     </View>
                     <View style={styles.timerwrap}>
-                        <Text style={[styles.starText, { fontWeight: 'bold', fontSize: wp(4), color: '#ffffff' }]}>{time.minutes}</Text>
+                        <Text style={[styles.starText, { fontWeight: '400', fontSize: wp(4), color: '#000' }]}>{time.minutes}</Text>
                         <View style={{ position: 'absolute', alignItems: 'flex-end', bottom: wp(-5) }}>
-                        <Text style={[styles.starText, { fontWeight: '500', fontSize: wp(3.2), color: '#ffffff' }]}>M</Text>
-                    </View>
+                            <Text style={[styles.starText,]}>M</Text>
+                        </View>
                     </View>
                     <View style={styles.timerwrap}>
-                        <Text style={[styles.starText, { fontWeight: 'bold', fontSize: wp(4), color: '#ffffff' }]}>{time.seconds}</Text>
+                        <Text style={[styles.starText, { fontWeight: '400', fontSize: wp(4), color: '#000' }]}>{time.seconds}</Text>
                         <View style={{ position: 'absolute', alignItems: 'flex-end', bottom: wp(-5) }}>
-                        <Text style={[styles.starText, { fontWeight: '500', fontSize: wp(3.2), color: '#ffffff' }]}>S</Text>
-                    </View>
+                            <Text style={[styles.starText,]}>S</Text>
+                        </View>
                     </View>
 
                 </View>
-            </View>
-            <View style={{ marginTop: wp(5) }}>
-                <Text style={styles.nameStyle} ellipsizeMode='tail' numberOfLines={1}>{name}</Text>
-                <Text style={[styles.nameStyle, { fontSize: wp(3), color: CustomColors.accentBrownFaint }]} ellipsizeMode='tail' numberOfLines={1}>{timeDiff}</Text>
             </View>
             <View style={styles.priceRow}>
                 <Text style={styles.salePriceStyle}>₹{salePrice}/-</Text>
@@ -145,24 +146,26 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
 
 const styles = StyleSheet.create({
     masterContainer: {
-        width: wp(45),
-        height: wp(55),
+        width: wp(48),
+        height: wp(65),
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
         elevation: 5,
     },
     container: {
         width: "100%",
-        height: "60%",
+        height: "50%",
         borderRadius: 25,
         // backgroundColor: '#FFFFFFF',
         // flexDirection: 'column',
     },
     imageStyle: {
-        margin: wp(2),
-        width: "90%",
+        // margin: wp(2),
+        width: "100%",
         height: "100%",
-        borderRadius: 20,
+        // borderRadius: 20,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10
     },
     nameStyle: {
         fontSize: wp(4),
@@ -211,28 +214,31 @@ const styles = StyleSheet.create({
         right: 0,
     },
     starContainer1: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         position: 'absolute',
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        height: '100%',
-        width: '90%',
+        // backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        height: '90%',
+        width: '80%',
         borderRadius: 20,
-        margin: wp(2),
+        marginTop: wp(3),
+        margin: wp(1),
         flexDirection: 'row',
         paddingTop: wp(3)
     },
     timerwrap: {
         height: 35,
-        width: 30,
+        width: 33,
         backgroundColor: 'transparent',
         margin: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: '#ffffff',
+        borderColor: '#000',
         borderWidth: 1,
-        borderRadius: 3
-    }
+        borderRadius: 3,
+        padding: wp(0)
+    },
+    starText: { fontWeight: '400', fontSize: wp(4), color: '#000' }
 });
 
 export default FlashSaleItemWithDiscount;

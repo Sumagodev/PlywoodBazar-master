@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Filtercategory from '../../components/Filtercategory';
@@ -23,7 +23,7 @@ function MyTabBar({ state, descriptors, navigation }) {
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: '#cc8d19',
+        backgroundColor: '#BF9F65',
         paddingHorizontal: wp(3),
         paddingVertical: wp(3),
         justifyContent: 'space-between',
@@ -53,6 +53,40 @@ function MyTabBar({ state, descriptors, navigation }) {
               navigation.navigate({ name: route.name, merge: true });
             }
           }
+          if (!isFocused && !event.defaultPrevented) {
+            if (route.name === 'Notification') {
+              let token = await getDecodedToken();
+              if (!token) {
+                // navigation.navigate('Login');
+                  // useEffect(() => {
+
+      Alert.alert(
+        "Login/Registration Required",
+        "You need to be logged in to access this feature.",
+        [
+          {
+            text: "Login",
+            // Optionally, you can navigate to the Login screen here
+            // onPress: () => navigation.navigate('Login'),
+            onPress: () => {},
+            // onPress: () => navigation.dispatch(
+            //   CommonActions.reset({
+            //     index: 0,
+            //     routes: [{ name: 'Login'}],
+            //   })
+            // ),
+          },
+         
+        ]
+      );
+  
+              } else {
+                navigation.navigate({ name: route.name, merge: true });
+              }
+            } else {
+              navigation.navigate({ name: route.name, merge: true });
+            }
+          }
         };
 
         const onLongPress = () => {
@@ -74,10 +108,10 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={[ styles.navItem, isFocused && styles.selectedItem,]}
           >
             {
-              label.toLowerCase() === 'home' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="home-variant" style={isFocused ? styles.iconSelected : styles.iconDefault} />) :
-              label.toLowerCase() === 'shop' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="store" style={isFocused ? styles.iconSelected : styles.iconDefault} />) : 
-              label.toLowerCase() === 'product' ? ( <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
-              label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
+              label.toLowerCase() === 'home' ? ( <Icon color={isFocused ? '#BF9F65' : 'white'} size={wp(6)} name="home-variant" style={isFocused ? styles.iconSelected : styles.iconDefault} />) :
+              label.toLowerCase() === 'vendors' ? ( <Icon color={isFocused ? '#BF9F65' : 'white'} size={wp(6)} name="store" style={isFocused ? styles.iconSelected : styles.iconDefault} />) : 
+              label.toLowerCase() === 'product' ? ( <Icon color={isFocused ? '#BF9F65' : 'white'} size={wp(6)} name="magnify" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) : 
+              label.toLowerCase() === 'notification' ? ( <FontAwesome color={isFocused ? '#BF9F65' : 'white'} size={wp(6)} name="bell" style={isFocused ? styles.iconSelected : styles.iconDefault} /> ) :
               (
                 <Icon color={isFocused ? '#cc8d19' : 'white'} size={wp(6)} name={isAuthorized ? "account-check" : "account-arrow-right"} style={isFocused ? styles.iconSelected : styles.iconDefault} />
               )
@@ -116,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
   },
   selectedLabel: {
-    color: '#cc8d19',
+    color: '#BF9F65',
     fontSize: wp(4),
   },
 })
@@ -142,7 +176,7 @@ export function BottomTabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Shop" component={Filtercategory} />
+      <Tab.Screen name="Vendors" component={Filtercategory} />
       <Tab.Screen name="Product" component={Search} />
       <Tab.Screen name="Notification" component={isAuthorized ? Notification : Login} />
       <Tab.Screen name="Account" component={isAuthorized ? Userprofile : Login} />

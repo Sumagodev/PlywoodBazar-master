@@ -1,28 +1,28 @@
-import {ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity,Alert} from 'react-native';
-import React, {useState, useRef, useEffect,useContext} from 'react';
+import { ActivityIndicator, ScrollView, Linking, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import PhoneInput from 'react-native-phone-number-input';
-import {TextInput, useTheme} from 'react-native-paper';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {StackRouter, useNavigation, useIsFocused} from '@react-navigation/native';
-import {getAllProducts} from '../services/Product.service';
+import { TextInput, useTheme } from 'react-native-paper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { StackRouter, useNavigation, useIsFocused } from '@react-navigation/native';
+import { getAllProducts } from '../services/Product.service';
 import Header from '../navigation/customheader/Header';
 import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon1 from 'react-native-vector-icons/Entypo';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
-import {errorToast, toastSuccess} from '../utils/toastutill';
-import {checkForValidSubscriptionAndReturnBoolean, getDecodedToken} from '../services/User.service';
-import {Checkbox} from 'react-native-paper';
+import { errorToast, toastSuccess } from '../utils/toastutill';
+import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken } from '../services/User.service';
+import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {getBrandApi} from '../services/brand.service';
-import {getNestedCategories} from '../services/Category.service';
-import {getCityApi} from '../services/city.service';
-import {generateImageUrl} from '../services/url.service';
-import {getStates} from '../services/State.service';
-import {getAllUsers} from '../services/User.service';
-import {ROLES_CONSTANT} from '../utils/constants';
+import { getBrandApi } from '../services/brand.service';
+import { getNestedCategories } from '../services/Category.service';
+import { getCityApi } from '../services/city.service';
+import { generateImageUrl } from '../services/url.service';
+import { getStates } from '../services/State.service';
+import { getAllUsers } from '../services/User.service';
+import { ROLES_CONSTANT } from '../utils/constants';
 // import Header from '../navigation/customheader/Header';
 import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
@@ -73,7 +73,7 @@ export default function AllProducts(props) {
       if (categoryid != '') {
         query += `category=${categoryid}`;
       }
-      const {data: res} = await getAllProducts(query);
+      const { data: res } = await getAllProducts(query);
       if (res) {
         setProductsArr(res.data);
         //console.log('Allproducts', res.data)
@@ -103,7 +103,7 @@ export default function AllProducts(props) {
         );
         return;
       }
-      navigate.navigate('Productdetails', {data: item?.slug})
+      navigate.navigate('Productdetails', { data: item?.slug })
     }
     else {
       Alert.alert(
@@ -182,7 +182,7 @@ export default function AllProducts(props) {
           //setName(decoded?.user?.name);
         }
 
-        let {data: res} = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
         if (res.data) {
           console.log('XX', res.data, 'XX');
           setCurrentUserHasActiveSubscription(res.data);
@@ -282,7 +282,7 @@ export default function AllProducts(props) {
 
 
 
-      console.log(query,"QQQQ");
+      console.log(query, "QQQQ");
 
 
       let response = await getAllProducts(query);
@@ -350,9 +350,9 @@ export default function AllProducts(props) {
 
   const getCategory = async () => {
     try {
-      const {data: res} = await getNestedCategories();
+      const { data: res } = await getNestedCategories();
       if (res) {
-        let tempArr = res.data.map(el => ({...el, checked: false}));
+        let tempArr = res.data.map(el => ({ ...el, checked: false }));
 
         setCategoryData(tempArr);
         if (props?.route?.params?.data) {
@@ -365,9 +365,9 @@ export default function AllProducts(props) {
   };
   const getBrands = async () => {
     try {
-      const {data: res} = await getBrandApi();
+      const { data: res } = await getBrandApi();
       if (res) {
-        setBrandArr(res.data.map(el => ({...el, checked: false})));
+        setBrandArr(res.data.map(el => ({ ...el, checked: false })));
       }
     } catch (error) {
       toastError(error);
@@ -381,10 +381,10 @@ export default function AllProducts(props) {
       // if (queryString && queryString != "") {
       //   query = `${query}&q=${queryString}`
       // }
-      let {data: res} = await getStates(query);
+      let { data: res } = await getStates(query);
       if (res.data) {
-        setStatesArr(res.data.map(el => ({...el, checked: false})));
-        setStatesDisplayArr(res.data.map(el => ({...el, checked: false})));
+        setStatesArr(res.data.map(el => ({ ...el, checked: false })));
+        setStatesDisplayArr(res.data.map(el => ({ ...el, checked: false })));
       }
     } catch (error) {
       console.log('handleGetStateError', error);
@@ -399,10 +399,10 @@ export default function AllProducts(props) {
         query = `${query}&stateId=${queryString}`;
       }
 
-      let {data: res} = await getCityApi(query);
+      let { data: res } = await getCityApi(query);
       if (res.data) {
         // console.log(res.data)
-        setCitiesArr(res.data.map(el => ({...el, checked: false})));
+        setCitiesArr(res.data.map(el => ({ ...el, checked: false })));
         if (props?.route?.params?.locationId) {
           handleCheckLocationOnRender(props?.route?.params?.locationId, res.data);
         }
@@ -477,7 +477,7 @@ export default function AllProducts(props) {
   //     // setSelected([])
   //   }
   // }, [focused]);
-  const renderproductOld = ({item, index}) => {
+  const renderproductOld = ({ item, index }) => {
     // if (!isFirstPageReceived && isloding) {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
@@ -491,16 +491,16 @@ export default function AllProducts(props) {
     return (
       <>
         {
-          <TouchableOpacity onPress={() => navigation.navigate('Supplier', {data: item})} style={styles1.boxproduct}>
-            {item.bannerImage && item.bannerImage != '' ? <Image source={{uri: generateImageUrl(item.bannerImage)}} style={[styles1.imgresponsives]} resizeMode="stretch" /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.imgresponsives]} />}
+          <TouchableOpacity onPress={() => navigation.navigate('Supplier', { data: item })} style={styles1.boxproduct}>
+            {item.bannerImage && item.bannerImage != '' ? <Image source={{ uri: generateImageUrl(item.bannerImage) }} style={[styles1.imgresponsives]} resizeMode="stretch" /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.imgresponsives]} />}
             <View style={styles1.infoproduct}>
               <Text style={styles1.producthead}>{item.companyName} </Text>
               <Text style={styles1.sizesqure}>
-                Products : {item.mainImage} <Text style={{fontFamily: 'Manrope-Bold'}}>{item?.productsCount ? item?.productsCount : 'N.A.'}</Text>
+                Products : {item.mainImage} <Text style={{ fontFamily: 'Manrope-Bold' }}>{item?.productsCount ? item?.productsCount : 'N.A.'}</Text>
               </Text>
               <Text style={styles1.pricearea}>
                 Rating :{' '}
-                <Text style={{fontFamily: 'Manrope-Bold'}}>
+                <Text style={{ fontFamily: 'Manrope-Bold' }}>
                   {item.rating ? item.rating : 0} <AntDesign name="star" size={13} color="#b08218" />{' '}
                 </Text>
               </Text>
@@ -511,7 +511,7 @@ export default function AllProducts(props) {
     );
   };
 
-  const renderproduct = ({item, index}) => {
+  const renderproduct = ({ item, index }) => {
     // if (!isFirstPageReceived && isloding) {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
@@ -519,7 +519,7 @@ export default function AllProducts(props) {
 
     const someShopData = {
       name: item.companyName,
-      imagePath: item.bannerImage && item.bannerImage != '' ? {uri: generateImageUrl(item.bannerImage)} : require('../../assets/img/profile1.png'),
+      imagePath: item.bannerImage && item.bannerImage != '' ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/profile1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
       address: item.message,
@@ -536,7 +536,7 @@ export default function AllProducts(props) {
           <ShopListItem
             vendorItem={someShopData}
             onItemPress={() => {
-              navigation.navigate('Supplier', {data: item});
+              navigation.navigate('Supplier', { data: item });
             }}></ShopListItem>
         }
       </>
@@ -547,7 +547,7 @@ export default function AllProducts(props) {
     let tempArr = [...arr];
     let indexValue = tempArr.findIndex(el => id == el._id);
     tempArr[indexValue].checked = !tempArr[indexValue].checked;
-    tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({...el, checked: false}));
+    tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({ ...el, checked: false }));
 
     setCategoryData([...tempArr]);
   };
@@ -568,7 +568,7 @@ export default function AllProducts(props) {
     } else {
       let indexValue = tempArr.findIndex(el => item._id == el._id);
       tempArr[indexValue].checked = !tempArr[indexValue].checked;
-      tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({...el, checked: false}));
+      tempArr[indexValue].subCategoryArr = tempArr[indexValue].subCategoryArr.map(el => ({ ...el, checked: false }));
     }
     setCategoryData([...tempArr]);
   };
@@ -664,24 +664,24 @@ export default function AllProducts(props) {
   }, [categoryData, minPrice, usertypes, maxPrice, qry, brandArr, citiesDisplayArr, statesDisplayArr, rating, role, page]);
 
   const HandleClearFilter = () => {
-    setCategoryData(categoryData.map(el => ({...el, checked: false})));
-    setUsertypes(prev => prev.map(el => ({...el, checked: false})));
+    setCategoryData(categoryData.map(el => ({ ...el, checked: false })));
+    setUsertypes(prev => prev.map(el => ({ ...el, checked: false })));
     setMinPrice(0);
     setMaxPrice(0);
     setQuery('');
-    setBrandArr(prev => prev.map(el => ({...el, checked: false})));
-    setStatesDisplayArr(statesArr.map(el => ({...el, checked: false})));
+    setBrandArr(prev => prev.map(el => ({ ...el, checked: false })));
+    setStatesDisplayArr(statesArr.map(el => ({ ...el, checked: false })));
     setCitiesDisplayArr([]);
 
     setRating(0);
     this.RBSheet.close();
   };
 
-  const renderfilter = ({item, index}) => {
+  const renderfilter = ({ item, index }) => {
     // console.log(item, "item")
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -690,20 +690,20 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
         {item.subCategoryArr && item.subCategoryArr.length > 0 && item.checked && (
-          <FlatList data={item.subCategoryArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, indexX) => `SubCategory${item._id}`} renderItem={renderCategory} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
+          <FlatList data={item.subCategoryArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, indexX) => `SubCategory${item._id}`} renderItem={renderCategory} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
         )}
       </>
     );
   };
 
-  const renderCategory = ({item, index}) => {
+  const renderCategory = ({ item, index }) => {
     // console.log(item, "item")
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: (item.level - 1) * 10 }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -712,15 +712,15 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
-  const renderVendorFilter = ({item, index}) => {
+  const renderVendorFilter = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -729,15 +729,15 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
-  const renderStateFilter = ({item, index}) => {
+  const renderStateFilter = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -746,15 +746,15 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
-  const renderCityFilter = ({item, index}) => {
+  const renderCityFilter = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -763,16 +763,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-  const renderUserTypes = ({item, index}) => {
+  const renderUserTypes = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -781,16 +781,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ color: 'black', fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-  const renderManufacturersFilter = ({item, index}) => {
+  const renderManufacturersFilter = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -799,16 +799,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-  const renderDealerFilter = ({item, index}) => {
+  const renderDealerFilter = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -817,16 +817,16 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
   };
 
-  const renderDistributorFilter = ({item, index}) => {
+  const renderDistributorFilter = ({ item, index }) => {
     return (
       <>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Checkbox.Android
             status={item.checked ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -835,7 +835,7 @@ export default function AllProducts(props) {
             color="#B08218"
             borderColor="red"
           />
-          <Text style={{fontFamily: 'Manrope-Bold', fontSize: 13}}>{item.name}</Text>
+          <Text style={{ fontFamily: 'Manrope-Bold', fontSize: 13 }}>{item.name}</Text>
         </View>
       </>
     );
@@ -856,7 +856,7 @@ export default function AllProducts(props) {
   };
 
   return (
-    <View style={{backgroundColor: '#FFFFFF'}}>
+    <View style={{ backgroundColor: '#FFFFFF' }}>
       <Header normal={true} screenName={'All Products'} rootProps={props} />
       <View style={styles.container}>
         <Text style={styles.headingTextStyle}>All Products</Text>
@@ -885,37 +885,37 @@ export default function AllProducts(props) {
         <FlatList
           data={productsArr}
           keyExtractor={(item, index) => `${index}`}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             // Check if it's a banner placeholder
 
             return (
               <NewArrivalProductCard
-                imagePath={{uri: generateImageUrl(item.mainImage)}}
-                price={(item.price && item.price !== "null" ? "₹ "+item.price : '')}
+                imagePath={item.mainImage && item.mainImage !=""?{ uri: generateImageUrl(item.mainImage) }:require('../../assets/img/logo_1.png')}
+                price={(item.price && item.price !== "null" ? "₹ " + item.price : '')}
                 name={item.name}
-                location={ (item.cityName && item.cityName !== "null" ? item.cityName : '') + 
-                  (item.stateName && item.stateName !== "null" ? ' ' + item.stateName : '') }
+                location={(item.cityName && item.cityName !== "null" ? item.cityName : '') +
+                  (item.stateName && item.stateName !== "null" ? ' ' + item.stateName : '')}
                 isVerified={item?.isVerified} // Check if item.approved is "APPROVED"          onCallPressed={() => {}}
-                onGetQuotePressed={() => {Gotodetailspage(item)}}
+                onGetQuotePressed={() => { Gotodetailspage(item) }}
                 onCallPressed={() => {
                   handelcallbtn(item?.createdByObj?.companyObj?.phone);
                 }}
-                onCardPressed={() => {Gotodetailspage(item)}}
+                onCardPressed={() => { Gotodetailspage(item) }}
               />
             );
           }}
           scrollEnabled
           numColumns={1}
-          style={{width: '100%', height: '100%', backgroundColor: '#FFFFFF'}}
-          contentContainerStyle={{paddingVertical: 5, paddingBottom: wp(75)}}
+          style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF' }}
+          contentContainerStyle={{ paddingVertical: 5, paddingBottom: wp(75) }}
           ListFooterComponent={
-            <View style={{marginVertical:wp(10)}}>
+            <View style={{ marginVertical: wp(10) }}>
               {isLoading1 ? (
-                <View style={{margin: wp(1)}}>
+                <View style={{ margin: wp(1) }}>
                   <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
                 </View>
               ) : (
-                <View style={{margin: wp(1)}}>
+                <View style={{ margin: wp(1) }}>
                   <LoadMoreButton
                     onPress={() => {
                       fetchNextPage();
@@ -928,7 +928,7 @@ export default function AllProducts(props) {
         />
 
         {isLoading ? <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} /> : null}
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <RBSheet
             ref={ref => {
               this.RBSheet = ref;
@@ -944,33 +944,33 @@ export default function AllProducts(props) {
                 borderTopLeftRadius: 10,
               },
             }}>
-            <View style={{backgroundColor: '#6B4E37', borderRadius: wp(2)}}>
-              <Text style={{color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3)}}>Filters</Text>
+            <View style={{ backgroundColor: '#6B4E37', borderRadius: wp(2) }}>
+              <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3) }}>Filters</Text>
             </View>
-            <ScrollView contentContainerStyle={{padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC'}}>
-              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>User Types</Text>
+            <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>User Types</Text>
               <FlatList
                 data={usertypes.filter(el => (userObj.role ? el.name.toLowerCase() != userObj.role.toLowerCase() : true))}
                 nestedScrollEnabled={false}
                 scrollEnabled={false}
                 keyExtractor={(item, index) => `UserType${index}`}
                 renderItem={renderUserTypes}
-                contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
+                contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }}
               />
-              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>Category</Text>
-              <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
-              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>State</Text>
-              <TextInput onChangeText={val => handleSearchState(val)} value={searchState} style={[styles1.textInput, {height: hp(6)}]} placeholder="Search State Here" />
-              <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
-              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>City</Text>
-              <TextInput onChangeText={val => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, {height: hp(6)}]} placeholder="Search City Here" />
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Category</Text>
+              <FlatList data={categoryData} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `Category${index}`} renderItem={renderfilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>State</Text>
+              <TextInput onChangeText={val => handleSearchState(val)} value={searchState} style={[styles1.textInput, { height: hp(6) }]} placeholder="Search State Here" />
+              <FlatList data={statesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `State${index}`} renderItem={renderStateFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>City</Text>
+              <TextInput onChangeText={val => handleSearchCity(val)} value={searchCity} style={[styles1.textInput, { height: hp(6) }]} placeholder="Search City Here" />
               {cityLoading ? (
                 <ActivityIndicator color="#E7B84E" size={'large'} />
               ) : (
-                <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}} />
+                <FlatList data={citiesDisplayArr} nestedScrollEnabled={false} scrollEnabled={false} keyExtractor={(item, index) => `City${index}`} renderItem={renderCityFilter} contentContainerStyle={{ paddingVertical: 5, paddingBottom: 10 }} />
               )}
-              <Text style={{color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10}}>Rating</Text>
-              <Pressable onPress={() => setRating(4)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{ color: '#000', fontFamily: 'Manrope-Regular', fontSize: 15, marginBottom: 10 }}>Rating</Text>
+              <Pressable onPress={() => setRating(4)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox.Android
                   status={rating == 4 ? 'checked' : 'unchecked'}
                   onPress={() => {
@@ -983,14 +983,14 @@ export default function AllProducts(props) {
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <Text style={{marginLeft: 5}}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
               </Pressable>
-              <Pressable onPress={() => setRating(3)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <Pressable onPress={() => setRating(3)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox.Android
                   status={rating == 3 ? 'checked' : 'unchecked'}
                   onPress={() => {
@@ -1003,14 +1003,14 @@ export default function AllProducts(props) {
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <Text style={{marginLeft: 5}}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
               </Pressable>
-              <Pressable onPress={() => setRating(2)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <Pressable onPress={() => setRating(2)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox.Android
                   status={rating == 2 ? 'checked' : 'unchecked'}
                   onPress={() => {
@@ -1023,14 +1023,14 @@ export default function AllProducts(props) {
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <Text style={{marginLeft: 5}}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
               </Pressable>
-              <Pressable onPress={() => setRating(1)} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <Pressable onPress={() => setRating(1)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox.Android
                   status={rating == 1 ? 'checked' : 'unchecked'}
                   onPress={() => {
@@ -1043,12 +1043,12 @@ export default function AllProducts(props) {
                   color="#B08218"
                   borderColor="red"
                 />
-                <AntDesign color="#EEA829" name="star" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <AntDesign color="grey" name="staro" size={18} style={{marginLeft: 5}} />
-                <Text style={{marginLeft: 5}}>& more</Text>
+                <AntDesign color="#EEA829" name="star" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
+                <Text style={{ marginLeft: 5 }}>& more</Text>
               </Pressable>
               {/* <Pressable onPress={() => setRating(0)} style={{ display: "flex", flexDirection: "row",alignItems:'center' }}>
             <Checkbox.Android
@@ -1066,13 +1066,13 @@ export default function AllProducts(props) {
               <AntDesign color="grey" name="staro" size={18} style={{ marginLeft: 5 }} />
               <Text style={{ marginLeft: 5 }}>& more</Text>
             </Pressable> */}
-              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: hp(5)}}>
-                <TouchableOpacity style={{backgroundColor: '#624832', width: wp(42), borderRadius: 10, paddingVertical: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onPress={() => HandleClearFilter()}>
-                  <Text style={{color: 'white', fontWeight: 'bold', fontSize: wp(4)}}>Clear Filters</Text>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: hp(5) }}>
+                <TouchableOpacity style={{ backgroundColor: '#624832', width: wp(42), borderRadius: 10, paddingVertical: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onPress={() => HandleClearFilter()}>
+                  <Text style={{ color: 'white', fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{backgroundColor: '#624832', width: wp(42), borderRadius: 10, paddingVertical: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onPress={() => this.RBSheet.close()}>
-                  <Text style={{color: 'white', fontWeight: 'bold', fontSize: wp(4)}}>Apply</Text>
+                <TouchableOpacity style={{ backgroundColor: '#624832', width: wp(42), borderRadius: 10, paddingVertical: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onPress={() => this.RBSheet.close()}>
+                  <Text style={{ color: 'white', fontWeight: 'bold', fontSize: wp(4) }}>Apply</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
