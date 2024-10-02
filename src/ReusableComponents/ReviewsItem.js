@@ -6,12 +6,13 @@ import { useState } from "react"
 
 const ReviewsItem =({reviewItem})=>{
     const [imageFailed, setImageFailed] = useState(false); // State to track image failure
+console.log('reviewItem',reviewItem);
 
     return(
         <View style={styles.container}>
             <View style={styles.contentContainer}>
                     
-                        <Text style={styles.headingStyle} ellipsizeMode="tail" numberOfLines={1}>{reviewItem.name}</Text>
+                        <Text style={styles.headingStyle} ellipsizeMode="tail" numberOfLines={1}>{reviewItem?.addedby?.companyObj?.name}</Text>
                         <Rating imageSize={wp(3)} readonly={true} startingValue={reviewItem.rating}/>
                 <Text ellipsizeMode="tail" numberOfLines={3} style={{fontSize:wp(3.5)}}>{reviewItem.message}</Text>
             </View>
