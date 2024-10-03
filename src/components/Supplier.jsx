@@ -60,7 +60,7 @@ export default function Supplier(props) {
   const [topProfileArray, setTopProfileArray] = useState([]);
 
   const [name, setName] = useState('');
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);
   const [message, setMessage] = useState('');
   const [userid, setuserid] = useState('');
   const [supplerid, setsupplerid] = useState('');

@@ -30,7 +30,7 @@ export default function Productdetails(props) {
 
 
   const [productObj, setProductObj] = useState(null);
-  console.log('productObjj', productObj?.createdByObj);
+  // const  productObj?.createdByObj._id);
 
   const [imageArr, setImagesArr] = useState([]);
   const navigation = useNavigation();
@@ -52,8 +52,9 @@ export default function Productdetails(props) {
   const [rating, setRating] = useState(1);
   const [userid, setuserid] = useState();
   const [sellingprice, setsellingprice] = useState();
+  const [loggedInUserId, setLoggedInUserId] = useState('');
   const [value, setvalue] = useState('Get Latest Price');
-  console.log('hhhh', userid);
+  console.log('loggedInUserId', loggedInUserId);
   console.log('hhhh', value);
 
   const [productReviewArr, setProductReviewArr] = useState([]);
@@ -221,6 +222,7 @@ export default function Productdetails(props) {
     try {
       const decodedToken = await getDecodedToken();
       console.log('decodedToken', decodedToken);
+      
       let obj = {
         userId: decodedToken?.user?._id,
         phone: decodedToken?.user?.phone,
@@ -290,7 +292,10 @@ export default function Productdetails(props) {
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
+      
+      
       if (decoded) {
+      setLoggedInUserId(decoded.userId)
         let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
         console.log('setCurrentUserHasActiveSubscription', res);
         if (res.data) {
@@ -372,9 +377,10 @@ export default function Productdetails(props) {
         rating,
         message: messageForReview,
         name: nameForReview,
-        userId: userid,
-        // userId: '66dde3b7c434a420a313a77a',
+        userId: productObj?.createdByObj._id,
+        addedby:loggedInUserId.toString(),
       };
+        
       let { data: res } = await addReview(obj);
       if (res.message) {
 

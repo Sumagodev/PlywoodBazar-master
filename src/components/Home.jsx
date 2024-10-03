@@ -69,10 +69,11 @@ export default function Home() {
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [type, setType] = useState('');
+  const [Role, setRole] = useState('');
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const [topprofiles, settopprofiles] = useState([]);
   const [stateDetailss, setstateDetails] = useState([]);
-  console.log('stateDetailss', stateDetailss);
+
 
   const { height, width } = useWindowDimensions();
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
@@ -151,10 +152,8 @@ export default function Home() {
   };
   const getauthuser = async () => {
     let decoded = await getDecodedToken();
-    if (decoded && decoded?._id) {
-      setuserid(decoded?._id);
-      getUserById(decoded?._id);
-      setCurrentUserId(decoded?._id)
+    if (decoded) {
+      setRole(decoded.role)
     }
   };
 
@@ -186,7 +185,7 @@ export default function Home() {
       handleproductyoumaylike();
       handleopportunitydata();
       handlestates();
-      // getauthuser();
+      getauthuser();
     }
   }, [focused]);
 
@@ -348,6 +347,8 @@ export default function Home() {
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
+      console.log('decoded', decoded);
+
       setCurrentUserId(decoded?.userId)
       if (decoded) {
         if (decoded?.user?.name) {
@@ -599,14 +600,14 @@ export default function Home() {
   }
 
   const renderProductsYouMayLike = ({ item, index }) => {
-    return <LikeProduct imagePath={item?.product?.mainImage && item?.product?.mainImage != " "? { uri: generateImageUrl(item?.product?.mainImage) }:require('../../assets/img/logo_1.png')} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })} />
+    return <LikeProduct imagePath={item?.product?.mainImage && item?.product?.mainImage != " " ? { uri: generateImageUrl(item?.product?.mainImage) } : require('../../assets/img/logo_1.png')} dataItem={item} name={item.productName} location={item.cityName} onCallPress={() => handelcallbtn(item.createdByObj.companyObj.phone)} onGetQuotePress={() => { GotoGetQuote(item) }} onPress={() => navigate.navigate('Productdetails', { data: item?.product?.slug })} />
 
   };
 
   const renderNewArrivals = ({ item, index }) => {
     console.log('zxcv', JSON.stringify(item))
     // return <NewArrivalProductCardVertical horizontal newProductItem={{ imagePath: require('../../assets/img/ply_sample.png'), isVerified: true, name: item.productSlug, location: 'Nashik' }} ></NewArrivalProductCardVertical>;
-    return <NewArrivalProductCardVertical horizontal newProductItem={item} image={item?.image &&item?.image!= ""?{ uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png')} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
+    return <NewArrivalProductCardVertical horizontal newProductItem={item} image={item?.image && item?.image != "" ? { uri: generateImageUrl(item?.image) } : require('../../assets/img/logo_1.png')} onPress={() => navigate.navigate('Productdetails', { data: item.productSlug })} onCallPress={() => handelcallbtn(item?.phone)}></NewArrivalProductCardVertical>;
   };
 
 
@@ -614,7 +615,7 @@ export default function Home() {
   const renderFlashSale = ({ item, index }) => {
     return (
       <View style={{ marginHorizontal: wp(1) }}>
-        <FlashSaleItemWithDiscount imagePath={item?.productId?.mainImage && item?.productId?.mainImage !=""?{ uri: generateImageUrl(item?.productId?.mainImage)}:require('../../assets/img/logo_1.png') }
+        <FlashSaleItemWithDiscount imagePath={item?.productId?.mainImage && item?.productId?.mainImage != "" ? { uri: generateImageUrl(item?.productId?.mainImage) } : require('../../assets/img/logo_1.png')}
           actualPrice={item?.price}
           name={item?.productId?.name}
           salePrice={item?.salePrice}
@@ -679,7 +680,7 @@ export default function Home() {
     } else {
       return (
         // <OpportunitiesItem opportunityItem={{ imagePath: { uri: generateImageUrl(item.image) }, title: item.name, isExclusive: true }} onApplyPress={() => applymodal()} ></OpportunitiesItem>
-        <OpportunitiesItem opportunityItem={{ imagePath:item?.image && item?.image !=""? { uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png'), title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
+        <OpportunitiesItem opportunityItem={{ imagePath: item?.image && item?.image != "" ? { uri: generateImageUrl(item?.image) } : require('../../assets/img/logo_1.png'), title: item.Brand, isExclusive: true, stateName: item?.stateName }} onApplyPress={() => { gotoApplyOpportunities(item) }} ></OpportunitiesItem>
       );
     }
 
@@ -977,7 +978,7 @@ export default function Home() {
               <Carousel
                 data={topprofiles}
                 renderItem={({ item }) => (
-                  <TopProfileHomeCard title={item.companyName} image={item.bannerImage && item.bannerImage !=" "?{ uri: generateImageUrl(item.bannerImage) }:require('../../assets/img/logo_1.png')} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
+                  <TopProfileHomeCard title={item.companyName} image={item.bannerImage && item.bannerImage != " " ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/logo_1.png')} rating={item.rating} Product={item.productsCount} onPress={() => gototopprofile(item)} onCallPress={() => handelcallbtn(item?.phone)} item={item} />
                 )}
                 sliderWidth={wp(100)}
                 itemWidth={wp(80)}
@@ -1061,7 +1062,7 @@ export default function Home() {
                 <FlatList style={[styles.mttop10, { paddingHorizontal: wp(4) }]} contentContainerStyle={{ paddingTop: 5, paddingBottom: 10 }} data={flashSalesArr} horizontal renderItem={renderFlashSale} keyExtractor={(item, index) => `${index}`} />
               </View>
 
-          
+
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={styles1.headingmain}>Products You May Like</Text>
@@ -1099,10 +1100,20 @@ export default function Home() {
                 />
               </View>
 
-              <TouchableOpacity style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center' ,width:'100%',height:wp(40)}]} onPress={() => Gotoopportunities()}>
-               
-                <Image source={require('../../assets/img/deal3.png')} style={{ width:'100%', height:'100%' }} resizeMode="contain" />
-              </TouchableOpacity>
+              <View style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center', width: '100%', height: wp(40) }]} onPress={() => Gotoopportunities()}>
+
+                <Image source={require('../../assets/img/deal5.png')} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
+              </View>
+              {
+                Role === 'MANUFACTURER/IMPORTER' || Role === 'DISTRIBUTOR' ?
+
+                  <Pressable style={{ alignSelf: 'center', margin:wp(2)}} >
+                    <CustomButtonNew textSize={wp(4)} text="Add Opportunities" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => Gotoopportunities()} />
+                  </Pressable>
+                  :
+                  null
+              }
+
 
 
               <FlatList data={oppdata} horizontal renderItem={renderOpportunities} keyExtractor={(item, index) => `${index}`} />

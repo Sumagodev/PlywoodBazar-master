@@ -1,4 +1,4 @@
-import {ScrollView, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity, Modal} from 'react-native';
+import {ScrollView, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity, Modal,Alert} from 'react-native';
 import React, {useState, useRef, useEffect, useContext} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import styles from '../../assets/stylecomponents/Style';
@@ -51,12 +51,35 @@ export default function Userprofile(props) {
     }
   }, [focused]);
 
+  // const handleLogout = async () => {
+  //   await removeToken();
+  //   setIsAuthorized(false);
+  //   navigate.navigate('Home');
+  // };
   const handleLogout = async () => {
-    await removeToken();
-    setIsAuthorized(false);
-    navigate.navigate('Home');
+    Alert.alert(
+      'Logout', // Alert title
+      'Are you sure you want to logout?', // Alert message
+      [
+        
+        {
+          text: 'Yes', // Option to proceed with logout
+          onPress: async () => {
+            await removeToken();
+            setIsAuthorized(false);
+            navigate.navigate('Home');
+          },
+        },
+        {
+          text: 'No', // Option to cancel
+          onPress: () => console.log('Logout cancelled'),
+          style: 'cancel',
+        },
+        
+      ],
+      { cancelable: true } // Allow dismissal of the alert by tapping outside of it
+    );
   };
-
   const handleDeleteAccount = async () => {
     try {
       const res = await deleteUserByID(userID);

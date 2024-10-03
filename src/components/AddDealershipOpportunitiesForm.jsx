@@ -29,8 +29,9 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
+  const [Role, setRole] = useState('');
   const [productsArray, setproductsArray] = useState([]);
-  console.log('productsArray', productsArray);
+  console.log('Role', Role);
 
   const [selectedBusinessType, setSelectedBusinessType] = useState();
   const [selectedproductsArray, setSelectedproductsArray] = useState();
@@ -60,33 +61,27 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   };
   const [rolesArr, setRolesArr] = useState([
     {
-      name: ROLES_CONSTANT.CONTRACTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.RETAILER,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DEALER,
-      checked: false,
+      name: ROLES_CONSTANT.MANUFACTURER,
+      checked: true,
     },
     {
       name: ROLES_CONSTANT.DISTRIBUTOR,
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
+      name: ROLES_CONSTANT.DEALER,
+      checked: false,
     },
   ]);
 
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
+    setRole(decodedToken?.role);
     let res = await getUserById(decodedToken?.userId);
-    console.log('decodedToken?.userId', decodedToken?.userId);
+    console.log('decodedToken?.userId', decodedToken);
     if (res?.data) {
       setuserID(res?.data.data._id);
+      
 
       setName(res.data.data.companyObj.name);
       setEmail(res.data.data.companyObj.email);
@@ -415,7 +410,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               maxHeight={300}
               labelField="name"
               valueField="name" // Ensure this matches your data structure
-              placeholder="Business Type *"
+              placeholder="Select Type *"
               search
               searchPlaceholder="Search..."
               value={selectedBusinessType} // Make sure this is the correct format (string or object)
