@@ -27,7 +27,7 @@ const EditdealershipOpp = (props) => {
   const prevSelectedCities = Data.cities;
   const stateid = Data.stateId
 
-  console.log('prevSelectedCities', prevSelectedCities);
+  console.log('Datattt', Data);
 
   const Did = Data._id;
   const focused = useIsFocused();
@@ -35,6 +35,7 @@ const EditdealershipOpp = (props) => {
   const [userID, setuserID] = useState('');
   const navigation = useNavigation();
   const [type, setType] = useState('');
+  const [Role, setRole] = useState('');
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState(Data.Brand);
   const [email, setEmail] = useState('');
@@ -55,10 +56,10 @@ const EditdealershipOpp = (props) => {
   const [fileBase64, setFileBase64] = useState(null);
   const debounceTimeout = useRef(null);
   const [selectedItems, setSelectedItems] = useState([]);
-  console.log('selectedItems', stateId);
+  console.log('Role', Role);
 
   const Statedata = { name: Data.stateName, value: Data.stateId }
-  
+
   const onSelectedItemsChange = selectedItems => {
     setSelectedItems(selectedItems);
   };
@@ -69,27 +70,24 @@ const EditdealershipOpp = (props) => {
     setSelectedItemscate(selectedItemscate);
   };
   const [rolesArr, setRolesArr] = useState([
-    {
-      name: ROLES_CONSTANT.CONTRACTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.RETAILER,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DEALER,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
-    },
   ]);
+
+  const UpdateType = () => {
+    if (Role === ROLES_CONSTANT.MANUFACTURER) {
+
+      setRolesArr([
+        { name: ROLES_CONSTANT.MANUFACTURER, checked: false },
+        { name: ROLES_CONSTANT.DISTRIBUTOR, checked: false },
+        { name: ROLES_CONSTANT.DEALER, checked: false },
+      ]);
+    } else if (Role === ROLES_CONSTANT.DISTRIBUTOR) {
+
+      setRolesArr([
+        { name: ROLES_CONSTANT.DEALER, checked: true },
+      ]);
+    }
+
+  }
   const handleGetCategory = async () => {
     try {
       let { data: res } = await getAllCategories();
@@ -118,6 +116,8 @@ const EditdealershipOpp = (props) => {
   };
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
+    setRole(decodedToken?.role);
+   
     let res = await getUserById(decodedToken?.userId);
     console.log('decodedToken?.userId', decodedToken?.userId);
     if (res?.data) {
@@ -189,9 +189,10 @@ const EditdealershipOpp = (props) => {
   }, [stateId]);
 
   useEffect(() => {
+    UpdateType();
     handleGeyUserDetails();
     handleGetProdductsBySupplierId();
-  }, []);
+  }, [Role]);
 
   const validateForm = () => {
     if (!name || !selectedBusinessType || !selectedproductsArray || !brand || !stateId || !selectedItems) {
@@ -428,7 +429,7 @@ const EditdealershipOpp = (props) => {
   return (
     <>
       <ScrollView>
-      <Header normal={true} rootProps={props} />
+        <Header normal={true} rootProps={props} />
         <View style={styles1.containerForm}>
           <Text style={styles1.textStyle}> Edit Promoted Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>

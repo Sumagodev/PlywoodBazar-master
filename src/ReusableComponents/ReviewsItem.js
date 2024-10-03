@@ -18,7 +18,7 @@ console.log('reviewItem',reviewItem);
             </View>
             <View style={styles.imageContainer}>
                 <Image
-                source={imageFailed ? require('../../assets/img/logo_1.png') : {uri:generateImageUrl(reviewItem?.userId?.profileImage)}} // Fallback to default image
+                source={imageFailed ? require('../../assets/img/logo_1.png') : {uri:generateImageUrl(reviewItem?.addedby?.profileImage)}} // Fallback to default image
                 resizeMode='contain'
                 style={styles.image}
                 onError={() => setImageFailed(true)} // Set imageFailed to true on error
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center',
+        marginLeft:wp(3.5)
+      
     },
     contentContainer:{
         justifyContent:'flex-start',

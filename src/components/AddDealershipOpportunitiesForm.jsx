@@ -18,7 +18,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { AddDealershipOpportunities } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-import { getAllCategories } from '../services/Category.service';
+import { getAllCategories, getMainCategories } from '../services/Category.service';
+
 const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
@@ -59,21 +60,24 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const onSelectedItemsChangeCate = selectedItemscate => {
     setSelectedItemscate(selectedItemscate);
   };
-  const [rolesArr, setRolesArr] = useState([
-    {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
-    },
-    {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
-      checked: false,
-    },
-    {
-      name: ROLES_CONSTANT.DEALER,
-      checked: false,
-    },
-  ]);
+  const [rolesArr, setRolesArr] = useState([]);
 
+  const UpdateType =()=>{
+    if (Role === ROLES_CONSTANT.MANUFACTURER) {
+
+      setRolesArr([
+        { name: ROLES_CONSTANT.MANUFACTURER, checked: true },
+        { name: ROLES_CONSTANT.DISTRIBUTOR, checked: false },
+        { name: ROLES_CONSTANT.DEALER, checked: false },
+      ]);
+    } else if (Role === ROLES_CONSTANT.DISTRIBUTOR) {
+     
+      setRolesArr([
+        { name: ROLES_CONSTANT.DEALER, checked: true },
+      ]);
+    }
+
+  }
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
     setRole(decodedToken?.role);
@@ -113,7 +117,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   // };
   const handleGetCategory = async () => {
     try {
-      let { data: res } = await getAllCategories();
+      let { data: res } = await getMainCategories();
       if (res.data) {
         setCategoryArr(res.data);
 
@@ -138,11 +142,12 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   };
 
   useEffect(() => {
+    UpdateType();
     if (countryId) {
       handleDebouncedGetStates(countryId);
       handleGetCategory()
     }
-  }, [countryId, focused]);
+  }, [countryId, focused,Role]);
 
   const handleGetCities = async stateId => {
     try {
@@ -487,7 +492,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               )}
             </View>
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} editable={false} onChangeText={value => setBrand(value)} />
+            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} editable={true} onChangeText={value => setBrand(value)} />
             <View style={{ height: wp(1) }} />
             <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)} />
             <View style={{ height: wp(1) }} />

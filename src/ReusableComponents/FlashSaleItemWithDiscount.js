@@ -129,12 +129,12 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
             </View>
             {offPercentage && (
                 <View style={styles.starContainer}>
-                    <Icon name='decagram' color='#c3a186' size={wp(15)} />
+                    <Icon name='decagram' color='red' size={wp(15)} />
                     <View style={{ flexDirection: 'column', position: 'absolute', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-                        <Text style={{ color: 'white', textAlign: 'center', fontSize: wp(3) }}>
+                        <Text style={{ color: 'white', textAlign: 'center', fontSize: wp(3),fontWeight:'bold'}}>
                             {discountType === 'Amount' ? `₹ ${offPercentage}` : `${offPercentage} %`}
                         </Text>
-                        <Text style={{ color: 'white', textAlign: 'center', fontSize: wp(3) }}>OFF</Text>
+                        <Text style={{ color: 'white', textAlign: 'center', fontSize: wp(3),fontWeight:'bold' }}>OFF</Text>
                     </View>
                 </View>
             )}

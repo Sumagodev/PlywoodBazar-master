@@ -117,7 +117,7 @@ export default function AddFlashSale(props) {
       errorToast(error);
     }
   };
-
+ 
   return (
     <>
       <Header normal={true} screenName={'Create Flash Sales'} rootProps={props} />
@@ -128,7 +128,7 @@ export default function AddFlashSale(props) {
 
 
         <View style={{ flex: 1, borderTopLeftRadius: wp(10), borderTopRightRadius: wp(10), marginTop: wp(0), width: wp(100), overflow: 'hidden' }}>
-          <ImageBackground style={{ flex: 1, borderRadius: wp(15),backgroundColor:"#5647871a" }} source={require('../../assets/img/main_bg.jpg')}>
+          <View style={{ flex: 1, borderRadius: wp(15),backgroundColor:"#5647871a" }} >
             <Text style={{ fontSize: wp(5), fontWeight: 800, alignSelf: 'center', marginTop: wp(5) }}>Create a Flash Sale</Text>
 
             <View style={styles1.card_main}>
@@ -333,7 +333,7 @@ export default function AddFlashSale(props) {
                 <CustomButtonNew paddingHorizontal={wp(5)} paddingVertical={wp(3.5)} buttonBgColor={CustomColors.mattBrownDark} onPress={() => handleCreateFlashSale()} text={"Create a Flash Sale"}></CustomButtonNew>
               </View>
             </View>
-          </ImageBackground>
+          </View>
 
         </View>
         <DatePicker

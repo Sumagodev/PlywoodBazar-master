@@ -7,6 +7,9 @@ let serverUrl = `${url}/category`;
 export const getAllCategories = async (query) => {
     return axios.get(`${serverUrl}/getCategory/?${query}`)
 }
+export const getMainCategories = async (query) => {
+    return axios.get(`${serverUrl}/getNestedCategories/`)
+}
 
 
 export const getNestedCategories = async (query) => {
