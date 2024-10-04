@@ -624,6 +624,7 @@ export default function Home() {
           discountType={item?.discountType}
           EndDate={item?.endDate}
           onCallPress={() => { GotoFlashSaleCallIcon(item) }}
+          onCardPress={() => { GotoFlash() }}
         ></FlashSaleItemWithDiscount>
       </View>
     );
@@ -942,16 +943,14 @@ export default function Home() {
                 contentContainerStyle={{paddingVertical: 5, paddingBottom: 10}}
               /> */}
 
-              <LinearGradient
+              <View
 
-                colors={['#ebbb60', '#E0C7AD', '#F1E8D1']}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 1 }}
+                
                 style={{ marginTop: wp(5), paddingBottom: wp(5) }}
               >
                 <View style={[styles.padinghr, styles1.flexbetwen, { marginBottom: wp(6) }]}>
                   {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
-                  <Text style={{ fontSize: wp(6), fontWeight: 800, color: 'white' }}>New Arrivals</Text>
+                  <Text style={{ fontSize: wp(6), fontWeight: 800, color: '#000' }}>New Arrivals</Text>
                   <Pressable >
                     <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => GotoAddProduct()} />
                   </Pressable>
@@ -972,7 +971,7 @@ export default function Home() {
 
                   }
                 />
-              </LinearGradient>
+              </View>
 
               <Text style={styles1.topprofiletext} >Top Profiles</Text>
               <Carousel

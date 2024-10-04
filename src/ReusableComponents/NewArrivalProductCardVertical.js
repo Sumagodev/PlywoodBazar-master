@@ -20,10 +20,10 @@ export default NewArrivalProductCardVertical = ({ newProductItem, image, onPress
             </View>
             <View style={styles.rowStyle}>
                 <Icon size={wp(5)}
-                    name={newProductItem.verifeied ? 'check-decagram' : 'alert-decagram'}
-                    color={newProductItem.verifeied ? 'green' : 'red'}
+                    name={newProductItem.verifeied ? 'check-decagram' : null}
+                    color={newProductItem.verifeied ? 'green' : null}
                 />
-                <Text style={wp(4)}>{newProductItem.verifeied ? ' Verified' : ' Unverified'}</Text>
+                <Text style={wp(4)}>{newProductItem.verifeied ? ' Verified' : null}</Text>
             </View>
             <View style={{ marginVertical: wp(1) }}>
                 <CustomButton rightIcon={require('../../assets/img/phone.png')} rightIconBgColor={CustomColors.accentGreen} text='Get Quote'
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
         elevation: 10,
         margin: wp(2),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom:wp(5)
     },
     imageStyle: {
         width: '90%',

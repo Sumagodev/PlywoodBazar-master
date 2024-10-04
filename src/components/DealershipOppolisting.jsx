@@ -90,7 +90,7 @@ export default function DealershipOppolisting(props) {
 
     const renderMyProductItem = ({ item, index }) => {
 
-        console.log('00000000', item);
+        console.log('000000001', item);
         console.log('generateImageUrl(item?.image)', generateImageUrl(item?.image));
 
         const productItem = {

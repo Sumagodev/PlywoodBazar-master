@@ -27,7 +27,7 @@ const ApplyOppFor = ({route,navigation}) => {
 
   
   const focused = useIsFocused();
-  const [name, setName] = useState('');
+  const [name, setName] = useState(Data.Organisation_name);
   const [userID, setuserID] = useState('');
   console.log('userIDuserID',userID);
   
@@ -97,7 +97,7 @@ const ApplyOppFor = ({route,navigation}) => {
     if (res?.data) {
      setuserID(res?.data.data._id);
       
-      setName(res.data.data.companyObj.name);
+      // setName(res.data.data.companyObj.name);
       setEmail(res.data.data.companyObj.email);
     }
   };
@@ -295,11 +295,11 @@ const ApplyOppFor = ({route,navigation}) => {
         
            
 
-            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)}    editable={false}
+            <TextInput style={styles1.BorderedPressable} placeholder="Brand*" value={brand} onChangeText={value => setBrand(value)}    editable={true}
             />
             <View style={{ height: wp(1) }} />
-            <TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)}    editable={false}/>
-            <View style={{ height: wp(1) }} />
+            {/*<TextInput style={styles1.BorderedPressable} placeholder="Email*" value={email} onChangeText={value => setEmail(value)}    editable={false}/>
+            <View style={{ height: wp(1) }} />*/}
             <TextInput style={styles1.BorderedPressable} placeholder="State*" value={Data.stateName} onChangeText={value => setstateId(Data.stateName)}   editable={false}
  />
             <View style={{ height: wp(1) }} />

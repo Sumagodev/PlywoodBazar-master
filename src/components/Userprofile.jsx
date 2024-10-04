@@ -114,6 +114,9 @@ export default function Userprofile(props) {
           </View>
           <Text style={profileStyle.title}>My Products</Text>
         </Pressable>
+
+
+
         <Pressable onPress={() => navigate.navigate('DealershipOppolisting')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
             <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
@@ -126,6 +129,9 @@ export default function Userprofile(props) {
           </View>
           <Text style={profileStyle.title}>Dealership Opportunities Leads</Text>
         </Pressable>
+
+
+        
         <Pressable onPress={() => navigate.navigate('SelfAppliedOpportunitiesList')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
             <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />

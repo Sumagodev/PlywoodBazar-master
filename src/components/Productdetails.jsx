@@ -33,11 +33,12 @@ export default function Productdetails(props) {
   // const  productObj?.createdByObj._id);
 
   const [imageArr, setImagesArr] = useState([]);
+  const [decodecode, setdecodecode] = useState('');
   const navigation = useNavigation();
 
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [similarProductsArr, setSimilarProductsArr] = useState([]);
-  console.log('similarProductsArr', similarProductsArr);
+  console.log('decodecode', decodecode);
 
   const focused = useIsFocused();
   const [readmore, setReadmore] = useState(false);
@@ -46,7 +47,7 @@ export default function Productdetails(props) {
   const [isloding, setIsloding] = useState(false);
   const [productId, setProductId] = useState('');
   const [productOwnerId, setProdutOwnerId] = useState('');
-  const [nameForReview, setNameForReview] = useState(null);
+  const [nameForReview, setNameForReview] = useState(decodecode);
   const [messageForReview, setMessageForReview] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState(1);
@@ -228,7 +229,7 @@ export default function Productdetails(props) {
     try {
       const decodedToken = await getDecodedToken();
       console.log('decodedToken', decodedToken);
-      
+
       let obj = {
         userId: decodedToken?.user?._id,
         phone: decodedToken?.user?.phone,
@@ -298,10 +299,11 @@ export default function Productdetails(props) {
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
-      
-      
+
+
       if (decoded) {
-      setLoggedInUserId(decoded.userId)
+        setLoggedInUserId(decoded.userId)
+        setdecodecode(decoded.user.name.toString())
         let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
         console.log('setCurrentUserHasActiveSubscription', res);
         if (res.data) {
@@ -716,7 +718,7 @@ export default function Productdetails(props) {
           <View style={reviewStyle.addBtn}><CustomButtonOld textSize={wp(4)} text={"Add"} onPress={() => { handleModelshow() }}></CustomButtonOld></View>
         </View>
         <ScrollView
-          style={{ marginVertical: wp(5) }} // Set the fixed height for the scrollable area
+          contentContainerStyle={{ marginVertical: wp(5) }} // Set the fixed height for the scrollable area
           nestedScrollEnabled={true} // Enable nested scrolling
         >
 

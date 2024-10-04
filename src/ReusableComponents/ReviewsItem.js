@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center',
+        marginLeft:wp(3.5)
+      
     },
     contentContainer:{
         justifyContent:'flex-start',
