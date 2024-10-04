@@ -13,7 +13,7 @@ import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { AllBanerByUserId, DeleteBanner, DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../services/Advertisement.service';
-import DealershipData from '../ReusableComponents/DealershipData';
+
 import Categories from './Categories';
 import AllBannerListCard from '../ReusableComponents/AllBannerListCard';
 

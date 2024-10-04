@@ -149,7 +149,7 @@ export default function EditPromotions(props) {
         <>
         
              <Header normal={true} rootProps={props} />
-          <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
+          <View style={styles1.cardContainer} >
              <ScrollView>
              <Text style={{fontSize: wp(6), marginVertical: wp(2),fontWeight: 600, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>Update Promotion</Text>
 
@@ -236,7 +236,7 @@ export default function EditPromotions(props) {
                     fontSize:wp(4)                }}
               />
                 </Pressable>
-
+<Text style={styles1.nameheading}>Add Image </Text>
                 <Pressable
                     style={styles1.BorderedPressable}
                     onPress={() => {
@@ -247,9 +247,9 @@ export default function EditPromotions(props) {
                             <>
                                 {
                                     fileBase64 ?
-                                        <Text style={styles.borderedPressableText}>View Uploaded preview not available</Text>
+                                        <Text style={{color:'black'}}>View Uploaded preview not available</Text>
                                         :
-                                        <Text style={styles.borderedPressableText}>Please Upload Image/Video</Text>
+                                        <Text style={{color:'black'}}>Please Upload Image/Video</Text>
                                 }
                             </>
                             :
@@ -269,7 +269,7 @@ export default function EditPromotions(props) {
                                             }
                                         </>
                                         :
-                                        <Text style={styles.borderedPressableText}>Please Upload Image/Video</Text>
+                                        <Text style={{color:'black'}}>Please Upload Image/Video</Text>
                                 }
                             </>
                     }
@@ -311,7 +311,7 @@ export default function EditPromotions(props) {
                 }}
             />
             </ScrollView>
-            </ImageBackground>
+            </View>
         </>
     );
 }
@@ -364,14 +364,8 @@ const styles1 = StyleSheet.create({
         marginTop: 15,
         borderRadius: 25,
     },
-    BorderedPressableText: {
-        // backgroundColor: "white",
-        // borderColor: "#B08218",
-        // borderWidth: 1,
-        // paddingVertical: 15,
-        // paddingLeft: 15,
-        // marginTop: 15,
-        // borderRadius: 15,
+    borderedPressableText: {
+    color:'black'
     },
     // new design 
      centeredView: {
@@ -409,6 +403,7 @@ const styles1 = StyleSheet.create({
     borderTopLeftRadius: wp(15),
     overflow: 'hidden',
     height: '100%',
+    backgroundColor:"#5647871a"
    
   },
   card_main: {

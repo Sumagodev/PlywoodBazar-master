@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View , ActivityIndicator} from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
 import { getDecodedToken, getUserById } from '../services/User.service';
@@ -16,8 +16,10 @@ export default function Leads(props) {
   const [userObj, setUserObj] = useState({});
   const [userSubscriptionExpired, setUserSubscriptionExpired] = useState(true);
   const [userSubscriptionBlocked, setUserSubscriptionBlocked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const getSubscriptions = async () => {
     try {
+      setIsLoading(true)
       let decodedObj = await getDecodedToken();
 
       const { data: res } = await getLeadsBycreatedById(decodedObj?.userId);
@@ -27,9 +29,11 @@ export default function Leads(props) {
       if (res) {
         console.log(res.data.length)
         setleadsArr(res.data);
+        setIsLoading(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
     }
   };
 
@@ -92,10 +96,17 @@ export default function Leads(props) {
   return (
     <>
       <Header normal={true} screenName={'Leads'} rootProps={props} />
-    <View style={{flex:1,backgroundColor:"#5647871a"}}>
+    <View style={{flex:1,backgroundColor: '#FFF4EC',}}>
     <View style={{flex:1, paddingHorizontal:10,alignItems:'center'}}>
 
       <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Leads</Text>
+      
+       {
+          isLoading ?
+            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            : null
+        }
+      
       {
         (userSubscriptionExpired == false) && (userSubscriptionBlocked == false) ?
           <FlatList

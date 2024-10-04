@@ -512,7 +512,7 @@ export default function Home() {
         );
         return;
       }
-      navigate.navigate('MyFlashSales')
+      navigate.navigate('AddFlashSales')
 
     }
     else {
@@ -576,6 +576,50 @@ export default function Home() {
       );
     }
   }
+  const FlashSaleProduct = (item) => {
+
+
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
+      }
+      handelcallbtn(item?.productId?.createdByObj?.phone)
+      navigate.navigate('Productdetails', { data: item?.productId?.slug })
+    }
+    else {
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
+    }
+  }
   const GotoGetQuote = (item) => {
     if (isAuthorized) {
       navigate.navigate('Productdetails', { data: item?.product?.slug })
@@ -613,6 +657,8 @@ export default function Home() {
 
 
   const renderFlashSale = ({ item, index }) => {
+    console.log('itemitem', item);
+
     return (
       <View style={{ marginHorizontal: wp(1) }}>
         <FlashSaleItemWithDiscount imagePath={item?.productId?.mainImage && item?.productId?.mainImage != "" ? { uri: generateImageUrl(item?.productId?.mainImage) } : require('../../assets/img/logo_1.png')}
@@ -624,7 +670,7 @@ export default function Home() {
           discountType={item?.discountType}
           EndDate={item?.endDate}
           onCallPress={() => { GotoFlashSaleCallIcon(item) }}
-          onCardPress={() => { GotoFlash() }}
+          onCardPress={() => { FlashSaleProduct(item) }}
         ></FlashSaleItemWithDiscount>
       </View>
     );
@@ -945,7 +991,7 @@ export default function Home() {
 
               <View
 
-                
+
                 style={{ marginTop: wp(5), paddingBottom: wp(5) }}
               >
                 <View style={[styles.padinghr, styles1.flexbetwen, { marginBottom: wp(6) }]}>
@@ -1014,16 +1060,16 @@ export default function Home() {
                 <View style={[styles1.textwrap]}>
                   <Text style={{ fontSize: wp(3.5) }}>Unlock endless possibilities</Text>
                   <Text style={{ fontSize: wp(3.5) }}>with our</Text>
-                  <View style={{ flexDirection: 'row', marginTop: 0 }}>
+                  <TouchableOpacity style={{ flexDirection: 'row', marginTop: 0 }} onPress= {() => {navigate.navigate('Subscriptions', { register: false })}}>
                     <Text style={{ fontSize: wp(4.5), color: '#FFFFFF', fontWeight: 'bold' }}>Subscription!</Text>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: wp(1), height: wp(6), width: wp(6) }}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: wp(1), height: wp(6), width: wp(6) }} >
                       <Image
                         source={require('../../assets/img/subicon.png')} // Replace with your image path
                         style={{ height: 25, width: 25 }}
                       />
                     </View>
 
-                  </View>
+                  </TouchableOpacity>
 
                 </View>
                 <View style={styles1.imagewrap}>
@@ -1051,7 +1097,7 @@ export default function Home() {
 
               <View style={[styles.padinghr, styles1.flexbetwen]}>
                 <Text style={[styles1.headingmain, { fontWeight: 800, color: 'black', marginBottom: wp(5) }]}>Flash Sales</Text>
-                <Pressable onPress={() => navigate.navigate('AllProducts')}>
+                <Pressable >
                   <CustomButtonOld textSize={wp(4)} text={"Add"} onPress={() => { GotoFlash() }}></CustomButtonOld>
                 </Pressable>
               </View>
@@ -1106,7 +1152,7 @@ export default function Home() {
               {
                 Role === 'MANUFACTURER/IMPORTER' || Role === 'DISTRIBUTOR' ?
 
-                  <Pressable style={{ alignSelf: 'center', margin:wp(2)}} >
+                  <Pressable style={{ alignSelf: 'center', margin: wp(2) }} >
                     <CustomButtonNew textSize={wp(4)} text="Add Opportunities" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => Gotoopportunities()} />
                   </Pressable>
                   :

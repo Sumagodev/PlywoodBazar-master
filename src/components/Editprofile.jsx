@@ -494,13 +494,13 @@ export default function Editprofile(props) {
         </View> */}
 
 
-
+{/*
             <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Organization Phone</Text>
             <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
               <TextInput style={styles1.card_main} placeholder={'Organization Phone'} onChangeText={setphone} value={phone} />
             </View>
 
-
+*/}
 
             <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Birth Date</Text>
             <Pressable onPress={() => setAniversaryDateModal(true)}>

@@ -1,22 +1,22 @@
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
-import React, {useEffect, useState} from 'react';
-import {FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
-import {deleteAdvertisement, getAllAdvertisements} from '../services/Advertisement.service';
-import {getAllFlashSalesbyUserId} from '../services/FlashSales.service';
-import {getAllProducts} from '../services/Product.service';
-import {generateImageUrl} from '../services/url.service';
-import {getDecodedToken, getUserById} from '../services/User.service';
-import {errorToast, toastSuccess} from '../utils/toastutill';
+import { deleteAdvertisement, getAllAdvertisements } from '../services/Advertisement.service';
+import { getAllFlashSalesbyUserId } from '../services/FlashSales.service';
+import { getAllProducts } from '../services/Product.service';
+import { generateImageUrl } from '../services/url.service';
+import { getDecodedToken, getUserById } from '../services/User.service';
+import { errorToast, toastSuccess } from '../utils/toastutill';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import {PRIMARY_COLOR, WHITE_COLOR} from '../utils/constants';
+import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import CustomColors from '../styles/CustomColors';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 export default function MyPromotions(props) {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const focused = useIsFocused();
   const [saleArr, setSaleArr] = useState([]);
   const [userSubscriptionExpired, setUserSubscriptionExpired] = useState(true);
@@ -26,7 +26,7 @@ export default function MyPromotions(props) {
     try {
       let decodedObj = await getDecodedToken();
 
-      const {data: res} = await getAllAdvertisements(decodedObj?.userId);
+      const { data: res } = await getAllAdvertisements(decodedObj?.userId);
       if (res) {
         console.log(JSON.stringify(res.data, null, 2));
         setSaleArr(res.data);
@@ -38,7 +38,7 @@ export default function MyPromotions(props) {
 
   const handleDeletePromotions = async id => {
     try {
-      const {data: res} = await deleteAdvertisement(id);
+      const { data: res } = await deleteAdvertisement(id);
       if (res) {
         toastSuccess(res.message);
         getSubscriptions();
@@ -51,7 +51,7 @@ export default function MyPromotions(props) {
   const handleGetUser = async () => {
     try {
       let decoded = await getDecodedToken();
-      let {data: res} = await getUserById(decoded.userId);
+      let { data: res } = await getUserById(decoded.userId);
       if (res.data) {
         setUserDataObj(res.data);
         setUserSubscriptionExpired(res.data.userSubscriptionExpired);
@@ -61,44 +61,44 @@ export default function MyPromotions(props) {
     }
   };
 
-  const renderSubscriptionItem = ({item, index}) => {
+  const renderSubscriptionItem = ({ item, index }) => {
     return (
-      <View style={[styles1.card_main, {marginTop: 10}]}>
+      <View style={[styles1.card_main, { marginTop: 10 }]}>
         <View style={styles1.manageContainer}>
-          <TouchableOpacity style={{marginHorizontal: 1, width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: 'green'}} onPress={() => navigation.navigate('EditPromotions', {data: item?._id})}>
+          <TouchableOpacity style={{ marginHorizontal: 1, width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: 'green' }} onPress={() => navigation.navigate('EditPromotions', { data: item?._id })}>
             <FontAwesomeIcon name="edit" size={10} color="#fff" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{marginHorizontal: 10, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: 'red'}} onPress={() => handleDeletePromotions(item?._id)}>
+          <TouchableOpacity style={{ marginHorizontal: 10, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: 'red' }} onPress={() => handleDeletePromotions(item?._id)}>
             <FontAwesomeIcon name="trash-o" size={10} color="#fff" />
           </TouchableOpacity>
         </View>
 
-        <Image source={{uri: generateImageUrl(item?.productId?.mainImage)}} style={{width: wp(95), height: wp(40)}} resizeMode="cover" />
+        <Image source={{ uri: generateImageUrl(item?.productId?.mainImage) }} style={{ width: wp(95), height: wp(40) }} resizeMode="cover" />
 
-        <View style={{padding: 10}}>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+        <View style={{ padding: 10 }}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text style={styles1.nameheading}>{item?.productId?.name}</Text>
           </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text>Selling Price : </Text>
             <Text>₹{item?.productId?.sellingprice}</Text>
           </View>
 
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text>Price : </Text>
             <Text>₹ {item?.productId?.price}</Text>
           </View>
 
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text>Start Date : </Text>
             <Text>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
           </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text>End Date : </Text>
             <Text>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
           </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text>Message : </Text>
             <Text>{item?.message}</Text>
           </View>
@@ -106,33 +106,35 @@ export default function MyPromotions(props) {
       </View>
     );
   };
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
 
-    console.log('itemx',JSON.stringify(item))
+    console.log('itemx',item.productId.mainImage)
     return (
       <Pressable style={stylesCard.container}>
-       
-        <Image style={{width:'100%',height:wp(45),borderRadius:wp(5)}} 
-        
-        source={
-          item?.image && item?.image !== "null"
-            ? { uri: generateImageUrl(item.image) }
-            : {uri: generateImageUrl(item?.productId?.mainImage)}
-        }
-        />
-        <View style={stylesCard.imageStyle}>       
-        <Pressable
-          style={{marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2}}
-          onPress={() => {
-            handleDeletePromotions(item?._id);
-          }}>
-          <FontAwesomeIcon name="trash-o" size={wp(5)} color="#fff" />
-        </Pressable>
-        <Pressable style={{marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19'}} onPress={() => navigation.navigate('EditPromotions', {data: item?._id})}>
-          <FontAwesomeIcon name="edit" size={wp(5)} color="#fff" />
-        </Pressable>
+
+      <Image 
+  style={{ width: '100%', height: wp(45), borderRadius: wp(5), resizeMode: 'contain' }} 
+  source={
+    item?.image && item.image !== "null"
+      ? { uri: generateImageUrl(item.image) }
+      : item?.productId?.mainImage 
+        ? { uri: generateImageUrl(item.productId.mainImage) }
+        : require('../../assets/img/logo_1.png') // Fallback to a default image
+  }
+/>
+        <View style={stylesCard.imageStyle}>
+          <Pressable
+            style={{ marginHorizontal: 10, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2 }}
+            onPress={() => {
+              handleDeletePromotions(item?._id);
+            }}>
+            <FontAwesomeIcon name="trash-o" size={wp(5)} color="#fff" />
+          </Pressable>
+          <Pressable style={{ marginHorizontal: 1, width: wp(10), height: wp(10), display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19' }} onPress={() => navigation.navigate('EditPromotions', { data: item?._id })}>
+            <FontAwesomeIcon name="edit" size={wp(5)} color="#fff" />
+          </Pressable>
         </View>
-      
+
 
         <Text style={stylesCard.headStyle}>{item?.productId?.name}</Text>
         <View style={stylesCard.table}>
@@ -142,18 +144,18 @@ export default function MyPromotions(props) {
             </Text>
           </View>
           <View style={stylesCard.tableRow}>
-            <Text style={[stylesCard.valueTextStyleLight, {textDecorationLine: 'line-through'}]} ellipsizeMode="tail" numberOfLines={1}>
+            <Text style={[stylesCard.valueTextStyleLight, { textDecorationLine: 'line-through' }]} ellipsizeMode="tail" numberOfLines={1}>
               {'\u20B9'}
               {item?.productId?.price}
             </Text>
           </View>
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2)}}>
-          <Text style={{fontSize:wp(3.5)}}>From : </Text>
-          <Text style={{fontSize:wp(3.5)}}>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
-       
-          <Text style={{fontSize:wp(3.5), marginHorizontal: wp(2)}}>To : </Text>
-          <Text style={{fontSize:wp(3.5)}}>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2) }}>
+          <Text style={{ fontSize: wp(3.5) }}>From : </Text>
+          <Text style={{ fontSize: wp(3.5) }}>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
+
+          <Text style={{ fontSize: wp(3.5), marginHorizontal: wp(2) }}>To : </Text>
+          <Text style={{ fontSize: wp(3.5) }}>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
         </View>
       </Pressable>
     );
@@ -170,25 +172,25 @@ export default function MyPromotions(props) {
     <>
       <Header normal={true} screenName={'Your Promotions'} rootProps={props} />
 
-      <View style={{backgroundColor: CustomColors.mattBrownFaint, flex: 1}}>
-      <View style={reviewStyle.container}>
+      <View style={{ backgroundColor: CustomColors.mattBrownFaint, flex: 1 }}>
+        <View style={reviewStyle.container}>
           <Text style={reviewStyle.title}>My Promotions</Text>
-         
+
           {userSubscriptionExpired == false && userDataObj?.numberOfAdvertisement > 0 && !userDataObj?.isBlocked && (
-           <View style={reviewStyle.addBtn} ><CustomButtonNew  paddingHorizontal={wp(6)} onPress={() => navigation.navigate('AddAdvertisement')} textSize={wp(4)} text={"Add"}></CustomButtonNew></View>
-        )}
+            <View style={reviewStyle.addBtn} ><CustomButtonNew paddingHorizontal={wp(6)} onPress={() => navigation.navigate('AddAdvertisement')} textSize={wp(4)} text={"Add"}></CustomButtonNew></View>
+          )}
         </View>
 
         {saleArr && saleArr.length > 0 ? (
-          <FlatList data={saleArr} renderItem={renderItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: hp(10)}} />
+          <FlatList data={saleArr} renderItem={renderItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
         ) : (
-          <View style={{height: hp(85), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: wp(5), color: '#000'}}>No Promotions</Text>
+          <View style={{ height: hp(85), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: wp(5), color: '#000' }}>No Promotions</Text>
           </View>
         )}
-        {userSubscriptionExpired && <Text style={{paddingHorizontal: 15}}>You do not have a valid subscription , subscribe one to add an advertisement</Text>}
-        {userDataObj?.numberOfAdvertisement <= 0 && <Text style={{paddingHorizontal: 15}}>You do not have a enough balance in your account , subscribe one to add an advertisement</Text>}
-        {userDataObj?.isBlocked && <Text style={{paddingHorizontal: 15}}>Your subscription has been blocked by admin please contact admin for further details</Text>}
+        {userSubscriptionExpired && <Text style={{ paddingHorizontal: 15 }}>You do not have a valid subscription , subscribe one to add an advertisement</Text>}
+        {userDataObj?.numberOfAdvertisement <= 0 && <Text style={{ paddingHorizontal: 15 }}>You do not have a enough balance in your account , subscribe one to add an advertisement</Text>}
+        {userDataObj?.isBlocked && <Text style={{ paddingHorizontal: 15 }}>Your subscription has been blocked by admin please contact admin for further details</Text>}
 
         {/* {userSubscriptionExpired == false && userDataObj?.numberOfAdvertisement > 0 && !userDataObj?.isBlocked && (
           <TouchableOpacity onPress={() => navigation.navigate('AddAdvertisement')} style={[styles.btnbg, {marginHorizontal: 10, marginBottom: 15}]}>
@@ -251,7 +253,7 @@ const styles1 = StyleSheet.create({
 const stylesCard = StyleSheet.create({
   container: {
     margin: wp(2),
-    flex:1,
+    flex: 1,
     height: wp(75),
     elevation: 10,
     justifyContent: 'flex-start',
@@ -262,13 +264,14 @@ const stylesCard = StyleSheet.create({
   imageStyle: {
     borderRadius: wp(5),
     width: '100%',
-    height: '100%',
+    height: '60%',
     position: 'absolute',
-    flexDirection:'row',
-    justifyContent:'flex-end',
-    paddingHorizontal:wp(2),
-    paddingVertical:wp(2)
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: wp(2),
+    paddingVertical: wp(2),
     
+
   },
   table: {
     marginHorizontal: wp(2),
@@ -313,21 +316,22 @@ const stylesCard = StyleSheet.create({
 
 const reviewStyle = StyleSheet.create({
   container: {
-    alignSelf:'center',
+    alignSelf: 'center',
     marginVertical: wp(5),
-    width:wp(85),
-    justifyContent:'center',
-    alignItems:'flex-start'
+    width: wp(85),
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    
   },
   title: {
     fontSize: wp(5.5),
     fontWeight: 'bold',
-   
+
   },
   addBtn: {
-    borderRadius:50,borderColor:'#BC9B80',
-    borderWidth:wp(1),
-    position:'absolute',
-    right:0
+    borderRadius: 50, borderColor: '#BC9B80',
+    borderWidth: wp(1),
+    position: 'absolute',
+    right: 0
   },
 });

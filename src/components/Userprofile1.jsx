@@ -163,7 +163,7 @@ export default function Userprofile1(props) {
                <Text style={[styles1.nameheading, {color:'#797979'}]}>Organization Phone / Landline</Text>
               <Text style={styles1.nameheading}>{userObj?.companyObj?.name}</Text>
             </Pressable> */}
-
+{/*
                 <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Email:</Text>
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={styles1.nameheading}>{userObj?.companyObj?.email}</Text>
@@ -173,7 +173,7 @@ export default function Userprofile1(props) {
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={styles1.nameheading}>{userObj?.companyObj?.phone}</Text>
                 </Pressable>
-
+*/}
                 <Text style={[styles1.nameheading, {color: '#000', fontSize: wp(4), paddingLeft: wp(5)}]}>Dealing With Brand Names:</Text>
                 <Pressable style={[styles1.card_main, {marginTop: 5, paddingVertical: 15}]}>
                   <Text style={styles1.nameheading}>{userObj?.brandNames}</Text>

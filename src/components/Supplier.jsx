@@ -30,8 +30,8 @@ import ProductsCardWithoutLocation from '../ReusableComponents/ProductsCardWitho
 export default function Supplier(props) {
   const navigate = useNavigation();
   const focused = useIsFocused();
-  console.log('propss',props?.route?.params?.data);
-  
+  console.log('propss', props?.route?.params?.data);
+
   const [productReviewArr, setProductReviewArr] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -67,7 +67,7 @@ export default function Supplier(props) {
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [whatappnumber, setWhatappnumber] = useState();
   const roletype = ['DISTRIBUTOR', 'MANUFACTURER/IMPORTER', 'DEALER'];
-console.log('productReviewArr',productReviewArr);
+  console.log('productReviewArr', productReviewArr);
 
   const activetab = index => {
     let temp = [...infolist];
@@ -462,8 +462,8 @@ console.log('productReviewArr',productReviewArr);
   const HandleCheckValidSubscription = async () => {
     try {
       let decoded = await getDecodedToken();
-      console.log('decoded',decoded);
-      
+      console.log('decoded', decoded);
+
       if (decoded) {
         if (decoded?.user?.name) {
           setName(decoded?.user?.name);
@@ -524,7 +524,7 @@ console.log('productReviewArr',productReviewArr);
     let decoded = await getDecodedToken();
     if (decoded && decoded?.userId) {
       setuserid(decoded?.userId);
-   
+
     }
   };
 
@@ -573,7 +573,7 @@ console.log('productReviewArr',productReviewArr);
 
 
   const rendershopcategory = ({ item, index }) => {
-    return <ImageBackground source={item.image && item.image !=""?{ uri: generateImageUrl(item.image) }:require('../../assets/img/logo_1.png')} imageStyle={{ borderRadius: 10 }} style={styles1.category} resizeMode="cover"></ImageBackground>;
+    return <ImageBackground source={item.image && item.image != "" ? { uri: generateImageUrl(item.image) } : require('../../assets/img/logo_1.png')} imageStyle={{ borderRadius: 10 }} style={styles1.category} resizeMode="cover"></ImageBackground>;
   };
 
   const ReviewsItem1 = ({ item, index }) => {
@@ -581,11 +581,11 @@ console.log('productReviewArr',productReviewArr);
     return <ReviewsItem reviewItem={item} />;
   };
   const ProductsYouMayLike1 = ({ item, index }) => {
-    return <NewArrivalProductCard onCallPressed={() => { handelcallbtn(item) }} onGetQuotePressed={() => { handleGetQuoteClick(item) }} onCardPressed={() => navigate.navigate('Productdetails', { data: item.productSlug })} imagePath={item?.product?.mainImage && item?.product?.mainImage !=''?{ uri: generateImageUrl(item?.product?.mainImage) }:require('../../assets/img/logo_1.png')} isVerified={item.isVerified} name={item.productName} location={item.cityName} price={item?.price}></NewArrivalProductCard>;
+    return <NewArrivalProductCard onCallPressed={() => { handelcallbtn(item) }} onGetQuotePressed={() => { handleGetQuoteClick(item) }} onCardPressed={() => navigate.navigate('Productdetails', { data: item.productSlug })} imagePath={item?.product?.mainImage && item?.product?.mainImage != '' ? { uri: generateImageUrl(item?.product?.mainImage) } : require('../../assets/img/logo_1.png')} isVerified={item.isVerified} name={item.productName} location={item.cityName} price={item?.price}></NewArrivalProductCard>;
   };
   const Products1 = ({ item, index }) => {
     console.log('QAZXC', generateImageUrl(item?.mainImage))
-    return <ProductsCardWithoutLocation onGetQuotePressed={() => { handleGetQuoteClick2(item) }} onCallPressed={() => { handelcallbtn(item) }} onPress={() => navigate.navigate('Productdetails', { data: item.slug })} imagePath={item?.mainImage && item?.mainImage !='' ?{ uri: generateImageUrl(item?.mainImage) }:require('../../assets/img/logo_1.png')} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice} />
+    return <ProductsCardWithoutLocation onGetQuotePressed={() => { handleGetQuoteClick2(item) }} onCallPressed={() => { handelcallbtn(item) }} onPress={() => navigate.navigate('Productdetails', { data: item.slug })} imagePath={item?.mainImage && item?.mainImage != '' ? { uri: generateImageUrl(item?.mainImage) } : require('../../assets/img/logo_1.png')} isVerified={item.isVerified} name={item.name} location={'Nahsik'} price={item.price} sellingprice={item.sellingprice} />
   };
   const Topprofiles = ({ item, index }) => {
     console.log('xx', item.name);
@@ -597,7 +597,7 @@ console.log('productReviewArr',productReviewArr);
 
     // Return the combined address, trimming any extra spaces
     const location = `${validCity} ${validState}`.trim();
-    return <TopProfilesVerticalCard onViewPress={() => { handleViewProfileClick(item) }} name={item?.companyName} imagePath={item.profileImage && item.profileImage !=''?{ uri: generateImageUrl(item.profileImage) }:require('../../assets/img/logo_1.png')} rating={item.rating} Product={item?.productsCount} address={location} onPress={{}} onCallPress={() => handelcallbtn(item?.phone)} />;
+    return <TopProfilesVerticalCard onViewPress={() => { handleViewProfileClick(item) }} name={item?.companyName} imagePath={item.profileImage && item.profileImage != '' ? { uri: generateImageUrl(item.profileImage) } : require('../../assets/img/logo_1.png')} rating={item.rating} Product={item?.productsCount} address={location} onPress={{}} onCallPress={() => handelcallbtn(item?.phone)} />;
   };
   const handlePauseAndUnpause = index => {
     let tempArr = videoArr;
@@ -614,7 +614,7 @@ console.log('productReviewArr',productReviewArr);
             onError={videoError}
             minLoadRetryCount={5}
             paused={item.isPaused}
-            source={item.video && item.video !=""?{ uri: generateImageUrl(item.video) }:require('../../assets/img/logo_1.png')}
+            source={item.video && item.video != "" ? { uri: generateImageUrl(item.video) } : require('../../assets/img/logo_1.png')}
             style={{ borderWidth: 0.5, borderColor: '#D9D9D9', borderStyle: 'solid', padding: 2, borderRadius: 10, width: wp(95), height: 250, overflow: 'hidden' }}
             resizeMode="cover"
           />
@@ -631,336 +631,371 @@ console.log('productReviewArr',productReviewArr);
   };
 
   const handleModelshow = () => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
+      }
+      setModalVisible(true);
+    }
+    else {
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
+    }
+  };
+
+const handleSubmitReview = async e => {
+  try {
     if (!currentUserHasActiveSubscription) {
       errorToast('You do not have a valid subscription to perform this action');
       return 0;
     }
-    setModalVisible(true);
-  };
-  const handleSubmitReview = async e => {
-    try {
-      if (!currentUserHasActiveSubscription) {
-        errorToast('You do not have a valid subscription to perform this action');
-        return 0;
-      }
-      if (name == '') {
-        errorToast('Please enter a name');
-        return;
-      }
-      if (message == '') {
-        errorToast('Please enter a Message');
-        Alert.alert('Validation Error', 'Please enter a Message.');
-        return;
-      }
-      if (!(supplierObj && supplierObj._id)) {
-        console.log('supplierObj._id', supplierObj._id);
-
-        errorToast('Something went wrong please close the app and open again ');
-        return;
-      }
-      let obj = {
-        rating,
-        message,
-        name,
-        userId: supplerid,
-        addedby:userid
-      };
-      let { data: res } = await addReview(obj);
-      if (res.message) {
-        toastSuccess(res.message);
-        setModalVisible(false);
-        handleGetProductReview(supplerid);
-      }
-    } catch (err) {
-      errorToast(err);
+    if (name == '') {
+      errorToast('Please enter a name');
+      return;
     }
-  };
+    if (message == '') {
+      errorToast('Please enter a Message');
+      Alert.alert('Validation Error', 'Please enter a Message.');
+      return;
+    }
+    if (!(supplierObj && supplierObj._id)) {
+      console.log('supplierObj._id', supplierObj._id);
 
-  const ListHeader = () => {
-    return (
-      <View style={{ backgroundColor: '#FFF8EC', flex: 1 }}>
-        <View style={[styles1.positionrelative, { position: 'relative', height: hp(21) }]}>
-          {showEditIcon && userid == supplerid && (
-            <Pressable onPress={() => navigate.navigate('Editprofile')} style={styles1.abosoluicon}>
-              <AntDesign name="edit" size={17} color="#848993" />
-            </Pressable>
-          )}
-          {supplierObj.bannerImage && supplierObj.bannerImage && supplierObj.bannerImage ? <Image source={supplierObj.bannerImage && supplierObj.bannerImage !=''?{ uri: generateImageUrl(supplierObj.bannerImage) }:require('../../assets/img/logo_1.png')} style={styles1.imgfluid} /> : <Image source={require('../../assets/img/cover.png')} style={[styles1.imgfluid]} />}
-          {supplierObj?.profileImage && supplierObj.profileImage != '' ? <Image source={supplierObj?.profileImage && supplierObj?.profileImage !=''?{ uri: generateImageUrl(supplierObj?.profileImage) }:require('../../assets/img/logo_1.png')} style={styles1.logo} /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.logo]} />}
-        </View>
+      errorToast('Something went wrong please close the app and open again ');
+      return;
+    }
+    let obj = {
+      rating,
+      message,
+      name,
+      userId: supplerid,
+      addedby: userid
+    };
+    let { data: res } = await addReview(obj);
+    if (res.message) {
+      toastSuccess(res.message);
+      setModalVisible(false);
+      handleGetProductReview(supplerid);
+    }
+  } catch (err) {
+    errorToast(err);
+  }
+};
 
-        <View style={[styles1.padinghr, { marginTop: wp(17), paddingHorizontal: 10 }]}>
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <View style={{ width: wp(75), alignItems: 'center' }}>
-              <View style={styles1.infoadd}>
-                <Text style={[styles1.infotext, { fontFamily: 'Poppins-Bold', fontSize: wp(5.5) }]}>{supplierObj?.companyObj?.name}</Text>
-              </View>
-
-         
-              <Pressable style={[styles1.infoadd,{alignSelf:"center"}]}>
-              <FontAwesomeIcon name="map-marker" style={{ marginHorizontal: wp(3) ,alignSelf:'center'}} size={wp(5)} color={CustomColors.mattBrownDark} />
-                <Text style={[styles1.infotext,{textTransform: 'uppercase'}]}>{supplierObj?.companyObj?.address}</Text>
-              </Pressable>
-
-
-              <View style={[styles1.infoadd, { justifyContent: 'flex-start' }]}>
-              
-                <FontAwesomeIcon name="star" style={{ marginHorizontal: wp(3) }} size={wp(5)} color={CustomColors.mattBrownDark} />
-                <Text style={{ fontFamily: 'Poppins-Medium', marginHorizontal: wp(2) }}>{supplierObj?.rating}</Text>
-                {supplierObj?.companyObj?.gstNumber ? (
-                  <>
-                    <Image source={require('../../assets/img/addcheck.png')} style={styles1.imgsmall} resizeMode="center" />
-                    <Text style={[styles1.infotext]}>
-                      <Text style={{ fontFamily: 'Poppins-Medium', fontWeight: 'bold' }}>{supplierObj.companyObj.gstNumber}</Text>
-                    </Text>
-                  </>
-                ) : null}
-              </View>
-            </View>
-            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-              <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#39AB68' }]} onPress={() => { handelcallbtn() }}>
-                <Ionicons name="call" size={25} color="#fff" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#FFF3E9' }]} onPress={() => { handelclickcmail() }}>
-                <FontAwesome name="envelope-o" size={25} color="#624832" />
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#39AB68' }]} onPress={() => { handelwhatappclick() }}>
-                <FontAwesome name="whatsapp" size={25} color="#fff" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#FFF3E9' }]} onPress={() => { handeleClickShare() }}>
-                <FontAwesome name="share" size={23} color="#624832" />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{ alignItems: 'center' }}>
-            <FlatList data={infolist} renderItem={renderinfolist} keyExtractor={(item, index) => `${index}`} horizontal />
-          </View>
-
-          {checkActiveSection() == 'Profile' && (
-            <>
-              <View style={[styles1.flexbetwen, { flex: 1, flexDirection: 'row', flexWrap: 'wrap', padding: wp(1) }]}>
-                <View style={styles1.cardwrap}>
-                  <View style={styles1.carddata}>
-                    <Ionicons name="business" size={32} color="#000" />
-                  </View>
-                  <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Nature of Business</Text>
-                    <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.companyObj?.natureOfBusiness ? supplierObj?.companyObj?.natureOfBusiness : 'Not provided'} </Text>
-                  </View>
-                </View>
-
-                <View style={styles1.cardwrap}>
-                  <View style={styles1.carddata}>
-                    <AntDesign name="tags" size={32} color="#000" />
-                  </View>
-                  <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>GST No.</Text>
-                    <Text style={{ alignSelf: 'center', width: wp(60) }}>{supplierObj?.companyObj?.gstNumber ? supplierObj?.companyObj?.gstNumber : 'Not provided'} </Text>
-                  </View>
-                </View>
-
-                <View style={styles1.cardwrap}>
-                  <View style={styles1.carddata}>
-                    <Ionicons name="calendar" size={32} color="#000" />
-                  </View>
-                  <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Year of Establishment</Text>
-                    <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.companyObj?.yearOfEstablishment ? supplierObj?.companyObj?.yearOfEstablishment : 'Not provided'}</Text>
-                  </View>
-                </View>
-
-                <View style={styles1.cardwrap}>
-                  <View style={styles1.carddata}>
-                    <Ionicons name="call" size={32} color="#000" />
-                  </View>
-                  <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Landline</Text>
-                    <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{currentUserHasActiveSubscription ? (supplierObj?.landline ? supplierObj?.landline : 'Not provided') : "You don't have subscription"}</Text>
-                  </View>
-                </View>
-
-                <View style={styles1.cardwrap}>
-                  <View style={styles1.carddata}>
-                    <AntDesign name="contacts" size={32} color="#000" />
-                  </View>
-                  <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Contact Person Name</Text>
-                    <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.name ? supplierObj?.name : 'Not provided'} </Text>
-                  </View>
-                </View>
-
-                <View style={styles1.cardwrap}>
-                  <View style={styles1.carddata}>
-                    <FontAwesome name="birthday-cake" size={30} color="#000" />
-                  </View>
-                  <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>BirthDate</Text>
-                    <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.aniversaryDate ? moment(supplierObj?.aniversaryDate).format('YYYY-MM-DD') : 'Not provided'}</Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
-                  <View>
-                    <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
-                  </View>
-                  <View style={{ alignSelf: 'flex-end', right: wp(-23) }}>
-                    <CustomButtonNew text={'Add Reviews'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => handleModelshow()} />
-                  </View>
-                </View>
-                {productReviewArr && productReviewArr.length > 0 ? (
-                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-                    <View style={{ alignSelf: 'center' }}>
-                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage', { data: supplierObj._id })} />
-                    </View>
-                  </View>
-                ) : (
-                  <View style={{ height: hp(20), backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: wp(4), color: '#000' }}>No Reviews Founds</Text>
-                  </View>
-                )}
-              </View>
-
-              <View>
-                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
-                  <View>
-                    <Text style={styles1.headertext}>Products You May Like</Text>
-                  </View>
-                </View>
-                <View style={{ marginVertical: wp(1) }}>
-                  <FlatList data={productYouMayLikeArray.slice(0, 2)} renderItem={ProductsYouMayLike1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-                </View>
-              </View>
-            </>
-          )}
-          {checkActiveSection() == 'Our Products' && (
-            <>
-              <View style={styles1.flexbetwen}>
-                {/* <Pressable onPress={() => navigate.navigate('AllProducts')}>
-                  <Text style={styles1.viewall}>View All</Text>
-                </Pressable> */}
-              </View>
-              {productsArr && productsArr?.length > 0 ? (
-                <FlatList data={productsArr} renderItem={Products1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-              ) : (
-                <View style={{ height: hp(20), backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={{ fontSize: wp(4), color: '#000' }}>No Products Founds</Text>
-                </View>
-              )}
-              <View>
-                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
-                  <View>
-                    <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
-                  </View>
-                  <View style={{ alignSelf: 'flex-end', right: wp(-23) }}>
-                    <CustomButtonNew text={'Add Reviews'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => handleModelshow()} />
-                  </View>
-                </View>
-                {productReviewArr && productReviewArr.length > 0 ? (
-                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
-                    <View style={{ alignSelf: 'center' }}>
-                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => { navigate.navigate('ReviewsPage', { data: supplierObj._id }) }} />
-                    </View>
-                  </View>
-                ) : (
-                  <View style={{ height: hp(20), backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: wp(4), color: '#000' }}>No Reviews Founds</Text>
-                  </View>
-                )}
-              </View>
-              <View>
-                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
-                  <View>
-                    <Text style={styles1.headertext}>Top Profile</Text>
-                  </View>
-                </View>
-                {dataArray && dataArray.length > 0 ? (
-                  <View style={{ marginVertical: wp(2) }}>
-                    <FlatList data={topProfileArray.slice(-4)} renderItem={Topprofiles} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} numColumns={2} />
-                  </View>
-                ) : (
-                  <View style={{ height: hp(20), backgroundColor: 'FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: wp(4), color: '#000' }}>No Profile Founds</Text>
-                  </View>
-                )}
-              </View>
-            </>
-          )}
-        </View>
-      </View>
-    );
-  };
-  const ListFooter = () => {
-    return (
-      <View style={{ backgroundColor: '#ffff' }}>
-        {checkActiveSection() == 'Home' && (
-          <View style={{ paddingHorizontal: 10 }}>
-            <View style={styles1.padinghr}>
-              <View style={styles1.flexbetwen}>
-                <Text style={styles1.headingmain}>Our Videos</Text>
-                {/* <Pressable onPress={() => navigate.navigate('AllProducts')}>
-                  <Text style={styles1.viewall}>View All</Text>
-                </Pressable> */}
-              </View>
-
-              {videoArr && videoArr?.length > 0 ? (
-                <FlatList data={videoArr} scrollEnabled={false} renderItem={renderourproductvideo} keyExtractor={(item, index) => `${index}`} />
-              ) : (
-                <View style={{ height: hp(20), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={{ fontSize: wp(4), color: '#000' }}>No Videos Found </Text>
-                </View>
-              )}
-            </View>
-          </View>
-        )}
-      </View>
-    );
-  };
-
+const ListHeader = () => {
   return (
-    <View style={[styles1.bgwhite, styles1.flex1, { flex: 1 }]}>
-      <FlatList
-        keyExtractor={(item, index) => index.toString()}
-        style={{ backgroundColor: '#fff' }}
-        //Header to show above listview
-        ListHeaderComponent={ListHeader}
-        //Footer to show below listview
-        ListFooterComponent={ListFooter}
-      // renderItem={ItemView}
-      // ListEmptyComponent={EmptyListMessage}
-      />
+    <View style={{ backgroundColor: '#FFF8EC', flex: 1 }}>
+      <View style={[styles1.positionrelative, { position: 'relative', height: hp(21) }]}>
+        {showEditIcon && userid == supplerid && (
+          <Pressable onPress={() => navigate.navigate('Editprofile')} style={styles1.abosoluicon}>
+            <AntDesign name="edit" size={17} color="#848993" />
+          </Pressable>
+        )}
+        {supplierObj.bannerImage && supplierObj.bannerImage && supplierObj.bannerImage ? <Image source={supplierObj.bannerImage && supplierObj.bannerImage != '' ? { uri: generateImageUrl(supplierObj.bannerImage) } : require('../../assets/img/logo_1.png')} style={styles1.imgfluid} /> : <Image source={require('../../assets/img/cover.png')} style={[styles1.imgfluid]} />}
+        {supplierObj?.profileImage && supplierObj.profileImage != '' ? <Image source={supplierObj?.profileImage && supplierObj?.profileImage != '' ? { uri: generateImageUrl(supplierObj?.profileImage) } : require('../../assets/img/logo_1.png')} style={styles1.logo} /> : <Image source={require('../../assets/img/profile1.png')} style={[styles1.logo]} />}
+      </View>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles1.centeredView}>
-          <View style={styles1.modalView}>
-            <View style={{ padding: 20 }}>
-              <Text style={styles1.modalText}>Add Review</Text>
-              <TextInput style={styles1.modalTextInput} onChangeText={e => setName(e)} value={name} placeholder="Please Enter name" placeholderTextColor={'#000'} />
-              <TextInput multiline={true} style={styles1.modalTextInput} onChangeText={e => setMessage(e)} value={message} placeholder="Please Enter message" placeholderTextColor={'#000'} />
-              <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+      <View style={[styles1.padinghr, { marginTop: wp(17), paddingHorizontal: 10 }]}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <View style={{ width: wp(75), alignItems: 'center' }}>
+            <View style={styles1.infoadd}>
+              <Text style={[styles1.infotext, { fontFamily: 'Poppins-Bold', fontSize: wp(5.5) }]}>{supplierObj?.companyObj?.name}</Text>
             </View>
-            <TouchableOpacity style={styles1.yellowButton} onPress={() => handleSubmitReview()}>
-              <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>
+
+
+            <Pressable style={[styles1.infoadd, { alignSelf: "center" }]}>
+              <FontAwesomeIcon name="map-marker" style={{ marginHorizontal: wp(3), alignSelf: 'center' }} size={wp(5)} color={CustomColors.mattBrownDark} />
+              <Text style={[styles1.infotext, { textTransform: 'uppercase' }]}>{supplierObj?.companyObj?.address}</Text>
+            </Pressable>
+
+
+            <View style={[styles1.infoadd, { justifyContent: 'flex-start' }]}>
+
+              <FontAwesomeIcon name="star" style={{ marginHorizontal: wp(3) }} size={wp(5)} color={CustomColors.mattBrownDark} />
+              <Text style={{ fontFamily: 'Poppins-Medium', marginHorizontal: wp(2) }}>{supplierObj?.rating}</Text>
+              {supplierObj?.companyObj?.gstNumber ? (
+                <>
+                  <Image source={require('../../assets/img/addcheck.png')} style={styles1.imgsmall} resizeMode="center" />
+                  <Text style={[styles1.infotext]}>
+                    <Text style={{ fontFamily: 'Poppins-Medium', fontWeight: 'bold' }}>{supplierObj.companyObj.gstNumber}</Text>
+                  </Text>
+                </>
+              ) : null}
+            </View>
+          </View>
+          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+            <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#39AB68' }]} onPress={() => { handelcallbtn() }}>
+              <Ionicons name="call" size={25} color="#fff" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#FFF3E9' }]} onPress={() => { handelclickcmail() }}>
+              <FontAwesome name="envelope-o" size={25} color="#624832" />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#39AB68' }]} onPress={() => { handelwhatappclick() }}>
+              <FontAwesome name="whatsapp" size={25} color="#fff" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles1.callbtn, { backgroundColor: '#FFF3E9' }]} onPress={() => { handeleClickShare() }}>
+              <FontAwesome name="share" size={23} color="#624832" />
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity onPress={() => setModalVisible(false)} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
-          </TouchableOpacity>
         </View>
-      </Modal>
+        <View style={{ alignItems: 'center' }}>
+          <FlatList data={infolist} renderItem={renderinfolist} keyExtractor={(item, index) => `${index}`} horizontal />
+        </View>
+
+        {checkActiveSection() == 'Profile' && (
+          <>
+            <View style={[styles1.flexbetwen, { flex: 1, flexDirection: 'row', flexWrap: 'wrap', padding: wp(1) }]}>
+              <View style={styles1.cardwrap}>
+                <View style={styles1.carddata}>
+                  <Ionicons name="business" size={32} color="#000" />
+                </View>
+                <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Nature of Business</Text>
+                  <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.companyObj?.natureOfBusiness ? supplierObj?.companyObj?.natureOfBusiness : 'Not provided'} </Text>
+                </View>
+              </View>
+
+              <View style={styles1.cardwrap}>
+                <View style={styles1.carddata}>
+                  <AntDesign name="tags" size={32} color="#000" />
+                </View>
+                <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>GST No.</Text>
+                  <Text style={{ alignSelf: 'center', width: wp(60) }}>{supplierObj?.companyObj?.gstNumber ? supplierObj?.companyObj?.gstNumber : 'Not provided'} </Text>
+                </View>
+              </View>
+
+              <View style={styles1.cardwrap}>
+                <View style={styles1.carddata}>
+                  <Ionicons name="calendar" size={32} color="#000" />
+                </View>
+                <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Year of Establishment</Text>
+                  <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.companyObj?.yearOfEstablishment ? supplierObj?.companyObj?.yearOfEstablishment : 'Not provided'}</Text>
+                </View>
+              </View>
+
+              <View style={styles1.cardwrap}>
+                <View style={styles1.carddata}>
+                  <Ionicons name="call" size={32} color="#000" />
+                </View>
+                <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Landline</Text>
+                  <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{currentUserHasActiveSubscription ? (supplierObj?.landline ? supplierObj?.landline : 'Not provided') : "You don't have subscription"}</Text>
+                </View>
+              </View>
+
+              <View style={styles1.cardwrap}>
+                <View style={styles1.carddata}>
+                  <AntDesign name="contacts" size={32} color="#000" />
+                </View>
+                <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>Contact Person Name</Text>
+                  <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.name ? supplierObj?.name : 'Not provided'} </Text>
+                </View>
+              </View>
+
+              <View style={styles1.cardwrap}>
+                <View style={styles1.carddata}>
+                  <FontAwesome name="birthday-cake" size={30} color="#000" />
+                </View>
+                <View style={{ margin: wp(1), alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', alignSelf: 'flex-start' }}>BirthDate</Text>
+                  <Text style={{ alignSelf: 'flex-start', width: wp(60) }}>{supplierObj?.aniversaryDate ? moment(supplierObj?.aniversaryDate).format('YYYY-MM-DD') : 'Not provided'}</Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                <View>
+                  <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
+                </View>
+                <View style={{ alignSelf: 'flex-end', right: wp(-23) }}>
+                  <CustomButtonNew text={'Add Reviews'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => handleModelshow()} />
+                </View>
+              </View>
+              {productReviewArr && productReviewArr.length > 0 ? (
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+                  <View style={{ alignSelf: 'center' }}>
+                    <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage', { data: supplierObj._id })} />
+                  </View>
+                </View>
+              ) : (
+                <View style={{ height: hp(20), backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontSize: wp(4), color: '#000' }}>No Reviews Founds</Text>
+                </View>
+              )}
+            </View>
+
+            <View>
+              <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                <View>
+                  <Text style={styles1.headertext}>Products You May Like</Text>
+                </View>
+              </View>
+              <View style={{ marginVertical: wp(1) }}>
+                <FlatList data={productYouMayLikeArray.slice(0, 2)} renderItem={ProductsYouMayLike1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+              </View>
+            </View>
+          </>
+        )}
+        {checkActiveSection() == 'Our Products' && (
+          <>
+            <View style={styles1.flexbetwen}>
+              {/* <Pressable onPress={() => navigate.navigate('AllProducts')}>
+                  <Text style={styles1.viewall}>View All</Text>
+                </Pressable> */}
+            </View>
+            {productsArr && productsArr?.length > 0 ? (
+              <FlatList data={productsArr} renderItem={Products1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+            ) : (
+              <View style={{ height: hp(20), backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: wp(4), color: '#000' }}>No Products Founds</Text>
+              </View>
+            )}
+            <View>
+              <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                <View>
+                  <Text style={[styles1.headertext, { right: wp(-12) }]}>Reviews</Text>
+                </View>
+                <View style={{ alignSelf: 'flex-end', right: wp(-23) }}>
+                  <CustomButtonNew text={'Add Reviews'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => handleModelshow()} />
+                </View>
+              </View>
+              {productReviewArr && productReviewArr.length > 0 ? (
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
+                  <View style={{ alignSelf: 'center' }}>
+                    <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => { navigate.navigate('ReviewsPage', { data: supplierObj._id }) }} />
+                  </View>
+                </View>
+              ) : (
+                <View style={{ height: hp(20), backgroundColor: '#FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontSize: wp(4), color: '#000' }}>No Reviews Founds</Text>
+                </View>
+              )}
+            </View>
+            <View>
+              <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                <View>
+                  <Text style={styles1.headertext}>Top Profile</Text>
+                </View>
+              </View>
+              {dataArray && dataArray.length > 0 ? (
+                <View style={{ marginVertical: wp(2) }}>
+                  <FlatList data={topProfileArray.slice(-4)} renderItem={Topprofiles} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} numColumns={2} />
+                </View>
+              ) : (
+                <View style={{ height: hp(20), backgroundColor: 'FFF8EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontSize: wp(4), color: '#000' }}>No Profile Founds</Text>
+                </View>
+              )}
+            </View>
+          </>
+        )}
+      </View>
     </View>
   );
+};
+const ListFooter = () => {
+  return (
+    <View style={{ backgroundColor: '#ffff' }}>
+      {checkActiveSection() == 'Home' && (
+        <View style={{ paddingHorizontal: 10 }}>
+          <View style={styles1.padinghr}>
+            <View style={styles1.flexbetwen}>
+              <Text style={styles1.headingmain}>Our Videos</Text>
+              {/* <Pressable onPress={() => navigate.navigate('AllProducts')}>
+                  <Text style={styles1.viewall}>View All</Text>
+                </Pressable> */}
+            </View>
+
+            {videoArr && videoArr?.length > 0 ? (
+              <FlatList data={videoArr} scrollEnabled={false} renderItem={renderourproductvideo} keyExtractor={(item, index) => `${index}`} />
+            ) : (
+              <View style={{ height: hp(20), backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: wp(4), color: '#000' }}>No Videos Found </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      )}
+    </View>
+  );
+};
+
+return (
+  <View style={[styles1.bgwhite, styles1.flex1, { flex: 1 }]}>
+    <FlatList
+      keyExtractor={(item, index) => index.toString()}
+      style={{ backgroundColor: '#fff' }}
+      //Header to show above listview
+      ListHeaderComponent={ListHeader}
+      //Footer to show below listview
+      ListFooterComponent={ListFooter}
+    // renderItem={ItemView}
+    // ListEmptyComponent={EmptyListMessage}
+    />
+
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}>
+      <View style={styles1.centeredView}>
+        <View style={styles1.modalView}>
+          <View style={{ padding: 20 }}>
+            <Text style={styles1.modalText}>Add Review</Text>
+            <TextInput style={styles1.modalTextInput} onChangeText={e => setName(e)} value={name} placeholder="Please Enter name" placeholderTextColor={'#000'} />
+            <TextInput multiline={true} style={styles1.modalTextInput} onChangeText={e => setMessage(e)} value={message} placeholder="Please Enter message" placeholderTextColor={'#000'} />
+            <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+          </View>
+          <TouchableOpacity style={styles1.yellowButton} onPress={() => handleSubmitReview()}>
+            <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity onPress={() => setModalVisible(false)} style={{ width: wp(8), height: wp(8), backgroundColor: '#fff', marginTop: 30, borderRadius: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Image source={require('../../assets/img/close.png')} style={{ width: wp(3), height: hp(3) }} resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  </View>
+);
 }
 const styles1 = StyleSheet.create({
   callbtn: {
@@ -1179,7 +1214,7 @@ const styles1 = StyleSheet.create({
     alignContent: 'center',
     // gap: 10,
     // marginTop: 5,
-   
+
   },
   flexbetween: {
     display: 'flex',

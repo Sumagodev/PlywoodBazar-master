@@ -1,11 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {FlatList, ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
+import {FlatList, ImageBackground, Pressable, StyleSheet, Text, View,ActivityIndicator} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
 import {getLeadsById} from '../services/leads.service';
-import {getDecodedToken} from '../services/User.service';
+import {getDecodedToken} from '../services/User.service'; 
 import {errorToast} from '../utils/toastutill';
 import MyActivityItem from '../ReusableComponents/MyActivityItem';
 export default function RecentActivity(props) {
@@ -13,19 +13,24 @@ export default function RecentActivity(props) {
 
   const [subscriptionArr, setSubscriptionArr] = useState([]);
   const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const getSubscriptions = async () => {
     try {
+      setIsLoading(true)
       let decodedObj = await getDecodedToken();
 
       const {data: res} = await getLeadsById(decodedObj?.userId);
       if (res) {
         setSubscriptionArr(res.data);
+        setIsLoading(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
     }
   };
-
+ 
+  
   const renderSubscriptionItem = ({item, index}) => {
     return (
       <Pressable style={[styles1.card_main, {marginTop:10, }, selectedSubscriptionObj?._id == item?._id && {borderColor: '#B08218'}]}>
@@ -70,12 +75,15 @@ export default function RecentActivity(props) {
     <>
       <Header normal={true} screenName={'Recent Activity'} rootProps={props}  />
       <View style={{backgroundColor: '#fff', flex: 1}}>
-            <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1}}>
+            <View style={{flex:1,backgroundColor: '#FFF4EC',}}>
 
       <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Activity</Text>
 
-
-    {/* <Text style={{marginTop:5}}></Text> */}
+ {
+          isLoading ?
+            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            : null
+        }
         {
           subscriptionArr.length > 0 ? 
           <FlatList data={subscriptionArr} showsVerticalScrollIndicator={false} renderItem={renderRecentActivityItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 10,alignSelf:'center'}} />
@@ -86,7 +94,7 @@ export default function RecentActivity(props) {
             <Text style={{fontSize:19, color:'#000', alignSelf:'center'}}>No  Recent Activity</Text> 
           </View>
         }
-       </ImageBackground>
+       </View>
       </View>
     </>
   );
