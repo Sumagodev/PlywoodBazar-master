@@ -63,6 +63,10 @@ import SelfAppliedOpportunitiesList from '../../components/SelfAppliedOpportunit
 import AddBannerfrom from '../../components/AddBannerfrom';
 import AllBannerslisting from '../../components/AllBannerslisting';
 import EditBannerform from '../../components/EditBannerform';
+import LauncherComponent from '../../components/LauncherComponent';
+import VerifyOTPOnLaunch from '../../components/VerifyOTPOnLaunch';
+import { View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 
 
@@ -70,11 +74,16 @@ export const isAuthorisedContext = createContext({});
 const Stack = createNativeStackNavigator();
 export default function RootStack() {
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [loading, setLoading] = useState(true); // New loading state
+
 
   useMemo(() => {
     axiosApiInstance.interceptors.request.use(
       async config => {
         const token = await AsyncStorage.getItem('AUTH_TOKEN');
+        
+
         // console.log(token)
         if (token) {
           config.headers['authorization'] = 'Bearer ' + token;
@@ -104,24 +113,60 @@ export default function RootStack() {
   }, []);
 
   const checkAuthorized = async () => {
+    const otpVerified = await AsyncStorage.getItem('isOtpVerified'); // Check OTP verification status
+    const isVerified = otpVerified === 'true'; // Convert to boolean
+    setIsOtpVerified(isVerified); // Update state for OTP verification
+
+  
+
     let token = await AsyncStorage.getItem('AUTH_TOKEN');
     if (token) {
       setIsAuthorized(true);
     } else {
       setIsAuthorized(false);
     }
+    setLoading(false); // Set loading to false after checking
+
   };
 
   useEffect(() => {
     checkAuthorized();
   }, []);
+// Render loading screen while checking authorization
+if (loading) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
+  );
+}
+
 
   return (
     <>
       <isAuthorisedContext.Provider value={[isAuthorized, setIsAuthorized]}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="BottomBar">
+          <Stack.Navigator initialRouteName={isOtpVerified ? "BottomBar" : "LauncherComponent"}>
             {/* <Stack.Navigator initialRouteName="Writeareview"> */}
+            <Stack.Screen
+            name="LauncherComponent"
+            component={LauncherComponent}
+            options={{
+              headerShown: false,
+              gestureDirection: 'horizontal',
+            }}
+            
+          />
+             <Stack.Screen
+            name="VerifyOTPOnLaunch"
+            component={VerifyOTPOnLaunch}
+            options={{
+              headerShown: false,
+              gestureDirection: 'horizontal',
+            }}
+            
+          />
+
 
             <Stack.Screen
               options={{
