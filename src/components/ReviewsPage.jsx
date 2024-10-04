@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, ImageBackground, Text, View, StyleSheet } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
-import { getReviewForProduct } from '../services/ProductReview.service';
+import { getReviewForProduct, getReviewForProductNew, getReviewForVendors } from '../services/ProductReview.service';
 import ReviewsItem from '../ReusableComponents/ReviewsItem';
+import { errorToast } from '../utils/toastutill';
 
 export default function ReviewsPage(props) {
   const [productReviewArr, setProductReviewArr] = useState([]);
@@ -11,12 +12,26 @@ export default function ReviewsPage(props) {
 
   const handleGetProductReview = async id => {
     try {
-      let { data: res } = await getReviewForProduct(`userId=${id}`);
+      let { data: res } = await getReviewForProductNew(`productId=${id}`);
+      if (res.message) {
+        setProductReviewArr(res.data);
+      }
+      
+    } catch (err) {
+      errorToast(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGetVendorReviews = async id => {
+    try {
+      let { data: res } = await getReviewForVendors(`userId=${id}`);
       if (res.message) {
         setProductReviewArr(res.data);
       }
     } catch (err) {
-      toastError(err);
+      errorToast(err);
     } finally {
       setLoading(false);
     }
@@ -27,8 +42,16 @@ export default function ReviewsPage(props) {
   );
 
   useEffect(() => {
-    handleGetProductReview(props.route.params.data);
+
+    if(props.route.params.type==='vendor')
+    {
+      handleGetVendorReviews(props.route.params.data);
+    }else{
+      handleGetProductReview(props.route.params.data);
+    }
+    
     console.log(props.route.params.data);
+    console.log(props.route.params.type);
   }, []);
 
   return (

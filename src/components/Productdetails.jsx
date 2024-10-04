@@ -19,7 +19,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewArrivalProductCard from '../ReusableComponents/NewArrivalProductCard';
 import StartBusinessBanner from '../ReusableComponents/StartBusinessBanner';
-import { addReview, getReviewForProduct } from '../services/ProductReview.service';
+import { addProductReview, addReview, getReviewForProductNew } from '../services/ProductReview.service';
 import ReviewsItem from '../ReusableComponents/ReviewsItem';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { Rating, AirbnbRating } from 'react-native-ratings';
@@ -102,10 +102,8 @@ export default function Productdetails(props) {
         let tempObj = res.data;
         tempObj.imageArr = tempObj.imageArr.filter(el => el.image != '');
 
-        handleGetProductReview(res.data.createdById);
         setProductObj(res.data);
         setProductId(res.data._id)
-
         setProdutOwnerId(res.data.createdById)
         let imaArr = [
           {
@@ -157,6 +155,8 @@ export default function Productdetails(props) {
         ];
         setcategoryname1(tempArr);
         setIsloding(false)
+        console.log('ZXCVBNM',productId)
+        
       }
     } catch (error) {
       console.error(error);
@@ -198,16 +198,16 @@ export default function Productdetails(props) {
   };
 
   const handleGetProductReview = async id => {
-    //console.log('>>>>>>>', id);
+    console.log('>>>>>>>', id);
     try {
-      let { data: res } = await getReviewForProduct(`userId=${id}`);
+      let { data: res } = await getReviewForProductNew(`productId=${id}`);
 
       if (res.message) {
         setProductReviewArr(res.data);
         //console.log('>>>>>>>', res.data);
       }
     } catch (err) {
-      //console.log('Errrrrrr>>>>>>>>>>>>>>>>>>>', err);
+      console.log('Errrrrrr', err);
     }
   };
 
@@ -217,6 +217,12 @@ export default function Productdetails(props) {
       getProductObj();
     }
   }, [focused, props?.route?.params?.data]);
+
+  useEffect(() => {
+    if (focused) {
+      handleGetProductReview(productId)
+    }
+  }, [productId]);
 
   const handleContactSupplier = async () => {
     try {
@@ -358,6 +364,12 @@ export default function Productdetails(props) {
       //   );
       //   return;
       // }
+
+
+
+
+      console.log('xInside......')
+
       if (nameForReview == '') {
         errorToast('Please enter a name');
         Alert.alert('Validation Error', 'Please enter a Name.');
@@ -368,7 +380,7 @@ export default function Productdetails(props) {
         Alert.alert('Validation Error', 'Please enter a Message.');
         return;
       }
-      if (rating == '') {
+      if (rating =='') {
         errorToast('Please Add a Rating');
         return;
       }
@@ -378,10 +390,14 @@ export default function Productdetails(props) {
         message: messageForReview,
         name: nameForReview,
         userId: productObj?.createdByObj._id,
-        addedby:loggedInUserId.toString(),
+        addedby:loggedInUserId,
+        productId:productId,
       };
-        
-      let { data: res } = await addReview(obj);
+      
+      console.log(obj,'objzxcccc')
+
+
+      let { data: res } = await addProductReview(obj);
       if (res.message) {
 
         toastSuccess(res.message);
@@ -714,7 +730,7 @@ export default function Productdetails(props) {
         </ScrollView>
 
         <View style={{ alignSelf: 'center', marginBottom: wp(5) }}>
-          <CustomButtonNew paddingHorizontal={wp(6)} text={'View More..'} textSize={wp(4)} onPress={() => { navigation.navigate('ReviewsPage', { data: productOwnerId }) }}></CustomButtonNew>
+          <CustomButtonNew paddingHorizontal={wp(6)} text={'View More..'} textSize={wp(4)} onPress={() => { navigation.navigate('ReviewsPage', { data: productId ,type:'product'}) }}></CustomButtonNew>
         </View>
 
         {/* {authorized && (

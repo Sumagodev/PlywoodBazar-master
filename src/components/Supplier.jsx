@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
-import { addReview, getReviewForProduct } from '../services/ProductReview.service';
+import { addReview, getReviewForVendors } from '../services/ProductReview.service';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { createLead } from '../services/leads.service';
 import ReviewsItem from '../ReusableComponents/ReviewsItem';
@@ -450,7 +450,7 @@ console.log('productReviewArr',productReviewArr);
   const handleGetProductReview = async id => {
 
     try {
-      let { data: res } = await getReviewForProduct(`userId=${id}`);
+      let { data: res } = await getReviewForVendors(`userId=${id}`);
       if (res.message) {
         setProductReviewArr(res.data);
       }
@@ -676,6 +676,12 @@ console.log('productReviewArr',productReviewArr);
     }
   };
 
+  useEffect(() => {
+    if (focused) {
+      handleGetProductReview(supplerid)
+    }
+  }, [supplerid]);
+
   const ListHeader = () => {
     return (
       <View style={{ backgroundColor: '#FFF8EC', flex: 1 }}>
@@ -814,7 +820,7 @@ console.log('productReviewArr',productReviewArr);
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
                     <View style={{ alignSelf: 'center' }}>
-                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage', { data: supplierObj._id })} />
+                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage', { data: supplierObj._id,type:'vendor' })} />
                     </View>
                   </View>
                 ) : (
@@ -863,7 +869,7 @@ console.log('productReviewArr',productReviewArr);
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
                     <View style={{ alignSelf: 'center' }}>
-                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => { navigate.navigate('ReviewsPage', { data: supplierObj._id }) }} />
+                      <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => { navigate.navigate('ReviewsPage', { data: supplierObj._id,type:'vendor' }) }} />
                     </View>
                   </View>
                 ) : (

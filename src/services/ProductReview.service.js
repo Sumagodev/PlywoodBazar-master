@@ -1,22 +1,26 @@
 import axios from "axios";
 import { url } from "./url.service";
-let serverUrl = `${url}/productReview`;
-let serverUrl1 = `${url}/vendorReview`;
+let serverUrlProductReview = `${url}/productReview`;
+let serverUrlVendorReview = `${url}/vendorReview`;
 
 
 
-export const addReview = async (obj) => {
-    console.log('dipti',obj);
-    
-    return axios.post(`${serverUrl1}`, obj)
+export const addReview = async (obj) => {    
+    return axios.post(`${serverUrlVendorReview}`, obj)
 }
-export const AddProductReview = async (obj) => {
-    console.log('dipti',obj);
-    
-    return axios.post(`${serverUrl}`, obj)
+export const addProductReview = async (obj) => {
+    return axios.post(`${serverUrlProductReview}`, obj)
 }
 
 
 export const getReviewForProduct = async (query) => {
-    return axios.get(`${serverUrl1}/getReviewForVendors?${query}`)
+    return axios.get(`${serverUrlVendorReview}/getReviewForVendors?${query}`)
+}
+
+export const getReviewForProductNew = async (query) => {
+    return axios.get(`${serverUrlProductReview}/getReviewForProduct?${query}`)
+}
+
+export const getReviewForVendors = async (query) => {
+    return axios.get(`${serverUrlVendorReview}/getReviewForVendors?${query}`)
 }
