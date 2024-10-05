@@ -76,7 +76,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         { name: ROLES_CONSTANT.DEALER, checked: true },
       ]);
     }
-
+ 
   }
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();

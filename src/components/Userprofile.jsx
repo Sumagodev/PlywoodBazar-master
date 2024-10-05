@@ -1,22 +1,21 @@
-import {ScrollView, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity, Modal,Alert} from 'react-native';
-import React, {useState, useRef, useEffect, useContext} from 'react';
+import { ScrollView, View, Text, SafeAreaView, FlatList, Image, Pressable, StyleSheet, StatusBar, TouchableOpacity, Modal, Alert } from 'react-native';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import styles from '../../assets/stylecomponents/Style';
-import {TextInput, useTheme} from 'react-native-paper';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { TextInput, useTheme } from 'react-native-paper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 // import Header from '../ReusableComponents/Header';
 import useRedirectToLoginIfNotLoggedIn from '../utils/RedirectToLoginIfNotLoggedIn';
-import {isAuthorisedContext} from '../navigation/Stack/Root';
-import {deleteUserByID, getUserById, removeToken} from '../services/User.service';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
+import { deleteUserByID, getDecodedToken, getUserById, removeToken } from '../services/User.service';
 import Header from '../navigation/customheader/Header';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomColors from '../styles/CustomColors';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-
-// import Modal from "react-native-modal";
+getDecodedToken// import Modal from "react-native-modal";
 export default function Userprofile(props) {
   const navigate = useNavigation();
 
@@ -24,9 +23,18 @@ export default function Userprofile(props) {
   const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
   const [deleteModal, setDeleteModal] = useState(false);
   const [userID, setUserID] = useState('');
+  const [Role, setRole] = useState('');
+  console.log('Rolee', Role);
 
-  const redirectToLogin = useRedirectToLoginIfNotLoggedIn({isAuthorized});
+  const redirectToLogin = useRedirectToLoginIfNotLoggedIn({ isAuthorized });
 
+  const handleGeyUserDetails = async id => {
+    let decodedToken = await getDecodedToken();
+
+    if (decodedToken) {
+      setRole(decodedToken?.role);
+    }
+  };
   useEffect(() => {
     if (isAuthorized) {
     } else {
@@ -35,7 +43,7 @@ export default function Userprofile(props) {
   }, [isAuthorized, focused]);
   const getUserObj = async () => {
     try {
-      const {data: res} = await getUserById();
+      const { data: res } = await getUserById();
       if (res) {
         console.log(JSON.stringify(res.data._id, null, 2), '//////////////////');
         setUserID(res.data._id);
@@ -48,6 +56,7 @@ export default function Userprofile(props) {
   useEffect(() => {
     if (focused) {
       getUserObj();
+      handleGeyUserDetails()
     }
   }, [focused]);
 
@@ -61,7 +70,7 @@ export default function Userprofile(props) {
       'Logout', // Alert title
       'Are you sure you want to logout?', // Alert message
       [
-        
+
         {
           text: 'Yes', // Option to proceed with logout
           onPress: async () => {
@@ -75,7 +84,7 @@ export default function Userprofile(props) {
           onPress: () => console.log('Logout cancelled'),
           style: 'cancel',
         },
-        
+
       ],
       { cancelable: true } // Allow dismissal of the alert by tapping outside of it
     );
@@ -98,7 +107,7 @@ export default function Userprofile(props) {
   return (
     <>
       <Header normal={true} screenName={'Account'} rootProps={props} />
-      <ScrollView style={[{paddingVertical: wp(0.5), paddingHorizontal: wp(2), backgroundColor: 'white'}]} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+      <ScrollView style={[{ paddingVertical: wp(0.5), paddingHorizontal: wp(2), backgroundColor: 'white' }]} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         {/* <Header /> */}
 
         <Pressable onPress={() => navigate.navigate('Userprofile1')} style={profileStyle.container}>
@@ -116,22 +125,29 @@ export default function Userprofile(props) {
         </Pressable>
 
 
+        {
+          Role === 'MANUFACTURER/IMPORTER' || Role === 'DISTRIBUTOR' ? <View>
+            <Pressable onPress={() => navigate.navigate('DealershipOppolisting')} style={profileStyle.container}>
+              <View style={profileStyle.iconContainer}>
+                <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
+              </View>
+              <Text style={profileStyle.title}>Promoted Dealership Opportunities</Text>
+            </Pressable>
+            <Pressable onPress={() => navigate.navigate('AppliedOpportunitieslist')} style={profileStyle.container}>
+              <View style={profileStyle.iconContainer}>
+                <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
+              </View>
+              <Text style={profileStyle.title}>Dealership Opportunities Leads</Text>
+            </Pressable>
 
-        <Pressable onPress={() => navigate.navigate('DealershipOppolisting')} style={profileStyle.container}>
-          <View style={profileStyle.iconContainer}>
-            <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
           </View>
-          <Text style={profileStyle.title}>Promoted Dealership Opportunities</Text>
-        </Pressable>
-        <Pressable onPress={() => navigate.navigate('AppliedOpportunitieslist')} style={profileStyle.container}>
-          <View style={profileStyle.iconContainer}>
-            <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
-          </View>
-          <Text style={profileStyle.title}>Dealership Opportunities Leads</Text>
-        </Pressable>
+            :
+            null
+        }
 
 
-        
+
+
         <Pressable onPress={() => navigate.navigate('SelfAppliedOpportunitiesList')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
             <FontAwesome5Icon style={profileStyle.icon} name="box-open" size={wp(6)} color="white" />
@@ -259,19 +275,19 @@ export default function Userprofile(props) {
           </Text>
         </Pressable> */}
 
-        
-        <Modal visible={deleteModal} style={{height: hp(100), backgroundColor: 'rgba(0,0,0,1)'}}>
-          <View style={{width: wp(90), height: hp(25), alignSelf: 'center', backgroundColor: 'white', top: hp(40), elevation: 2, borderRadius: 5}}>
+
+        <Modal visible={deleteModal} style={{ height: hp(100), backgroundColor: 'rgba(0,0,0,1)' }}>
+          <View style={{ width: wp(90), height: hp(25), alignSelf: 'center', backgroundColor: 'white', top: hp(40), elevation: 2, borderRadius: 5 }}>
             <TouchableOpacity onPress={() => setDeleteModal(false)}>
-              <Image source={require('../../assets/img/close.png')} style={{height: wp(6), width: wp(6), left: wp(80), top: hp(2)}} />
+              <Image source={require('../../assets/img/close.png')} style={{ height: wp(6), width: wp(6), left: wp(80), top: hp(2) }} />
             </TouchableOpacity>
-            <Text style={{fontSize: hp(2), alignSelf: 'center', top: hp(5)}}>Are You Sure Want To Delete Account?</Text>
-            <View style={{flexDirection: 'row', width: wp(80), alignSelf: 'center', top: hp(10), justifyContent: 'space-between'}}>
-              <TouchableOpacity onPress={() => setDeleteModal(false)} style={{width: wp(35), borderColor: 'gray', borderWidth: 0.7, height: hp(5), alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{color: 'black', fontSize: hp(1.8)}}>No</Text>
+            <Text style={{ fontSize: hp(2), alignSelf: 'center', top: hp(5) }}>Are You Sure Want To Delete Account?</Text>
+            <View style={{ flexDirection: 'row', width: wp(80), alignSelf: 'center', top: hp(10), justifyContent: 'space-between' }}>
+              <TouchableOpacity onPress={() => setDeleteModal(false)} style={{ width: wp(35), borderColor: 'gray', borderWidth: 0.7, height: hp(5), alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ color: 'black', fontSize: hp(1.8) }}>No</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleDeleteAccount()} style={{width: wp(35), backgroundColor: '#BA3F25', height: hp(5), alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{color: 'white', fontSize: hp(1.8)}}>Yes</Text>
+              <TouchableOpacity onPress={() => handleDeleteAccount()} style={{ width: wp(35), backgroundColor: '#BA3F25', height: hp(5), alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ color: 'white', fontSize: hp(1.8) }}>Yes</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -372,8 +388,8 @@ const profileStyle = StyleSheet.create({
     flexDirection: 'row',
     // backgroundColor: '#FFF1E6',
     borderRadius: wp(20),
-    alignSelf:'center',
-    overflow:'hidden'
+    alignSelf: 'center',
+    overflow: 'hidden'
   },
 
   iconContainer: {

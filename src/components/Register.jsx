@@ -244,7 +244,7 @@ export default function Register() {
       },
       gstCertificate,
     };
-
+ 
     
 
     try {
@@ -256,10 +256,10 @@ export default function Register() {
         toastSuccess(res.message);
         await setToken(res.token);
         setIsAuthorized(true);
-
+        resetForm();
         // navigation.navigate('BottomBar', { register: true });
         navigation.navigate('Subscriptions', { register: true });
-
+        
       }
     } catch (error) {
       console.log(error);
@@ -267,7 +267,26 @@ export default function Register() {
       errorToast(error);
     }
   };
+  const resetForm = () => {
+    setname('');
+    setmobile('');
+    setemail('');
+    setwhatsapp('');
+    settype('');
+    setcompanyName('');
 
+    setYearOfEstablishment('');
+    setgstNumber('');
+    setaddress('');
+    setgstCertificate('');
+    setcountryArr([]);
+    setstateArr([]);
+    setcityArr([]);
+    setcountryId('');
+    setstateId('');
+    setBrandNames('');
+
+  };
   const handleGetCoutries = async () => {
     try {
       let { data: res } = await getCountriesApi();
@@ -310,6 +329,11 @@ export default function Register() {
     if (focused) {
       handleGetCoutries();
       handleNestedCategory();
+    }
+  }, [focused]);
+  useEffect(() => {
+    if (focused) {
+    resetForm()
     }
   }, [focused]);
   useEffect(() => {

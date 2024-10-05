@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Linking,Alert } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Linking, Alert } from 'react-native';
 import Slider from 'react-native-a11y-slider';
 import { Checkbox } from 'react-native-paper';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -312,7 +312,7 @@ const Filtercategory = (props) => {
     try {
       let query = `page=${1}&perPage=${1000}`
 
-    
+
       let { data: res } = await getStates(query);
       if (res.data) {
         setStatesArr(res.data.map(el => ({ ...el, checked: false })));
@@ -456,16 +456,16 @@ const Filtercategory = (props) => {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
     // }
-    console.log('vendorItemm',item);
+    console.log('vendorItemm', item);
     const someShopData = {
 
-    
+
       name: item.companyName,
       imagePath: item.bannerImage && item.bannerImage != "" ? { uri: generateImageUrl(item.bannerImage) } : require('../../assets/img/logo_1.png'),
       products: item?.productsCount ? item?.productsCount : 'N.A.',
       rating: item.rating ? item.rating : 0,
-      address:  (item.cityName && item.cityName !== "null" ? item.cityName : '') + 
-      (item.stateName && item.stateName !== "null" ? ' ' + item.stateName : '')
+      address: (item.cityName && item.cityName !== "null" ? item.cityName : '') +
+        (item.stateName && item.stateName !== "null" ? ' ' + item.stateName : '')
     };
 
 
@@ -487,10 +487,10 @@ const Filtercategory = (props) => {
   };
 
   const gotoCallBtn = (item) => {
-    console.log('item',item);
-    
+    console.log('item', item);
+
     if (isAuthorized) {
-     if (!currentUserHasActiveSubscription) {
+      if (!currentUserHasActiveSubscription) {
         Alert.alert(
           'Subscription Required',
           'You do not have a valid subscription to perform this action.',
@@ -513,7 +513,7 @@ const Filtercategory = (props) => {
 
     }
     else {
-     Alert.alert(
+      Alert.alert(
         'Login Required',
         'Please login to access this feature.',
         [
