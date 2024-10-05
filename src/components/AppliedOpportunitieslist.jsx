@@ -111,19 +111,20 @@ export default function AppliedOpportunitieslist(props) {
  
         const productItem = {
             name: item?.Organisation_name,
-            imagePath: item?.image && item?.image !== '' ?{ uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png'),
+            imagePath: item?.bannerImage && item?.bannerImage !== '' ?{ uri: generateImageUrl(item?.bannerImage) }:require('../../assets/img/logo_1.png'),
             state: item?.stateName,
             Type: item?.Type,
             brand: item?.Brand,
             ProductName: item?.Product,
             Cities: item?.cities,
             Categories: item?.categories,
-
-
         }
+        const modifiedItem = {
+            ...item,
+            _id: item.userId,
+          };
         return (
-            <DealershipData onDeletePress={() => {}} product={productItem} editable={false} onPress={()=>{ navigation.navigate('Supplier', { data: item }) }} ></DealershipData>
-            // <ProductItemVertical onDeletePress={() => handleDeleteProduct(item?._id)} product={productItem} onEditPress={() => navigation.navigate("EditProduct", { data: item?._id })} ></ProductItemVertical>
+            <DealershipData onDeletePress={() => {}} product={productItem} editable={false} onPress={()=>{ navigation.navigate('Supplier', { data: modifiedItem }) }} ></DealershipData>
         );
     };
 

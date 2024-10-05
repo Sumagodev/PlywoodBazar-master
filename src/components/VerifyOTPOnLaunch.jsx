@@ -15,9 +15,10 @@ import OtpRow from '../ReusableComponents/OtpRow';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { loginUser, sendOtpService, setToken } from '../services/User.service';
+import { loginUser, sendOtpForVerification, sendOtpService, setToken, verifyUserOTP } from '../services/User.service';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default VerifyOTPOnLaunch = ({route}) => {
   const [otp, setOtp] = useState('');
@@ -27,6 +28,7 @@ export default VerifyOTPOnLaunch = ({route}) => {
   const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
   const navigation = useNavigation();
   const focused = useIsFocused();
+  const[loadingDialog,setLoadingDialog]=useState(false);
 
   const  mobileNumber  = route.params.mobileNumber; // Assuming mobileNumber is passed as part of params
   useEffect(() => {
@@ -46,13 +48,16 @@ export default VerifyOTPOnLaunch = ({route}) => {
   };
   const handleVerifyOTP = async () => {
     const otpPattern = /^[0-9]{6}$/; // Regex to match exactly 4 digits
-
+    setLoadingDialog(true)
    
     try{
       if (!otpPattern.test(otp)) {
         setError(true); // Set error state if the input is invalid
         errorToast('Invalid otp please check your OTP again !!!');
+        setLoadingDialog(false)
+
         return;
+
       } else {
         setError(false); // Clear error if the input is valid
         console.log('Verifying OTP:', otp);
@@ -61,18 +66,27 @@ export default VerifyOTPOnLaunch = ({route}) => {
           otp,
         };
         console.log('sending response');
-        let { data: res } = await loginUser(obj);
+        let { data: res } = await verifyUserOTP(obj);
         if (res) {
           await AsyncStorage.setItem('isOtpVerified', 'true');
           const otpVerified = await AsyncStorage.getItem('isOtpVerified'); // Check OTP verification status
          console.log('isOtpVerified',otpVerified)
          console.log('isOtpVerifiedXXX',otpVerified)
-          navigation.navigate('BottomBar');
+         setLoadingDialog(false)
+         navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomBar' }],
+        });
+
+        }else{
+          setLoadingDialog(false)
         }
   
       }
     } catch (error) {
       errorToast(error)
+      setLoadingDialog(false)
+
     }
 
   };
@@ -82,7 +96,7 @@ export default VerifyOTPOnLaunch = ({route}) => {
       let obj = {
         phone:mobileNumber
       }
-      let {data:res} = await sendOtpService(obj);
+      let {data:res} = await sendOtpForVerification(obj);
       if(res.message){
         toastSuccess(res.message)
         // console.log(JSON.stringify(res,null,2))
@@ -160,6 +174,8 @@ export default VerifyOTPOnLaunch = ({route}) => {
           </ImageBackground>
         </View>
       </View>
+      <LoadingDialog visible={loadingDialog} message={'Loding...'}></LoadingDialog>
+
     </View>
     </ScrollView>
     </KeyboardAvoidingView>

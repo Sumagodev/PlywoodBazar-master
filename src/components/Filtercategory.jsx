@@ -456,7 +456,7 @@ const Filtercategory = (props) => {
     //   // Show loader at the end of list when fetching next page data.
     // return  <ShimmerPlaceHolder style={{width:wp(45), height:hp(20),marginBottom:10, borderRadius:10,}}    />
     // }
-    console.log('vendorItemm', item);
+    console.log('vendorItemm', JSON.stringify(item));
     const someShopData = {
 
 

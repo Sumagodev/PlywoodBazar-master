@@ -108,7 +108,7 @@ export default function MyPromotions(props) {
   };
   const renderItem = ({ item, index }) => {
 
-    console.log('itemx',item.productId.mainImage)
+    console.log('itemx',JSON.stringify(item))
     return (
       <Pressable style={stylesCard.container}>
 
@@ -152,11 +152,11 @@ export default function MyPromotions(props) {
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: wp(2) }}>
           <Text style={{ fontSize: wp(3.5) }}>From : </Text>
-          <Text style={{ fontSize: wp(3.5) }}>{moment(item?.startDate).format('DD-MM-YYYY')}</Text>
+          <Text style={{ fontSize: wp(3.5) }}>{moment.utc(item?.startDate).format('DD-MM-YYYY')}</Text>
 
           <Text style={{ fontSize: wp(3.5), marginHorizontal: wp(2) }}>To : </Text>
-          <Text style={{ fontSize: wp(3.5) }}>{moment(item?.endDate).format('DD-MM-YYYY')}</Text>
-        </View>
+          <Text style={{ fontSize: wp(3.5) }}>{moment.utc(item?.endDate).format('DD-MM-YYYY')}</Text>
+          </View>
       </Pressable>
     );
   };

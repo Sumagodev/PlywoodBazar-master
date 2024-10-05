@@ -583,7 +583,6 @@ export default function Home() {
         );
         return;
       }
-      handelcallbtn(item?.productId?.createdByObj?.phone)
       navigate.navigate('Productdetails', { data: item?.productId?.slug })
     }
     else {
@@ -653,8 +652,8 @@ export default function Home() {
           offPercentage={item?.discountValue}
           discountType={item?.discountType}
           EndDate={item?.endDate}
-          onCallPress={() => { GotoFlashSaleCallIcon(item) }}
-          onCardPress={() => { FlashSaleProduct(item) }}
+          onCallPress={() => { console.log('CallPressCalled'), GotoFlashSaleCallIcon(item) }}
+          onCardPress={() => {console.log('CardPressCalled'),  FlashSaleProduct(item) }}
         ></FlashSaleItemWithDiscount>
       </View>
     );
@@ -911,7 +910,7 @@ export default function Home() {
     <>
       <View style={[styles.bgwhite]}>
 
-        <View style={{  alignItems:'center', marginTop: wp(3)}} >
+        <View style={{  alignItems:'center', marginTop: wp(3)}}>
           <View style={[stylesSearch.mainContainer]}>
             <View style={stylesSearch.iconContainer}>
               <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
@@ -1145,7 +1144,7 @@ export default function Home() {
               {
                 Role === 'MANUFACTURER/IMPORTER' || Role === 'DISTRIBUTOR' ?
 
-                  <Pressable style={{ alignSelf: 'center', margin: wp(2) }} >
+                  <Pressable style={{ margin: wp(2), marginVertical:wp(5) }} >
                     <CustomButtonNew textSize={wp(4)} text="Add Opportunities" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => Gotoopportunities()} />
                   </Pressable>
                   :

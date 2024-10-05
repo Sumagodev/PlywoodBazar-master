@@ -49,7 +49,7 @@ export default function Topups(props) {
           let instrumentResponse = res?.data.instrumentResponse;
           if (instrumentResponse?.redirectInfo) {
             navigation.navigate("PaymentWebView", { url: instrumentResponse?.redirectInfo.url });
-            return;
+            return 0;
           }
         } else {
           errorToast("Phonepe is not working. Please Try Some another Payment Method");

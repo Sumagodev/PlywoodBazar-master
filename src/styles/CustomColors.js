@@ -1,5 +1,5 @@
 export default CustomColors = {
-    mattBrownDark: '#cc8d19',
+    mattBrownDark: '#BF9F65',
     mattBrownFaint: '#fff3e9',
     glossBrownDark: '#603200',
     accentGreen: '#39ab68',
@@ -12,5 +12,5 @@ export default CustomColors = {
     searchBackground: '#FFF3E9',
     searchBgColor: '#CDC2A1',
     colorNewMedium:'#ab7100',
-    colorNewButton:'#ebbb60'
+    colorNewButton:'#BF9F65'
 };

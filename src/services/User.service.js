@@ -13,6 +13,10 @@ export const loginUser = async obj => {
   return axios.post(`${serverUrl}/app-login/`, obj);
 };
 
+export const verifyUserOTP = async obj => {
+  return axios.post(`${serverUrl}/verifyUserOTP/`, obj);
+};
+
 export const sentOtp = async obj => {
   console.log("sdfbsdfgasdhasdhfsadfhsgadjhasgfjhasdfgfgjfgafgasfasdgasd", obj)
 
@@ -22,6 +26,9 @@ export const sendOtpService = async obj => {
   console.log("sdfbsdfgasdhasdhfsadfhsgadjhasgfjhasdfgfgjfgafgasfasdgasd", obj)
 
   return axios.post(`${serverUrl}/sentOtp/`, obj);
+};
+export const sendOtpForVerification = async obj => {
+  return axios.post(`${serverUrl}/sendOTPForVerify/`, obj);
 };
 export const getAllUsers = async (query, source) => {
   return axios.get(`${serverUrl}/getAllUsersForWebsite/?${query}`, { cancelToken: source?.token })

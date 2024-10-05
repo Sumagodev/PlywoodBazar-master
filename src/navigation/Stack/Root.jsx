@@ -65,8 +65,11 @@ import AllBannerslisting from '../../components/AllBannerslisting';
 import EditBannerform from '../../components/EditBannerform';
 import LauncherComponent from '../../components/LauncherComponent';
 import VerifyOTPOnLaunch from '../../components/VerifyOTPOnLaunch';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { Pressable, View } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native-paper';
+import { Image } from '@rneui/base';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
+import CustomColors from '../../styles/CustomColors';
 
 
 
@@ -135,8 +138,12 @@ export default function RootStack() {
 // Render loading screen while checking authorization
 if (loading) {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" color="#0000ff" />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' ,backgroundColor:'white'}}>
+      <Image source={require('../../../assets/img/logo_1.png')} resizeMode='center' style={{width:widthPercentageToDP(50),height:widthPercentageToDP(50),marginVertical:widthPercentageToDP(10)}}></Image>
+      <ActivityIndicator size="small" color={CustomColors.mattBrownDark} />
+      <Pressable style={[{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: widthPercentageToDP(93), marginTop: 20 }]}>
+          <Text style={[{ color: '#C28C28', marginLeft: 10, marginTop:widthPercentageToDP(5),fontSize: widthPercentageToDP(7) }]}>Plywoodbazar.com</Text>
+        </Pressable>
     </View>
   );
 }

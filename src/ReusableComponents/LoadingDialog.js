@@ -15,8 +15,8 @@ const LoadingDialog = ({ visible, message }) => {
         >
             <View style={styles.container}>
                 <View style={styles.dialog}>
-                    <Image source={require('../../assets/img/logo_1.png')} style={styles.logo}></Image>
-                    <ActivityIndicator size="small" color={CustomColors.mattBrownDark}  style={{marginTop:widthPercentageToDP(5)}}/>
+                    {/* <Image source={require('../../assets/img/logo_1.png')} style={styles.logo}></Image> */}
+                    <ActivityIndicator size="small" color={CustomColors.mattBrownDark}  style={{marginTop:widthPercentageToDP(5),marginBottom:widthPercentageToDP(5)}}/>
                     <Text style={styles.message}>{message}</Text>
                 </View>
             </View>

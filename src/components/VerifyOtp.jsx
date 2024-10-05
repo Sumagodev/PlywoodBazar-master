@@ -17,6 +17,7 @@ import { isAuthorisedContext } from '../navigation/Stack/Root';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { loginUser, sendOtpService, setToken } from '../services/User.service';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default VerifyOtp = ({route}) => {
   const [otp, setOtp] = useState('');
@@ -26,6 +27,7 @@ export default VerifyOtp = ({route}) => {
   const [isAuthorized, setIsAuthorized] = useContext(isAuthorisedContext);
   const navigation = useNavigation();
   const focused = useIsFocused();
+  const[loadingDialog,setLoadingDialog]=useState(false);
 
   const mobileNumber=route.params
   useEffect(() => {
@@ -46,15 +48,18 @@ export default VerifyOtp = ({route}) => {
   const handleVerifyOTP = async () => {
     const otpPattern = /^[0-9]{6}$/; // Regex to match exactly 4 digits
 
-   
+   setLoadingDialog(true)
     try{
       if (!otpPattern.test(otp)) {
         setError(true); // Set error state if the input is invalid
         errorToast('Invalid otp please check your OTP again !!!');
+        setLoadingDialog(false)
+
         return;
       } else {
         setError(false); // Clear error if the input is valid
         console.log('Verifying OTP:', otp);
+        setLoadingDialog(false)
         // Proceed with OTP verification logic here
         let obj = {
           phone:mobileNumber,
@@ -66,12 +71,16 @@ export default VerifyOtp = ({route}) => {
           // console.log(JSON.stringify(res,null,2), "cke tokkene")
           await setToken(res.token);
           setIsAuthorized(true);
+          setLoadingDialog(false)
           navigation.navigate('BottomBar');
+        }else{
+          setLoadingDialog(false)
         }
   
       }
     } catch (error) {
       errorToast(error)
+      setLoadingDialog(false)
     }
 
   };
@@ -157,6 +166,7 @@ export default VerifyOtp = ({route}) => {
 </View>
           </ImageBackground>
         </View>
+        <LoadingDialog visible={loadingDialog} message={'Loding...'}></LoadingDialog>
       </View>
     </View>
     </ScrollView>

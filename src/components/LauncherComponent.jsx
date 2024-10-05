@@ -5,37 +5,46 @@ import { useNavigation } from '@react-navigation/native';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
 import CustomColors from '../styles/CustomColors';
 import CustomInputWithLeftIcon from '../ReusableComponents/CustomInputWithLeftIcon';
-import { sendOtpService } from '../services/User.service';
+import { sendOtpForVerification, sendOtpService } from '../services/User.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function LauncherComponent() {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [error, setError] = useState(false);
+  const[loadingDialog,setLoadingDialog]=useState(false);
 
   // Memoize the OTP handler to avoid re-creation on each render
   const handleSendOTP = useCallback(async () => {
     const mobileNumberPattern = /^[6-9][0-9]{9}$/;
-
+    setLoadingDialog(true)
     if (!mobileNumberPattern.test(mobileNumber)) {
       setError(true);
+      setLoadingDialog(false)
       return;
     }
 
     try {
       setError(false);
       const obj = { phone: mobileNumber };
-      const { data: res } = await sendOtpService(obj);
+      const { data: res } = await sendOtpForVerification(obj);
       
       if (res.message) {
         toastSuccess(res.message);
+        setLoadingDialog(false)
+
         navigation.navigate('VerifyOTPOnLaunch', { mobileNumber:mobileNumber });
       } else {
-        errorToast('Please enter a valid phone number !!!');
+        errorToast(res.message);
+        setLoadingDialog(false)
+
       }
     } catch (error) {
       errorToast(`Error: ${error.message || error}`);
+      setLoadingDialog(false)
+
     }
   }, [mobileNumber, navigation]);
 
@@ -57,7 +66,7 @@ export default function LauncherComponent() {
 
           {/* Title */}
           <Text style={styles.title}>Let's Get Started</Text>
-          <Text style={styles.titleSmall}></Text>
+          <Text style={styles.titleSmall}>Verify with a valid number you can access vendors, products, and our other services</Text>
 
           
 
@@ -114,7 +123,8 @@ export default function LauncherComponent() {
               </ImageBackground>
             </View>
           </View>
-        </View>
+          <LoadingDialog visible={loadingDialog}></LoadingDialog>
+          </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -150,11 +160,12 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   titleSmall: {
-    fontFamily: 'Poppins-Thin',
+    alignSelf:'center',
+    textAlign:'center',
+    color:'#AEAEAE',
     fontSize: widthPercentageToDP(4),
-    fontWeight: 'bold',
     marginBottom: 30,
-    color: '#000000',
+    marginHorizontal:widthPercentageToDP(6)
   },
   cardContainer: {
     width: '100%',
@@ -206,6 +217,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Light',
   },
   buttonWrapper: {
+    marginBottom:20,
     alignSelf: 'center',
     marginTop: 20,
   },

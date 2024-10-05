@@ -81,7 +81,7 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
         return () => clearInterval(interval);
     }, [EndDate]);
     return (
-        <Pressable style={styles.masterContainer} onPress={onCardPress}>
+        <TouchableOpacity style={styles.masterContainer} onPress={onCardPress}>
             <View style={styles.container}>
                 <Image style={styles.imageStyle} source={imagePath} />
 
@@ -140,7 +140,7 @@ const FlashSaleItemWithDiscount = ({ imagePath, name, actualPrice, salePrice, of
             )}
 
 
-        </Pressable>
+        </TouchableOpacity>
     );
 };
 

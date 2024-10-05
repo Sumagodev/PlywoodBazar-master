@@ -116,6 +116,7 @@ export default function Userprofile(props) {
           </View>
           <Text style={profileStyle.title}>Profile</Text>
         </Pressable>
+        
 
         <Pressable onPress={() => navigate.navigate('MyProducts')} style={profileStyle.container}>
           <View style={profileStyle.iconContainer}>
@@ -393,7 +394,7 @@ const profileStyle = StyleSheet.create({
   },
 
   iconContainer: {
-    backgroundColor: CustomColors.colorNewButton,
+    backgroundColor: "#BF9F65",
     width: wp(15),
     height: wp(15),
     borderRadius: wp(15),
