@@ -282,23 +282,7 @@ export default function Home() {
     }
   };
 
-  // const handelcallbtn = (phone) => {
-  //   if (isAuthorized) {
-  //     if (!currentUserHasActiveSubscription) {
-  //       errorToast('You do not have a valid subscription to perform this action');
-  //       showSubscriptionToast();
-  //       // navigate.navigate('Subscriptions', { register: false })
-  //       return 0;
-  //     }
-  //     Linking.openURL(`tel:${phone}`);
-  //   }
-  //   else {
-  //     // navigate.navigate('Login')
-  //     errorToast('Please login to access this feature');
-  //     showLoginToast();
 
-  //   }
-  // };
 
   const handelcallbtn = (phone) => {
     if (isAuthorized) {
@@ -926,11 +910,20 @@ export default function Home() {
   return (
     <>
       <View style={[styles.bgwhite]}>
-        <Pressable onPress={() => navigate.navigate('Product')}>
-          <View style={{ width: wp(90), alignSelf: 'center', marginTop: wp(3) }} onPress={() => navigate.navigate('Search')}>
-            <CustomTextInputField placeholder="Search Here" imagePath={require('../../assets/img/ic_search.png')} editable={false}  ></CustomTextInputField>
+
+        <View style={{  alignItems:'center', marginTop: wp(3)}} >
+          <View style={[stylesSearch.mainContainer]}>
+            <View style={stylesSearch.iconContainer}>
+              <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
+            </View>
+            <TextInput
+              style={stylesSearch.input}
+              placeholder={'Search with  keywords'}
+
+            />
           </View>
-        </Pressable>
+        </View>
+
         <FlatList
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index}
@@ -1060,7 +1053,7 @@ export default function Home() {
                 <View style={[styles1.textwrap]}>
                   <Text style={{ fontSize: wp(3.5) }}>Unlock endless possibilities</Text>
                   <Text style={{ fontSize: wp(3.5) }}>with our</Text>
-                  <TouchableOpacity style={{ flexDirection: 'row', marginTop: 0 }} onPress= {() => {navigate.navigate('Subscriptions', { register: false })}}>
+                  <TouchableOpacity style={{ flexDirection: 'row', marginTop: 0 }} onPress={() => { navigate.navigate('Subscriptions', { register: false }) }}>
                     <Text style={{ fontSize: wp(4.5), color: '#FFFFFF', fontWeight: 'bold' }}>Subscription!</Text>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: wp(1), height: wp(6), width: wp(6) }} >
                       <Image
@@ -1669,7 +1662,42 @@ const styles1 = StyleSheet.create({
   },
 });
 
+const stylesSearch = StyleSheet.create({
 
+  mainContainer: {
+    backgroundColor: CustomColors.searchBackground,
+    borderRadius: wp(10),
+    flexDirection: 'row',
+    width: wp(90),
+    height: wp(12.5),
+    padding: wp(0.5),
+    borderColor: '#CDC2A1',
+    borderWidth: wp(0.3),
+    alignItems:"center",
+    justifyContent:"center",
+  },
+  iconContainer: {
+    backgroundColor: CustomColors.mattBrownDark,
+    width: wp(9),
+    height: wp(9),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: wp(10),
+  },
+  iconImageStyle: {
+    width: wp(7),
+    height: wp(7),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    backgroundColor:"transparent"
+
+
+  }
+});
 const DATA1 = [
   {
     id: '1',

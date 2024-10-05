@@ -108,7 +108,7 @@ export default function AppliedOpportunitieslist(props) {
     const renderMyProductItem = ({ item, index }) => {
 
         console.log('&&&&&&', item);
-
+ 
         const productItem = {
             name: item?.Organisation_name,
             imagePath: item?.image && item?.image !== '' ?{ uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png'),
