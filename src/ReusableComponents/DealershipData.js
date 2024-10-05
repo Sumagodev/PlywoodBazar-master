@@ -11,7 +11,7 @@ import CustomButtonNew from "./CustomButtonNew";
 //     'Moscow', 'Dubai', 'Seoul', 'Singapore', 'Hong Kong', 'Bangkok',
 // ];
 const { width, height } = Dimensions.get('window');
-const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
+const DealershipData = ({ onEditPress, product, onDeletePress, editable ,onPress}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cities, setcities] = useState([])
     const [Categories, setCategories] = useState([])
@@ -23,9 +23,9 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
 
     return (
 
-        <View style={styles.container} >
+        <TouchableOpacity style={styles.container} onPress={onPress} >
             <View style={{
-                backgroundColor: 'black', width: '100%', height: wp(40), borderRadius: wp(5),
+                backgroundColor: '#ffffff', width: '100%', height: wp(40), borderRadius: wp(5),
             }}>
                 <Image style={styles.imageStyle} source={product.imagePath} />
             </View>
@@ -124,7 +124,7 @@ const DealershipData = ({ onEditPress, product, onDeletePress, editable }) => {
                     </View>
                 </Modal>
             </View>
-        </View>
+        </TouchableOpacity>
 
     )
 }

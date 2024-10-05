@@ -320,7 +320,27 @@ export default function Productdetails(props) {
   };
   const handleModelshow = () => {
     if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        setLoading(false)
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigation.navigate('Subscriptions', { register: false }),
 
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
+      }
       setModalVisible(true);
     } else {
       Alert.alert(

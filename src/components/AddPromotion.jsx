@@ -133,7 +133,7 @@ export default function AddPromotions(props) {
       <Header normal={true} rootProps={props} />
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
 
-        <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
+        <View style={styles1.cardContainer} >
           <ScrollView>
           <Text style={{fontSize: wp(6), marginVertical: wp(2), fontWeight: 600, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>Add Promotion</Text>
 
@@ -247,7 +247,7 @@ export default function AddPromotions(props) {
               </View>
             </View>
           </ScrollView>
-        </ImageBackground>
+        </View>
       </View>
       <DatePicker
         modal

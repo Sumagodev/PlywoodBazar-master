@@ -95,7 +95,7 @@ export default function DealershipOppolisting(props) {
 
         const productItem = {
             name: item?.Organisation_name,
-            imagePath: { uri: generateImageUrl(item?.image) },
+            imagePath:item?.image && item?.image !== '' ?{ uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png'),
             state: item?.stateName,
             Type: item?.Type,
             brand: item?.Brand,

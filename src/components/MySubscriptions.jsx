@@ -20,14 +20,18 @@ export default function MySubscriptions(props) {
   const [subscriptionArr, setSubscriptionArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const getSubscriptions = async () => {
+
     try {
+      setIsLoading(true)
       const { data: res } = await getAllSubscriptionbyUserId();
       if (res) {
         console.log(res.data);
         setSubscriptionArr(res.data);
+        setIsLoading(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
     }
   };
 
@@ -42,6 +46,7 @@ export default function MySubscriptions(props) {
       }
     } catch (err) {
       errorToast(err);
+      setIsLoading(false)
     }
   };
 
@@ -120,7 +125,7 @@ export default function MySubscriptions(props) {
   return (
     <>
       <Header normal={true} screenName={'My Subscriptions'} rootProps={props} />
-      <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ flex: 1, overflow: 'hidden' }}>
+      <View  style={{ flex: 1, overflow: 'hidden', backgroundColor: '#FFF4EC', }}>
         <Pressable style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }} onPress={() => navigation.navigate('Subscriptions', { register: false })} >
           <LinearGradient colors={['#cc8d19', '#B1784A', '#c29135', '#ebbb60']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
             <Text style={stylesGradient.text} numberOfLines={1} ellipsizeMode="tail">
@@ -149,7 +154,7 @@ export default function MySubscriptions(props) {
           <Text style={styles.textbtn}>Buy Subscription</Text>
         </TouchableOpacity> */}
         </ScrollView>
-      </ImageBackground>
+      </View>
     </>
   );
 }

@@ -150,12 +150,12 @@ export default function AddBannerForm(props) {
   return (
     <>
       <Header normal={true} rootProps={props} />
-      <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={styles.container}>
+      <View source={require('../../assets/img/main_bg.jpg')} style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.title}>Add Banner</Text>
 
           <View style={styles.imageContainer}>
-            {bannerImage ? (
+            {bannerImage ? ( 
               <Image
                 source={{ uri: bannerImage }}
                 style={styles.image}
@@ -217,7 +217,7 @@ export default function AddBannerForm(props) {
             <CustomButtonNew text={'Submit'} paddingHorizontal={wp(7)} onPress={() => handleSubmit()} />
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+      </View>
     </>
   );
 }
@@ -225,6 +225,7 @@ export default function AddBannerForm(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#5647871a"
   },
   content: {
     flex: 1,

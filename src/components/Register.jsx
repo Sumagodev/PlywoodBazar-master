@@ -245,7 +245,7 @@ export default function Register() {
       gstCertificate,
     };
 
-    console.log(obj, 'Sayali');
+    
 
     try {
       let { data: res } = await registerUser(obj);
@@ -478,7 +478,7 @@ export default function Register() {
       </>
     );
   };
-
+ 
   return (
     <View style={{ backgroundColor: 'white' }}>
       <View style={{ alignSelf: 'center' }}>
@@ -515,7 +515,7 @@ export default function Register() {
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setcompanyName(e)} value={companyName} placeholder="Business Name*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} autoCorrect={false} autoCapitalize="none" />
 
-            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setYearOfEstablishment(e)} value={yearOfEstablishment} selectionColor={CustomColors.mattBrownDark} placeholder="Year of Establishment *" placeholderTextColor="#000" />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setYearOfEstablishment(e)} value={yearOfEstablishment} keyboardType='number-pad' selectionColor={CustomColors.mattBrownDark} placeholder="Year of Establishment *" placeholderTextColor="#000" />
 
             <MultiSelect
               style={styles1.dropdown}
@@ -676,28 +676,30 @@ export default function Register() {
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setaddress(e)} value={address} selectionColor={CustomColors.mattBrownDark} placeholder="Address *" placeholderTextColor="#000" />
 
             <Pressable
-              style={styles1.BorderedPressable}
+           
               onPress={() => {
                 setModalVisible(true);
                 setModalFor('Country');
               }}>
-              <Text style={styles.borderedPressableText}>{countryId && countryId.value ? countryId.name : 'Country *'}</Text>
+              <TextInput style={styles1.mbboot} mode="outlined" value={countryId && countryId.value ? countryId.name : 'Country *'} editable={false}  placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+
             </Pressable>
             <Pressable
-              style={styles1.BorderedPressable}
+             
               onPress={() => {
                 setModalVisible(true);
                 setModalFor('State');
               }}>
-              <Text style={styles.borderedPressableText}>{stateId && stateId.name ? stateId.name : ' State *'}</Text>
+              <TextInput style={styles1.mbboot} mode="outlined" value={stateId && stateId.name ? stateId.name : ' State *'} editable={false}  placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
+
             </Pressable>
             <Pressable
-              style={styles1.BorderedPressable}
+             
               onPress={() => {
                 setModalVisible(true);
                 setModalFor('City');
               }}>
-              <Text style={styles.borderedPressableText}>{cityId && cityId.value ? cityId.name : 'City *'}</Text>
+              <TextInput style={styles1.mbboot} mode="outlined" value={cityId && cityId.value ? cityId.name : 'City *'} editable={false}  placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} />
             </Pressable>
             <Pressable onPress={() => handlePickProfileImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={profileImage} editable={false} placeholder="Profile Photo" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} /></Pressable>
             <Pressable onPress={() => handlePickBannerImage()} ><TextInput style={styles1.mbboot} mode="outlined" value={bannerImage} editable={false} placeholder="Banner Image" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} /></Pressable>
