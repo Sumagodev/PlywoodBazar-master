@@ -99,8 +99,8 @@ android {
         applicationId "com.plywoodbazar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "16.0"
+        versionCode 17
+        versionName "17.0"
     }
 
     splits {
