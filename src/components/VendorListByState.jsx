@@ -1014,7 +1014,7 @@ const VendorListByState = (props) => {
                 borderTopLeftRadius: 10,
               },
             }}>
-            <View style={{ backgroundColor: '#6B4E37', borderRadius: wp(2) }}>
+            <View style={{ backgroundColor: '#BF9F65', borderRadius: wp(2) }}>
               <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3) }}>Filters</Text>
             </View>
             <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>

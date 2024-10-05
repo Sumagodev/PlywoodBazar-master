@@ -1042,7 +1042,7 @@ export default function Home() {
                 </View>
               )}
               <LinearGradient
-                colors={['#cc8d19', '#ebbb60', '#F1E8D1']} // Gradient colors (left to right)
+                colors={['#BF9F65', '#BF9F65', '#F1E8D1']} // Gradient colors (left to right)
                 style={[styles1.tableimagewrap, styles1.padinghr]} // Apply the gradient to this style
                 start={{ x: 0, y: 1 }} // Start point of the gradient
               // end={{ x: 1, y: 1 }}   // End point of the gradient (horizontal)

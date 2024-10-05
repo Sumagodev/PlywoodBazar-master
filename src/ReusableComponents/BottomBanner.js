@@ -7,7 +7,7 @@ const BottomBanner = ()=>{
         <View style={styles.container}>
             <LinearGradient 
                 style={styles.mainContainer}
-                colors={['#FFFFFF','#ebbb60', '#cc8d19']}
+                colors={ ['#F1E8D1', '#BF9F65','#BF9F65']} 
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 >
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     roundContainer:{
         flexDirection:'column',
         borderRadius: 50,
-        backgroundColor: '#cc8d19',
+        backgroundColor: '#BF9F65',
         height: wp(20),
         width: wp(20),
         marginStart: wp(1),

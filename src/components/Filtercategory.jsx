@@ -975,7 +975,7 @@ const Filtercategory = (props) => {
                 borderTopLeftRadius: 10,
               },
             }}>
-            <View style={{ backgroundColor: '#6B4E37', borderRadius: wp(2) }}>
+            <View style={{ backgroundColor: '#BF9F65', borderRadius: wp(2) }}>
               <Text style={{ color: '#fff', fontFamily: 'Manrope-Bold', fontSize: 18, padding: wp(3) }}>Filters</Text>
             </View>
             <ScrollView contentContainerStyle={{ padding: wp(2), paddingBottom: 80, backgroundColor: '#FFF8EC' }}>
@@ -1096,14 +1096,14 @@ const Filtercategory = (props) => {
               <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: hp(5) }}>
 
                 <TouchableOpacity
-                  style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                  style={{ backgroundColor: "#BF9F65", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                   onPress={() => HandleClearFilter()}
                 >
                   <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Clear Filters</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={{ backgroundColor: "#624832", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
+                  style={{ backgroundColor: "#BF9F65", width: wp(42), borderRadius: 10, paddingVertical: 10, display: "flex", justifyContent: "center", alignItems: "center" }}
                   onPress={() => this.RBSheet.close()}
                 >
                   <Text style={{ color: "white", fontWeight: 'bold', fontSize: wp(4) }}>Apply</Text>
@@ -1179,7 +1179,7 @@ const styles1 = StyleSheet.create({
   col2: {
     width: wp(10),
     height: wp(10),
-    backgroundColor: '#ebbb60',
+    backgroundColor: '#BF9F65',
     borderRadius: wp(9),
     justifyContent: 'center',
     alignContent: 'center',
