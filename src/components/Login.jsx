@@ -175,8 +175,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 20,
+    justifyContent: 'flex-end',
   },
   errorText: {
     color: 'red',
