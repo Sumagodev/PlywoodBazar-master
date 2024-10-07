@@ -30,6 +30,9 @@ export const sendOtpService = async obj => {
 export const sendOtpForVerification = async obj => {
   return axios.post(`${serverUrl}/sendOTPForVerify/`, obj);
 };
+export const checkIfUserIsVerified = async obj => {
+  return axios.post(`${serverUrl}/checkIfUserIsVerified/`, obj);
+};
 export const getAllUsers = async (query, source) => {
   return axios.get(`${serverUrl}/getAllUsersForWebsite/?${query}`, { cancelToken: source?.token })
 }

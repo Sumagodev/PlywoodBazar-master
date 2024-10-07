@@ -15,8 +15,8 @@ const LoadingDialog = ({ visible, message }) => {
         >
             <View style={styles.container}>
                 <View style={styles.dialog}>
-                    {/* <Image source={require('../../assets/img/logo_1.png')} style={styles.logo}></Image> */}
-                    <ActivityIndicator size="small" color={CustomColors.mattBrownDark}  style={{marginTop:widthPercentageToDP(5),marginBottom:widthPercentageToDP(5)}}/>
+                    { <Image source={require('../../assets/img/logo_1.png')} style={styles.logo}></Image>}
+                    <ActivityIndicator size="large" color={CustomColors.mattBrownDark}  style={{marginTop:widthPercentageToDP(5),marginBottom:widthPercentageToDP(5)}}/>
                     <Text style={styles.message}>{message}</Text>
                 </View>
             </View>
@@ -35,14 +35,18 @@ LoadingDialog.defaultProps = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '100%', // Full width of the parent
+        height: '100%', // Full height of the parent
+        position: 'absolute', // Absolute positioning
+        top: 0,
+        left: 0,
+        alignItems: 'center', // Centers horizontally
+        justifyContent: 'center', // Centers vertically
         backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent background
     },
     dialog: {
         paddingHorizontal: widthPercentageToDP(10),
-        paddingVertical:widthPercentageToDP(5),
+        paddingVertical: widthPercentageToDP(5),
         borderRadius: 10,
         alignItems: 'center',
     },
@@ -51,11 +55,14 @@ const styles = StyleSheet.create({
         fontSize: widthPercentageToDP(2),
         textAlign: 'center',
     },
-    logo:{
-        resizeMode:'center',
-        width:widthPercentageToDP(15),
-        height:widthPercentageToDP(15)
+    logo: {
+        resizeMode: 'center',
+        width: widthPercentageToDP(15),
+        height: widthPercentageToDP(15),
     }
 });
+
+
+
 
 export default LoadingDialog;
