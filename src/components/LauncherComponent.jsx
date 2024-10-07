@@ -147,6 +147,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 50,
     alignItems: 'center',
+    alignSelf:'center',
+    justifyContent:'center',
+    
   },
   logo: {
     width: '80%',
@@ -197,8 +200,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 20,
+    justifyContent: 'flex-end',
+marginHorizontal:widthPercentageToDP(5)    
   },
   inputContainer: {
     backgroundColor: '#F0F0F0',
@@ -231,5 +234,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(35),
+    
   },
 });
