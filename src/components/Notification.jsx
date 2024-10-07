@@ -64,6 +64,8 @@ import ContactsNote from '../ReusableComponents/NotificationCards/ContactsNote';
 import ProfileCompletionNote from '../ReusableComponents/NotificationCards/ProfileCompletionNote';
 import ProductUnderReviewNote from '../ReusableComponents/NotificationCards/ProductUnderReviewNote';
 import LoadingDialog from '../ReusableComponents/LoadingDialog';
+import Flash_sale_Note from '../ReusableComponents/NotificationCards/Flash_sale_Note';
+
 
 export default function Notification(props) {
   const [Notification, setNotification] = useState([]);
@@ -138,6 +140,8 @@ export default function Notification(props) {
         return <ProfileCompletionNote isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       case 'product_under_review':
         return <ProductUnderReviewNote isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'flash_sale':
+        return <Flash_sale_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       default:
         return null;
     }
