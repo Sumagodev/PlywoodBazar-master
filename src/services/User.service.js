@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { axiosApiInstance } from '../../App';
 let serverUrl = `${url}/users`;
+let notificationURL = `${url}/notifications`;
 
 export const registerUser = async obj => {
   return axios.post(`${serverUrl}/register/`, obj);
@@ -54,8 +55,12 @@ export const getUserUserById = async (id) => {
 
 };
 
+// export const getUserNotifications = async (obj) => {
+//   return await axiosApiInstance.get(`${serverUrl}/getUserNotifications${obj}`)
+// }
 export const getUserNotifications = async (obj) => {
-  return await axiosApiInstance.get(`${serverUrl}/getUserNotifications${obj}`)
+  console.log('hello',obj)
+  return await axiosApiInstance.post(`${notificationURL}/getAllNotifications`,obj)
 }
 
 export const deleteUserByID = async (id) => {

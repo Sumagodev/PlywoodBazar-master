@@ -4,6 +4,7 @@ import { axiosApiInstance } from '../../App';
 import { url } from './url.service';
 
 let serverUrl = `${url}/product`;
+let serverUrl1 = `${url}//users`;
 
 export const AddProduct = async obj => {
   return /*apiinstance*/ axiosApiInstance.post(`${serverUrl}/`, obj);
@@ -54,6 +55,9 @@ export const getSimilarProducts = async id => {
 
 export const searchProduct = async (query) => {
   return axiosApiInstance.get(`${serverUrl}/searchProductWithQuery?name=${query}`);
+};
+export const searchHomeProduct = async (query) => {
+  return axiosApiInstance.get(`${serverUrl1}/searchVendor?search=${query}`);
 };
 
 export const deleteById=async(id)=>{
