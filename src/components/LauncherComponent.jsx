@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, KeyboardAvoidingView, Platform, Alert, Touchable, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import CustomRoundedTextButton from '../ReusableComponents/CustomRoundedTextButton';
@@ -94,7 +94,6 @@ export default function LauncherComponent() {
                     </Text>
                   )}
 
-                  {/* Send OTP Button */}
                   <View style={styles.buttonWrapper}>
                     <CustomRoundedTextButton
                       buttonText="SEND OTP"
@@ -103,17 +102,13 @@ export default function LauncherComponent() {
                     />
                   </View>
 
-                  {/* Register Link */}
-                  {/* <View style={styles.buttonWrapper}>
-                    <Text
-                      style={styles.registerText}
-                     
-                    >
-                      Connecting Business Peoples Worldwide
-                    </Text>
-                  </View> */}
+                   <View style={{flexDirection:'row' ,alignContent:'center',alignSelf:'center'}}>
+                    <Text style={styles.registerText}>Already Registered ?</Text>
+                    <TouchableOpacity  onPress={()=>{navigation.navigate('Login')}} style={{marginHorizontal:widthPercentageToDP(5)}}> 
+                      <Text style={{color:CustomColors.mattBrownDark,fontWeight:800,fontSize:widthPercentageToDP(5),alignSelf:'center'}}>Login</Text>
+                      </TouchableOpacity>
+                  </View> 
 
-                  {/* Hero Image */}
                   <Image
                     resizeMode="contain"
                     style={styles.heroImage}
@@ -225,10 +220,10 @@ marginHorizontal:widthPercentageToDP(5)
     marginTop: 20,
   },
   registerText: {
-    color: CustomColors.mattBrownDark,
+    color: '#737373',
     fontSize: widthPercentageToDP(4.5),
     fontWeight: '600',
-    lineHeight: 50,
+    
   },
   heroImage: {
     backgroundColor: 'transparent',

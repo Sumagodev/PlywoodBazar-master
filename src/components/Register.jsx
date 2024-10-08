@@ -283,6 +283,7 @@ export default function Register() {
       return;
     }
 
+
     let obj = {
       name,
       email,
@@ -323,6 +324,7 @@ export default function Register() {
       } else {
         if(verifiedMobileNumber===mobile)
         {
+          setLoadingDialog(true)
           let {data: res} = await registerUser(obj);
           console.log(JSON.stringify(res, null, 2), 'register data ');
           if (res) {
@@ -331,11 +333,15 @@ export default function Register() {
             await setToken(res.token);
             setIsAuthorized(true);
             resetForm();
+            setLoadingDialog(false)
+
             // navigation.navigate('BottomBar', { register: true });
             navigation.navigate('Subscriptions', {register: true});
           }
         }else{
           setShowOtpVerifyDialog(true);
+          setLoadingDialog(false)
+
         }
         
       }
@@ -343,6 +349,8 @@ export default function Register() {
       console.log(error);
       console.error(error);
       errorToast(error);
+      setLoadingDialog(false)
+
     }
   };
   const handleSendOtp = async () => {
