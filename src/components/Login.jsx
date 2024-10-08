@@ -9,10 +9,12 @@ import { sendOtpService } from '../services/User.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { heightPercentageToDP,widthPercentageToDP } from 'react-native-responsive-screen';
 import {isAuthorisedContext} from '../navigation/Stack/Root';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default Login = () => {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [error, setError] = useState(false); 
+  const [showLoadingDialog, setShowLoadingDialog] = useState(false); 
   const focused = useIsFocused();
   const [isAuthorized] = useContext(isAuthorisedContext);
   // useEffect(() => {
@@ -42,25 +44,30 @@ export default Login = () => {
   // }, []);
 
   const handleSendOTP = async () => {
+    
     const mobileNumberPattern = /^[6-9][0-9]{9}$/;
     try {
       if (!mobileNumberPattern.test(mobileNumber)) {
         setError(true);
       } else {
+        setShowLoadingDialog(true)
         setError(false);
         console.log('Sending OTP to', mobileNumber);
         let obj = { phone: mobileNumber };
         let { data: res } = await sendOtpService(obj);
         if (res.message) {
+          setShowLoadingDialog(false)
           toastSuccess(res.message);
           navigation.navigate("VerifyOtp", mobileNumber);
         } else {
+          setShowLoadingDialog(false)
           errorToast("Please enter a valid phone number !!!");
           return;
         }
       }
     } catch (error) {
       errorToast(error);
+      setShowLoadingDialog(false)
     }
   };
 
@@ -116,6 +123,7 @@ export default Login = () => {
               </ImageBackground>
             </View>
           </View>
+          <LoadingDialog visible={showLoadingDialog}></LoadingDialog>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
