@@ -65,14 +65,15 @@ import ProfileCompletionNote from '../ReusableComponents/NotificationCards/Profi
 import ProductUnderReviewNote from '../ReusableComponents/NotificationCards/ProductUnderReviewNote';
 import LoadingDialog from '../ReusableComponents/LoadingDialog';
 import Flash_sale_Note from '../ReusableComponents/NotificationCards/Flash_sale_Note';
-
-
+import New_arrival_note from '../ReusableComponents/NotificationCards/New_arrival_note';
+import Product_Review_Note from '../ReusableComponents/NotificationCards/Product_Review_Note';
+import Vendor_Review_Note from '../ReusableComponents/NotificationCards/Vendor_Review_Note';
 export default function Notification(props) {
   const [Notification, setNotification] = useState([]);
   const [isAuthorized] = useContext(isAuthorisedContext);
   console.log('isAuthorized', isAuthorized);
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
-  const[loadingDialog,setLoadingDialog]=useState(false);
+  const[loadingDialog,setLoadingDialog]=useState(true);
   const focused = useIsFocused();
   useEffect(() => {
     if (isAuthorized) {
@@ -92,8 +93,9 @@ export default function Notification(props) {
         if (res.data) {
           console.log('XX', res.data, 'XX');
           setCurrentUserHasActiveSubscription(res.data);
-          handleGetProducts(); // Fetch data every time the screen is focused
+          // handleGetProducts(); // Fetch data every time the screen is focused
         }
+        handleGetProducts(); 
       }
     } catch (err) {
       errorToast(err);
@@ -142,6 +144,12 @@ export default function Notification(props) {
         return <ProductUnderReviewNote isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       case 'flash_sale':
         return <Flash_sale_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'new_arrival':
+        return <New_arrival_note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'product_review':
+        return <Product_Review_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'vendor_review':
+        return <Vendor_Review_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       default:
         return null;
     }

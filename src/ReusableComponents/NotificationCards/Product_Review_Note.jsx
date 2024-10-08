@@ -1,7 +1,7 @@
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CustomColors from '../../styles/CustomColors';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { updateReadStatus } from '../../services/Notifications.service';
 
@@ -16,7 +16,6 @@ const getRelativeTime = (dateString) => {
   const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
   if (diffInMinutes < 60) {
     return `${diffInMinutes}m`;
   }
@@ -26,9 +25,27 @@ const getRelativeTime = (dateString) => {
   return `${diffInDays}d`;
 };
 
-const Flash_sale_notification_card = ({ item, isSubscriber = false }) => {
+const Product_Review_Note = ({ item, isSubscriber = false }) => {
   const navigation = useNavigation();
+console.log('item?.payload?.flashSaleDetails?.endDate',item?.payload?.flashSaleDetails?.endDate);
+const [daysDifference, setDaysDifference] = useState(0);
 
+  // Function to calculate the difference in days
+  const convertDateToDays = (isoDateString) => {
+    const givenDate = new Date(isoDateString);
+    const currentDate = new Date();
+    const timeDifference = givenDate.getTime() - currentDate.getTime();
+    const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    return days;
+  };
+
+  // Using useEffect to update the days difference when the component loads
+  useEffect(() => {
+    if (item?.payload?.flashSaleDetails?.endDate) {
+      const days = convertDateToDays(item.payload.flashSaleDetails.endDate);
+      setDaysDifference(days);
+    }
+  }, [item]);
   const handlePress = () => {
     const userId = item.userId;
     const notificationId = item._id;
@@ -41,7 +58,11 @@ const Flash_sale_notification_card = ({ item, isSubscriber = false }) => {
       console.error('Failed to update read status:', error);
       // You can add additional error handling here (e.g., showing an alert)
     }
-    navigation.navigate('Productdetails', { data: item?.payload?.productDetails?.slug });
+    const modItem={
+        ...item,
+        _id:item?.payload?.addedbyUserId
+    }
+    navigation.navigate('Supplier', { data: modItem });
   };
 
   const updateReadStatusApiCall = async (userId, notificationId) => {
@@ -61,15 +82,15 @@ const Flash_sale_notification_card = ({ item, isSubscriber = false }) => {
       <View style={customStyle.rowContainer}>
         <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
         <View style={customStyle.contentContainer}>
-          <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
-            <Text style={{ width: '88%' }}>
-              <Text>Limited-Time Offer! </Text>
-              {' '} Get
-              <Text style={customStyle.textBold}>{item?.payload?.flashSaleDetails?.discountValue}%</Text>
-              OFF our top-selling. <Text style={customStyle.textBold}> {item?.payload?.productName}</Text>for the next<Text style={customStyle.textBold}> {getRelativeTime(item?.payload?.flashSaleDetails?.endDate)}</Text>only!
+
+          <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center', flexWrap:'wrap' }}>
+            <Text style={{ width: '89%' }}>
+            <Text style={customStyle.textBold}>{item?.payload?.addedbyUserObj?.companyObj?.name}</Text>{' '}
+            has shared their thoughts on your product{' '}
+           <Text style={customStyle.textBold}>{item?.payload?.addedbyUserObj?.name}</Text>
             </Text>
-            <Text style={customStyle.textBold}>Stock is limited, so grab the offer and Save Big!</Text>
-            <Text style={[customStyle.dateText, { width: '7%', flex: 1, marginHorizontal: wp(1) }]}>
+            
+            <Text style={[customStyle.dateText, { width: '7%', flex: 1, marginHorizontal: wp(1) ,alignItems:'center',justifyContent:'center'}]}>
               {getRelativeTime(item.lastAccessTime)}
             </Text>
           </View>
@@ -112,4 +133,4 @@ const customStyle = StyleSheet.create({
   },
 });
 
-export default Flash_sale_notification_card;
+export default Product_Review_Note;

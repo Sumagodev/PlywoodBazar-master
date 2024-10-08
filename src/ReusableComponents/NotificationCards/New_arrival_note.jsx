@@ -25,7 +25,7 @@ const getRelativeTime = (dateString) => {
   return `${diffInDays}d`;
 };
 
-const Flash_sale_Note = ({ item, isSubscriber = false }) => {
+const New_arrival_note = ({ item, isSubscriber = false }) => {
   const navigation = useNavigation();
 console.log('item?.payload?.flashSaleDetails?.endDate',item?.payload?.flashSaleDetails?.endDate);
 const [daysDifference, setDaysDifference] = useState(0);
@@ -58,7 +58,7 @@ const [daysDifference, setDaysDifference] = useState(0);
       console.error('Failed to update read status:', error);
       // You can add additional error handling here (e.g., showing an alert)
     }
-    navigation.navigate('Productdetails', { data: item?.payload?.slug });
+    navigation.navigate('Productdetails', { data: item?.payload?.productObj?.slug });
   };
 
   const updateReadStatusApiCall = async (userId, notificationId) => {
@@ -78,13 +78,12 @@ const [daysDifference, setDaysDifference] = useState(0);
       <View style={customStyle.rowContainer}>
         <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
         <View style={customStyle.contentContainer}>
-        <Text style={[customStyle.textBold,{paddingHorizontal: wp(2)}]}>Limited-Time Offer! </Text>
+        <Text style={[customStyle.textBold,{paddingHorizontal: wp(2)}]}> New Arrivals Are Here!  </Text>
           <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center', flexWrap:'wrap' }}>
             <Text style={{ width: '89%' }}>
-              Get{' '}
-              <Text style={customStyle.textBold}>{item?.payload?.flashSaleDetails?.discountValue}%</Text>{' '}
-              OFF our top-selling. <Text style={customStyle.textBold}> {item?.payload?.productName}</Text>{' '}for the next<Text style={customStyle.textBold}> {daysDifference} days</Text>{' '}only!
-              <Text style={customStyle.textBold}>{' '}Stock is limited, so grab the offer and Save Big!</Text>
+            Check out the latest Product{' '}
+              <Text style={customStyle.textBold}>{item?.payload?.productObj?.name}</Text>{' '}
+            to our collection! 
             </Text>
             
             <Text style={[customStyle.dateText, { width: '7%', flex: 1, marginHorizontal: wp(1) ,alignItems:'center',justifyContent:'center'}]}>
@@ -130,4 +129,4 @@ const customStyle = StyleSheet.create({
   },
 });
 
-export default Flash_sale_Note;
+export default New_arrival_note;
