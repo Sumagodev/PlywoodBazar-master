@@ -68,6 +68,7 @@ import Flash_sale_Note from '../ReusableComponents/NotificationCards/Flash_sale_
 import New_arrival_note from '../ReusableComponents/NotificationCards/New_arrival_note';
 import Product_Review_Note from '../ReusableComponents/NotificationCards/Product_Review_Note';
 import Vendor_Review_Note from '../ReusableComponents/NotificationCards/Vendor_Review_Note';
+import DealerShip_Note from '../ReusableComponents/NotificationCards/DealerShip_Note';
 export default function Notification(props) {
   const [Notification, setNotification] = useState([]);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -150,6 +151,8 @@ export default function Notification(props) {
         return <Product_Review_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       case 'vendor_review':
         return <Vendor_Review_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'dealershipOpportunity':
+        return <DealerShip_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       default:
         return null;
     }

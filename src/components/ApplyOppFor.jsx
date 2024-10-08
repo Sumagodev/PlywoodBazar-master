@@ -21,13 +21,13 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 const ApplyOppFor = ({route,navigation}) => {
   const { Data } = route.params;
   console.log('Datax',Data);
-  console.log('DataxCities',Data.cities);
+
   const State= Data.stateId
-  const Category=Data.categories;
+  const Category=Data?.categories;
 
   
   const focused = useIsFocused();
-  const [name, setName] = useState(Data.Organisation_name);
+  const [name, setName] = useState(Data?.Organisation_name);
   const [userID, setuserID] = useState('');
   console.log('userIDuserID',userID);
   
@@ -238,7 +238,7 @@ const ApplyOppFor = ({route,navigation}) => {
       let obj = {
         Organisation_name: name,
         Type: selectedBusinessType,
-        dealershipOwnerId:Data._id,
+        dealershipOwnerId:Data?._id,
         Brand:brand,
         productId:selectedproductsArray,
         userId:userID,

@@ -14,3 +14,7 @@ export const updateReadStatus = async (notificationId, userId) => {
     //     throw error; // Rethrow the error for handling in the calling function
     // }
 };
+export const getUnreadNotificationsCount = async ( userId) => {
+return  axiosApiInstance.post(`${serverUrl}/getUnreadNotificationsCount`,{userId}) 
+
+};

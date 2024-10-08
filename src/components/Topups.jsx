@@ -65,7 +65,7 @@ export default function Topups(props) {
     
     const myItem = {
       description: item?.description,
-      validity: 'No Validity',
+      validity: 'Valid Till Subcription',
       price: item?.price,
       numberOfAdvertisement: item?.numberOfAdvertisement,
       daysOfAdvertisement: item?.advertisementDays,

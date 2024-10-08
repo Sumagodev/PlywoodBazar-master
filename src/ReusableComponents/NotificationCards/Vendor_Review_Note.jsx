@@ -89,7 +89,7 @@ const Vendor_Review_Note = ({ item, isSubscriber = false }) => {
                             has shared their thoughts on your Profile.
                         </Text>
 
-                        <Text style={[customStyle.dateText, { width: '7%', flex: 1, marginHorizontal: wp(1), alignItems: 'center', justifyContent: 'center' }]}>
+                        <Text style={[customStyle.dateText, { width: '10%', flex: 1, marginHorizontal: wp(1), alignItems: 'center', justifyContent: 'center' }]}>
                             {getRelativeTime(item.lastAccessTime)}
                         </Text>
                     </View>

@@ -102,6 +102,7 @@ export default function Home() {
   // };
   const handleSearch = async (query) => {
     setIsLoading(true)
+
     query = query.trim();
     if (query && query.length > 1) {
       try {
@@ -110,8 +111,10 @@ export default function Home() {
         if (res.data) {
           setFilteredData(res.data);
           setIsLoading(false)
-          if (res.data.length === null) {
+          setSearchQuery(false)
+          if (filteredData.length == 0) {
             setSearchQuery(true)
+            setIsLoading(false)
           }
         }
       } catch (err) {
@@ -120,6 +123,7 @@ export default function Home() {
       }
     } else {
       setFilteredData([])
+      setIsLoading(false)
     }
   };
 
@@ -130,13 +134,17 @@ export default function Home() {
   );
 
   const handleInputChange = (text) => {
-    setSearchQuery(text);
     debouncedSearch(text); 
     setIsLoading(true) // Call debounced search function
+    setSearchQuery(true);
+    if(!text){
+      setSearchQuery(false);
+    }
+
   };
   const renderItem = ({ item }) => (
     <ScrollView style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
-      <TouchableOpacity style={stylesSearch.item}  onPress={() => gototopprofile(item)}>
+      <TouchableOpacity style={stylesSearch.item}  onPress={() => {setFilteredData([]);gototopprofile(item)}}>
         <Text style={stylesSearch.itemText}>{item.name}</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -184,6 +192,7 @@ export default function Home() {
       }
       // Linking.openURL(tel:${phone});
       navigate.navigate('Supplier', { data: item })
+     
     }
     else {
       Alert.alert(
@@ -972,7 +981,7 @@ export default function Home() {
                 renderItem={renderItem}
               />
             </View>
-          ) : searchQuery ? (
+          ) : searchQuery  ? (
             <View style={{ backgroundColor: CustomColors.searchBackground, position: 'absolute', zIndex: 10, marginTop: wp(13), padding: wp(5), borderRadius: wp(5), borderWidth: 1, borderColor: '#CDC2A1' , width: '88%',flex:1}}>
               <Text style={stylesSearch.itemText}>No results found</Text>
             </View>
@@ -1216,7 +1225,7 @@ export default function Home() {
                   />
                 </View>
 
-                <View style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center', width: '100%', height: wp(40) }]} onPress={() => Gotoopportunities()}>
+                <View style={[styles.padinghr, { alignSelf: 'center', alignItems: 'center', width: '100%', height: wp(40) }]} >
 
                   <Image source={require('../../assets/img/deal5.png')} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                 </View>

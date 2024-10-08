@@ -40,6 +40,7 @@ const getRelativeTime = (dateString) => {
 const ProfileViewNote = ({ item, productName, organizationName, date, isSubscriber=false }) => {
   const navigation = useNavigation();
 
+
   const handlePress =  () => {
     const modifiedItem = {
       ...item,
