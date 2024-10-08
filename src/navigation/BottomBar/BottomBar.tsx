@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
+    flex:1,
   },
   selectedItem: {
     elevation: 5,
@@ -147,11 +148,11 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'white',
-    fontSize: wp(4),
+    fontSize: wp(3),
   },
   selectedLabel: {
     color: '#BF9F65',
-    fontSize: wp(4),
+    fontSize: wp(3),
   },
 })
 
