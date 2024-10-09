@@ -18,7 +18,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { loginUser, sendOtpService, setToken } from '../services/User.service';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import LoadingDialog from '../ReusableComponents/LoadingDialog';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default VerifyOtp = ({route}) => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState(false);
@@ -70,6 +70,7 @@ export default VerifyOtp = ({route}) => {
         if (res) {
           // console.log(JSON.stringify(res,null,2), "cke tokkene")
           await setToken(res.token);
+          await AsyncStorage.setItem('isOtpVerified', 'true');
           setIsAuthorized(true);
           setLoadingDialog(false)
           navigation.navigate('BottomBar');

@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment'; // You'll need to install moment.js for this
+import { getDecodedToken } from '../../services/User.service';
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
 
@@ -52,8 +53,9 @@ const ProfileCompletionNote = ({ item, productName, organizationName, date, isSu
   };
   const updateReadStatusApiCall =  async (userId,notificationId) => {
 
-    const res =   await updateReadStatus(userId,notificationId);
-    console.log(res.data,'resx');
+    const decoded=await getDecodedToken();      
+    updateReadStatus(notificationId,decoded?.userId); 
+  console.log(res.data,'resx');
 
  }
 

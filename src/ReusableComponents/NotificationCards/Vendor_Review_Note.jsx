@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { updateReadStatus } from '../../services/Notifications.service';
+import { getDecodedToken } from '../../services/User.service';
+import { Rating, AirbnbRating } from 'react-native-ratings';
 
 const getRelativeTime = (dateString) => {
     const providedDate = new Date(dateString);
@@ -67,8 +69,9 @@ const Vendor_Review_Note = ({ item, isSubscriber = false }) => {
 
     const updateReadStatusApiCall = async (userId, notificationId) => {
         try {
-            const res = await updateReadStatus(userId, notificationId);
-        } catch (error) {
+            const decoded=await getDecodedToken();      
+            updateReadStatus(notificationId,decoded?.userId); 
+              } catch (error) {
             console.error('Error updating read status:', error);
             throw error; // Rethrow the error to handle it in handlePress
         }
@@ -76,7 +79,7 @@ const Vendor_Review_Note = ({ item, isSubscriber = false }) => {
 
     return (
         <Pressable
-            style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint }]}
+            style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9'}]}
             onPress={handlePress}
         >
             <View style={customStyle.rowContainer}>
@@ -86,11 +89,13 @@ const Vendor_Review_Note = ({ item, isSubscriber = false }) => {
                     <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center', flexWrap: 'wrap' }}>
                         <Text style={{ width: '89%' }}>
                             <Text style={customStyle.textBold}>{item?.payload?.addedbyUserObj?.companyObj?.name}</Text>{' '}
-                            has shared their thoughts on your Profile.
-                        </Text>
+                            has shared their thoughts on your Profile. 
 
+                       
+                        </Text>
+                        <Rating startingValue={item?.payload?.ratingReceived} imageSize={wp(4)} />
                         <Text style={[customStyle.dateText, { width: '10%', flex: 1, marginHorizontal: wp(1), alignItems: 'center', justifyContent: 'center' }]}>
-                            {getRelativeTime(item.lastAccessTime)}
+    {' '}{getRelativeTime(item.lastAccessTime)}
                         </Text>
                     </View>
                 </View>

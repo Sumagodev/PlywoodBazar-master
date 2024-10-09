@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment'; // You'll need to install moment.js for this
 import { updateReadStatus } from '../../services/Notifications.service';
+import { getDecodedToken } from '../../services/User.service';
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
 
@@ -37,7 +38,7 @@ const getRelativeTime = (dateString) => {
   return `${diffInDays}d`;
 };
 
-const ProductViewNote = ({ item, productName, organizationName, date, isSubscriber=false }) => {
+const ProductViewNote = ({ item, productName, organizationName, date, isSubscriber = false }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
@@ -45,17 +46,48 @@ const ProductViewNote = ({ item, productName, organizationName, date, isSubscrib
       ...item,
       _id: item.payload.accessedBy,
     };
-    let userId=item.userId;
-    let notificationId=item._id;
-     updateReadStatusApiCall(userId,notificationId);
+    let userId = item.userId;
+    let notificationId = item._id;
+    updateReadStatusApiCall(userId, notificationId);
     navigation.navigate('Supplier', { data: modifiedItem });
   };
-  const updateReadStatusApiCall =  async (userId,notificationId) => {
-      updateReadStatus(userId,notificationId);
-    console.log(res.data,'resx');
+  const updateReadStatusApiCall = async (userId, notificationId) => {
+    const decoded=await getDecodedToken();      
+    updateReadStatus(notificationId,decoded?.userId); 
+  console.log(res.data, 'resx');
 
- }
-
+  }
+  // const handlePress = async () => {
+  //   const modifiedItem = {
+  //     ...item,
+  //     _id: item.payload.accessedBy,
+  //   };
+  
+  //   let userId = item.userId;
+  //   let notificationId = item._id;
+  
+  //   try {
+  //     // Await the API call to ensure it completes before navigating
+  //     await updateReadStatusApiCall(userId, notificationId);
+  //     // Navigate to the 'Supplier' screen after updating the read status
+  //     navigation.navigate('Supplier', { data: modifiedItem });
+  //   } catch (error) {
+  //     console.error('Failed to update read status:', error);
+  //   }
+  // };
+  
+  // const updateReadStatusApiCall = async (userId, notificationId) => {
+  //   try {
+  //     // Await the API response
+  //     const res = await updateReadStatus(userId, notificationId);
+  //     // Log the response data
+  //     console.log(res.data, 'resx');
+  //   } catch (error) {
+  //     // Handle any errors that occur during the API call
+  //     console.error('Error during updateReadStatusApiCall:', error);
+  //     throw error; // Re-throw to be caught in handlePress if needed
+  //   }
+  // };
   // Conditionally rendering different views based on isSubscriber
   if (!isSubscriber) {
     return (
@@ -63,9 +95,9 @@ const ProductViewNote = ({ item, productName, organizationName, date, isSubscrib
         <View style={customStyle.rowContainer}>
           <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
           <View style={customStyle.contentContainer}>
-            
-              <Text style={customStyle.textPlaint}>Someone viewed your product <Text style={customStyle.textBold}>{productName}</Text></Text>
-              
+
+            <Text style={customStyle.textPlaint}>Someone viewed your product <Text style={customStyle.textBold}>{productName}</Text></Text>
+
             {/* Render some other views or elements specific to subscribers */}
             <Text style={customStyle.dateText}>Date: {getRelativeTime(item.lastAccessTime)}</Text>
           </View>
@@ -74,26 +106,26 @@ const ProductViewNote = ({ item, productName, organizationName, date, isSubscrib
     );
   } else {
     return (
-      <Pressable style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]} onPress={handlePress}>
+      <Pressable style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9'}]} onPress={handlePress}>
 
-  <View style={customStyle.rowContainer}>
-    <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
-    <View style={customStyle.contentContainer}>
-      <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
-        {/* Content section taking 90% of the width */}
-        <Text style={{ width:'88%' }}>
-          <Text style={customStyle.textBold}>{organizationName}</Text> viewed your product{' '}
-          <Text style={customStyle.textBold}>{productName}</Text>
-        </Text>
-        
-        {/* Last access time taking 10% of the width */}
-        <Text style={[customStyle.dateText, { width: '5%', flex:1,marginHorizontal: wp(1) }]}>
-          {getRelativeTime(item.lastAccessTime)}
-        </Text>
-      </View>
-    </View>
-  </View>
-</Pressable>
+        <View style={customStyle.rowContainer}>
+          <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
+          <View style={customStyle.contentContainer}>
+            <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
+              {/* Content section taking 90% of the width */}
+              <Text style={{ width: '88%' }}>
+                <Text style={customStyle.textBold}>{organizationName}</Text> viewed your product{' '}
+                <Text style={customStyle.textBold}>{productName}</Text>
+              </Text>
+
+              {/* Last access time taking 10% of the width */}
+              <Text style={[customStyle.dateText, { width: '5%', flex: 1, marginHorizontal: wp(1) }]}>
+                {getRelativeTime(item.lastAccessTime)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Pressable>
     );
   }
 };
@@ -103,7 +135,7 @@ const customStyle = StyleSheet.create({
     backgroundColor: CustomColors.mattBrownFaint,
     marginBottom: wp(0.5),
     paddingVertical: wp(3),
-    elevation:wp(15)
+    elevation: wp(15)
   },
   rowContainer: {
     flexDirection: 'row',
@@ -112,13 +144,13 @@ const customStyle = StyleSheet.create({
   leadingIcon: {
     width: wp(10),
     height: wp(10),
-    marginHorizontal:wp(1),
+    marginHorizontal: wp(1),
     borderRadius: wp(10),
     resizeMode: 'contain',
     resizeMode: 'contain',
-    alignContent:'center',
-    justifyContent:'center',
-    alignItems:'center'
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   contentContainer: {
     marginHorizontal: wp(3),

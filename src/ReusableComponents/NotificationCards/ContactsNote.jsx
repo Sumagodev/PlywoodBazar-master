@@ -5,6 +5,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment'; // You'll need to install moment.js for this
 import { updateReadStatus } from '../../services/Notifications.service';
+import { getDecodedToken } from '../../services/User.service';
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
 
@@ -37,70 +38,63 @@ const getRelativeTime = (dateString) => {
   return `${diffInDays}d`;
 };
 
-const ContactsNote = ({ item, productName, organizationName, date, isSubscriber=false }) => {
+const ContactsNote = ({ item, productName, organizationName, date, isSubscriber = false }) => {
   const navigation = useNavigation();
 
-  const handlePress = () => {
+  const handlePress = async () => {
     const modifiedItem = {
       ...item,
       _id: item.payload.accessedBy,
     };
-    let userId=item.userId;
-    let notificationId=item._id;
-     updateReadStatusApiCall(userId,notificationId);
-    navigation.navigate('Supplier', { data: modifiedItem });
+    let notificationId = item._id;
+      const decoded=await getDecodedToken();      
+      updateReadStatus(notificationId,decoded?.userId); 
+      navigation.navigate('Supplier', { data: modifiedItem });
   };
-  const updateReadStatusApiCall =  async (userId,notificationId) => {
-
-    const res =   await updateReadStatus(userId,notificationId);
-    console.log(res.data,'resx');
-
- }
-
-  // Conditionally rendering different views based on isSubscriber
+  
   if (!isSubscriber) {
     return (
-        <View style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]}>
+      <View style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9' }]}>
         <View style={customStyle.rowContainer}>
           <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
           <View style={customStyle.contentContainer}>
-            
-          <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
-        {/* Content section taking 90% of the width */}
-        <Text style={{ width:'88%' }}>
-          <Text>Someone contacted you to know please subscribe</Text>
-          
-        </Text>
-        
-        {/* Last access time taking 10% of the width */}
-        <Text style={[customStyle.dateText, { width: '5%', flex:1,marginHorizontal: wp(1) }]}>
-          {getRelativeTime(item.lastAccessTime)}
-        </Text>
-      </View>
+
+            <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
+              {/* Content section taking 90% of the width */}
+              <Text style={{ width: '88%' }}>
+                <Text>Someone contacted you to know please subscribe</Text>
+
+              </Text>
+
+              {/* Last access time taking 10% of the width */}
+              <Text style={[customStyle.dateText, { width: '5%', flex: 1, marginHorizontal: wp(1) }]}>
+                {getRelativeTime(item.lastAccessTime)}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
     );
   } else {
     return (
-  <Pressable style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint}]} onPress={handlePress}>
-  <View style={customStyle.rowContainer}>
-    <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
-    <View style={customStyle.contentContainer}>
-      <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
-        {/* Content section taking 90% of the width */}
-        <Text style={{ width:'88%' }}>
-          <Text style={customStyle.textBold}>{organizationName}</Text> viewed contacted you{' '}
-        </Text>
-        
-        {/* Last access time taking 10% of the width */}
-        <Text style={[customStyle.dateText, { width: '5%', flex:1,marginHorizontal: wp(1) }]}>
-          {getRelativeTime(item.lastAccessTime)}
-        </Text>
-      </View>
-    </View>
-  </View>
-</Pressable>
+      <Pressable style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9' }]} onPress={handlePress}>
+        <View style={customStyle.rowContainer}>
+          <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
+          <View style={customStyle.contentContainer}>
+            <View style={{ flexDirection: 'row', paddingHorizontal: wp(2), alignItems: 'center' }}>
+              {/* Content section taking 90% of the width */}
+              <Text style={{ width: '88%' }}>
+                <Text style={customStyle.textBold}>{organizationName}</Text>{' '}contacted you
+              </Text>
+
+              {/* Last access time taking 10% of the width */}
+              <Text style={[customStyle.dateText, { width: '5%', flex: 1, marginHorizontal: wp(1) }]}>
+                {getRelativeTime(item.lastAccessTime)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Pressable>
     );
   }
 };
@@ -110,7 +104,7 @@ const customStyle = StyleSheet.create({
     backgroundColor: CustomColors.mattBrownFaint,
     marginBottom: wp(0.5),
     paddingVertical: wp(3),
-    elevation:wp(15)
+    elevation: wp(15)
   },
   rowContainer: {
     flexDirection: 'row',
@@ -119,13 +113,13 @@ const customStyle = StyleSheet.create({
   leadingIcon: {
     width: wp(10),
     height: wp(10),
-    marginHorizontal:wp(1),
+    marginHorizontal: wp(1),
     borderRadius: wp(10),
     resizeMode: 'contain',
-    alignContent:'center',
-    justifyContent:'center',
-    alignItems:'center',
-    alignSelf:'center'
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center'
   },
   contentContainer: {
     marginHorizontal: wp(3),

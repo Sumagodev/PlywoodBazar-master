@@ -143,11 +143,11 @@ export default function Home() {
 
   };
   const renderItem = ({ item }) => (
-    <ScrollView style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
+    <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' ,}}>
       <TouchableOpacity style={stylesSearch.item}  onPress={() => {setFilteredData([]);gototopprofile(item)}}>
         <Text style={stylesSearch.itemText}>{item.name}</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
 
   );
   const handleGetBlogs = async () => {
@@ -974,13 +974,14 @@ export default function Home() {
 
         <View style={{ alignItems: 'center', marginTop: wp(3) }}>
           {filteredData.length > 0 ? (
-            <View style={{ backgroundColor: CustomColors.searchBackground, position: 'absolute', zIndex: 10, marginTop: wp(13), padding: wp(5), borderRadius: wp(5), borderWidth: 1, borderColor: '#CDC2A1' }}>
+            <ScrollView style={{ backgroundColor: CustomColors.searchBackground, position: 'absolute', zIndex: 10, marginTop: wp(13), padding: wp(5), borderRadius: wp(5), borderWidth: 1, borderColor: '#CDC2A1', }}>
               <FlatList
-                data={filteredData.slice(0, 30)} // Limit to the first 14 entries
+                data={filteredData.slice(0, 10)} // Limit to the first 14 entries
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
+                scrollEnabled={true}
               />
-            </View>
+            </ScrollView>
           ) : searchQuery  ? (
             <View style={{ backgroundColor: CustomColors.searchBackground, position: 'absolute', zIndex: 10, marginTop: wp(13), padding: wp(5), borderRadius: wp(5), borderWidth: 1, borderColor: '#CDC2A1' , width: '88%',flex:1}}>
               <Text style={stylesSearch.itemText}>No results found</Text>

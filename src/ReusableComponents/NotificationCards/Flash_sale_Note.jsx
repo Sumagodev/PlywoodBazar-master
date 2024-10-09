@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React, { useState,useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { updateReadStatus } from '../../services/Notifications.service';
+import { getDecodedToken } from '../../services/User.service';
 
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
@@ -63,7 +64,8 @@ const [daysDifference, setDaysDifference] = useState(0);
 
   const updateReadStatusApiCall = async (userId, notificationId) => {
     try {
-      const res = await updateReadStatus(userId, notificationId);
+      const decoded=await getDecodedToken();      
+      updateReadStatus(notificationId,decoded?.userId); 
     } catch (error) {
       console.error('Error updating read status:', error);
       throw error; // Rethrow the error to handle it in handlePress
@@ -72,7 +74,7 @@ const [daysDifference, setDaysDifference] = useState(0);
 
   return (
     <Pressable
-      style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint }]}
+      style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9' }]}
       onPress={handlePress}
     >
       <View style={customStyle.rowContainer}>

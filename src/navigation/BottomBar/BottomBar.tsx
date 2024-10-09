@@ -148,7 +148,7 @@ useEffect(()=>{
               {(label)
               }
             </Text>
-            {/* {label === 'Notification' && !isFocused && (
+            {label === 'Notification' && !isFocused && (
               <View
                 style={{
                   alignSelf: "center",
@@ -166,7 +166,7 @@ useEffect(()=>{
               >
                 <Text style={{color:'#ffffff',fontWeight:"800"}}>{count.length > 2 ? '99+' : count}</Text>
               </View>
-            )} */}
+            )}
           </TouchableOpacity>
         );
       })}

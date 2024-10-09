@@ -69,6 +69,8 @@ import New_arrival_note from '../ReusableComponents/NotificationCards/New_arriva
 import Product_Review_Note from '../ReusableComponents/NotificationCards/Product_Review_Note';
 import Vendor_Review_Note from '../ReusableComponents/NotificationCards/Vendor_Review_Note';
 import DealerShip_Note from '../ReusableComponents/NotificationCards/DealerShip_Note';
+import { updateReadStatus } from '../services/Notifications.service';
+
 export default function Notification(props) {
   const [Notification, setNotification] = useState([]);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -78,6 +80,7 @@ export default function Notification(props) {
   const focused = useIsFocused();
   useEffect(() => {
     if (isAuthorized) {
+      handleGetProducts();
     } else {
     }
   }, [isAuthorized, focused]);
@@ -94,7 +97,7 @@ export default function Notification(props) {
         if (res.data) {
           console.log('XX', res.data, 'XX');
           setCurrentUserHasActiveSubscription(res.data);
-          // handleGetProducts(); // Fetch data every time the screen is focused
+          handleGetProducts(); // Fetch data every time the screen is focused
         }
         handleGetProducts(); 
       }

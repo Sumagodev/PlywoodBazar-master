@@ -5,6 +5,8 @@ import React, { useState,useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { updateReadStatus } from '../../services/Notifications.service';
 import { GetDealershipOpportunities } from '../../services/Advertisement.service';
+import { getDecodedToken } from '../../services/User.service';
+import { errorToast } from '../../utils/toastutill';
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
   const istOffset = 5.5 * 60; // IST offset in minutes
@@ -29,6 +31,7 @@ const getRelativeTime = (dateString) => {
 const DealerShip_Note = ({ item, isSubscriber = false }) => {
   const navigation = useNavigation();
   const [oppdata, setoppdata] = useState([]);
+  const [isOppotunityAvailable, setOpAvailable] = useState(false);
 console.log('item?.payload?.flashSaleDetails?.endDate',JSON.stringify(oppdata));
 const [daysDifference, setDaysDifference] = useState(0);
 const handleopportunitydata = async () => {
@@ -40,13 +43,13 @@ const handleopportunitydata = async () => {
        if( itemx._id === item?.payload?.opportunity?._id)
         {
             mydata=itemx;
+            setoppdata(mydata);
+            setOpAvailable(true)
+
+        }else{
+          return
         }
     });
-    console.log('qqqqqqqqqqqqqqqq',mydata);
-setoppdata(mydata);
-
-
-
       }else{
         console.log('nox',mydata)
       }
@@ -55,7 +58,6 @@ setoppdata(mydata);
       console.log(err);
     }
   };
-  // Function to calculate the difference in days
   const convertDateToDays = (isoDateString) => {
     const givenDate = new Date(isoDateString);
     const currentDate = new Date();
@@ -74,11 +76,10 @@ setoppdata(mydata);
     
   }, [item]);
   const handlePress = () => {
-    const userId = item.userId;
     const notificationId = item._id;
     try {
       // Call the function to update read status
-      updateReadStatusApiCall(userId, notificationId);
+      updateReadStatusApiCall(notificationId);
       // Navigate to the Product Details screen
 
     } catch (error) {
@@ -86,12 +87,18 @@ setoppdata(mydata);
       // You can add additional error handling here (e.g., showing an alert)
     }
 
-    navigation.navigate('ApplyOppFor', { Data: oppdata });
+    if(isOppotunityAvailable===true)
+    {
+      navigation.navigate('ApplyOppFor', { Data: oppdata });
+    }else{
+      errorToast('Oops.. Opportunity is not available for now')
+    }
   };
 
-  const updateReadStatusApiCall = async (userId, notificationId) => {
+  const updateReadStatusApiCall = async (notificationId) => {
     try {
-      const res = await updateReadStatus(userId, notificationId);
+      const decoded=await getDecodedToken();      
+      updateReadStatus(notificationId,decoded?.userId); 
     } catch (error) {
       console.error('Error updating read status:', error);
       throw error; // Rethrow the error to handle it in handlePress
@@ -100,7 +107,7 @@ setoppdata(mydata);
 
   return (
     <Pressable
-      style={[customStyle.container, { backgroundColor: item.isRead ? '#fff3e9' : CustomColors.mattBrownFaint }]}
+      style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9'}]}
       onPress={handlePress}
     >
       <View style={customStyle.rowContainer}>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { axiosApiInstance } from '../../App';
 //import { /*apiinstance*/ axios } from "../App";
 import { url } from './url.service';
+import { getDecodedToken } from './User.service';
 
 let serverUrl = `${url}/product`;
 let serverUrl1 = `${url}//users`;
@@ -21,12 +22,15 @@ export const getAllProducts = async query =>
   return /*apiinstance*/ axios.get(`${serverUrl}/?${query}`);
 };
 
+// export const getProductById = async id => {
+//   return /*apiinstance*/ axios.get(`${serverUrl}/getProductById/${id}`);
+// };
+
 export const getProductById = async id => {
-  return /*apiinstance*/ axios.get(`${serverUrl}/getProductById/${id}`);
+  let decoded = await getDecodedToken();
+
+  return /*apiinstance*/ axiosApiInstance.get(`${serverUrl}/getProductById/${id}?visitorUserId=${decoded?.userId}`);
 };
-
-
-
 export const getById = async id => {
   return axiosApiInstance.get(`${serverUrl}/getById/${id}`);
 };
