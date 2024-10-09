@@ -82,7 +82,7 @@ export default function Productdetails(props) {
 
 
   const renderReviewItem = ({ item }) => {
-    console.log(item, 'renderReviewItem'); // This will log the item to the console
+    console.log(JSON.stringify(item), 'renderReviewItem'); // This will log the item to the console
     return <ReviewsItem reviewItem={item} />;
   };
 

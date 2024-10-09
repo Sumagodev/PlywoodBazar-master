@@ -22,5 +22,6 @@ export const getReviewForProductNew = async (query) => {
 }
 
 export const getReviewForVendors = async (query) => {
+    console.log('yyyy',`${serverUrlVendorReview}/getReviewForVendors?${query}`)
     return axios.get(`${serverUrlVendorReview}/getReviewForVendors?${query}`)
 }

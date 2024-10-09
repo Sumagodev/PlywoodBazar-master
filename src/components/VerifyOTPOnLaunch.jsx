@@ -175,7 +175,6 @@ export default VerifyOTPOnLaunch = ({route}) => {
         </View>
       </View>
       <LoadingDialog visible={loadingDialog} message={'Loding...'}></LoadingDialog>
-
     </View>
     </ScrollView>
     </KeyboardAvoidingView>

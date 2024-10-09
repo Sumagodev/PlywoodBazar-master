@@ -89,10 +89,11 @@ const [daysDifference, setDaysDifference] = useState(0);
               <Text style={customStyle.textBold}>{' '}Stock is limited, so grab the offer and Save Big!</Text>
             </Text>
             
-            <Text style={[customStyle.dateText, { width: '7%', flex: 1, marginHorizontal: wp(1) ,alignItems:'center',justifyContent:'center'}]}>
-              {getRelativeTime(item.lastAccessTime)}
-            </Text>
+           
           </View>
+          <Text style={[customStyle.dateText, {justifyContent:'flex-end',alignSelf:'flex-end',paddingHorizontal:wp(2) }]}>
+          {getRelativeTime(item.lastAccessTime)}
+        </Text>
         </View>
       </View>
     </Pressable>
@@ -103,7 +104,7 @@ const customStyle = StyleSheet.create({
   container: {
     backgroundColor: CustomColors.mattBrownFaint,
     marginBottom: wp(0.5),
-    paddingVertical: wp(3),
+    paddingVertical: wp(1),
     elevation: wp(15),
   },
   rowContainer: {
@@ -111,15 +112,15 @@ const customStyle = StyleSheet.create({
     marginVertical: wp(1),
     alignItems: 'center',
   },
-  leadingIcon: {
-    width: wp(10),
-    height: wp(10),
-    borderRadius: wp(10),
+ leadingIcon: {
+    width: wp(8),
+    height: wp(8),
     marginHorizontal: wp(1),
+    borderRadius: wp(8),
     resizeMode: 'contain',
   },
   contentContainer: {
-    marginHorizontal: wp(3),
+    marginHorizontal: wp(0.5),
     justifyContent: 'center',
     alignContent: 'center',
   },

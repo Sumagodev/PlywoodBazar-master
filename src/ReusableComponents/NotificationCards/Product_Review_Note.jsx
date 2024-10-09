@@ -5,6 +5,7 @@ import React, { useState,useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { updateReadStatus } from '../../services/Notifications.service';
 import { getDecodedToken } from '../../services/User.service';
+import { Rating, AirbnbRating } from 'react-native-ratings';
 
 const getRelativeTime = (dateString) => {
   const providedDate = new Date(dateString);
@@ -89,12 +90,12 @@ const [daysDifference, setDaysDifference] = useState(0);
             <Text style={{ width: '89%' }}>
             <Text style={customStyle.textBold}>{item?.payload?.addedbyUserObj?.companyObj?.name}</Text>{' '}
             has shared their thoughts on your product{' '}
-           <Text style={customStyle.textBold}>{item?.payload?.addedbyUserObj?.name}</Text>
+           <Text style={customStyle.textBold}>{item?.payload?.productName}</Text>
             </Text>
-            
-            <Text style={[customStyle.dateText, { width: '7%', flex: 1, marginHorizontal: wp(1) ,alignItems:'center',justifyContent:'center'}]}>
-              {getRelativeTime(item.lastAccessTime)}
-            </Text>
+            <Rating startingValue={item?.payload?.ratingReceived} imageSize={wp(4)} />
+            <Text style={[customStyle.dateText, {justifyContent:'flex-end',alignSelf:'flex-end',paddingHorizontal:wp(2) }]}>
+            {getRelativeTime(item.lastAccessTime)}
+          </Text>
           </View>
         </View>
       </View>
@@ -106,7 +107,7 @@ const customStyle = StyleSheet.create({
   container: {
     backgroundColor: CustomColors.mattBrownFaint,
     marginBottom: wp(0.5),
-    paddingVertical: wp(3),
+    paddingVertical: wp(1),
     elevation: wp(15),
   },
   rowContainer: {
@@ -115,14 +116,14 @@ const customStyle = StyleSheet.create({
     alignItems: 'center',
   },
   leadingIcon: {
-    width: wp(10),
-    height: wp(10),
-    borderRadius: wp(10),
+    width: wp(8),
+    height: wp(8),
     marginHorizontal: wp(1),
+    borderRadius: wp(8),
     resizeMode: 'contain',
   },
   contentContainer: {
-    marginHorizontal: wp(3),
+    marginHorizontal: wp(0.5),
     justifyContent: 'center',
     alignContent: 'center',
   },

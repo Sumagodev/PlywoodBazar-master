@@ -34,6 +34,7 @@ const DealerShip_Note = ({ item, isSubscriber = false }) => {
   const [isOppotunityAvailable, setOpAvailable] = useState(false);
 console.log('item?.payload?.flashSaleDetails?.endDate',JSON.stringify(oppdata));
 const [daysDifference, setDaysDifference] = useState(0);
+const [locations, setLocations] = useState('');
 const handleopportunitydata = async () => {
     try {
       let mydata = await GetDealershipOpportunities();
@@ -72,6 +73,12 @@ const handleopportunitydata = async () => {
     if (item?.payload?.flashSaleDetails?.endDate) {
       const days = convertDateToDays(item.payload.flashSaleDetails.endDate);
       setDaysDifference(days);
+      if(item?.payload?.cities?.length>1)
+        {
+          setLocations(item?.payload?.cities[0]?.name)
+        }else{
+          setLocations(item?.payload?.stateObj?.name)
+        }
     }
     
   }, [item]);
@@ -105,29 +112,39 @@ const handleopportunitydata = async () => {
     }
   };
 
+  
+
   return (
     <Pressable
       style={[customStyle.container, { backgroundColor: item.isRead ? 'white' : '#fff3e9'}]}
       onPress={handlePress}
     >
-      <View style={customStyle.rowContainer}>
-        <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
-        <View style={customStyle.contentContainer}>
-          <View style={{ flexDirection: 'row', paddingHorizontal: wp(1), alignItems: 'center', flexWrap:'wrap' }}>
-            <Text style={{ width: '90%' }}>
-            Exclusive Dealership Opportunity Available For{' '}
-              <Text style={customStyle.textBold}>{item?.payload?.organizationObj?.brandNames}!</Text>{' '}
-              
-              thrilled to announce a new dealership/distributor opportunity in <Text style={customStyle.textBold}>{item?.payload?.organizationObj?.address}!</Text>{' '}Join our growing network and become a part of our success story.{''}
-           Interested? Fill the given form to{' '}<Text style={customStyle.textBold}>Apply{' '}</Text>and learn more!
-              </Text>
-            
-            <Text style={[customStyle.dateText, { width: '10%', flex: 1, marginHorizontal: wp(1) ,alignItems:'center',justifyContent:'center'}]}>
-              {getRelativeTime(item.lastAccessTime)}
-            </Text>
-          </View>
-        </View>
-      </View>
+    <View style={customStyle.rowContainer}>
+  <Image source={require('../../../assets/img/logo_1.png')} style={customStyle.leadingIcon} />
+  <View style={customStyle.contentContainer}>
+    {/* Main container */}
+    <View style={{ flexDirection: 'row', paddingHorizontal: wp(1), flexWrap: 'wrap', alignItems: 'center' }}>
+      {/* Main content text with auto-adjusting size */}
+      <Text style={{ flexShrink: 1, width: '90%',marginTop:wp(2) }} numberOfLines={10} adjustsFontSizeToFit={true}>
+        Exclusive Dealership Opportunity Available For{' '}
+        <Text style={customStyle.textBold}>{item?.payload?.organizationObj?.brandNames}</Text>
+        {'\n'}{'\n'}
+        Thrilled to announce a new dealership/distributor opportunity in <Text style={customStyle.textBold}>{item?.payload?.stateObj?.name} !</Text>
+        {'\n'}{'\n'}
+  Join our growing network and become a part of our success story. Interested? Fill the given form to{' '}
+        <Text style={customStyle.textBold}>Apply</Text> and learn more..
+      </Text>
+
+      {/* Relative time positioned at the top-right corner */}
+    
+    </View>
+    <Text style={[customStyle.dateText, {justifyContent:'flex-end',alignSelf:'flex-end',paddingHorizontal:wp(2) }]}>
+    {getRelativeTime(item.lastAccessTime)}
+  </Text>
+  </View>
+</View>
+
+  
     </Pressable>
   );
 };
@@ -136,7 +153,7 @@ const customStyle = StyleSheet.create({
   container: {
     backgroundColor: CustomColors.mattBrownFaint,
     marginBottom: wp(0.5),
-    paddingVertical: wp(3),
+    paddingVertical: wp(1),
     elevation: wp(15),
   },
   rowContainer: {
@@ -144,15 +161,16 @@ const customStyle = StyleSheet.create({
     marginVertical: wp(1),
     alignItems: 'center',
   },
-  leadingIcon: {
-    width: wp(10),
-    height: wp(10),
-    borderRadius: wp(10),
+   leadingIcon: {
+    width: wp(8),
+    height: wp(8),
+    marginHorizontal: wp(1),
+    borderRadius: wp(8),
     marginHorizontal: wp(1),
     resizeMode: 'contain',
   },
   contentContainer: {
-    marginHorizontal: wp(3),
+    marginHorizontal: wp(0.5),
     justifyContent: 'center',
     alignContent: 'center',
   },
@@ -160,7 +178,7 @@ const customStyle = StyleSheet.create({
     fontWeight: '600',
   },
   dateText: {
-    marginTop: wp(1),
+    marginTop: wp(0.5),
     color: CustomColors.darkGray,
   },
 });

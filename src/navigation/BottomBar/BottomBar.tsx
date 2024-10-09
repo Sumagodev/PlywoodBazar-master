@@ -148,25 +148,27 @@ useEffect(()=>{
               {(label)
               }
             </Text>
-            {label === 'Notification' && !isFocused && (
-              <View
-                style={{
-                  alignSelf: "center",
-                  alignItems: "center",
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  right: wp(-1),
-                  top: wp(-6),
-                  height: wp(9),
-                  width: wp(9),
-                  backgroundColor: "#E85C0D",
-                  padding: wp(1.5),
-                  borderRadius: wp(7)
-                }}
-              >
-                <Text style={{color:'#ffffff',fontWeight:"800"}}>{count.length > 2 ? '99+' : count}</Text>
-              </View>
-            )}
+            {count > 0 && label === 'Notification' && !isFocused && (
+  <View
+    style={{
+      alignSelf: "center",
+      alignItems: "center",
+      position: 'absolute',
+      justifyContent: 'center',
+      right: wp(1),
+      top: wp(-1),
+      height: wp(6.5),
+      width: wp(6.5),
+      backgroundColor: "#E85C0D",
+      borderRadius: wp(7)
+    }}
+  >
+    <Text style={{fontSize: wp(3), color: '#ffffff', fontWeight: "800"}}>
+      {count > 99 ? '99+' : count}
+    </Text>
+  </View>
+)}
+
           </TouchableOpacity>
         );
       })}

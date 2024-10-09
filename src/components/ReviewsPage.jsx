@@ -27,6 +27,7 @@ export default function ReviewsPage(props) {
   const handleGetVendorReviews = async id => {
     try {
       let { data: res } = await getReviewForVendors(`userId=${id}`);
+      console.log(res.data,'zzz')
       if (res.message) {
         setProductReviewArr(res.data);
       }
