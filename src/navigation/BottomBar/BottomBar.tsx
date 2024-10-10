@@ -19,28 +19,28 @@ const Tab = createBottomTabNavigator();
 
 function MyTabBar({ state, descriptors, navigation }) {
   const [isAuthorized] = useContext(isAuthorisedContext);
-  const [count,setCount]=useState('')
+  const [count, setCount] = useState('')
   const focused = useIsFocused();
-  
-useEffect(()=>{
-  getNotificationCount()
-},[count,focused])
-  
+
+  useEffect(() => {
+    getNotificationCount()
+  }, [count, focused])
+
   // Function to fetch notification count
   const getNotificationCount = async (): Promise<number> => {
     try {
       const token: any | null = await getDecodedToken();
-  
+
       if (!token || !token.userId) {
         console.warn("Invalid token or user ID");
-        return 0; 
+        return 0;
       }
-  
+
       const unreadCount: any = await getUnreadNotificationsCount(token.userId);
       setCount(unreadCount.data.unreadCount)
-      console.log('unreadCount',unreadCount);
-      
-      return unreadCount; 
+      console.log('unreadCount', unreadCount);
+
+      return unreadCount;
     } catch (error) {
       console.error("Error fetching notification count:", error);
       return 0;
@@ -59,7 +59,7 @@ useEffect(()=>{
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label = options.tabBarLabel !== undefined ? options.tabBarLabel : options.title !== undefined ? options.title : route.name;
-       
+
         const isFocused = state.index === index;
 
         const onPress = async () => {
@@ -149,25 +149,25 @@ useEffect(()=>{
               }
             </Text>
             {count > 0 && label === 'Notification' && !isFocused && (
-  <View
-    style={{
-      alignSelf: "center",
-      alignItems: "center",
-      position: 'absolute',
-      justifyContent: 'center',
-      right: wp(1),
-      top: wp(-1),
-      height: wp(6.5),
-      width: wp(6.5),
-      backgroundColor: "#E85C0D",
-      borderRadius: wp(7)
-    }}
-  >
-    <Text style={{fontSize: wp(3), color: '#ffffff', fontWeight: "800"}}>
-      {count > 99 ? '99+' : count}
-    </Text>
-  </View>
-)}
+              <View
+                style={{
+                  alignSelf: "center",
+                  alignItems: "center",
+                  position: 'absolute',
+                  justifyContent: 'center',
+                  right: wp(1),
+                  top: wp(-1),
+                  height: wp(6.5),
+                  width: wp(6.5),
+                  backgroundColor: "#E85C0D",
+                  borderRadius: wp(7)
+                }}
+              >
+                <Text style={{ fontSize: wp(3), color: '#ffffff', fontWeight: "800" }}>
+                  {count > 99 ? '99+' : count}
+                </Text>
+              </View>
+            )}
 
           </TouchableOpacity>
         );
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
 export function BottomTabNavigator() {
   const [isAuthorized] = useContext(isAuthorisedContext);
 
-  const getTabBarVisibility = (route) => {
+  const getTabBarVisibility = (route:any) => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? '';
 
     if (routeName === 'Login') {

@@ -67,6 +67,7 @@ export default function Home() {
   const [productName, setProductName] = useState('');
   const [organizationName, setOrganizationName] = useState('');
   const [location, setLocation] = useState('');
+  const [queryy, setQuery] = useState('');
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [type, setType] = useState('');
@@ -101,8 +102,6 @@ export default function Home() {
   //   }
   // };
   const handleSearch = async (query) => {
-    setIsLoading(true)
-
     query = query.trim();
     if (query && query.length > 1) {
       try {
@@ -112,7 +111,7 @@ export default function Home() {
           setFilteredData(res.data);
           setIsLoading(false)
           setSearchQuery(false)
-          if (filteredData.length == 0) {
+          if (filteredData.length === 0) {
             setSearchQuery(true)
             setIsLoading(false)
           }
@@ -129,27 +128,40 @@ export default function Home() {
 
   // Debounced search function (waits 300ms after user stops typing)
   const debouncedSearch = useCallback(
-    debounce((query) => handleSearch(query), 100),
+    debounce((query) => handleSearch(query), 300),
     []
   );
 
   const handleInputChange = (text) => {
-    debouncedSearch(text); 
-    setIsLoading(true) // Call debounced search function
-    setSearchQuery(true);
-    if(!text){
+    setQuery(text)
+    debouncedSearch(text);
+    // setIsLoading(true) // Call debounced search function
+    // setSearchQuery(true);
+    if (!text) {
       setSearchQuery(false);
     }
 
   };
-  const renderItem = ({ item }) => (
-    <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' ,}}>
-      <TouchableOpacity style={stylesSearch.item}  onPress={() => {setFilteredData([]);gototopprofile(item)}}>
-        <Text style={stylesSearch.itemText}>{item.name}</Text>
+  const renderItem = ({ item }) =>
+  (
+    <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
+      <TouchableOpacity style={stylesSearch.item} onPress={() => { gototopprofile(item);setQuery('');debouncedSearch(''); }}>
+        <Text style={stylesSearch.itemText}>{item?.companyObj?.name}</Text>
       </TouchableOpacity>
     </View>
-
   );
+
+  const renderItem1 = ({ item }) =>
+
+  (
+    <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
+      <TouchableOpacity style={stylesSearch.item} onPress={() => {  gotoSearch(item);setQuery('');debouncedSearch(''); }}>
+        <Text style={stylesSearch.itemText}>{item?.companyObj?.name}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+
   const handleGetBlogs = async () => {
     try {
       let { data: res } = await getBlogApi();
@@ -192,7 +204,50 @@ export default function Home() {
       }
       // Linking.openURL(tel:${phone});
       navigate.navigate('Supplier', { data: item })
-     
+
+    }
+    else {
+      Alert.alert(
+        'Login Required',
+        'Please login to access this feature.',
+        [
+          {
+            text: 'Go to Login',
+            onPress: () => navigate.navigate('Login'),
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: true }
+      );
+    }
+  };
+  const gotoSearch = () => {
+    if (isAuthorized) {
+      if (!currentUserHasActiveSubscription) {
+        Alert.alert(
+          'Subscription Required',
+          'You do not have a valid subscription to perform this action.',
+          [
+            {
+              text: 'Go to Subscriptions',
+              style: { color: "red" },
+              onPress: () => navigate.navigate('Subscriptions', { register: false }),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
+      }
+      // Linking.openURL(tel:${phone});
+      navigate.navigate('SearchScreen', { Data: queryy })
+
     }
     else {
       Alert.alert(
@@ -242,12 +297,14 @@ export default function Home() {
 
   useEffect(() => {
     if (focused) {
+     handleInputChange();
       handleGetBlogs();
       handleGetBlogVideo();
       handleproductyoumaylike();
       handleopportunitydata();
       handlestates();
       getauthuser();
+     
     }
   }, [focused]);
 
@@ -973,20 +1030,70 @@ export default function Home() {
       <View style={[styles.bgwhite]}>
 
         <View style={{ alignItems: 'center', marginTop: wp(3) }}>
-          {filteredData.length > 0 ? (
-            <ScrollView style={{ backgroundColor: CustomColors.searchBackground, position: 'absolute', zIndex: 10, marginTop: wp(13), padding: wp(5), borderRadius: wp(5), borderWidth: 1, borderColor: '#CDC2A1', }}>
-              <FlatList
-                data={filteredData.slice(0, 10)} // Limit to the first 14 entries
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-                scrollEnabled={true}
-              />
-            </ScrollView>
-          ) : searchQuery  ? (
-            <View style={{ backgroundColor: CustomColors.searchBackground, position: 'absolute', zIndex: 10, marginTop: wp(13), padding: wp(5), borderRadius: wp(5), borderWidth: 1, borderColor: '#CDC2A1' , width: '88%',flex:1}}>
-              <Text style={stylesSearch.itemText}>No results found</Text>
-            </View>
-          ) : null}
+          {
+            filteredData.length > 0 ? (
+              filteredData.length === 1 ? (
+                <ScrollView
+                  style={{
+                    backgroundColor: CustomColors.searchBackground,
+                    position: 'absolute',
+                    zIndex: 10,
+                    marginTop: wp(13),
+                    padding: wp(5),
+                    borderRadius: wp(5),
+                    borderWidth: 1,
+                    borderColor: '#CDC2A1',
+                  }}
+                >
+                  <FlatList
+                    data={filteredData.slice(0, 1)} // Show only 1 entry
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem} // Render single item
+                    scrollEnabled={true}
+                  />
+                </ScrollView>
+              ) : (
+                <ScrollView
+                  style={{
+                    backgroundColor: CustomColors.searchBackground,
+                    position: 'absolute',
+                    zIndex: 10,
+                    marginTop: wp(13),
+                    padding: wp(5),
+                    borderRadius: wp(5),
+                    borderWidth: 1,
+                    borderColor: '#CDC2A1',
+                  }}
+                >
+                  <FlatList
+                    data={filteredData.slice(0, 8)} // Show up to 10 entries
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem1} // Render multiple items
+                    scrollEnabled={true}
+                  />
+                </ScrollView>
+              )
+            ) : searchQuery ? (
+              <View
+                style={{
+                  backgroundColor: CustomColors.searchBackground,
+                  position: 'absolute',
+                  zIndex: 10,
+                  marginTop: wp(13),
+                  padding: wp(5),
+                  borderRadius: wp(5),
+                  borderWidth: 1,
+                  borderColor: '#CDC2A1',
+                  width: '88%',
+                  flex: 1,
+                }}
+              >
+                <Text style={stylesSearch.itemText}>No results found</Text>
+              </View>
+            ) : null
+          }
+
+
 
 
 
@@ -997,7 +1104,8 @@ export default function Home() {
             <TextInput
               style={stylesSearch.input}
               placeholder={'Search with  keywords'}
-              onChangeText={handleInputChange}
+              onChangeText={(e)=>handleInputChange(e)}
+              value={queryy}
             />
             <View style={{ marginHorizontal: wp(3) }}>
 
@@ -1291,7 +1399,7 @@ export default function Home() {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={{ marginBottom: wp(18), marginTop: wp(7) }}>
+                <View style={{ marginVertical: wp(40), marginTop: wp(7) }}>
                   <BottomBanner></BottomBanner>
                 </View>
 

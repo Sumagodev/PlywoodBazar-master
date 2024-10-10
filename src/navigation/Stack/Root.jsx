@@ -70,6 +70,7 @@ import { ActivityIndicator, Text } from 'react-native-paper';
 import { Image } from '@rneui/base';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 import CustomColors from '../../styles/CustomColors';
+import SearchScreen from '../../components/SearchScreen';
 
 
 
@@ -655,6 +656,14 @@ if (loading) {
               }}
               name="EditBannerform"
               component={EditBannerform}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+              name="SearchScreen"
+              component={SearchScreen}
             />
           
 
