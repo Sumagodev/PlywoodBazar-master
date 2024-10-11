@@ -17,7 +17,6 @@ const SearchList = ({vendorItem,onItemPress})=>{
                 <View style={styles.columnContainer}>
                     <Text style={[styles.vendorName, {marginBottom: wp(0.256)}]} numberOfLines={2} ellipsizeMode="tail">{vendorItem.name}</Text>
                     <View style={styles.rowContainer}>
-                        <Text style={{fontWeight: '200', fontSize:wp(3.5)}}>Role: </Text>
                         <Text style={styles.vendorProducts}>{vendorItem.Role}</Text>
                     </View>
                    

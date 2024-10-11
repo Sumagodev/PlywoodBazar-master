@@ -76,7 +76,7 @@ export default function Home() {
   const [topprofiles, settopprofiles] = useState([]);
   const [stateDetailss, setstateDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const { height, width } = useWindowDimensions();
@@ -171,6 +171,20 @@ export default function Home() {
   //   }
 
   // };
+
+  const gotosearchlist = () => {
+    if(filteredData.length === 1){
+      setSearchQuery(false)
+      gototopprofile(filteredData[0]) 
+      setQuery('')
+      
+    }else{
+      setSearchQuery(false)
+      navigate.navigate('SearchScreen', { Data: queryy })
+      setQuery(''); 
+      setFilteredData([])
+    }
+   }
   const renderItem = ({ item }) =>
   (
     <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
@@ -211,92 +225,92 @@ export default function Home() {
     }
   };
   const gototopprofile = (item) => {
-    if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        Alert.alert(
-          'Subscription Required',
-          'You do not have a valid subscription to perform this action.',
-          [
-            {
-              text: 'Go to Subscriptions',
-              style: { color: "red" },
-              onPress: () => navigate.navigate('Subscriptions', { register: false }),
-            },
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-          ],
-          { cancelable: true }
-        );
-        return;
-      }
-      // Linking.openURL(tel:${phone});
+    // if (isAuthorized) {
+    //   if (!currentUserHasActiveSubscription) {
+    //     Alert.alert(
+    //       'Subscription Required',
+    //       'You do not have a valid subscription to perform this action.',
+    //       [
+    //         {
+    //           text: 'Go to Subscriptions',
+    //           style: { color: "red" },
+    //           onPress: () => navigate.navigate('Subscriptions', { register: false }),
+    //         },
+    //         {
+    //           text: 'Cancel',
+    //           style: 'cancel',
+    //         },
+    //       ],
+    //       { cancelable: true }
+    //     );
+    //     return;
+    //   }
+    //   // Linking.openURL(tel:${phone});
       navigate.navigate('Supplier', { data: item })
             setFilteredData([])
 
 
-    }
-    else {
-      Alert.alert(
-        'Login Required',
-        'Please login to access this feature.',
-        [
-          {
-            text: 'Go to Login',
-            onPress: () => navigate.navigate('Login'),
-          },
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-        ],
-        { cancelable: true }
-      );
-    }
+    // }
+    // else {
+    //   Alert.alert(
+    //     'Login Required',
+    //     'Please login to access this feature.',
+    //     [
+    //       {
+    //         text: 'Go to Login',
+    //         onPress: () => navigate.navigate('Login'),
+    //       },
+    //       {
+    //         text: 'Cancel',
+    //         style: 'cancel',
+    //       },
+    //     ],
+    //     { cancelable: true }
+    //   );
+    // }
   };
   const gotoSearch = () => {
-    if (isAuthorized) {
-      if (!currentUserHasActiveSubscription) {
-        Alert.alert(
-          'Subscription Required',
-          'You do not have a valid subscription to perform this action.',
-          [
-            {
-              text: 'Go to Subscriptions',
-              style: { color: "red" },
-              onPress: () => navigate.navigate('Subscriptions', { register: false }),
-            },
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-          ],
-          { cancelable: true }
-        );
-        return;
-      }
-      // Linking.openURL(tel:${phone});
+    // if (isAuthorized) {
+    //   if (!currentUserHasActiveSubscription) {
+    //     Alert.alert(
+    //       'Subscription Required',
+    //       'You do not have a valid subscription to perform this action.',
+    //       [
+    //         {
+    //           text: 'Go to Subscriptions',
+    //           style: { color: "red" },
+    //           onPress: () => navigate.navigate('Subscriptions', { register: false }),
+    //         },
+    //         {
+    //           text: 'Cancel',
+    //           style: 'cancel',
+    //         },
+    //       ],
+    //       { cancelable: true }
+    //     );
+    //     return;
+    //   }
+    //   // Linking.openURL(tel:${phone});
       navigate.navigate('SearchScreen', { Data: queryy })
 setFilteredData([])
-    }
-    else {
-      Alert.alert(
-        'Login Required',
-        'Please login to access this feature.',
-        [
-          {
-            text: 'Go to Login',
-            onPress: () => navigate.navigate('Login'),
-          },
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-        ],
-        { cancelable: true }
-      );
-    }
+    // }
+    // else {
+    //   Alert.alert(
+    //     'Login Required',
+    //     'Please login to access this feature.',
+    //     [
+    //       {
+    //         text: 'Go to Login',
+    //         onPress: () => navigate.navigate('Login'),
+    //       },
+    //       {
+    //         text: 'Cancel',
+    //         style: 'cancel',
+    //       },
+    //     ],
+    //     { cancelable: true }
+    //   );
+    // }
   };
   const getauthuser = async () => {
     let decoded = await getDecodedToken();
@@ -1031,6 +1045,7 @@ setFilteredData([])
       );
     }
   }
+
   const handleRefresh = () => {
     setRefreshing(true);
     handleGetAdvvertisementForHomepage();
@@ -1144,9 +1159,9 @@ setFilteredData([])
 
 
           <View style={[stylesSearch.mainContainer]}>
-            <View style={stylesSearch.iconContainer}>
+            <TouchableOpacity style={stylesSearch.iconContainer} onPress={()=>gotosearchlist()}>
               <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
-            </View>
+            </TouchableOpacity>
             <TextInput
               style={stylesSearch.input}
               placeholder={'Search with  keywords'}

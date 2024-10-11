@@ -50,11 +50,11 @@ export default function Register() {
 
   const [rolesArr, setRolesArr] = useState([
     {
-      name: ROLES_CONSTANT.CONTRACTOR,
-      checked: false,
+      name: ROLES_CONSTANT.MANUFACTURER,
+      checked: true,
     },
     {
-      name: ROLES_CONSTANT.RETAILER,
+      name: ROLES_CONSTANT.DISTRIBUTOR,
       checked: false,
     },
     {
@@ -62,12 +62,12 @@ export default function Register() {
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
+      name: ROLES_CONSTANT.RETAILER,
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
+      name: ROLES_CONSTANT.CONTRACTOR,
+      checked: false,
     },
   ]);
   const [otp, setOtp] = useState('');

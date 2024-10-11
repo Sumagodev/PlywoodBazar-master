@@ -61,11 +61,11 @@ const ApplyOppFor = ({route,navigation}) => {
 
   const [rolesArr, setRolesArr] = useState([
     {
-      name: ROLES_CONSTANT.CONTRACTOR,
-      checked: false,
+      name: ROLES_CONSTANT.MANUFACTURER,
+      checked: true,
     },
     {
-      name: ROLES_CONSTANT.RETAILER,
+      name: ROLES_CONSTANT.DISTRIBUTOR,
       checked: false,
     },
     {
@@ -73,15 +73,14 @@ const ApplyOppFor = ({route,navigation}) => {
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.DISTRIBUTOR,
+      name: ROLES_CONSTANT.RETAILER,
       checked: false,
     },
     {
-      name: ROLES_CONSTANT.MANUFACTURER,
-      checked: true,
+      name: ROLES_CONSTANT.CONTRACTOR,
+      checked: false,
     },
   ]);
-
 
 
 
