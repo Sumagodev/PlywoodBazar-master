@@ -67,7 +67,7 @@ export default function Supplier(props) {
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [whatappnumber, setWhatappnumber] = useState();
   const roletype = ['DISTRIBUTOR', 'MANUFACTURER/IMPORTER', 'DEALER'];
-  console.log('productReviewArr', productReviewArr);
+  console.log('supplierObjsupplierObj', supplierObj);
 
   const activetab = index => {
     let temp = [...infolist];
@@ -849,7 +849,7 @@ const ListHeader = () => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <FlatList data={productReviewArr.slice(0, 2)} renderItem={ReviewsItem1} style={{ paddingVertical: 10 }} keyExtractor={(item, index) => `${index}`} />
                   <View style={{ alignSelf: 'center' }}>
-                    <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage', { data: supplierObj._id })} />
+                    <CustomButtonNew text={'Show more..'} paddingHorizontal={wp(5)} textSize={wp(4)} buttonColor={'#573C26'} onPress={() => navigate.navigate('ReviewsPage', {  data: {id: supplierObj._id,type: "vendor"}})} />
                   </View>
                 </View>
               ) : (
@@ -982,7 +982,7 @@ return (
             <Text style={styles1.modalText}>Add Review</Text>
             <TextInput style={styles1.modalTextInput} onChangeText={e => setName(e)} value={name} placeholder="Please Enter name" placeholderTextColor={'#000'} />
             <TextInput multiline={true} style={styles1.modalTextInput} onChangeText={e => setMessage(e)} value={message} placeholder="Please Enter message" placeholderTextColor={'#000'} />
-            <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+            <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} fractions={2}/>
           </View>
           <TouchableOpacity style={styles1.yellowButton} onPress={() => handleSubmitReview()}>
             <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>

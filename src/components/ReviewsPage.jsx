@@ -9,6 +9,7 @@ import { errorToast } from '../utils/toastutill';
 export default function ReviewsPage(props) {
   const [productReviewArr, setProductReviewArr] = useState([]);
   const [loading, setLoading] = useState(true);
+console.log('productReviewArr',props.route.params.data);
 
   const handleGetProductReview = async id => {
     try {
@@ -43,15 +44,15 @@ export default function ReviewsPage(props) {
 
   useEffect(() => {
 
-    if(props.route.params.type==='vendor')
+    if(props.route.params.data.type ==='vendor')
     {
-      handleGetVendorReviews(props.route.params.data);
+      handleGetVendorReviews(props.route.params.data.id);
     }else{
       handleGetProductReview(props.route.params.data);
     }
     
-    console.log(props.route.params.data);
-    console.log(props.route.params.type);
+    console.log('xxxx',props.route.params.data);
+    console.log('zzzz',props.route.params.type);
   }, []);
 
   return (

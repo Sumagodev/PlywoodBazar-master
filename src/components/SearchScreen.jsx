@@ -29,7 +29,7 @@ import LoadMoreButton from '../ReusableComponents/LoadMoreButton';
 import CustomColors from '../styles/CustomColors';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
 import SearchList from '../ReusableComponents/SearchList';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash.debounce'; 
 
 const SearchScreen = (props) => {
     const { Data } = props.route.params
@@ -44,7 +44,7 @@ const SearchScreen = (props) => {
 
 
 
-    const [qry, setQuery] = useState('');
+    const [qry, setQuery] = useState(Data);
     const focused = useIsFocused();
 
     const [productsArr, setProductsArr] = useState([]);
@@ -274,7 +274,7 @@ const SearchScreen = (props) => {
                             <TextInput
                                 style={stylesSearch.input}
                                 placeholder={'Search with keywords'}
-                               value={Data}
+                               value={qry}
                                 onChangeText={(e)=>handleInputChange(e)}
                             />
                         </View>

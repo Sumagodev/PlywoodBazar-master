@@ -795,7 +795,7 @@ export default function Productdetails(props) {
               <Text style={styles2.modalText}>Add Review</Text>
               <TextInput style={styles2.modalTextInput} onChangeText={(e) => setNameForReview(e)} value={nameForReview} placeholder="Please Enter name" placeholderTextColor={'#000'} />
               <TextInput multiline={true} style={styles2.modalTextInput} onChangeText={(e) => setMessageForReview(e)} value={messageForReview} placeholder="Please Enter message" placeholderTextColor={'#000'} />
-              <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }} />
+              <Rating imageSize={30} onFinishRating={e => setRating(e)} style={{ paddingVertical: 6 }}  fractions={2}/>
             </View>
             <TouchableOpacity style={styles2.yellowButton} onPress={() => handleSubmitReview()}>
               <Text style={{ color: 'white', fontSize: wp(5), fontWeight: 'bold', alignSelf: 'center' }}>Submit</Text>

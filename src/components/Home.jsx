@@ -2,7 +2,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Alert, TextInput, ScrollView } from 'react-native';
+import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Alert, TextInput, ScrollView, RefreshControl } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Video from 'react-native-video';
@@ -78,7 +78,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-
+  const [refreshing, setRefreshing] = useState(false);
   const { height, width } = useWindowDimensions();
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
@@ -90,7 +90,32 @@ export default function Home() {
   const [likeproductarray, setlikeproductarray] = useState([]);
   const [addressInFromFiled, setAddressInFormFiled] = useState('');
   const [currentUserId, setCurrentUserId] = useState('');
+  useEffect(() => {
+    // Function to show the toast message
+    const showToast = () => {
+      Toast.show({
+        type: 'error',
+        text1: 'Reload',
+        text2: 'for new updates!',
+        position: 'top',
+        visibilityTime: 3000, // Toast visible for 3 seconds
+      });
+    };
 
+    let intervalId;
+
+    if (focused) {
+      // Start the interval when the screen is focused
+      intervalId = setInterval(() => {
+        showToast();
+      }, 60000); // Every 1 minute
+    }
+
+    return () => {
+      // Clear the interval when the screen is unfocused
+      clearInterval(intervalId);
+    };
+  }, [focused]);
   // const handleSearch = (query) => {
   //   if (query) {
   //     const filtered = datas.filter((item) =>
@@ -102,10 +127,13 @@ export default function Home() {
   //   }
   // };
   const handleSearch = async (query) => {
-    query = query.trim();
-    if (query && query.length > 1) {
+    setIsLoading(true)
+    setQuery(query)
+    // query = query.trim();
+    if (query != '' && query?.length > 1) {
       try {
-        setIsLoading(true)
+
+
         let { data: res } = await searchHomeProduct(query);
         if (res.data) {
           setFilteredData(res.data);
@@ -123,29 +151,30 @@ export default function Home() {
     } else {
       setFilteredData([])
       setIsLoading(false)
+      setSearchQuery(false)
     }
   };
 
   // Debounced search function (waits 300ms after user stops typing)
-  const debouncedSearch = useCallback(
-    debounce((query) => handleSearch(query), 300),
-    []
-  );
+  // const debouncedSearch = useCallback(
+  //   debounce((query) => handleSearch(query), 10),
+  //   []
+  // );
 
-  const handleInputChange = (text) => {
-    setQuery(text)
-    debouncedSearch(text);
-    // setIsLoading(true) // Call debounced search function
-    // setSearchQuery(true);
-    if (!text) {
-      setSearchQuery(false);
-    }
+  // const handleInputChange = (text) => {
+  //   setQuery(text)
+  //   debouncedSearch(text);
+  //   // setIsLoading(true) // Call debounced search function
+  //   // setSearchQuery(true);
+  //   if (!text) {
+  //     setSearchQuery(false);
+  //   }
 
-  };
+  // };
   const renderItem = ({ item }) =>
   (
     <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
-      <TouchableOpacity style={stylesSearch.item} onPress={() => { gototopprofile(item);setQuery('');debouncedSearch(''); }}>
+      <TouchableOpacity style={stylesSearch.item} onPress={() => { gototopprofile(item); setQuery(''); setSearchQuery(false)}}>
         <Text style={stylesSearch.itemText}>{item?.companyObj?.name}</Text>
       </TouchableOpacity>
     </View>
@@ -155,7 +184,7 @@ export default function Home() {
 
   (
     <View style={{ flex: 1, width: wp(80), borderBottomWidth: 1, borderBottomColor: '#CDC2A1' }}>
-      <TouchableOpacity style={stylesSearch.item} onPress={() => {  gotoSearch(item);setQuery('');debouncedSearch(''); }}>
+      <TouchableOpacity style={stylesSearch.item} onPress={() => { gotoSearch(item); setQuery(''); setSearchQuery(false) }}>
         <Text style={stylesSearch.itemText}>{item?.companyObj?.name}</Text>
       </TouchableOpacity>
     </View>
@@ -204,6 +233,8 @@ export default function Home() {
       }
       // Linking.openURL(tel:${phone});
       navigate.navigate('Supplier', { data: item })
+            setFilteredData([])
+
 
     }
     else {
@@ -247,7 +278,7 @@ export default function Home() {
       }
       // Linking.openURL(tel:${phone});
       navigate.navigate('SearchScreen', { Data: queryy })
-
+setFilteredData([])
     }
     else {
       Alert.alert(
@@ -289,6 +320,7 @@ export default function Home() {
       let { data: res } = await getProductYouMayLike();
       if (res.data) {
         setlikeproductarray(res.data);
+        setRefreshing(false);
       }
     } catch (err) {
       console.log(err);
@@ -297,16 +329,16 @@ export default function Home() {
 
   useEffect(() => {
     if (focused) {
-     handleInputChange();
+      // handleInputChange();
       handleGetBlogs();
       handleGetBlogVideo();
       handleproductyoumaylike();
       handleopportunitydata();
       handlestates();
       getauthuser();
-     
+
     }
-  }, [focused]);
+  }, []);
 
   const handleSubmitRequirement = async () => {
     try {
@@ -547,7 +579,7 @@ export default function Home() {
       handleGetSubscriptions();
       handletopProfiles();
     }
-  }, [focused]);
+  }, []);
 
   const generateRandomDigits = () => {
     return Math.floor(Math.random() * (3 - 0 + 1)) + 0;
@@ -999,7 +1031,21 @@ export default function Home() {
       );
     }
   }
+  const handleRefresh = () => {
+    setRefreshing(true);
+    handleGetAdvvertisementForHomepage();
+    handleNestedcategories();
+    handleGetSubscriptions();
+    handletopProfiles();
+    //  handleInputChange();
+    handleGetBlogs();
+    handleGetBlogVideo();
+    handleproductyoumaylike();
+    handleopportunitydata();
+    handlestates();
+    getauthuser();
 
+  };
 
   // const flatlistref = useRef(null);
 
@@ -1032,7 +1078,7 @@ export default function Home() {
         <View style={{ alignItems: 'center', marginTop: wp(3) }}>
           {
             filteredData.length > 0 ? (
-              filteredData.length === 1 ? (
+              filteredData.length === 1 && queryy !== ''  ? (
                 <ScrollView
                   style={{
                     backgroundColor: CustomColors.searchBackground,
@@ -1073,7 +1119,7 @@ export default function Home() {
                   />
                 </ScrollView>
               )
-            ) : searchQuery ? (
+            ) : searchQuery  ? (
               <View
                 style={{
                   backgroundColor: CustomColors.searchBackground,
@@ -1104,7 +1150,7 @@ export default function Home() {
             <TextInput
               style={stylesSearch.input}
               placeholder={'Search with  keywords'}
-              onChangeText={(e)=>handleInputChange(e)}
+              onChangeText={(e) => handleSearch(e)}
               value={queryy}
             />
             <View style={{ marginHorizontal: wp(3) }}>
@@ -1129,9 +1175,10 @@ export default function Home() {
               <>
                 <Header slidersection />
               </>
+
             }
             //Footer to show below listview
-
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
             ListFooterComponent={
               < >
                 {/* <View style={{width: width}}>
