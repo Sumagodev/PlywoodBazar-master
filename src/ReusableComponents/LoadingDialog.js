@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Modal, ActivityIndicator ,Image} from 'react-native';
 import PropTypes from 'prop-types';
 import CustomColors from '../styles/CustomColors';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
-import { Image } from '@rneui/base';
+// import { Image } from '@rneui/base';
 
 const LoadingDialog = ({ visible, message }) => {
     return (

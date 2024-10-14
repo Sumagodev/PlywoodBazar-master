@@ -78,13 +78,15 @@ export default function Leads(props) {
   };
 
   const renderMyLeadsItem = ({ item, index }) => {
+    console.log('logi',item);
+    
     const leadItem={
       name:item?.name,
-      
+   
       date:moment(item?.createdAt).format('DD-MM-YYYY')
     }
     return (
-      <MyLeadItem leadItem={leadItem}></MyLeadItem>
+      <MyLeadItem leadItem={leadItem} item={item}></MyLeadItem>
     );
   };
 

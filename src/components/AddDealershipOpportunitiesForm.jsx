@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import Header from '../navigation/customheader/Header';
 
@@ -19,7 +19,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { AddDealershipOpportunities } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { getAllCategories, getMainCategories } from '../services/Category.service';
-
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const focused = useIsFocused();
   const [name, setName] = useState('');
@@ -31,6 +31,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [Role, setRole] = useState('');
+  const [loading, setloading] = useState(false);
   const [productsArray, setproductsArray] = useState([]);
   console.log('Role', Role);
 
@@ -62,7 +63,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   };
   const [rolesArr, setRolesArr] = useState([]);
 
-  const UpdateType =()=>{
+  const UpdateType = () => {
     if (Role === ROLES_CONSTANT.MANUFACTURER) {
 
       setRolesArr([
@@ -71,12 +72,12 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
         { name: ROLES_CONSTANT.DEALER, checked: false },
       ]);
     } else if (Role === ROLES_CONSTANT.DISTRIBUTOR) {
-     
+
       setRolesArr([
         { name: ROLES_CONSTANT.DEALER, checked: true },
       ]);
     }
- 
+
   }
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
@@ -85,7 +86,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
     console.log('decodedToken?.userId', decodedToken);
     if (res?.data) {
       setuserID(res?.data.data._id);
-      
+
 
       setName(res.data.data.companyObj.name);
       setEmail(res.data.data.companyObj.email);
@@ -147,7 +148,7 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
       handleDebouncedGetStates(countryId);
       handleGetCategory()
     }
-  }, [countryId, focused,Role]);
+  }, [countryId, focused, Role]);
 
   const handleGetCities = async stateId => {
     try {
@@ -279,46 +280,54 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
   //   }
   // };
   const handleSubmit = async () => {
+    setloading(false)
     try {
       // Validate if a name is provided
       if (!name) {
         errorToast('Name is Required');
+        setloading(false)
         return;
       }
 
       // Validate if a business type is selected
       if (!selectedBusinessType) {
         errorToast('Business Type is Required');
+        setloading(false)
         return;
       }
 
       // Validate if a brand is provided
       if (!brand) {
         errorToast('Brand is Required');
+        setloading(false)
         return;
       }
 
       // Validate if a city is selected
       if (!selectedItems || selectedItems.length === 0) {
         errorToast('City is Required');
+        setloading(false)
         return;
       }
 
       // Validate if an image is selected
       if (!fileBase64) {
         errorToast('Image is Required');
+        setloading(false)
         return;
       }
 
       // Validate if a category is selected
       if (!selectedItemscate || selectedItemscate.length === 0) {
         errorToast('Category is Required');
+        setloading(false)
         return;
       }
 
       // Validate if stateId is selected
       if (!stateId || !stateId.value) {
         errorToast('State is Required');
+        setloading(false)
         return;
       }
 
@@ -337,17 +346,20 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
       };
 
       console.log('Submitting', obj);
-
+      setloading(true)
       // Submit data
       const { data: res } = await AddDealershipOpportunities(obj);
+  
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
+        setloading(false)
         resetForm(); // Reset the form after success
       }
     } catch (error) {
       errorToast('An error occurred while submitting.');
       console.log('Error:', error);
+      setloading(false)
     }
   };
   const handleDocumentPicker = async () => {
@@ -472,12 +484,12 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
               />
             </View>
 
-            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', left: wp(3) ,marginBottom:wp(2)}}>
+            <View style={{ marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', left: wp(3), marginBottom: wp(2) }}>
               {selectedItemscate ? (
                 selectedItemscate.map(itemId => {
                   const item = CategoryArr.find(i => i._id === itemId);
                   return (
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2) ,marginLeft: wp(0)}}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: wp(2), marginLeft: wp(0) }}>
                       <Text key={itemId} style={{ marginHorizontal: wp(2) }}>
                         {item.name}
                       </Text>
@@ -568,8 +580,14 @@ const AddDealershipOpportunitiesForm = ({ props, navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 handleSubmit();
+                
               }}>
-              <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+              {
+                loading ? <ActivityIndicator size="large" color='#ffffff' style={{ marginTop: widthPercentageToDP(5), marginBottom: widthPercentageToDP(5) }} />
+                  :
+                  <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+
+              }
             </TouchableOpacity>
           </View>
 

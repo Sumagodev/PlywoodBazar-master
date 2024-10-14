@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput ,ActivityIndicator} from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import Header from '../navigation/customheader/Header';
 
@@ -18,6 +18,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import {  ApplyForDealershipOpportunitiy } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+
 const ApplyOppFor = ({route,navigation}) => {
   const { Data } = route.params;
   console.log('Datax',Data);
@@ -30,7 +32,7 @@ const ApplyOppFor = ({route,navigation}) => {
   const [name, setName] = useState(Data?.Organisation_name);
   const [userID, setuserID] = useState('');
   console.log('userIDuserID',userID);
-  
+  const [loading, setloading] = useState(false);
   const [type, setType] = useState('');
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState('');
@@ -247,14 +249,17 @@ const ApplyOppFor = ({route,navigation}) => {
 
      
       };
+      setloading(true)
       const { data: res } = await ApplyForDealershipOpportunitiy(obj);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
+        setloading(false)
         resetForm();
       }
     } catch (error) {
       errorToast(error);
+      setloading(false)
     }
   };
 
@@ -356,8 +361,14 @@ const ApplyOppFor = ({route,navigation}) => {
             <TouchableOpacity
               onPress={() => {
                 handleSubmit();
+
               }}>
-              <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+              {
+                loading?<ActivityIndicator size="large" color='#ffffff'  style={{marginTop:widthPercentageToDP(5),marginBottom:widthPercentageToDP(5)}}/>
+                :
+                <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+
+              }
             </TouchableOpacity>
           </View>
 

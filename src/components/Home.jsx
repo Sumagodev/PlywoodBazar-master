@@ -2,8 +2,8 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Alert, TextInput, ScrollView, RefreshControl } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { FlatList, Linking, Image, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity,ActivityIndicator, View, useWindowDimensions, Alert, TextInput, ScrollView, RefreshControl } from 'react-native';
+
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Video from 'react-native-video';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
@@ -72,6 +72,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [type, setType] = useState('');
   const [Role, setRole] = useState('');
+  const [loading, setloading] = useState(false);
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const [topprofiles, settopprofiles] = useState([]);
   const [stateDetailss, setstateDetails] = useState([]);
@@ -379,12 +380,13 @@ setFilteredData([])
         address,
         productName,
       };
-
+    setloading(true)
       let { data: res } = await addUserRequirement(obj);
 
       if (res.message) {
         console.log('xxxxxxx', res.message)
         toastSuccess(res.message);
+        setloading(false)
         // Alert.alert(res.message)
         setName('');
         setPhone('');
@@ -393,6 +395,7 @@ setFilteredData([])
       }
     } catch (err) {
       errorToast(err);
+      setloading(false)
     }
   };
   const handleApplySubmitRequirement = async () => {
@@ -1249,6 +1252,7 @@ setFilteredData([])
                     {/* <FadeRibbonText colorStart={CustomColors.mattBrownDark} text={"New Arrival"} paddingHorizontal={wp(10)} fontSize={wp(6)} fontWeight={800} colorEnd='white'></FadeRibbonText> */}
                     <Text style={{ fontSize: wp(6), fontWeight: 800, color: '#000' }}>New Arrivals</Text>
                     <Pressable >
+                    
                       <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => GotoAddProduct()} />
                     </Pressable>
                   </View>
@@ -1457,7 +1461,11 @@ setFilteredData([])
                   </View>
                   <View style={styles1.btnContainer}>
                     <TouchableOpacity onPress={() => { handleSubmitRequirement() }}>
+                    {loading?<ActivityIndicator size="large" color='#ffffff'  style={{marginTop:wp(5),marginBottom:wp(5)}}/>
+                    :
                       <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+
+                    }
                     </TouchableOpacity>
                   </View>
                 </View>
