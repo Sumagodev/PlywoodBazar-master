@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View ,ActivityIndicator} from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -14,11 +14,12 @@ import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities, MyappliedList } from '../services/Advertisement.service';
 import DealershipData from '../ReusableComponents/DealershipData';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function SelfAppliedOpportunitiesList(props) {
     const focused = useIsFocused()
     const navigation = useNavigation();
-
+    const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
     const [subscriptionArr, setSubscriptionArr] = useState([]);
 
     console.log('subscriptionArr', subscriptionArr);
@@ -28,15 +29,20 @@ export default function SelfAppliedOpportunitiesList(props) {
         getSubscriptions()
     }, []);
     const getSubscriptions = async () => {
+        setIsLoadingallcompo(true)
         try {
             let decodedObj = await getDecodedToken();
             const { data: res } = await MyappliedList(decodedObj?.userId);
             if (res) {
                 console.log(JSON.stringify(res.data,), 'raviiii');
                 setSubscriptionArr(res.data);
+                setIsLoadingallcompo(false)
             }
         } catch (error) {
             errorToast(error);
+            setIsLoadingallcompo(false)
+        } finally{
+            setIsLoadingallcompo(false)
         }
     };
 
@@ -111,8 +117,13 @@ export default function SelfAppliedOpportunitiesList(props) {
 
 
     return (
-        <View style={styles1.mainContainer}>
-            <Header normal={true} rootProps={props} />
+        <>
+        <Header normal={true} rootProps={props} />
+        {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+            <View style={styles1.mainContainer}>
             <View style={reviewStyle.container}>
                 <Text style={reviewStyle.title}>My Applied Opportunities List</Text>
             </View>
@@ -131,6 +142,8 @@ export default function SelfAppliedOpportunitiesList(props) {
         <Text style={styles.textbtn}>Add New Product</Text>
       </TouchableOpacity> */}
         </View>
+        }
+        </>
     );
 }
 const styles1 = StyleSheet.create({

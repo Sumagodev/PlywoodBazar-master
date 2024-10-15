@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, StyleSheet, Pressable, ScrollView, Modal, ImageBackground, TouchableOpacity, FlatList,Alert } from 'react-native';
+import { View, Text, Image, TextInput, StyleSheet, Pressable, ScrollView, Modal, ImageBackground, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -23,6 +23,7 @@ import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
 import CustomColors from '../styles/CustomColors';
 import { getCityByStateApi, getCountriesApi, getStateByCountryApi } from '../services/location.service';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function Editprofile(props) {
   const navigation = useNavigation();
   const [email, setemail] = useState('');
@@ -46,12 +47,12 @@ export default function Editprofile(props) {
   const [aniversaryDateModal, setAniversaryDateModal] = useState(false);
   console.log('stateIdx', stateId);
   console.log('cityIdx', cityId);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [profileImage, setProfileImage] = useState('');
   const [signature, setsignature] = useState('');
   const [password, setpassword] = useState('');
   const [confirmpassword, setconfirmpassword] = useState('');
-
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const [imagesArr, setImagesArr] = useState([{ image: '', imageObj: {} }]);
   const [videoArr, setVideoArr] = useState([{ video: '', videoObj: {} }]);
 
@@ -81,13 +82,14 @@ export default function Editprofile(props) {
 
 
   const getUserObj = async () => {
+    setIsLoadingallcompo(true)
     try {
       const { data: res } = await getUserById();
 
       console.log("name organation===========", res, "end ===================")
 
       if (res) {
-        console.log('updatex',JSON.stringify(res.data));
+        console.log('updatex', JSON.stringify(res.data));
         setUserObj(res.data);
         setemail(res?.data?.email);
         setName(res?.data?.name);
@@ -110,7 +112,7 @@ export default function Editprofile(props) {
         setgstCertificate(res?.data?.documents[0]?.image);
         setcountryId(res?.data?.countryId);
         setstateId(res?.data?.stateId);
-        console.log('xState',res?.data?.stateId)
+        console.log('xState', res?.data?.stateId)
         setcityId(res?.data?.cityId);
         setNatureOfBusiness(res?.data?.companyObj?.natureOfBusiness);
         setAnnualTurnover(res?.data?.companyObj?.annualTurnover);
@@ -126,9 +128,13 @@ export default function Editprofile(props) {
         setVideoArr(res?.data?.videoArr && res?.data?.videoArr.length > 0 ? res?.data?.videoArr : [{ video: '' }]);
         setSelectedStateName(res?.data?.stateObj?.name)
         setSelectedCityName(res?.data?.cityObj?.name)
+        setIsLoadingallcompo(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoadingallcompo(false)
+    } finally {
+      setIsLoadingallcompo(false)
     }
   };
 
@@ -268,16 +274,20 @@ export default function Editprofile(props) {
         imagesArr,
         videoArr,
       };
-
+      setIsLoading(true)
       const { data: res } = await updateUserById(userObj?._id, obj);
       if (res) {
         toastSuccess(res.message);
+        setIsLoading(false)
         navigation.goBack();
       }
     } catch (error) {
       errorToast(error);
       console.log('catch', error);
+      setIsLoading(false)
 
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -437,369 +447,383 @@ export default function Editprofile(props) {
       <ScrollView style={[styles.bgwhite, { paddingTop: 2, paddingBottom: 180 }]}>
 
         <Header normal={true} rootProps={props} />
-        <View style={{ position: 'relative', zIndex: 1 }}>
-          <Image source={{ uri: bannerImage && `${bannerImage}`.includes('base64') ? bannerImage : generateImageUrl(bannerImage) }} style={{ height: wp(50), borderRadius: 0 }} resizeMode="stretch" />
-          <TouchableOpacity style={[{ position: 'absolute', right: 10, top: 10, height: wp(10), width: wp(10), backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', borderRadius: 22, borderWidth: 3, borderColor: '#603200' }]} onPress={() => handlePickBannerImage()}>
-            <FontAwesome name='pencil' size={wp(5)} color='#603200' />
-          </TouchableOpacity>
-          {/*
-          <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center',zIndex:1}}>
-            <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: wp(50), position: 'relative', marginTop: -hp(6),zIndex:1}}>
-             
-            <TouchableOpacity onPress={() => handlePickProfileImage()} style={{position: 'absolute',zIndex:1}}>
-                {profileImage && `${profileImage}`.includes('base64') ? (
-                  <Image style={styles1.imgfluid}  resizeMode="cover" source={{uri: profileImage}} />
-                ) : (
-                  <Image style={styles1.imgfluid} resizeMode="contain" source={{uri: generateImageUrl(profileImage)}} />
-                )}
-                <AntDesign name="edit" size={17} color="#fff" style={{position: 'absolute', bottom: 0, right: 0, textAlign: 'center', borderRadius: 50, backgroundColor: '#b76c3c', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 30}} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          */}
-          <View style={{ flex: 1, gap: 10, alignSelf: 'center', marginTop: wp(15), zIndex: 1, position: 'absolute' }}>
-            <TouchableOpacity style={{ bottom: wp(-14), alignSelf: 'center' }} >
+        {
+          isLoadingallcompo ?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+            <>
+              <View style={{ position: 'relative', zIndex: 1 }}>
+                <Image source={{ uri: bannerImage && `${bannerImage}`.includes('base64') ? bannerImage : generateImageUrl(bannerImage) }} style={{ height: wp(50), borderRadius: 0 }} resizeMode="stretch" />
+                <TouchableOpacity style={[{ position: 'absolute', right: 10, top: 10, height: wp(10), width: wp(10), backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', borderRadius: 22, borderWidth: 3, borderColor: '#603200' }]} onPress={() => handlePickBannerImage()}>
+                  <FontAwesome name='pencil' size={wp(5)} color='#603200' />
+                </TouchableOpacity>
+                {/*
+        <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center',zIndex:1}}>
+          <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: wp(50), position: 'relative', marginTop: -hp(6),zIndex:1}}>
+           
+          <TouchableOpacity onPress={() => handlePickProfileImage()} style={{position: 'absolute',zIndex:1}}>
               {profileImage && `${profileImage}`.includes('base64') ? (
-                <Image style={styles1.imgfluid} resizeMode="cover" source={{ uri: profileImage }} />
+                <Image style={styles1.imgfluid}  resizeMode="cover" source={{uri: profileImage}} />
               ) : (
-                <Image style={styles1.imgfluid} resizeMode="contain" source={{ uri: generateImageUrl(profileImage) }} />
+                <Image style={styles1.imgfluid} resizeMode="contain" source={{uri: generateImageUrl(profileImage)}} />
               )}
-
-              <TouchableOpacity onPress={() => handlePickProfileImage()} style={{ alignSelf: 'flex-end', top: wp(-10), height: wp(9), width: wp(9), backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', borderRadius: 22, borderWidth: 3, borderColor: '#603200' }}>
-                <FontAwesome name='pencil' size={wp(4)} color='#603200' />
-              </TouchableOpacity>
+              <AntDesign name="edit" size={17} color="#fff" style={{position: 'absolute', bottom: 0, right: 0, textAlign: 'center', borderRadius: 50, backgroundColor: '#b76c3c', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 30}} />
             </TouchableOpacity>
           </View>
         </View>
-        <ImageBackground style={[styles1.cardContainer, {}]} source={require('../../assets/img/main_bg.jpg')}>
-          <View style={{ paddingHorizontal: wp(3), backgroundColor: CustomColors.mattBrownFaint }}>
-            <Text style={{ color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium', }}>Company Details</Text>
+        */}
+                <View style={{ flex: 1, gap: 10, alignSelf: 'center', marginTop: wp(15), zIndex: 1, position: 'absolute' }}>
+                  <TouchableOpacity style={{ bottom: wp(-14), alignSelf: 'center' }} >
+                    {profileImage && `${profileImage}`.includes('base64') ? (
+                      <Image style={styles1.imgfluid} resizeMode="cover" source={{ uri: profileImage }} />
+                    ) : (
+                      <Image style={styles1.imgfluid} resizeMode="contain" source={{ uri: generateImageUrl(profileImage) }} />
+                    )}
+
+                    <TouchableOpacity onPress={() => handlePickProfileImage()} style={{ alignSelf: 'flex-end', top: wp(-10), height: wp(9), width: wp(9), backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', borderRadius: 22, borderWidth: 3, borderColor: '#603200' }}>
+                      <FontAwesome name='pencil' size={wp(4)} color='#603200' />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <ImageBackground style={[styles1.cardContainer, {backgroundColor:"#5647871a"}]} >
+                <View style={{ paddingHorizontal: wp(3),  }}>
+                  <Text style={{ color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium', }}>Company Details</Text>
 
 
-            <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Name of Organization</Text>
+                  <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Name of Organization</Text>
 
-            <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-              <TextInput style={styles1.card_main} placeholder={'Organization Name'} onChangeText={e => setcompanyName(e)} value={companyName} />
-            </View>
+                  <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                    <TextInput style={styles1.card_main} placeholder={'Organization Name'} onChangeText={e => setcompanyName(e)} value={companyName} />
+                  </View>
 
 
-            {/* <View style={[styles1.card_main, {marginTop: 5}]}>
-          <Image source={require('../../assets/img/usernameicon.png')} style={{width: wp(6), height: hp(3), marginRight: 5}} />
-          <View>
-            <View style={{width: wp(80)}}>
-              <Text style={styles1.labelname}>Organization Email</Text>
-              <TextInput style={styles1.inputborder} onChangeText={e => setcompanyName(e)} value={companyName} />
-            </View>
+                  {/* <View style={[styles1.card_main, {marginTop: 5}]}>
+        <Image source={require('../../assets/img/usernameicon.png')} style={{width: wp(6), height: hp(3), marginRight: 5}} />
+        <View>
+          <View style={{width: wp(80)}}>
+            <Text style={styles1.labelname}>Organization Email</Text>
+            <TextInput style={styles1.inputborder} onChangeText={e => setcompanyName(e)} value={companyName} />
           </View>
-        </View> */}
+        </View>
+      </View> */}
 
 
-{/*
-            <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Organization Phone</Text>
-            <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-              <TextInput style={styles1.card_main} placeholder={'Organization Phone'} onChangeText={setphone} value={phone} />
-            </View>
+                  {/*
+          <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Organization Phone</Text>
+          <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+            <TextInput style={styles1.card_main} placeholder={'Organization Phone'} onChangeText={setphone} value={phone} />
+          </View>
 
 */}
 
-            <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Birth Date</Text>
-            <Pressable onPress={() => setAniversaryDateModal(true)}>
-              <View style={[{ marginTop: 5 }]}>
-                <TextInput style={styles1.card_main} onChangeText={e => setAniversaryDate(e)} value={moment(aniversaryDate).format('YYYY-MM-DD')} editable={false} placeholder="DD - MM - YYYY" />
-              </View>
-            </Pressable>
-
-
-            {userObj?.role != ROLES_CONSTANT.USER && (
-              <>
-                {/* <View style={[styles1.card_main, { marginTop: 10 }]}>
-              <Image source={require('../../assets/img/Calendar.png')} style={{ width: wp(5), height: hp(2.5), marginRight: 5 }} />
-              <View>
-                <View style={{ width: wp(80) }}>
-                  <Text style={styles1.labelname}> Date of birth</Text>
-                  <TextInput style={styles1.inputborder} onChangeText={(e) => companyName(e)} value={companyName} editable={true} placeholder="Company Name" />
-                </View>
-              </View>
-            </View> */}
-
-                {/* <View style={[styles1.card_main, {marginTop: 10}]}>
-             
-              <View style={{marginRight: 5}}>
-                <Fontisto name="email" color="#000" size={16} />
-              </View>
-
-              <View>
-                <View style={{width: wp(80)}}>
-                  <Text style={styles1.labelname}> Company Email</Text>
-                  <TextInput style={styles1.inputborder} value={companyEmail} onChangeText={setcompanyEmail} placeholder="Company Email" />
-                </View>
-              </View>
-            </View> */}
-
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}> Address</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={address} onChangeText={setaddress} placeholder="Address" />
-                </View>
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Landline</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={companyPhone} onChangeText={setcompanyPhone} placeholder="Company Phone" />
-                </View>
-
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Brand Names:</Text>
-
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={brandNames} onChangeText={setBrandNames} placeholder="Nature Of Business" />
-                </View>
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Role</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={natureOfBusiness} onChangeText={setNatureOfBusiness} placeholder="Nature Of Business" editable={false} />
-                </View>
-
-
-          
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>GST Number</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={gstNumber} placeholder="GST Number" editable={false} />
-                </View>
-
-
-                <Text style={{ color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium', }}>Personal Details</Text>
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Name of Authorised person</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} onChangeText={e => setName(e)} value={name} />
-                </View>
-
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Email</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} onChangeText={setemail} value={email} />
-                </View>
-
-
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Mobile No.</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} onChangeText={e => setphone(e)} value={phone} editable={false} />
-                </View>
-
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Whatsapp No.</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} onChangeText={e => setwhatsapp(e)} value={whatsapp} />
-                </View>
-
-
-
-
-                {/* <View style={[styles1.card_main, {marginTop: 10}]}>
-              <View style={{width: wp(80)}}>
-                <Text style={styles1.labelname}>Role</Text>
-                <TextInput style={styles1.inputborder} value={natureOfBusiness} onChangeText={setNatureOfBusiness} placeholder="Role" />
-              </View>
-            </View> */}
-
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Year of Establishment</Text>
-                <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
-                  <TextInput style={styles1.card_main} value={yearOfEstablishment} onChangeText={setYearOfEstablishment} placeholder="Year of Establishment" />
-                </View>
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) ,bottom:wp(-3)}]}>State</Text>
-                <Pressable
-                  style={[styles1.BorderedPressable,{height: wp(14),}]}
-                  onPress={() => {
-                    setModalVisible(true);
-                    setModalFor('State');
-                  }}>
-                  <Text style={styles.borderedPressableText}>{selectedStateName ? selectedStateName : ' State *'}</Text>
-                </Pressable>
-                <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5),bottom:wp(-3) }]}>City</Text>
-                <Pressable
-                  style={[styles1.BorderedPressable,{height: wp(14),}]}
-                  onPress={() => {
-                    setModalVisible(true);
-                    setModalFor('City');
-                  }}>
-                  <Text style={styles.borderedPressableText}>{selectedCityName ? selectedCityName: 'City *'}</Text>
-                </Pressable>
-
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Images</Text>
-                  <View style={{ display: 'flex', flexDirection: 'row', paddingVertical: wp(2) }}>
-                    <Pressable onPress={() => handleAddImage()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
-                      <FontAwesome name='plus' size={wp(5)} color='#FFFFFF' />
-                    </Pressable>
-                    <Pressable onPress={() => handleRemoveImage()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
-                      <FontAwesome name='minus' size={wp(5)} color='#FFFFFF' />
-                    </Pressable>
-                  </View>
-                </View>
-
-                {imagesArr &&
-                  imagesArr.length > 0 &&
-                  imagesArr.map((el, index) => {
-                    return (
-                      <Pressable
-                        key={index}
-                        style={styles1.card_main}
-                        onPress={() => {
-                          handleDocumentPicker(index);
-                        }}>
-                        {el && el.image ? (
-                          <>{`${el.image}`.includes('base64') ? <Image style={{ height: 200 }} resizeMode="contain" source={{ uri: el.image }} /> : <Image style={{ height: 200 }} resizeMode="contain" source={{ uri: generateImageUrl(el.image) }} />}</>
-                        ) : (
-                          <Text style={{}}>Please Upload Image</Text>
-                        )}
-                      </Pressable>
-                    );
-                  })}
-
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Video</Text>
-                  <View style={{ display: 'flex', flexDirection: 'row', paddingVertical: wp(2) }}>
-                    <Pressable onPress={() => handleAddVideo()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
-                      <FontAwesome name='plus' size={wp(5)} color='#FFFFFF' />
-                    </Pressable>
-                    <Pressable onPress={() => handleRemoveVideo()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
-                      <FontAwesome name='minus' size={wp(5)} color='#FFFFFF' />
-                    </Pressable>
-                  </View>
-                </View>
-
-                {videoArr &&
-                  videoArr.length > 0 &&
-                  videoArr.map((el, index) => {
-                    return (
-                      <Pressable
-                        key={index}
-                        style={styles1.card_main}
-                        onPress={() => {
-                          handleDocumentPickerVideo(index);
-                        }}>
-                        {el && el?.videoObj?.name ? (
-                          <>
-                            <Text>{el?.videoObj?.name}</Text>
-                            {/* <Video source={{ uri: el.videoObj }}   // Can be a URL or a local file.
-                            ref={(ref) => {
-                              this.player = ref
-                            }}                                      // Store reference
-                            onBuffer={onBuffer}                // Callback when remote video is buffering
-                            onError={videoError}               // Callback when video cannot be loaded
-                            style={styles.backgroundVideo} /> */}
-
-                            {/* <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: el.image }} /> */}
-                          </>
-                        ) : (
-                          <Text style={{}}>Please Upload Video</Text>
-                        )}
-                      </Pressable>
-                    );
-                  })}
-              </>
-            )}
-
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={aniversaryDateModal}
-              onRequestClose={() => {
-                setAniversaryDateModal(!aniversaryDateModal);
-              }}>
-              <View style={styles1.centeredView}>
-                <View style={styles1.modalView}>
-                  <Text style={styles1.modalText}>Select Birthday</Text>
-                  {aniversaryDate && <DatePicker date={new Date(aniversaryDate)} mode="date" onDateChange={setAniversaryDate} textColor={'#000000'} />}
-                  <Pressable style={[styles1.button, styles1.buttonClose]} onPress={() => setAniversaryDateModal(!aniversaryDateModal)}>
-                    <Text style={styles1.textStyle}>Close</Text>
+                  <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Birth Date</Text>
+                  <Pressable onPress={() => setAniversaryDateModal(true)}>
+                    <View style={[{ marginTop: 5 }]}>
+                      <TextInput style={styles1.card_main} onChangeText={e => setAniversaryDate(e)} value={moment(aniversaryDate).format('YYYY-MM-DD')} editable={false} placeholder="DD - MM - YYYY" />
+                    </View>
                   </Pressable>
-                </View>
+
+
+                  {userObj?.role != ROLES_CONSTANT.USER && (
+                    <>
+                      {/* <View style={[styles1.card_main, { marginTop: 10 }]}>
+            <Image source={require('../../assets/img/Calendar.png')} style={{ width: wp(5), height: hp(2.5), marginRight: 5 }} />
+            <View>
+              <View style={{ width: wp(80) }}>
+                <Text style={styles1.labelname}> Date of birth</Text>
+                <TextInput style={styles1.inputborder} onChangeText={(e) => companyName(e)} value={companyName} editable={true} placeholder="Company Name" />
               </View>
-            </Modal>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}>
-              <View style={styles1.centeredView}>
-                <View style={styles1.modalView}>
-                  {modalFor == 'Country' ? (
-                    <>
-                      <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>Country</Text>
-                      <FlatList
-                        data={countryArr}
-                        keyExtractor={(item, index) => index}
-                        renderItem={({ item, index }) => {
+            </View>
+          </View> */}
+
+                      {/* <View style={[styles1.card_main, {marginTop: 10}]}>
+           
+            <View style={{marginRight: 5}}>
+              <Fontisto name="email" color="#000" size={16} />
+            </View>
+
+            <View>
+              <View style={{width: wp(80)}}>
+                <Text style={styles1.labelname}> Company Email</Text>
+                <TextInput style={styles1.inputborder} value={companyEmail} onChangeText={setcompanyEmail} placeholder="Company Email" />
+              </View>
+            </View>
+          </View> */}
+
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}> Address</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} value={address} onChangeText={setaddress} placeholder="Address" />
+                      </View>
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Landline</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} value={companyPhone} onChangeText={setcompanyPhone} placeholder="Company Phone" />
+                      </View>
+
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Brand Names:</Text>
+
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} value={brandNames} onChangeText={setBrandNames} placeholder="Nature Of Business" />
+                      </View>
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Role</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} value={natureOfBusiness} onChangeText={setNatureOfBusiness} placeholder="Nature Of Business" editable={false} />
+                      </View>
+
+
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>GST Number</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} value={gstNumber} placeholder="GST Number" editable={false} />
+                      </View>
+
+
+                      <Text style={{ color: '#b08229', fontSize: wp(4.5), paddingLeft: 7, marginTop: 10, fontFamily: 'Poppins-Medium', }}>Personal Details</Text>
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Name of Authorised person</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} onChangeText={e => setName(e)} value={name} />
+                      </View>
+
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Email</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} onChangeText={setemail} value={email} />
+                      </View>
+
+
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Mobile No.</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} onChangeText={e => setphone(e)} value={phone} editable={false} />
+                      </View>
+
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Whatsapp No.</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} onChangeText={e => setwhatsapp(e)} value={whatsapp} />
+                      </View>
+
+
+
+
+                      {/* <View style={[styles1.card_main, {marginTop: 10}]}>
+            <View style={{width: wp(80)}}>
+              <Text style={styles1.labelname}>Role</Text>
+              <TextInput style={styles1.inputborder} value={natureOfBusiness} onChangeText={setNatureOfBusiness} placeholder="Role" />
+            </View>
+          </View> */}
+
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Year of Establishment</Text>
+                      <View style={[{ marginTop: 5, paddingVertical: 1 }]}>
+                        <TextInput style={styles1.card_main} value={yearOfEstablishment} onChangeText={setYearOfEstablishment} placeholder="Year of Establishment" />
+                      </View>
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5), bottom: wp(-3) }]}>State</Text>
+                      <Pressable
+                        style={[styles1.BorderedPressable, { height: wp(14), }]}
+                        onPress={() => {
+                          setModalVisible(true);
+                          setModalFor('State');
+                        }}>
+                        <Text style={styles.borderedPressableText}>{selectedStateName ? selectedStateName : ' State *'}</Text>
+                      </Pressable>
+                      <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5), bottom: wp(-3) }]}>City</Text>
+                      <Pressable
+                        style={[styles1.BorderedPressable, { height: wp(14), }]}
+                        onPress={() => {
+                          setModalVisible(true);
+                          setModalFor('City');
+                        }}>
+                        <Text style={styles.borderedPressableText}>{selectedCityName ? selectedCityName : 'City *'}</Text>
+                      </Pressable>
+
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Images</Text>
+                        <View style={{ display: 'flex', flexDirection: 'row', paddingVertical: wp(2) }}>
+                          <Pressable onPress={() => handleAddImage()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
+                            <FontAwesome name='plus' size={wp(5)} color='#FFFFFF' />
+                          </Pressable>
+                          <Pressable onPress={() => handleRemoveImage()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
+                            <FontAwesome name='minus' size={wp(5)} color='#FFFFFF' />
+                          </Pressable>
+                        </View>
+                      </View>
+
+                      {imagesArr &&
+                        imagesArr.length > 0 &&
+                        imagesArr.map((el, index) => {
                           return (
                             <Pressable
+                              key={index}
+                              style={styles1.card_main}
                               onPress={() => {
-                                setcountryId({ name: item.name, value: item._id });
-                                setModalVisible(false);
-                              }}
-                              style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
-                              <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                                handleDocumentPicker(index);
+                              }}>
+                              {el && el.image ? (
+                                <>{`${el.image}`.includes('base64') ? <Image style={{ height: 200 }} resizeMode="contain" source={{ uri: el.image }} /> : <Image style={{ height: 200 }} resizeMode="contain" source={{ uri: generateImageUrl(el.image) }} />}</>
+                              ) : (
+                                <Text style={{}}>Please Upload Image</Text>
+                              )}
                             </Pressable>
                           );
-                        }}
-                      />
-                    </>
-                  ) : modalFor == 'State' ? (
-                    <>
-                      <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>State</Text>
-                      <FlatList
-                        data={stateArr}
-                        keyExtractor={(item, index) => index}
-                        renderItem={({ item, index }) => {
+                        })}
+
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
+                        <Text style={[styles1.nameheading, { color: '#000', fontSize: wp(4), paddingLeft: wp(5) }]}>Video</Text>
+                        <View style={{ display: 'flex', flexDirection: 'row', paddingVertical: wp(2) }}>
+                          <Pressable onPress={() => handleAddVideo()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
+                            <FontAwesome name='plus' size={wp(5)} color='#FFFFFF' />
+                          </Pressable>
+                          <Pressable onPress={() => handleRemoveVideo()} style={[styles.btnbg, { paddingVertical: 10, paddingHorizontal: 12, marginRight: 10 }]}>
+                            <FontAwesome name='minus' size={wp(5)} color='#FFFFFF' />
+                          </Pressable>
+                        </View>
+                      </View>
+
+                      {videoArr &&
+                        videoArr.length > 0 &&
+                        videoArr.map((el, index) => {
                           return (
                             <Pressable
+                              key={index}
+                              style={styles1.card_main}
                               onPress={() => {
-                                setstateId({ name: item.name, value: item._id });
-                                setModalVisible(false);
-                                setSelectedStateName(item.name)                                
-                                setcityId(null);
-                                setSelectedCityName('')
-                              }}
-                              style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
-                              <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                                handleDocumentPickerVideo(index);
+                              }}>
+                              {el && el?.videoObj?.name ? (
+                                <>
+                                  <Text>{el?.videoObj?.name}</Text>
+                                  {/* <Video source={{ uri: el.videoObj }}   // Can be a URL or a local file.
+                          ref={(ref) => {
+                            this.player = ref
+                          }}                                      // Store reference
+                          onBuffer={onBuffer}                // Callback when remote video is buffering
+                          onError={videoError}               // Callback when video cannot be loaded
+                          style={styles.backgroundVideo} /> */}
+
+                                  {/* <Image style={{ height: 200 }} resizeMode='contain' source={{ uri: el.image }} /> */}
+                                </>
+                              ) : (
+                                <Text style={{}}>Please Upload Video</Text>
+                              )}
                             </Pressable>
                           );
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>City</Text>
-                      <FlatList
-                        data={cityArr}
-                        keyExtractor={(item, index) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <Pressable
-                              onPress={() => {
-                                setcityId({ name: item.name, value: item._id });
-                                setModalVisible(false);
-                                setSelectedCityName(item.name)
-                              }}
-                              style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
-                              <Text style={styles1.BorderedPressableText}>{item.name}</Text>
-                            </Pressable>
-                          );
-                        }}
-                      />
+                        })}
                     </>
                   )}
+
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={aniversaryDateModal}
+                    onRequestClose={() => {
+                      setAniversaryDateModal(!aniversaryDateModal);
+                    }}>
+                    <View style={styles1.centeredView}>
+                      <View style={styles1.modalView}>
+                        <Text style={styles1.modalText}>Select Birthday</Text>
+                        {aniversaryDate && <DatePicker date={new Date(aniversaryDate)} mode="date" onDateChange={setAniversaryDate} textColor={'#000000'} />}
+                        <Pressable style={[styles1.button, styles1.buttonClose]} onPress={() => setAniversaryDateModal(!aniversaryDateModal)}>
+                          <Text style={styles1.textStyle}>Close</Text>
+                        </Pressable>
+                      </View>
+                    </View>
+                  </Modal>
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles1.centeredView}>
+                      <View style={styles1.modalView}>
+                        {modalFor == 'Country' ? (
+                          <>
+                            <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>Country</Text>
+                            <FlatList
+                              data={countryArr}
+                              keyExtractor={(item, index) => index}
+                              renderItem={({ item, index }) => {
+                                return (
+                                  <Pressable
+                                    onPress={() => {
+                                      setcountryId({ name: item.name, value: item._id });
+                                      setModalVisible(false);
+                                    }}
+                                    style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
+                                    <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                                  </Pressable>
+                                );
+                              }}
+                            />
+                          </>
+                        ) : modalFor == 'State' ? (
+                          <>
+                            <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>State</Text>
+                            <FlatList
+                              data={stateArr}
+                              keyExtractor={(item, index) => index}
+                              renderItem={({ item, index }) => {
+                                return (
+                                  <Pressable
+                                    onPress={() => {
+                                      setstateId({ name: item.name, value: item._id });
+                                      setModalVisible(false);
+                                      setSelectedStateName(item.name)
+                                      setcityId(null);
+                                      setSelectedCityName('')
+                                    }}
+                                    style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
+                                    <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                                  </Pressable>
+                                );
+                              }}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Text style={{ fontSize: 25, marginBottom: 20, width: wp(70), fontWeight: 'bold' }}>City</Text>
+                            <FlatList
+                              data={cityArr}
+                              keyExtractor={(item, index) => index}
+                              renderItem={({ item, index }) => {
+                                return (
+                                  <Pressable
+                                    onPress={() => {
+                                      setcityId({ name: item.name, value: item._id });
+                                      setModalVisible(false);
+                                      setSelectedCityName(item.name)
+                                    }}
+                                    style={[styles1.BorderedPressable, { width: wp(70), backgroundColor: '#F8E0CD', margin: wp(0.5) }]}>
+                                    <Text style={styles1.BorderedPressableText}>{item.name}</Text>
+                                  </Pressable>
+                                );
+                              }}
+                            />
+                          </>
+                        )}
+                      </View>
+                    </View>
+                  </Modal>
+                  <TouchableOpacity onPress={() => handleSubmit()} style={[styles.btnbg, { marginTop: 30, marginBottom: hp(5) }]}>
+
+                    {isLoading ? <ActivityIndicator size="large" color='#ffffff' style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+                      :
+                      <Text style={[styles.textbtn, { fontFamily: 'Manrope-Medium' }]}>Save</Text>
+
+
+                    }
+                  </TouchableOpacity>
                 </View>
-              </View>
-            </Modal>
-            <TouchableOpacity onPress={() => handleSubmit()} style={[styles.btnbg, { marginTop: 30, marginBottom: hp(5) }]}>
-              <Text style={[styles.textbtn, { fontFamily: 'Manrope-Medium' }]}>Save</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
+              </ImageBackground>
+            </>
+        }
+
       </ScrollView>
     </>
   );

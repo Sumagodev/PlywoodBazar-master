@@ -2,7 +2,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View, ImageBackground, TextInput, ScrollView } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View, ImageBackground, TextInput, ScrollView ,ActivityIndicator} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
 import CustomColors from '../styles/CustomColors';
@@ -21,7 +21,7 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 export default function AddPromotions(props) {
   const navigation = useNavigation();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [productArr, setProductArr] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -73,13 +73,16 @@ export default function AddPromotions(props) {
         startDate,
         isVideo
       };
+      setIsLoading(true)
       let { data: res } = await AddAdvertisement(obj);
       if (res) {
         toastSuccess(res.message);
+        setIsLoading(false)
         navigation.navigate('MyPromotions')
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
     }
   };
 
@@ -243,7 +246,11 @@ export default function AddPromotions(props) {
 
 
               <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
-                <CustomButtonNew onPress={() => handleCreatePromotion()} text={'SUBMIT'} textSize={wp(4)} paddingHorizontal={wp(7)} paddingVertical={wp(3)} />
+               {isLoading?<ActivityIndicator size="large" color={CustomColors.mattBrownDark}  style={{marginTop:wp(5),marginBottom:wp(5)}}/>
+                    :
+              <CustomButtonNew onPress={() => handleCreatePromotion()} text={'SUBMIT'} textSize={wp(4)} paddingHorizontal={wp(7)} paddingVertical={wp(3)} />
+
+                    } 
               </View>
             </View>
           </ScrollView>

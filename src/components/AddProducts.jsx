@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View, Modal, ImageBackground, TouchableOpacity } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View, Modal, ImageBackground, TouchableOpacity ,ActivityIndicator} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -43,7 +43,7 @@ export default function AddProducts(props) {
   const [categoryArr, setCategoryArr] = useState([]);
   const [pricetype, setpricetype] = useState("per Nos/sheet");
   const [brandArr, setBrandArr] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false)
 
   const handleBrandNameChange = (e) => {
@@ -145,13 +145,16 @@ export default function AddProducts(props) {
         imageArr: imageArr,
         categoryArr: [{ categoryId: category }],
       };
+      setIsLoading(true)
       let { data: res } = await AddProduct(obj);
       if (res) {
         toastSuccess(res.message);
+        setIsLoading(false)
         navigation.navigate('MyProducts');
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
     }
   };
 
@@ -530,9 +533,14 @@ export default function AddProducts(props) {
               <FontAwesome5Icon style={{ right: wp(5) }} name="caret-square-up" size={wp(6)} color="black" />
             </Pressable>
             <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
-              <CustomButton onPress={() => handleCreateFlashSale()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
+            {isLoading?<ActivityIndicator size="large" color={CustomColors.mattBrownDark}  style={{marginTop:wp(5),marginBottom:wp(5)}}/>
+            :
+            <CustomButton onPress={() => handleCreateFlashSale()} text={'SUBMIT'} textSize={wp(5)} paddingHorizontal={wp(8)} paddingVertical={wp(3)} />
+
+
+            }  
             </View>
-          </View>
+          </View> 
         </View>
       </View>
 

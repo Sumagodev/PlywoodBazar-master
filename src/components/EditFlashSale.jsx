@@ -2,7 +2,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground, ScrollView } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View, TextInput, ImageBackground, ScrollView, ActivityIndicator } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -13,6 +13,7 @@ import { getDecodedToken } from '../services/User.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import CustomColors from '../styles/CustomColors';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function EditFlashSale(props) {
   const navigation = useNavigation();
 
@@ -25,7 +26,8 @@ export default function EditFlashSale(props) {
   const [endDate, setEndDate] = useState(new Date());
   const [selectedProductId, setSelectedProductId] = useState('');
   const [selectedProductObj, setSelectedProductObj] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const [open, setOpen] = useState(false);
   const [endDatePickerModal, setEndDatePickerModal] = useState(false);
   const handleGetProducts = async () => {
@@ -42,6 +44,7 @@ export default function EditFlashSale(props) {
   };
 
   const getExistingFlashSale = async () => {
+    setIsLoadingallcompo(true)
     try {
       const { data: res } = await getFlashSalebyId(props?.route?.params?.data);
       if (res) {
@@ -53,10 +56,13 @@ export default function EditFlashSale(props) {
         setStartDate(new Date(res.data.startDate));
         setEndDate(new Date(res.data.endDate));
         setSelectedProductId(res?.data?.productId?._id);
+         setIsLoadingallcompo(false)
       }
     } catch (error) {
       errorToast(error);
-    }
+       setIsLoadingallcompo(false)
+    }finally{
+     setIsLoadingallcompo(false)}
   };
 
   useEffect(() => {
@@ -122,26 +128,39 @@ export default function EditFlashSale(props) {
         endDate,
         startDate,
       };
+      setIsLoading(true)
       let { data: res } = await updateFlashSalebyId(props.route.params.data, obj);
       if (res) {
         toastSuccess(res.message);
+        setIsLoading(false)
         navigation.navigate('MyFlashSales')
 
 
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
+    } finally {
+      setIsLoading(false)
     }
   };
 
   return (
     <>
       <Header normal={true} rootProps={props} />
-      <View style={{ backgroundColor: '#FFFFFF', paddingBottom:wp(15)}}>
+    {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+               <View style={{ backgroundColor: '#FFFFFF', paddingBottom: wp(15) }}>
 
         <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ borderTopLeftRadius: wp(10), borderTopRightRadius: wp(10), marginTop: wp(0), width: wp(100), overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
           <ScrollView style={styles1.card_main}>
             <Text style={{ fontSize: wp(5), fontWeight: 800, alignSelf: 'center' }}>Update Flash Sale</Text>
+           
+           {
+            
+           }
             <Text style={styles1.nameheading}>Product</Text>
 
             <View style={{ backgroundColor: 'white', height: 50, borderRadius: wp(5) }}>
@@ -332,11 +351,18 @@ export default function EditFlashSale(props) {
           </TouchableOpacity> */}
 
             <View style={{ marginTop: wp(5), marginBottom: wp(17), alignSelf: 'center' }}>
-              <CustomButtonNew paddingHorizontal={wp(10)} paddingVertical={wp(3.5)}  onPress={() => handleCreateFlashSale()} text={"Update"}></CustomButtonNew>
+              {isLoading ? <ActivityIndicator size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+                :
+                <CustomButtonNew paddingHorizontal={wp(10)} paddingVertical={wp(3.5)} onPress={() => handleCreateFlashSale()} text={"Update"}></CustomButtonNew>
+
+
+              }
             </View>
           </ScrollView>
         </ImageBackground>
       </View>
+            }
+
       <DatePicker
         modal
         minimumDate={new Date()}

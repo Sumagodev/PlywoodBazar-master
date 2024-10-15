@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View ,ActivityIndicator} from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -16,11 +16,12 @@ import { AllBanerByUserId, DeleteBanner, DeleteOpp, GetDealershiplist, GetDealer
 
 import Categories from './Categories';
 import AllBannerListCard from '../ReusableComponents/AllBannerListCard';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function AllBannerslisting(props) {
     const focused = useIsFocused()
     const navigation = useNavigation();
-
+    const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
     const [subscriptionArr, setSubscriptionArr] = useState([]);
 
     console.log('subscriptionArr', subscriptionArr);
@@ -32,15 +33,20 @@ export default function AllBannerslisting(props) {
    
    
     const getSubscriptions = async () => {
+        setIsLoadingallcompo(true)
         try {
             let decodedObj = await getDecodedToken();
             const { data: res } = await AllBanerByUserId(decodedObj?.userId);
             if (res) {
                 console.log(JSON.stringify(res.data,), 'raviiii');
                 setSubscriptionArr(res.bannerImages);
+                setIsLoadingallcompo(false)
             }
         } catch (error) {
             errorToast(error);
+            setIsLoadingallcompo(false)
+        }finally{
+            setIsLoadingallcompo(false)
         }
     };
 
@@ -117,8 +123,14 @@ export default function AllBannerslisting(props) {
 
 
     return (
-        <View style={styles1.mainContainer}>
-            <Header normal={true} rootProps={props} />
+        <>
+        <Header normal={true} rootProps={props} />
+
+        {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+            <View style={styles1.mainContainer}>
             <View style={reviewStyle.container}>
                 <Text style={reviewStyle.title}>My Banner List</Text>
             </View>
@@ -137,6 +149,8 @@ export default function AllBannerslisting(props) {
         <Text style={styles.textbtn}>Add New Product</Text>
       </TouchableOpacity> */}
         </View>
+        }
+        </>
     );
 }
 const styles1 = StyleSheet.create({

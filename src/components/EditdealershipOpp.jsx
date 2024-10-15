@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Pressable, Modal, FlatList, TextInput, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import Header from '../navigation/customheader/Header';
 
@@ -19,6 +19,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { AddDealershipOpportunities, Updateopp } from '../services/Advertisement.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { getAllCategories } from '../services/Category.service';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 const EditdealershipOpp = (props) => {
   console.log('loggg', props?.route?.params.data);
@@ -26,9 +27,9 @@ const EditdealershipOpp = (props) => {
   const prevSelectedCategory = Data.categories;
   const prevSelectedCities = Data.cities;
   const stateid = Data.stateId
-
+  const [isLoading, setIsLoading] = useState(false);
   console.log('Datattt', Data);
-
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const Did = Data._id;
   const focused = useIsFocused();
   const [name, setName] = useState(Data.Organisation_name);
@@ -89,15 +90,20 @@ const EditdealershipOpp = (props) => {
 
   }
   const handleGetCategory = async () => {
+    setIsLoadingallcompo(true)
     try {
       let { data: res } = await getAllCategories();
       if (res.data) {
         setCategoryArr(res.data);
         const selectedIds = prevSelectedCategory.map(item => item._id);
         setSelectedItemscate(selectedIds)
+        setIsLoadingallcompo(false)
       }
     } catch (err) {
       errorToast(err);
+      setIsLoadingallcompo(false)
+    }finally{
+      setIsLoadingallcompo(false)
     }
   };
   const handleGetCities = async stateId => {
@@ -117,7 +123,7 @@ const EditdealershipOpp = (props) => {
   const handleGeyUserDetails = async id => {
     let decodedToken = await getDecodedToken();
     setRole(decodedToken?.role);
-   
+
     let res = await getUserById(decodedToken?.userId);
     console.log('decodedToken?.userId', decodedToken?.userId);
     if (res?.data) {
@@ -365,17 +371,19 @@ const EditdealershipOpp = (props) => {
       };
 
       console.log('Submitting object:', obj);
-
+      setIsLoading(true)
       // Submit data
       const { data: res } = await Updateopp(obj, Data._id);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
+        setIsLoading(false)
         resetForm();
       }
     } catch (error) {
       errorToast('An error occurred while submitting.');
       console.log('Error:', error);
+      setIsLoading(false)
     }
   };
 
@@ -430,7 +438,11 @@ const EditdealershipOpp = (props) => {
     <>
       <ScrollView>
         <Header normal={true} rootProps={props} />
-        <View style={styles1.containerForm}>
+        {
+          isLoadingallcompo?
+          <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+          :
+          <View style={styles1.containerForm}>
           <Text style={styles1.textStyle}> Edit Promoted Dealership Opportunities</Text>
           <View style={styles1.textFieldContainer}>
             <View style={{ height: wp(1) }} />
@@ -599,7 +611,12 @@ const EditdealershipOpp = (props) => {
               onPress={() => {
                 handleSubmit();
               }}>
-              <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+              {isLoading ? <ActivityIndicator size="large" color='#ffffff' style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+                :
+                <Text style={{ color: 'white', paddingVertical: wp(4), fontSize: wp(4), fontWeight: 'bold', width: '100%', textAlign: 'center' }}>SUBMIT</Text>
+
+
+              }
             </TouchableOpacity>
           </View>
 
@@ -678,6 +695,8 @@ const EditdealershipOpp = (props) => {
             </View>
           </Modal>
         </View>
+        }
+
       </ScrollView>
     </>
   );

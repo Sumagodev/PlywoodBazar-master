@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Pressable, ScrollView, StyleSheet, TextInput, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Pressable, ScrollView, StyleSheet, TextInput, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -28,9 +28,11 @@ export default function AddFlashSale(props) {
   const [endDate, setEndDate] = useState(new Date());
   const [selectedProductId, setSelectedProductId] = useState('');
   const [selectedProductObj, setSelectedProductObj] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [endDatePickerModal, setEndDatePickerModal] = useState(false);
+  console.log('discountValue', discountValue);
+
   const handleGetProducts = async () => {
     try {
       let decodedToken = await getDecodedToken();
@@ -83,18 +85,22 @@ export default function AddFlashSale(props) {
         errorToast({ message: 'Please Fill Sale Price' });
         return 0;
       }
+
       if (`${price}` === '' || parseInt(price) < 0) {
         errorToast({ message: 'Please Fill Price' });
         return 0;
       }
+      if (discountValue === '' || isNaN(parseInt(discountValue)) || parseInt(discountValue) < 0) {
+        errorToast({ message: 'Please enter a valid discount price' });
+        return 0;
+      }
+
       if (discountType == 'Percentage' && discountValue > 100) {
         errorToast({ message: 'Percentage discount cannot be more than 100%' });
         return 0;
       }
-      if (discountType == 'Amount' && parseInt(discountValue) > parseInt(price)) {
-        errorToast({ message: 'Amount discount cannot be more than price of the product' });
-        return 0;
-      }
+   
+   
       console.log('ECCE');
       let decodedToken = await getDecodedToken();
       let obj = {
@@ -108,16 +114,21 @@ export default function AddFlashSale(props) {
         endDate,
         startDate,
       };
+      setIsLoading(true)
       let { data: res } = await createFlashSales(obj);
       if (res) {
         toastSuccess(res.message);
         navigation.navigate('MyFlashSales');
+        setIsLoading(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
+    } finally {
+      setIsLoading(false)
     }
   };
- 
+
   return (
     <>
       <Header normal={true} screenName={'Create Flash Sales'} rootProps={props} />
@@ -128,7 +139,7 @@ export default function AddFlashSale(props) {
 
 
         <View style={{ flex: 1, borderTopLeftRadius: wp(10), borderTopRightRadius: wp(10), marginTop: wp(0), width: wp(100), overflow: 'hidden' }}>
-          <View style={{ flex: 1, borderRadius: wp(15),backgroundColor:"#5647871a" }} >
+          <View style={{ flex: 1, borderRadius: wp(15), backgroundColor: "#5647871a" }} >
             <Text style={{ fontSize: wp(5), fontWeight: 800, alignSelf: 'center', marginTop: wp(5) }}>Create a Flash Sale</Text>
 
             <View style={styles1.card_main}>
@@ -254,7 +265,7 @@ export default function AddFlashSale(props) {
 
               <Text style={styles1.nameheading}>Select Type</Text>
               <View style={{ borderRadius: 18, backgroundColor: 'white' }}>
-                <Picker selectedValue={pricetype} onValueChange={(itemValue, itemIndex) => setPrice(itemValue)}>
+                <Picker selectedValue={pricetype} onValueChange={(itemValue, itemIndex) => setpricetype(itemValue)}>
                   <Picker.Item label="per Nos/sheet" value="per Nos/sheet" />
                   <Picker.Item label="per sq.ft" value="per sq.ft" />
                   <Picker.Item label="per sq.mt" value="per sq.mt" />
@@ -330,7 +341,12 @@ export default function AddFlashSale(props) {
               </Pressable>
 
               <View style={{ marginTop: wp(5), marginBottom: wp(7), alignSelf: 'center' }}>
-                <CustomButtonNew paddingHorizontal={wp(5)} paddingVertical={wp(3.5)} buttonBgColor={CustomColors.mattBrownDark} onPress={() => handleCreateFlashSale()} text={"Create a Flash Sale"}></CustomButtonNew>
+
+                {isLoading ? <ActivityIndicator size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+                  :
+                  <CustomButtonNew paddingHorizontal={wp(5)} paddingVertical={wp(3.5)} buttonBgColor={CustomColors.mattBrownDark} onPress={() => handleCreateFlashSale()} text={"Create a Flash Sale"}></CustomButtonNew>
+
+                }
               </View>
             </View>
           </View>
