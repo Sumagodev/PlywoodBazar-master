@@ -341,7 +341,7 @@ export default function Register() {
         }else{
           setShowOtpVerifyDialog(true);
           setLoadingDialog(false)
-
+ 
         }
         
       }
@@ -515,15 +515,18 @@ export default function Register() {
   };
 
   const handleNestedCategory = async () => {
+    setLoadingDialog(true)
     try {
       const {data: res} = await getAllCategories();
       if (res.success && res.data.length) {
         setcategoryArr(res.data.map(el => ({...el, checked: false})));
         setcategorydata(res.data.map(el => ({label: el.name, value: el._id})));
+        setLoadingDialog(false)
       }
     } catch (error) {
       console.error(error);
-      toastError(error);
+      // toastError(error);
+      setLoadingDialog(false)
     }
   };
   const handleError = err => {

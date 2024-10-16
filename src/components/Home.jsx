@@ -117,6 +117,43 @@ export default function Home() {
       clearInterval(intervalId);
     };
   }, [focused]);
+  useEffect(() => {
+    const showRegistrationAlert = () => {
+      Alert.alert(
+        'Get Registered/Login!',
+        'Click Register/Login to proceed.',
+        [
+          {
+            text: 'Skip for Now',
+            style: 'cancel',
+            onPress: () => {
+             
+            },
+          },
+          {
+            text: 'Register',
+            style: 'default',
+            onPress: () => {
+              // Directly navigate to the registration page
+              navigate.navigate('Register'); // Change 'Register' to your actual route name
+            },
+          },
+          {
+            text: 'Login',
+            style: 'default',
+            onPress: () => {
+              // Directly navigate to the registration page
+              navigate.navigate('Login'); // Change 'Register' to your actual route name
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    };
+
+    // Call the showRegistrationAlert function
+    showRegistrationAlert();
+  }, []);
   // const handleSearch = (query) => {
   //   if (query) {
   //     const filtered = datas.filter((item) =>
