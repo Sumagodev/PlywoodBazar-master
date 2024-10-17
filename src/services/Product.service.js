@@ -35,9 +35,6 @@ export const getById = async id => {
   return axiosApiInstance.get(`${serverUrl}/getById/${id}`);
 };
 
-
-
-
 export const getAllProductsBySupplierId = async (id) => {
   return axios.get(`${serverUrl}/getAllProductsBySupplierId/${id}`);
 };

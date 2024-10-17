@@ -6,9 +6,9 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Rating } from 'react-native-ratings';
 import CustomColors from '../styles/CustomColors';
 
-const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPress ,item}) => {
-  console.log('og',item);
-  
+const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPress, item }) => {
+  console.log('og', item);
+
   const [imageFailed, setImageFailed] = useState(false); // State to track image failure
 
   return (
@@ -18,11 +18,18 @@ const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPres
           <Text style={styles1.cardTitle1} numberOfLines={1} ellipsizeMode="tail">
             {title}
           </Text>
+          <View style={{ alignItems: 'flex-start', flexDirection: 'row' , marginBottom:wp(1)}}>
+          <Text style={{ fontWeight: '900', fontSize: wp(2.5), }} > {item?.role}</Text>
+        </View>
+          <View style={{ alignItems: 'flex-start', flexDirection: 'row', marginBottom:wp(1)}}>
+            <Text style={{ fontWeight: '600', fontSize: wp(3), }} numberOfLines={1} ellipsizeMode="tail"> {item?.cityName} , {item?.stateName}</Text>
+          </View>
           <View style={{ alignItems: 'flex-start', flexDirection: 'row' }}>
             <Rating size={1} imageSize={wp(4)} readonly startingValue={rating} />
             <Text style={{ fontWeight: '900', fontSize: wp(2.5), marginLeft: wp(1.5) }}>Products {Product}</Text>
           </View>
-          <View style={{ flexDirection: 'row', margin: wp(3), alignItems: 'flex-start', right: wp(5) }}>
+      
+          <View style={{ flexDirection: 'row', margin: wp(2), alignItems: 'flex-start', right: wp(5) }}>
             <TouchableOpacity style={styles1.callwrap} onPress={onCallPress}>
               <View style={styles1.iconwrap}>
                 <Image
@@ -36,7 +43,7 @@ const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPres
             </TouchableOpacity>
             <View style={styles1.callwrap1}>
               <TouchableOpacity onPress={onPress}>
-                <Text style={{ fontWeight: '900', color: 'white', paddingLeft: wp(4), paddingRight: wp(4),paddingVertical:wp(1.8) }}>Profile</Text>
+                <Text style={{ fontWeight: '900', color: 'white', paddingLeft: wp(4), paddingRight: wp(4), paddingVertical: wp(1.8) }}>Profile</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -46,7 +53,7 @@ const TopProfileHomeCard = ({ title, image, rating, Product, onPress, onCallPres
         style={{
           position: "absolute",
           shadowOpacity: 1,
-          width: wp(25),
+          width: wp(28),
           left: -wp(14),
           alignSelf: 'center',
           borderRadius: 60,
@@ -80,8 +87,8 @@ const styles1 = StyleSheet.create({
     marginLeft: wp(14),
   },
   cardImage1: {
-    width: wp(25),
-    height: wp(25),
+    width: wp(27),
+    height: wp(27),
     borderRadius: wp(25),
     borderWidth: wp(1),
     borderColor: 'white',
@@ -91,7 +98,7 @@ const styles1 = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 5,
     overflow: 'hidden',
-    width:'70%'
+    width: '70%'
   },
   callwrap: {
     backgroundColor: '#white',

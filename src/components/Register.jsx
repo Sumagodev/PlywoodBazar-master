@@ -25,6 +25,7 @@ import CustomColors from '../styles/CustomColors';
 import ImagePicker from 'react-native-image-crop-picker';
 import OtpRow from '../ReusableComponents/OtpRow';
 import LoadingDialog from '../ReusableComponents/LoadingDialog';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Register() {
   const [value, setValue] = useState(null);
   const [timer, setTimer] = useState(60); // Start timer at 60 seconds
@@ -331,6 +332,7 @@ export default function Register() {
             // console.log(JSON.stringify(res.data,null,2), "register data ")
             toastSuccess(res.message);
             await setToken(res.token);
+            await AsyncStorage.setItem('isRegister', 'true');
             setIsAuthorized(true);
             resetForm();
             setLoadingDialog(false)
@@ -844,7 +846,7 @@ export default function Register() {
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setBrandNames(e)} value={brandNames} placeholder="Dealing With Brand Names*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} autoCorrect={false} autoCapitalize="none" />
 
-            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setgstNumber(e)} value={gstNumber} placeholder="GST NO.*" placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} keyboardType="name-phone-pad" maxLength={15} />
+            <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setgstNumber(e)} value={gstNumber} placeholder="GST NO." placeholderTextColor="#000" selectionColor={CustomColors.mattBrownDark} keyboardType="name-phone-pad" maxLength={15} />
 
             <TextInput style={styles1.mbboot} mode="outlined" onChangeText={e => setaddress(e)} value={address} selectionColor={CustomColors.mattBrownDark} placeholder="Address *" placeholderTextColor="#000" />
 
