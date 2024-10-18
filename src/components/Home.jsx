@@ -23,7 +23,7 @@ import { getAllFlashSales } from '../services/FlashSales.service';
 import { addUserRequirement } from '../services/UserRequirements.service';
 import { generateImageUrl } from '../services/url.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
-import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getUserById, getUserUserById, topProfilesHomePage } from '../services/User.service';
+import { checkForValidSubscriptionAndReturnBoolean, getDecodedToken, getToken, getUserById, getUserUserById, topProfilesHomePage } from '../services/User.service';
 // import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import LikeProduct from '../ReusableComponents/ProductsYouMayLike';
@@ -71,7 +71,10 @@ export default function Home() {
   const [brand, setBrand] = useState('');
   const [email, setEmail] = useState('');
   const [type, setType] = useState('');
-  const [Role, setRole] = useState('');
+  const [Role, setRole] = useState(''); 
+  const [Subscription, setSubscription] = useState(''); 
+  console.log('Subscription1',Subscription);
+  
   const [loading, setloading] = useState(false);
   const [advertisementsArr, setAdvertisementsArr] = useState([]);
   const [topprofiles, settopprofiles] = useState([]);
@@ -115,16 +118,21 @@ export default function Home() {
       clearInterval(intervalId);
     };
   }, [focused]);
+  
+  const setRegi =async()=>{
+    await AsyncStorage.setItem('isRegister', 'true');
+  }
   useEffect(() => {
     if (isAuthorized) {
+      setRegi();
     if (!currentUserHasActiveSubscription) {
       const timer = setTimeout(() => {
         Alert.alert(
           'Subscription Required',
-          'You do not have a valid subscription to perform this action.',
+          '"Buy Subscription and Unlock all the features of Plywood Bazar.com"',
           [
             {
-              text: 'Subscription',
+              text: 'Subscription plans',
               style: 'default',
               onPress: () => navigate.navigate('Subscriptions', { register: false }),
             },
@@ -339,8 +347,12 @@ const gotoSearch = () => {
 };
 const getauthuser = async () => {
   let decoded = await getDecodedToken();
+
+  
+
   if (decoded) {
-    setRole(decoded.role)
+    setRole(decoded?.role)
+    setSubscription(decoded?.user?.subscriptionType)
   }
 };
 
@@ -375,6 +387,7 @@ useEffect(() => {
     handleopportunitydata();
     handlestates();
     getauthuser();
+    
 
   }
 }, []);

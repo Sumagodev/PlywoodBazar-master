@@ -230,7 +230,7 @@ export default function Search(props) {
         const timer = setTimeout(() => {
           Alert.alert(
             'Product Add',
-            'You do not have a valid subscription to perform this action.',
+            '"Add products to your profile—let others discover what you have!"',
             [
               {
                 text: 'Add Products',

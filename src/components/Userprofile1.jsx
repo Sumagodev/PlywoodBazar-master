@@ -32,12 +32,17 @@ export default function Userprofile1(props) {
       if (res) {
         console.log(JSON.stringify(res.data, null, 2));
         setUserObj(res.data);
+        if (!res?.data?.bannerImage || !res?.data?.profileImage) {
+          userCompleteMessage();
+          return;
+        }
       }
     } catch (error) {
       errorToast(error);
     }
   };
   const userCompleteMessage = () => {
+    
     Toast.show({
       type: 'error',
       text1: 'Complete Profile',
@@ -48,7 +53,8 @@ export default function Userprofile1(props) {
   useEffect(() => {
     if (focused) {
       getUserObj();
-      userCompleteMessage();
+   
+     
     }
   }, [focused]);
 
