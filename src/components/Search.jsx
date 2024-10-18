@@ -1,25 +1,29 @@
-import {View, Text, StyleSheet, Pressable, FlatList, Image, TextInput, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, Text, StyleSheet, Pressable, FlatList, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../navigation/customheader/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {getAllProducts, searchProduct} from '../services/Product.service';
-import {getDecodedToken, searchVendorFromDb} from '../services/User.service';
-import {errorToast} from '../utils/toastutill';
+import { getAllProducts, searchProduct } from '../services/Product.service';
+import { getDecodedToken, searchVendorFromDb } from '../services/User.service';
+import { errorToast } from '../utils/toastutill';
 import ProductItemHorizontal from '../ReusableComponents/ProductItemHorizontal';
 import { generateImageUrl } from '../services/url.service';
-
+import { isAuthorisedContext } from '../navigation/Stack/Root';
+import { checkForValidSubscriptionAndReturnBoolean, getUserById, getUserUserById, topProfilesHomePage } from '../services/User.service';
 export default function Search(props) {
   const navigation = useNavigation();
   const focused = useIsFocused();
   const [productArr, setProductArr] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState('');
   const [allProductsArr, setAllProducts] = useState([]);
   const [searchVendor, setSearchVendor] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-console.log('allProductsArr',allProductsArr);
+  console.log('allProductsArr', allProductsArr);
+  const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
+  const [isAuthorized] = useContext(isAuthorisedContext);
 
   const handleSearchFromDb = async value => {
     try {
@@ -30,9 +34,9 @@ console.log('allProductsArr',allProductsArr);
       }
       setSearchQuery(value);
       if (value != '' && value?.length > 1) {
-        const {data: res} = await searchVendorFromDb(`search=${value}&role=${role}`);
+        const { data: res } = await searchVendorFromDb(`search=${value}&role=${role}`);
         console.log(`search=${value}&role=${role}`);
-        
+
         if (res && res.data?.length > 0) {
           setProductArr(res.data);
         } else {
@@ -52,13 +56,13 @@ console.log('allProductsArr',allProductsArr);
       }
       setSearchQuery(value);
       if (value != '' && value?.length > 1) {
-        const {data: res} = await searchProduct(value);
+        const { data: res } = await searchProduct(value);
         console.log(value);
-        
+
         if (res && res.data?.length > 0) {
           setAllProducts(res.data);
         } else {
-            setAllProducts([]);
+          setAllProducts([]);
         }
       }
     } catch (error) {
@@ -157,7 +161,7 @@ console.log('allProductsArr',allProductsArr);
 
 
 
-      console.log(query,"QQQQ");
+      console.log(query, "QQQQ");
 
 
       let response = await getAllProducts(query);
@@ -210,7 +214,7 @@ console.log('allProductsArr',allProductsArr);
   };
 
   const handleRedirect = obj => {
-    navigation.navigate('Supplier', {data: obj});
+    navigation.navigate('Supplier', { data: obj });
   };
 
   useEffect(() => {
@@ -219,28 +223,57 @@ console.log('allProductsArr',allProductsArr);
       setSearchQuery('');
     }
   }, [focused]);
+  useEffect(() => {
+    if (isAuthorized) {
 
-  const renderSearchItem = ({item, index}) => {
+      if (focused) {
+        const timer = setTimeout(() => {
+          Alert.alert(
+            'Product Add',
+            'You do not have a valid subscription to perform this action.',
+            [
+              {
+                text: 'Add Products',
+                style: 'default',
+                onPress: () => navigation.navigate('AddProducts'),
+              },
+              {
+                text: 'Skip for now',
+                style: 'cancel',
+              },
+            ],
+            { cancelable: true }
+          );
+        }, 20000); // 20 seconds delay
+
+        return () => clearTimeout(timer); // Clear timeout if the component is unmounted
+      }
+    } 
+    return () => {};
+  }, [ focused]);
+
+
+  const renderSearchItem = ({ item, index }) => {
     return (
-      <TouchableOpacity onPress={() => handleRedirect(item)} style={{paddingVertical: 10, borderBottomColor: 'rgba(0,0,0,0.2)', borderBottomWidth: 1}}>
-        <Text style={{color: '#000'}}>{item?.companyObj?.name ? item?.companyObj?.name : item.name}</Text>
+      <TouchableOpacity onPress={() => handleRedirect(item)} style={{ paddingVertical: 10, borderBottomColor: 'rgba(0,0,0,0.2)', borderBottomWidth: 1 }}>
+        <Text style={{ color: '#000' }}>{item?.companyObj?.name ? item?.companyObj?.name : item.name}</Text>
       </TouchableOpacity>
     );
   };
-  const renderSearchProductItem = ({item, index}) => {
+  const renderSearchProductItem = ({ item, index }) => {
 
-  console.log('zxcv',JSON.stringify(item))
+    console.log('zxcv', JSON.stringify(item))
 
-    const product={
-        imagePath:{uri:generateImageUrl(item?.mainImage)},
-        name:item?.name,
-        sellingPrice:item?.sellingprice,
-        price:item?.price,
-        approval:item?.approved === 'APPROVED'
+    const product = {
+      imagePath: { uri: generateImageUrl(item?.mainImage) },
+      name: item?.name,
+      sellingPrice: item?.sellingprice,
+      price: item?.price,
+      approval: item?.approved === 'APPROVED'
 
     }
     return (
-      <ProductItemHorizontal product={product} onPress={() => navigation.navigate('Productdetails', {data: item?.slug})}></ProductItemHorizontal>
+      <ProductItemHorizontal product={product} onPress={() => navigation.navigate('Productdetails', { data: item?.slug })}></ProductItemHorizontal>
     );
   };
   return (
@@ -259,26 +292,26 @@ console.log('allProductsArr',allProductsArr);
                     </Pressable> }
         </View> */}
 
-          <View style={{display: 'flex', justifyContent:'center' ,alignContent:'center',alignItems:'center',alignSelf:'center',flexDirection: 'row', gap: 5,justifyContent: 'space-between'}}>
-            {/* <TypeWriter typing={1}> asdf asdf asdfa sdf asdfadffa asdf asdfaf</TypeWriter> */}
-            <View style={[stylesSearch.mainContainer]}>
-              <View style={stylesSearch.iconContainer}>
-                <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
-              </View>
-              <TextInput
-                style={stylesSearch.input}
-                placeholder={'Search..'}
-                // onChangeText={e => setQuery(e)}
-                onChangeText={value => handleSearchProductFromDb(value)}
-              />
+        <View style={{ display: 'flex', justifyContent: 'center', alignContent: 'center', alignItems: 'center', alignSelf: 'center', flexDirection: 'row', gap: 5, justifyContent: 'space-between' }}>
+          {/* <TypeWriter typing={1}> asdf asdf asdfa sdf asdfadffa asdf asdfaf</TypeWriter> */}
+          <View style={[stylesSearch.mainContainer]}>
+            <View style={stylesSearch.iconContainer}>
+              <Image style={stylesSearch.iconImageStyle} source={require('../../assets/img/ic_search.png')}></Image>
             </View>
+            <TextInput
+              style={stylesSearch.input}
+              placeholder={'Search...'}
+              // onChangeText={e => setQuery(e)}
+              onChangeText={value => handleSearchProductFromDb(value)}
+            />
+          </View>
 
-            {/* <TouchableOpacity onPress={() => this.RBSheet.open()}>
+          {/* <TouchableOpacity onPress={() => this.RBSheet.open()}>
               <View style={[{width: wp(12), height: wp(12), backgroundColor: '#6B4E37', borderRadius: wp(8), justifyContent: 'center', alignContent: 'center', alignItems: 'center'}]}>
                 <Icon name="tune" size={wp(7)} color={'white'} />
               </View>
             </TouchableOpacity> */}
-          </View>       
+        </View>
         {/* {productArr.length > 0 && searchQuery !== '' ? (
           <FlatList contentContainerStyle={styles.listContainer} data={productArr} keyExtractor={(item, index) => index} renderItem={renderSearchItem} />
         ) : (
@@ -289,15 +322,15 @@ console.log('allProductsArr',allProductsArr);
           )
         )} */}
 
-    
+
       </View>
-      <View style={{flex:1,backgroundColor:'#FFFFFF'}}>
-      {allProductsArr.length > 0 && searchQuery !== '' ? (
-          <FlatList contentContainerStyle={{alignSelf:'center'}} data={allProductsArr} keyExtractor={(item, index) => index} renderItem={renderSearchProductItem} />
+      <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+        {allProductsArr.length > 0 && searchQuery !== '' ? (
+          <FlatList contentContainerStyle={{ alignSelf: 'center' }} data={allProductsArr} keyExtractor={(item, index) => index} renderItem={renderSearchProductItem} />
         ) : (
           searchQuery !== '' && (
-            <View style={{alignSelf: 'center', height: hp(30), display: 'flex', alignItems: 'flex-end', justifyContent: 'center'}}>
-              <Text style={{fontSize: wp(5), fontFamily: 'Poppins-Regular'}}>No Product Found</Text>
+            <View style={{ alignSelf: 'center', height: hp(30), display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <Text style={{ fontSize: wp(5), fontFamily: 'Poppins-Regular' }}>No Product Found</Text>
             </View>
           )
         )}
@@ -340,7 +373,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)',
     borderWidth: 1,
   },
-  
+
   SearchContainer: {
     width: wp(90),
     borderRadius: 10,
@@ -360,7 +393,7 @@ const stylesSearch = StyleSheet.create({
     borderRadius: wp(10),
     flexDirection: 'row',
     width: wp(80),
-    height:wp(13),
+    height: wp(13),
     padding: wp(0.5),
     borderColor: '#CDC2A1',
     borderWidth: wp(0.3),

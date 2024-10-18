@@ -202,7 +202,7 @@ export default function Register() {
         return 0;
       }
 
-      if (!(selectedbusitype === 'RETAILER' || selectedbusitype === 'CONTRACTOR')) {
+      if (gstNumber) { // Check if gstNumber is not empty
         const gstNumberPattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-7])[A-Z0-9]{13}$/;
         if (!gstNumberPattern.test(gstNumber)) {
           errorToast('Enter 15-digit Valid GST Number');

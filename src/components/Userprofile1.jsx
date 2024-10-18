@@ -18,6 +18,7 @@ import CustomColors from '../styles/CustomColors';
 import CustomButton from '../ReusableComponents/CustomButton';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Toast from 'react-native-toast-message';
 
 export default function Userprofile1(props) {
   const [userObj, setUserObj] = useState(null);
@@ -36,10 +37,18 @@ export default function Userprofile1(props) {
       errorToast(error);
     }
   };
-
+  const userCompleteMessage = () => {
+    Toast.show({
+      type: 'error',
+      text1: 'Complete Profile',
+      autoHide: false, // Prevent the toast from disappearing automatically
+      // onPress: () => Toast.hide()
+    });
+  };
   useEffect(() => {
     if (focused) {
       getUserObj();
+      userCompleteMessage();
     }
   }, [focused]);
 

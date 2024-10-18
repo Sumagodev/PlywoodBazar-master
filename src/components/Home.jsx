@@ -92,7 +92,6 @@ export default function Home() {
   const [addressInFromFiled, setAddressInFormFiled] = useState('');
   const [currentUserId, setCurrentUserId] = useState('');
   useEffect(() => {
-    // Function to show the toast message
     const showToast = () => {
       Toast.show({
         type: 'error',

@@ -21,17 +21,17 @@ function MyTabBar({ state, descriptors, navigation }) {
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [count, setCount] = useState('')
   const focused = useIsFocused();
-const navigate=useNavigation()
+  const navigate = useNavigation()
   useEffect(() => {
     getNotificationCount()
   }, [count, focused])
   useEffect(() => {
     const checkRegistrationStatus = async () => {
       try {
-        const isRegisterLogin:any = await AsyncStorage.getItem('isRegister');
+        const isRegisterLogin: any = await AsyncStorage.getItem('isRegister');
         const isRegistered = JSON.parse(isRegisterLogin); // Convert string to boolean
         console.log('isRegisterLogin', isRegistered);
-        
+
         const showRegistrationAlert = () => {
           if (!isRegistered) { // Use !isRegistered since we're checking for 'false'
             Alert.alert(
@@ -41,7 +41,7 @@ const navigate=useNavigation()
                 {
                   text: 'Skip for Now',
                   style: 'cancel',
-                  onPress: () => {},
+                  onPress: () => { },
                 },
                 {
                   text: 'Register',
@@ -64,7 +64,7 @@ const navigate=useNavigation()
             );
           }
         };
-        
+
         const timeoutId = setTimeout(() => {
           showRegistrationAlert();
         }, 20000); // Show alert after 20 seconds
@@ -81,7 +81,7 @@ const navigate=useNavigation()
   }, [navigate]);
 
 
-  
+
   // Function to fetch notification count
   const getNotificationCount = async (): Promise<number> => {
     try {
@@ -205,25 +205,25 @@ const navigate=useNavigation()
               }
             </Text>
             {isAuthorized && count > 0 && label === 'Notification' && !isFocused && (
-  <View
-    style={{
-      alignSelf: "center",
-      alignItems: "center",
-      position: 'absolute',
-      justifyContent: 'center',
-      right: wp(1),
-      top: wp(-1),
-      height: wp(6.5),
-      width: wp(6.5),
-      backgroundColor: "#E85C0D",
-      borderRadius: wp(7)
-    }}
-  >
-    <Text style={{ fontSize: wp(3), color: '#ffffff', fontWeight: "800" }}>
-      {count > 99 ? '99+' : count}
-    </Text>
-  </View>
-)}
+              <View
+                style={{
+                  alignSelf: "center",
+                  alignItems: "center",
+                  position: 'absolute',
+                  justifyContent: 'center',
+                  right: wp(1),
+                  top: wp(-1),
+                  height: wp(6.5),
+                  width: wp(6.5),
+                  backgroundColor: "#E85C0D",
+                  borderRadius: wp(7)
+                }}
+              >
+                <Text style={{ fontSize: wp(3), color: '#ffffff', fontWeight: "800" }}>
+                  {count > 99 ? '99+' : count}
+                </Text>
+              </View>
+            )}
 
 
           </TouchableOpacity>
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
 export function BottomTabNavigator() {
   const [isAuthorized] = useContext(isAuthorisedContext);
 
-  const getTabBarVisibility = (route:any) => {
+  const getTabBarVisibility = (route: any) => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? '';
 
     if (routeName === 'Login') {
