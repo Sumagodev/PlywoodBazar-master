@@ -9,7 +9,7 @@ import { getAllsubscription } from '../services/Subscription.service';
 import { buySubscription, getAllSubscriptionbyUserId } from '../services/UserSubscription.service';
 import { errorToast, toastSuccess } from '../utils/toastutill';
 import { getDecodedToken, getToken } from '../services/User.service';
-import { adminUrl } from '../services/url.service';
+import { adminUrl, url } from '../services/url.service';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SubscriptionCard from '../ReusableComponents/SubscriptionCard';
 import LinearGradient from 'react-native-linear-gradient';
@@ -80,7 +80,46 @@ export default function Subscriptions(props) {
       handleSubmit(selectedSubscriptionObj);
     }
   }, [selectedSubscriptionObj]);
+  
+  useEffect(() => {
+    if (selectedSubscriptionObj) {
+      startPayment(selectedSubscriptionObj);
+    }
+  }, [selectedSubscriptionObj]);
+  
+  // block:start:startPayment
+  const startPayment=(item)=> {
+    
+    if (!item) return; // Prevent execution if no subscription is selected
+      let obj = { ...selectedSubscriptionObj };
+    // block:start:updateOrderID
+    var payload = {
+      order_id: `test-${getRandomNumber()}`,
+      amount: this.state.total,
+    };
+    // block:end:updateOrderID
 
+
+    ApiClient.sendPostRequest(
+      // block:start:await-http-post-function
+      `${url}/usersubscription/initiateJuspayPaymentForSubcription`,
+      // block:end:await-http-post-function
+      obj,
+      {
+        onResponseReceived: (response) => {
+          // block:start:openPaymentPage
+          HyperSdkReact.openPaymentPage(
+            JSON.stringify(JSON.parse(response).sdkPayload)
+          );
+          // block:end:openPaymentPage
+        },
+        onFailure: (error) => {
+          console.error("POST request failed:", error);
+        },
+      }
+    );
+
+  }
 
   const renderNewSubscriptionItem = ({ item, index }) => {
     const durationText = item?.noOfMonth

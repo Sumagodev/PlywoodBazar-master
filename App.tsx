@@ -2,6 +2,8 @@ import React from 'react';
 import Toast from 'react-native-toast-message';
 import RootStack from './src/navigation/Stack/Root';
 import axios from 'axios';
+import HyperSdkReact from 'hyper-sdk-react';
+
 axios.interceptors.request.use((request) => {
   console.log('Starting Request:', request);
   return request;

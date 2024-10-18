@@ -16,3 +16,7 @@ export const getAllSubscriptionbyUserId = async () => {
 export const usersubscriptionMailId = async (id) => {
   return axios.get(`${serverUrl}/sendMailById/${id}`)
 }
+
+export const initiateJuspayPaymentForSubcription = async (dataObject) => {
+  return axios.post(`${serverUrl}/initiateJuspayPaymentForSubcription/${id}`,{dataObject})
+}

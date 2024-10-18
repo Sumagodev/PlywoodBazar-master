@@ -4,19 +4,39 @@ buildscript {
     ext {
         buildToolsVersion = "33.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 34
+        compileSdkVersion = 33
         targetSdkVersion = 34
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
+         // block:start:change-client-id
+        clientId = "hdfcmaster"
+         hyperSDKVersion = "2.1.33"
+        // block:end:change-client-id
     }
     repositories {
         google()
         mavenCentral()
+         maven { url 'https://www.jitpack.io' }
+       
+
      
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.facebook.react:react-native-gradle-plugin")
+    }
+}
+
+allprojects {
+    repositories {
+      
+        google()
+        maven { url 'https://www.jitpack.io' }
+        // block:start:hyper-sdk-maven-url
+
+    maven { url "https://maven.juspay.in/jp-build-packages/hyper-sdk/"}
+        
+        // block:end:hyper-sdk-maven-url
     }
 }
