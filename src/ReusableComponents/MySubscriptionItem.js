@@ -8,7 +8,7 @@ const MySubscriptionItem = ({ subscriptionItem,onPress }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <FadeRibbonText paddingHorizontal={wp(20)} text={subscriptionItem.name} fontSize={wp(5)} fontWeight={800}colorStart='#926139' colorEnd="#e1cebd" />
+                <FadeRibbonText paddingHorizontal={wp(20)} text={subscriptionItem.name} fontSize={wp(4.5)} fontWeight={800} colorStart='#926139' colorEnd="#e1cebd" />
 
                 <View style={styles.table}>
                     <View style={styles.row}>

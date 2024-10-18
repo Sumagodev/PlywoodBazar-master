@@ -71,6 +71,8 @@ import { ActivityIndicator, Text } from 'react-native-paper';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 import CustomColors from '../../styles/CustomColors';
 import SearchScreen from '../../components/SearchScreen';
+import Checkout from '../../payment/Checkout';
+import Response from '../../payment/Response';
 
 
 
@@ -168,6 +170,24 @@ if (loading) {
              <Stack.Screen
             name="VerifyOTPOnLaunch"
             component={VerifyOTPOnLaunch}
+            options={{
+              headerShown: false,
+              gestureDirection: 'horizontal',
+            }}
+            
+          />
+            <Stack.Screen
+            name="Checkout"
+            component={Checkout}
+            options={{
+              headerShown: false,
+              gestureDirection: 'horizontal',
+            }}
+            
+          />
+           <Stack.Screen
+            name="Response"
+            component={Response}
             options={{
               headerShown: false,
               gestureDirection: 'horizontal',

@@ -127,7 +127,7 @@ export default function MySubscriptions(props) {
     <>
       <Header normal={true} screenName={'My Subscriptions'} rootProps={props} />
       <View  style={{ flex: 1, overflow: 'hidden', backgroundColor: '#FFF4EC', }}>
-        <Pressable style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }} onPress={() => navigation.navigate('Subscriptions', { register: false })} >
+        <Pressable style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }} onPress={() => navigation.navigate('Checkout', { register: false })} >
           <LinearGradient colors={['#cc8d19', '#B1784A', '#c29135', '#ebbb60']} start={gradientDirection.start} end={gradientDirection.end} style={stylesGradient.gradientContainer}>
             <Text style={stylesGradient.text} numberOfLines={1} ellipsizeMode="tail">
               Buy Subscription

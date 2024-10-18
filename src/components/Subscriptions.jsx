@@ -1,34 +1,39 @@
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { FlatList, ImageBackground, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, ImageBackground, NativeEventEmitter, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
 import { getAllsubscription } from '../services/Subscription.service';
-import { buySubscription, getAllSubscriptionbyUserId } from '../services/UserSubscription.service';
-import { errorToast, toastSuccess } from '../utils/toastutill';
 import { getDecodedToken, getToken } from '../services/User.service';
-import { adminUrl, url } from '../services/url.service';
+import { errorToast, toastSuccess } from '../utils/toastutill';
+import { adminUrl } from '../services/url.service';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import SubscriptionCard from '../ReusableComponents/SubscriptionCard';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientRibbon from '../ReusableComponents/GradientRibbon';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import ApiClient from '../payment/ApiClient';
+import {
+  BackHandler,
+  NativeModules,
+} from "react-native";
+import HyperSdkReact from "hyper-sdk-react";
+
 export default function Subscriptions(props) {
   const navigation = useNavigation();
-  console.log(JSON.stringify(props, null, 2), "propspropspropspropsprops")
   const [subscriptionArr, setSubscriptionArr] = useState([]);
   const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
+  const [userToken, setUserToken] = useState('');
+  const [isLoaderActive, setIsLoaderActive] = useState(false);
+
   const getSubscriptions = async () => {
     try {
       let token = await getToken();
-      console.log(token, 'check tokkls===========');
       let decoded = await getDecodedToken();
-      console.log(decoded, 'decode');
       const { data: res } = await getAllsubscription(`role=${decoded.role}`);
       if (res) {
-        console.log(res.data);
+        setUserToken(decoded.token);
         setSubscriptionArr(res.data);
       }
     } catch (error) {
@@ -36,137 +41,130 @@ export default function Subscriptions(props) {
     }
   };
 
-  const handleWebViewState = e => {
-    console.log(e, 'WEB VIEW STATE');
-    if (e?.urltoastSuccess == adminUrl) {
-      toastSuccess('Payment Successfull, Package Activated Successfully');
-      navigate.navigate('MySubscriptions');
-    } else {
-      toastSuccess('Payment Failed');
-      navigate.navigate('MySubscriptions');
-    }
-  };
+  useEffect(() => {
+    getSubscriptions();
+  }, []);
 
-  const handleSubmit = async (item) => {
-    if (!item) return; // Prevent execution if no subscription is selected
-    try {
-      let obj = { ...selectedSubscriptionObj };
-      const { data: res } = await buySubscription(obj);
-      console.log('res.message', res);
-      if (res) {
-        toastSuccess(res.message);
+  const startPaymentForHdfc = useCallback((subscriptionObj) => {
+    // setIsLoaderActive(true);
+    // console.log("Payment started");
+    // console.log(userToken);
+    // ApiClient.sendPostRequest(
+    //   "https://api.plywoodbazar.com/test/usersubscription/initiateJuspayPaymentForSubcription",
+    //   subscriptionObj,
+    //   userToken,
+    //   {
+    //     onResponseReceived: (response) => {
+    //       let parsedResponse;
+    //       try {
+    //         parsedResponse = typeof response === "string" ? JSON.parse(response) : response;
+    //       } catch (error) {
+    //         console.error("Failed to parse response:", error);
+    //         return;
+    //       }
 
+    //       const sdkPayload = parsedResponse.sdk_payload;
+    //       HyperSdkReact.openPaymentPage(JSON.stringify(sdkPayload));
+    //     },
+    //     onFailure: (error) => {
+    //       console.error("POST request failed:", error);
+    //       setIsLoaderActive(false);
+    //     },
+    //   }
+    // );
 
-        if (res?.data && res?.data.instrumentResponse) {
-          let instrumentResponse = res?.data.instrumentResponse;
-          if (instrumentResponse?.redirectInfo) {
-            navigation.navigate('PaymentWebView', { url: instrumentResponse?.redirectInfo.url });
-            return 0;
+    navigation.navigate('Checkout', {
+      p1Count: 1,
+      p2Count: 2,
+      p1Price: 100,
+      p2Price: 200,
+    })
+  }, [userToken]);
+
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(NativeModules.HyperSdkReact);
+
+    const hyperEventListener = (resp) => {
+      const data = JSON.parse(resp);
+      const orderId = data.orderId;
+      const event = data.event || "";
+
+      switch (event) {
+        case "initiate_result":
+        case "hide_loader":
+          setIsLoaderActive(false);
+          break;
+
+        case "process_result":
+          const innerPayload = data.payload || {};
+          const status = innerPayload.status || "";
+          if (status === "backpressed" || status === "user_aborted") {
+            // Handle backpress or user-aborted case
+          } else {
+            navigation.navigate("Response", { orderId: orderId });
           }
-        } else {
-          errorToast('`Phonepe is not working.Please Try Some another Payment Method');
-        }
-        return 0;
-        // toastSuccess(res.message);
-        // navigation.goBack();
+          break;
+        default:
+          console.log(data);
       }
-    } catch (error) {
-      errorToast(error);
-    }
-  };
-
-  useEffect(() => {
-    if (selectedSubscriptionObj) {
-      handleSubmit(selectedSubscriptionObj);
-    }
-  }, [selectedSubscriptionObj]);
-  
-  useEffect(() => {
-    if (selectedSubscriptionObj) {
-      startPayment(selectedSubscriptionObj);
-    }
-  }, [selectedSubscriptionObj]);
-  
-  // block:start:startPayment
-  const startPayment=(item)=> {
-    
-    if (!item) return; // Prevent execution if no subscription is selected
-      let obj = { ...selectedSubscriptionObj };
-    // block:start:updateOrderID
-    var payload = {
-      order_id: `test-${getRandomNumber()}`,
-      amount: this.state.total,
     };
-    // block:end:updateOrderID
 
+    eventEmitter.addListener("HyperEvent", hyperEventListener);
 
-    ApiClient.sendPostRequest(
-      // block:start:await-http-post-function
-      `${url}/usersubscription/initiateJuspayPaymentForSubcription`,
-      // block:end:await-http-post-function
-      obj,
-      {
-        onResponseReceived: (response) => {
-          // block:start:openPaymentPage
-          HyperSdkReact.openPaymentPage(
-            JSON.stringify(JSON.parse(response).sdkPayload)
-          );
-          // block:end:openPaymentPage
-        },
-        onFailure: (error) => {
-          console.error("POST request failed:", error);
-        },
-      }
+    const backHandlerListener = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => !HyperSdkReact.isNull() && HyperSdkReact.onBackPressed()
     );
 
-  }
+    return () => {
+      eventEmitter.removeListener("HyperEvent", hyperEventListener);
+      backHandlerListener.remove();
+    };
+  }, [navigation]);
 
-  const renderNewSubscriptionItem = ({ item, index }) => {
+  const handleSubscriptionSelect = (item) => {
+    setSelectedSubscriptionObj(item);
+  };
+
+  useEffect(() => {
+    if (selectedSubscriptionObj) {
+      startPaymentForHdfc(selectedSubscriptionObj);
+    }
+  }, [selectedSubscriptionObj, startPaymentForHdfc]);
+
+  const renderNewSubscriptionItem = ({ item }) => {
     const durationText = item?.noOfMonth
       ? `${item?.noOfMonth} ${item?.noOfMonth > 1 ? 'months' : 'month'}`
       : 'No Validity';
 
     return (
-      <>
-        <View style={stylesCard.cardContainer}>
-          <LinearGradient colors={['#cc8d19', '#C08F64']} // Adjust gradient colors
-
-            style={stylesCard.periodContainer}>
-            <Text style={stylesCard.periodText}>{durationText}</Text>
-          </LinearGradient>
-          <View style={stylesCard.contentContainer}>
-            <Text style={stylesCard.titleText} numberOfLines={2} ellipsizeMode='tail'>{item?.description}</Text>
-            <Text style={stylesCard.priceText}>
-              ₹ {item?.price} + <Text style={stylesCard.gstText}>18% GST</Text></Text>
-
-
-            <Text style={stylesCard.durationText}>
-              For {item?.advertisementDays > 1 ? `${item?.advertisementDays} Days` : `${item?.advertisementDays} Day`}
-            </Text>
-
-            <View style={{ marginBottom: wp(5) }}>
-              <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'} />
-            </View>
-
-
-            <View style={stylesCard.buttonStyle} >
-              <CustomButtonNew
-                paddingHorizontal={wp(8)}
-                paddingVertical={wp(3)}
-                text='Buy Now'
-                onPress={() => { setSelectedSubscriptionObj(item); }}
-              />
-            </View>
+      <View style={stylesCard.cardContainer}>
+        <LinearGradient colors={['#cc8d19', '#C08F64']} style={stylesCard.periodContainer}>
+          <Text style={stylesCard.periodText}>{durationText}</Text>
+        </LinearGradient>
+        <View style={stylesCard.contentContainer}>
+          <Text style={stylesCard.titleText} numberOfLines={2} ellipsizeMode='tail'>{item?.description}</Text>
+          <Text style={stylesCard.priceText}>
+            ₹ {item?.price} + <Text style={stylesCard.gstText}>18% GST</Text>
+          </Text>
+          <Text style={stylesCard.durationText}>
+            For {item?.advertisementDays > 1 ? `${item?.advertisementDays} Days` : `${item?.advertisementDays} Day`}
+          </Text>
+          <View style={{ marginBottom: wp(5) }}>
+            <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'} />
           </View>
-
+          <View style={stylesCard.buttonStyle}>
+            <CustomButtonNew
+              paddingHorizontal={wp(8)}
+              paddingVertical={wp(3)}
+              text='Buy Now'
+              onPress={() => handleSubscriptionSelect(item)}
+            />
+          </View>
         </View>
-      </>
+      </View>
     );
   };
-
-  useEffect(() => {
-    getSubscriptions();
-  }, []);
 
   return (
     <>
@@ -174,21 +172,8 @@ export default function Subscriptions(props) {
       <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ flex: 1, overflow: 'hidden' }}>
         <View style={{ flex: 1, paddingHorizontal: 10 }}>
           <FlatList data={subscriptionArr} renderItem={renderNewSubscriptionItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 50 }} />
-
-
-
-     {/*   {props.route?.params?.register && props.route?.params?.register == true ? (
-            <TouchableOpacity onPress={() => navigation.navigate('BottomBar', { screen: 'Home' })} style={[{ width: wp(90), display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }]}>
-              <Text style={[styles.textbtn, { color: '#ddc99b' }]}>
-                Skip <FontAwesome name="angle-double-right" size={21} color="#ddc99b" />{' '}
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <></>
-          )}
-*/}  
         </View>
-        <View style={[{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginVertical: wp(5) }]} >
+        <View style={[{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginVertical: wp(5) }]}>
           <CustomButtonNew
             paddingHorizontal={wp(8)}
             paddingVertical={wp(3)}
@@ -201,62 +186,26 @@ export default function Subscriptions(props) {
             )}
           />
         </View>
-
       </ImageBackground>
+      {isLoaderActive && (
+        <ActivityIndicator size="large" color="#0000ff" />
+      )}
     </>
   );
 }
-const styles1 = StyleSheet.create({
-  flexbetween: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingVertical: 10,
-    justifyContent: 'space-between',
-  },
-  imgsmall: {
-    width: wp(6),
-    height: hp(3),
-  },
-  categry: {
-    fontSize: 18,
-    color: '#000',
-    fontFamily: 'Manrope-Medium',
-  },
-  imgfluid: {
-    width: wp(6),
-    height: hp(3),
-    marginRight: 10,
-  },
-  card_main: {
-    borderWidth: 1,
-    borderColor: '#D9D9D9',
-    borderStyle: 'solid',
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    borderRadius: 5,
-    // width: wp(90),
-    // marginHorizontal: 20,
-  },
-  nameheading: {
-    color: '#000000',
-    fontSize: 16,
-    fontFamily: 'Manrope-Bold',
-  },
-});
-
 
 
 
 
 const stylesCard = StyleSheet.create({
   cardContainer: {
-    margin: wp(2),
+    width:'90%',
     flexDirection: 'row',
     padding: 16,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     elevation: 2,
-    marginLeft: 40, // Space for the floating circle
+    marginLeft: wp(14), // Space for the floating circle
     alignSelf:'center',
     marginVertical:wp(5)
   },

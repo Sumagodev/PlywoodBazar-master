@@ -34,7 +34,7 @@ const FadeRibbonText = ({
       end={gradientDirection.end}
       style={styles.gradientContainer}
     >
-      <Text style={styles.text} numberOfLines={1} ellipsizeMode='tail'>{text}</Text>
+      <Text style={styles.text} numberOfLines={2} ellipsizeMode='tail'>{text}</Text>
     </LinearGradient>
   );
 };

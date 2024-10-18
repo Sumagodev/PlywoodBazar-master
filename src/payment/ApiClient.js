@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 
 class ApiClient extends Component {
-  static sendGetRequest(url, callback) {
-    fetch(url)
+  static sendGetRequest(url, token, callback) {
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error(`Request failed with code: ${response.status}`);
@@ -17,10 +23,13 @@ class ApiClient extends Component {
       });
   }
 
-  static sendPostRequest(url, payload, callback) {
+  static sendPostRequest(url, payload, token, callback) {
+    console.log('payload',payload)
+    console.log('url',url)
     fetch(url, {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
@@ -36,6 +45,15 @@ class ApiClient extends Component {
       })
       .catch(error => {
         callback.onFailure(error);
+        console.error("API request failed:", error); // Log the entire error object
+  if (error.response) {
+    console.error("Response data:", error.response.message); // Log the response data
+    console.error("Response status:", error.response.result); // Log the status
+  } else if (error.request) {
+    console.error("No response received:", error.request);
+  } else {
+    console.error("Error message:", error.message);
+  }
       });
   }
 }
