@@ -1,6 +1,6 @@
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { ImageBackground, Text, View, Image, TouchableOpacity, StyleSheet ,ActivityIndicator} from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -20,6 +20,7 @@ export default function AddBannerForm(props) {
   const [selectedType, setSelectedType] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [userId, setuserid] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedproductsArray, setSelectedproductsArray] = useState('');
   console.log('selectedType', selectedType);
   const focused = useIsFocused()
@@ -137,14 +138,17 @@ export default function AddBannerForm(props) {
         }),
 
       };
+      setIsLoading(true)
       const { data: res } = await AddBaner(obj);
       if (res) {
         toastSuccess(res.message);
         navigation.goBack();
+        setIsLoading(false)
         resetForm();
       }
     } catch (error) {
       errorToast(error);
+      setIsLoading(false)
     }
   };
   return (
@@ -214,7 +218,12 @@ export default function AddBannerForm(props) {
               : null
           }
           <TouchableOpacity style={{ alignItems: "center", justifyContent: "center", margin: wp(4) }}>
-            <CustomButtonNew text={'Submit'} paddingHorizontal={wp(7)} onPress={() => handleSubmit()} />
+          {isLoading?<ActivityIndicator size="large" color='#ffffff'  style={{marginTop:wp(5),marginBottom:wp(5)}}/>
+          :
+          <CustomButtonNew text={'Submit'} paddingHorizontal={wp(7)} onPress={() => handleSubmit()} />
+
+
+          }  
           </TouchableOpacity>
         </View>
       </View>

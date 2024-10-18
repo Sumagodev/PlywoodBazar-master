@@ -1,40 +1,54 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dimensions } from 'react-native';
 import CustomColors from '../styles/CustomColors.js';
 import CustomButton from './CustomButton.js';
 import CustomButtonOld from './CustomButtonOld.js';
+import { Rating } from 'react-native-ratings';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress ,onPress,dataItem}) => {
-    console.log('zxx',dataItem)
+import { useNavigation } from '@react-navigation/native';
+const LikeProduct = ({ imagePath, name, location, onCallPress, onGetQuotePress, onPress, dataItem }) => {
+    console.log('dataItem', dataItem.createdById)
+    const navigation = useNavigation();
     return (
-      <TouchableOpacity onPress={onPress}>
-        <View style={styles.container}>
-            <View style={styles.elevatedContainer}>
-                <Image style={styles.upperImageStyle} source={imagePath} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail' >{name}</Text>
-                    <View style={styles.locationRow}>
-                      <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
-                        <Text style={styles.locationText} numberOfLines={1} ellipsizeMode='tail'>{location} </Text>
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.container}>
+                <View style={styles.elevatedContainer}>
+                    <Image style={styles.upperImageStyle} source={imagePath} />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.nameText} numberOfLines={1} ellipsizeMode='tail' >{name}</Text>
+                        <Pressable onPress={() => navigation.navigate('Supplier', { data: {_id:dataItem?.product?.createdById} })}>
+                        <Text style={[styles.nameText, { fontWeight: "400", fontSize: wp(4) }]} numberOfLines={1} ellipsizeMode='tail' >{dataItem?.createdByObj?.companyObj?.name}</Text>
+
+                        </Pressable>
+                        <View style={styles.locationRow}>
+                            <Image style={styles.locationImageStyle} source={require('../../assets/img/location_icon.png')} />
+                            <Text style={[styles.nameText, { fontWeight: "400", fontSize: wp(3.5), width: '80%' }]} numberOfLines={1} ellipsizeMode='tail'>{location} , {dataItem?.stateName}</Text>
+                        </View>
+                     
+                        <View style={{ alignItems: 'center', flexDirection: 'row',alignSelf:"center" }}>
+                            <Rating size={1} imageSize={wp(4)} readonly startingValue={dataItem.rating} />
+                        </View>
+                 
+                        <Text style={{ fontWeight: '900', fontSize: wp(3.5), alignSelf:"center" ,marginTop:wp(.5)}}>Price : {dataItem?.product?.sellingprice} </Text>
+
                     </View>
-                   
-                </View>
-                <View style={styles.callIconContainer}>
-                <TouchableOpacity onPress={onCallPress}>
-                  <Ionicons  name="call" size={wp(6)} color="#FFFFFF" />
-                </TouchableOpacity>
+                    <View style={styles.callIconContainer}>
+                        <TouchableOpacity onPress={onCallPress}>
+                            <Ionicons name="call" size={wp(6)} color="#FFFFFF" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-        </View>
-        <View style={styles.buttonContainer}>
-        <CustomButtonOld  paddingHorizontal={screenWidth*0.01} text='Get Quote' textSize={screenWidth*0.040} style={styles.button} onPress={onGetQuotePress}/>
-    </View>
-    </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+                <CustomButtonOld paddingHorizontal={screenWidth * 0.01} text='Get Quote' textSize={screenWidth * 0.040} style={styles.button} onPress={onGetQuotePress} />
+            </View>
+        </TouchableOpacity>
     );
 };
 
@@ -43,11 +57,11 @@ const styles = StyleSheet.create({
         margin: 2,
         borderRadius: 25,
         width: (Dimensions.get('window').width / 1.9) - 10, // Width for two columns
-        height: screenWidth * 0.64, // Adjust the height for a fixed but scalable size
+        height: screenWidth * 0.94, // Adjust the height for a fixed but scalable size
         margin: 5,
         overflow: 'hidden',
-        borderColor:'#AEAEAE',
-        borderWidth:wp(0.05)
+        borderColor: '#AEAEAE',
+        borderWidth: wp(0.05)
     },
     elevatedContainer: {
         flex: 1,
@@ -84,6 +98,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 5,
+
     },
     locationImageStyle: {
         height: 15,
@@ -98,34 +113,34 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontWeight: 'bold',
         color: CustomColors.textGrey,
-        fontSize: screenWidth*0.045,
+        fontSize: screenWidth * 0.045,
     },
     locationText: {
         alignSelf: 'center',
         color: CustomColors.textGrey,
-        fontSize: screenWidth*0.035,
+        fontSize: screenWidth * 0.035,
     },
     priceText: {
         alignSelf: 'center',
         color: CustomColors.textGrey,
-        fontSize: screenWidth*0.045,
+        fontSize: screenWidth * 0.045,
         paddingBottom: 10,
     },
     buttonContainer: {
-      position: 'absolute',
-      bottom: -1,
-      left: 0,
-      right: 0,
-      alignItems: 'center',
-  },
-  button: {
-      width: 'auto',
-      height: 'auto',
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      backgroundColor: CustomColors.primaryColor, // Replace with your color
-      borderRadius: 25,
-  },
+        position: 'absolute',
+        bottom: -1,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+    },
+    button: {
+        width: 'auto',
+        height: 'auto',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: CustomColors.primaryColor, // Replace with your color
+        borderRadius: 25,
+    },
 });
 
 export default LikeProduct;

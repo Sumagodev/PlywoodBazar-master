@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -16,11 +16,12 @@ import { DeleteOpp, GetDealershiplist, GetDealershipOpportunities } from '../ser
 import DealershipData from '../ReusableComponents/DealershipData';
 import Categories from './Categories';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function DealershipOppolisting(props) {
     const focused = useIsFocused()
     const navigation = useNavigation();
-
+    const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
     const [subscriptionArr, setSubscriptionArr] = useState([]);
 
     console.log('subscriptionArr', subscriptionArr);
@@ -28,17 +29,22 @@ export default function DealershipOppolisting(props) {
     useEffect(() => {
         // handleopportunitydata();
         getSubscriptions()
-    }, [focused,subscriptionArr]);
+    }, [focused, subscriptionArr]);
     const getSubscriptions = async () => {
+        setIsLoadingallcompo(true)
         try {
             let decodedObj = await getDecodedToken();
             const { data: res } = await GetDealershiplist(decodedObj?.userId);
             if (res) {
                 console.log(JSON.stringify(res.data,), 'raviiii');
                 setSubscriptionArr(res.data);
+                setIsLoadingallcompo(false)
             }
         } catch (error) {
             errorToast(error);
+            setIsLoadingallcompo(false)
+        } finally {
+            setIsLoadingallcompo(false)
         }
     };
 
@@ -95,7 +101,7 @@ export default function DealershipOppolisting(props) {
 
         const productItem = {
             name: item?.Organisation_name,
-            imagePath:item?.image && item?.image !== '' ?{ uri: generateImageUrl(item?.image) }:require('../../assets/img/logo_1.png'),
+            imagePath: item?.image && item?.image !== '' ? { uri: generateImageUrl(item?.image) } : require('../../assets/img/logo_1.png'),
             state: item?.stateName,
             Type: item?.Type,
             brand: item?.Brand,
@@ -114,29 +120,43 @@ export default function DealershipOppolisting(props) {
 
 
     return (
-        <View style={styles1.mainContainer}>
+        <>
             <Header normal={true} rootProps={props} />
-            <View style={reviewStyle.container}>
-                <Text style={reviewStyle.title}>Promoted Dealership Opportunities</Text>
-            </View>
-            <Pressable  style={{alignSelf:'flex-end',right:wp(5)}}>
-            <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => navigation.navigate('AddDealershipOpportunitiesForm')}/>
-          </Pressable>
+
+
 
             {
-                subscriptionArr ? <FlatList data={subscriptionArr} numColumns={1} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
+                isLoadingallcompo ?
+                    <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
                     :
-                    <View style={{ height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Data Available </Text>
+                    <>
+                        <View style={styles1.mainContainer}>
+                            <View style={reviewStyle.container}>
+                                <Text style={reviewStyle.title}>Promoted Dealership Opportunities</Text>
+                            </View>
+                            <Pressable style={{ alignSelf: 'flex-end', right: wp(5) }}>
+                                <CustomButtonNew textSize={wp(4)} text="Add" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={() => navigation.navigate('AddDealershipOpportunitiesForm')} />
+                            </Pressable>
+                            {
 
-                    </View>
+                                subscriptionArr ? <FlatList data={subscriptionArr} numColumns={1} renderItem={renderMyProductItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: hp(10) }} />
+                                    :
+                                    <View style={{ height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Data Available </Text>
+
+                                    </View>
+
+                            }
+                        </View>
+                    </>
 
             }
 
             {/* <TouchableOpacity onPress={() => navigation.navigate('AddProducts')} style={[styles.btnbg, {width: wp(90), marginHorizontal: 20, marginBottom: 15}]}>
         <Text style={styles.textbtn}>Add New Product</Text>
       </TouchableOpacity> */}
-        </View>
+
+        </>
     );
 }
 const styles1 = StyleSheet.create({

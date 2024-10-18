@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { getFocusedRouteNameFromRoute, useIsFocused } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,18 +14,74 @@ import { getDecodedToken } from '../../services/User.service';
 import Login from '../../components/Login';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { getUnreadNotificationsCount } from '../../services/Notifications.service';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({ state, descriptors, navigation }) {
   const [isAuthorized] = useContext(isAuthorisedContext);
   const [count, setCount] = useState('')
   const focused = useIsFocused();
-
+const navigate=useNavigation()
   useEffect(() => {
     getNotificationCount()
   }, [count, focused])
+  useEffect(() => {
+    const checkRegistrationStatus = async () => {
+      try {
+        const isRegisterLogin:any = await AsyncStorage.getItem('isRegister');
+        const isRegistered = JSON.parse(isRegisterLogin); // Convert string to boolean
+        console.log('isRegisterLogin', isRegistered);
+        
+        const showRegistrationAlert = () => {
+          if (!isRegistered) { // Use !isRegistered since we're checking for 'false'
+            Alert.alert(
+              'Get Registered/Login!',
+              'Click Register/Login to proceed.',
+              [
+                {
+                  text: 'Skip for Now',
+                  style: 'cancel',
+                  onPress: () => {},
+                },
+                {
+                  text: 'Register',
+                  style: 'default',
+                  onPress: () => {
+                    // Navigate to the registration page
+                    navigate.navigate('Register'); // Ensure 'Register' is the correct route name
+                  },
+                },
+                {
+                  text: 'Login',
+                  style: 'default',
+                  onPress: () => {
+                    // Navigate to the login page
+                    navigate.navigate('Login'); // Ensure 'Login' is the correct route name
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
+          }
+        };
+        
+        const timeoutId = setTimeout(() => {
+          showRegistrationAlert();
+        }, 20000); // Show alert after 20 seconds
 
+        return () => {
+          clearTimeout(timeoutId); // Cleanup the timeout on unmount
+        };
+      } catch (error) {
+        console.log('Error fetching isRegister value', error);
+      }
+    };
+
+    checkRegistrationStatus();
+  }, [navigate]);
+
+
+  
   // Function to fetch notification count
   const getNotificationCount = async (): Promise<number> => {
     try {
@@ -148,26 +204,27 @@ function MyTabBar({ state, descriptors, navigation }) {
               {(label)
               }
             </Text>
-            {count > 0 && label === 'Notification' && !isFocused && (
-              <View
-                style={{
-                  alignSelf: "center",
-                  alignItems: "center",
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  right: wp(1),
-                  top: wp(-1),
-                  height: wp(6.5),
-                  width: wp(6.5),
-                  backgroundColor: "#E85C0D",
-                  borderRadius: wp(7)
-                }}
-              >
-                <Text style={{ fontSize: wp(3), color: '#ffffff', fontWeight: "800" }}>
-                  {count > 99 ? '99+' : count}
-                </Text>
-              </View>
-            )}
+            {isAuthorized && count > 0 && label === 'Notification' && !isFocused && (
+  <View
+    style={{
+      alignSelf: "center",
+      alignItems: "center",
+      position: 'absolute',
+      justifyContent: 'center',
+      right: wp(1),
+      top: wp(-1),
+      height: wp(6.5),
+      width: wp(6.5),
+      backgroundColor: "#E85C0D",
+      borderRadius: wp(7)
+    }}
+  >
+    <Text style={{ fontSize: wp(3), color: '#ffffff', fontWeight: "800" }}>
+      {count > 99 ? '99+' : count}
+    </Text>
+  </View>
+)}
+
 
           </TouchableOpacity>
         );

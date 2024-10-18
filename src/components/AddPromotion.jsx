@@ -2,7 +2,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View, ImageBackground, TextInput, ScrollView } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View, ImageBackground, TextInput, ScrollView ,ActivityIndicator} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import DocumentPicker, { isInProgress } from 'react-native-document-picker';
 import CustomColors from '../styles/CustomColors';
@@ -21,7 +21,7 @@ import { errorToast, toastSuccess } from '../utils/toastutill';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 export default function AddPromotions(props) {
   const navigation = useNavigation();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [productArr, setProductArr] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -50,7 +50,16 @@ export default function AddPromotions(props) {
   useEffect(() => {
     handleGetProducts();
   }, []);
-
+  const resetForm = () => {
+    setStartDate([]);
+    setProductArr([]);
+    setEndDate([]);
+    setSelectedProductId('');
+    setSelectedProductObj('');
+    setMessage(null);
+    setFile(null);
+    setFileBase64([]);
+  };
   const handleProductSelections = value => {
     let tempArr = [...productArr];
     let tempObj = tempArr.find(el => el._id == value);
@@ -58,30 +67,110 @@ export default function AddPromotions(props) {
       setSelectedProductId(value);
       setSelectedProductObj(tempObj);
     }
-  };
+  }; 
 
-  const handleCreatePromotion = async () => {
-    try {
-      let decodedToken = await getDecodedToken();
-      let obj = {
-        userId: decodedToken?.userId,
-        productId: selectedProductId,
-        message,
-        image: fileBase64,
-        productSlug: selectedProductObj?.slug,
-        endDate,
-        startDate,
-        isVideo
-      };
-      let { data: res } = await AddAdvertisement(obj);
-      if (res) {
-        toastSuccess(res.message);
-        navigation.navigate('MyPromotions')
-      }
-    } catch (error) {
-      errorToast(error);
+  // const handleCreatePromotion = async () => {
+  //   try {
+  //     let decodedToken = await getDecodedToken();
+  //     let obj = {
+  //       userId: decodedToken?.userId,
+  //       productId: selectedProductId,
+  //       message,
+  //       image: fileBase64,
+  //       productSlug: selectedProductObj?.slug,
+  //       endDate,
+  //       startDate,
+  //       isVideo
+  //     };
+  //     setIsLoading(true)
+  //     let { data: res } = await AddAdvertisement(obj);
+  //     if (res) {
+  //       toastSuccess(res.message);
+  //       setIsLoading(false)
+  //       navigation.navigate('MyPromotions')
+  //     }
+  //   } catch (error) {
+  //     errorToast(error);
+  //     setIsLoading(false)
+  //   }
+  // };
+const handleCreatePromotion = async () => {
+  try {
+    // Validate if a product ID is provided
+    if (!selectedProductId) {
+      errorToast('Product ID is required.');
+      setIsLoading(false);
+      return;
     }
-  };
+
+    // Validate if a message is provided
+    if (!message || message.trim().length === 0) {
+      errorToast('Message is required.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate if an image is provided
+    if (!fileBase64) {
+      errorToast('Image is required.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate if a product slug is provided
+    if (!selectedProductObj?.slug) {
+      errorToast('Product is required.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate if start date is provided
+    if (!startDate) {
+      errorToast('Start date is required.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate if end date is provided
+    if (!endDate) {
+      errorToast('End date is required.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate that end date is after start date
+    if (new Date(startDate) >= new Date(endDate)) {
+      errorToast('End date must be after start date.');
+      setIsLoading(false);
+      return;
+    }
+
+    // If all validations pass, proceed to create the promotion
+    let decodedToken = await getDecodedToken();
+    let obj = {
+      userId: decodedToken?.userId,
+      productId: selectedProductId,
+      message,
+      image: fileBase64,
+      productSlug: selectedProductObj?.slug,
+      endDate,
+      startDate,
+      isVideo,
+    };
+
+    setIsLoading(true); // Start loading
+    let { data: res } = await AddAdvertisement(obj);
+    if (res) {
+      toastSuccess(res.message);
+      navigation.navigate('MyPromotions');
+      resetForm()
+    }
+  } catch (error) {
+    errorToast(error);
+  } finally {
+    setIsLoading(false); // Ensure loading is stopped in both success and error cases
+  }
+};
 
   const handleDocumentPicker = async () => {
     try {
@@ -243,7 +332,11 @@ export default function AddPromotions(props) {
 
 
               <View style={{ alignSelf: 'center', marginVertical: wp(5) }}>
-                <CustomButtonNew onPress={() => handleCreatePromotion()} text={'SUBMIT'} textSize={wp(4)} paddingHorizontal={wp(7)} paddingVertical={wp(3)} />
+               {isLoading?<ActivityIndicator size="large" color={CustomColors.mattBrownDark}  style={{marginTop:wp(5),marginBottom:wp(5)}}/>
+                    :
+              <CustomButtonNew onPress={() => handleCreatePromotion()} text={'SUBMIT'} textSize={wp(4)} paddingHorizontal={wp(7)} paddingVertical={wp(3)} />
+
+                    } 
               </View>
             </View>
           </ScrollView>

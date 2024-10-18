@@ -71,6 +71,7 @@ export default VerifyOtp = ({route}) => {
           // console.log(JSON.stringify(res,null,2), "cke tokkene")
           await setToken(res.token);
           await AsyncStorage.setItem('isOtpVerified', 'true');
+          await AsyncStorage.setItem('isRegister', 'true');
           setIsAuthorized(true);
           setLoadingDialog(false)
           navigation.navigate('BottomBar');

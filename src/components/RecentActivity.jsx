@@ -8,6 +8,7 @@ import {getLeadsById} from '../services/leads.service';
 import {getDecodedToken} from '../services/User.service'; 
 import {errorToast} from '../utils/toastutill';
 import MyActivityItem from '../ReusableComponents/MyActivityItem';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function RecentActivity(props) {
   const navigation = useNavigation();
 
@@ -81,7 +82,7 @@ export default function RecentActivity(props) {
 
  {
           isLoading ?
-            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            <LoadingDialog size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
             : null
         }
         {

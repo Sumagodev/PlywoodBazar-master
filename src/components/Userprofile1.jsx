@@ -95,7 +95,7 @@ export default function Userprofile1(props) {
           </View>
         </View>
 
-        <ImageBackground style={styles1.cardContainer} source={require('../../assets/img/main_bg.jpg')}>
+        <ImageBackground style={styles1.cardContainer} >
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Text style={styles1.namehd}>{userObj?.name}</Text>
@@ -430,7 +430,7 @@ const styles1 = StyleSheet.create({
   },
   cardContainer: {
     paddingTop: wp(12),
-
+backgroundColor:"#5647871a",
     overflow: 'hidden',
   },
 });

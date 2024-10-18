@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, Pressable, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Modal ,ActivityIndicator} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -16,26 +16,33 @@ import CustomTextInputField from '../ReusableComponents/CustomTextInputField';
 import { Input } from 'react-native-elements';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function AllChats(props) {
   const navigation = useNavigation();
   const [ticketsArr, setTicketsArr] = useState([]);
   const [limit, setLimit] = useState(100);
   const [skip, setSkip] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+      const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const focused = useIsFocused();
   const [userId, setUserId] = useState('');
   const [message, setMessage] = useState(null);
   const [applyFormModal, setModal] = useState(false);
   const handleGetUserTickets = async (skipValue, limitValue, userIdValue) => {
+    setIsLoadingallcompo(true)
     try {
       let query = `page=${skipValue}&perPage=${limitValue}&userId=${userIdValue}`;
 
       let { data: res } = await getTicketsbyUserId(query);
       if (res.data) {
         setTicketsArr(res.data);
+        setIsLoadingallcompo(false)
       }
     } catch (err) {
       errorToast(err);
+      setIsLoadingallcompo(false)
+    }finally{
+      setIsLoadingallcompo(false)
     }
   };
 
@@ -57,6 +64,7 @@ export default function AllChats(props) {
   }, [focused, limit, skip, userId]);
 
   const handleTicketCreation = async () => {
+    setIsLoadingallcompo(true)
     try {
       if (`${message}` === '' || !message) {
         errorToast('Please enter a message');
@@ -67,14 +75,19 @@ export default function AllChats(props) {
         userId: decodedObj?.userId,
         name: message,
       };
+      
       let { data: res } = await createTicket(obj);
       if (res.message) {
         toastSuccess(res.message);
         setModal(false)
+        setIsLoadingallcompo(false)
         // navigate(-1)
       }
     } catch (err) {
       errorToast(err);
+      setIsLoadingallcompo(false)
+    }finally{
+      setIsLoadingallcompo(false)
     }
   };
 
@@ -134,7 +147,10 @@ export default function AllChats(props) {
 
   return (
     <View style={{}}>
-      <KeyboardAvoidingView
+      {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :   <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ backgroundColor: '#FFF4EC' }}
       >
@@ -160,7 +176,9 @@ export default function AllChats(props) {
               </View>
             </>
           }
+           
           renderItem={renderMyTicket}
+
 
         // Adjust the paddingBottom to create space for the bottom container
         />
@@ -176,9 +194,9 @@ export default function AllChats(props) {
 
           <View style={internal_styles.bottom_container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-           <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
+              <Text style={{ marginBottom: wp(2), fontSize: wp(5), alignSelf: 'flex-start' }}>Create A Ticket</Text>
               <Pressable style={[{ right: wp(-25) }]} onPress={() => setModal(!applyFormModal)}>
-                <FontAwesome5Icon  name="times" size={wp(6)} color="black" />
+                <FontAwesome5Icon name="times" size={wp(6)} color="black" />
               </Pressable>
             </View>
             <Input
@@ -198,6 +216,7 @@ export default function AllChats(props) {
 
 
       </KeyboardAvoidingView>
+}
     </View>
   );
 }

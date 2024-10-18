@@ -1,7 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View,ActivityIndicator } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -15,14 +15,16 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import CustomColors from '../styles/CustomColors';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function MyPromotions(props) {
   const navigation = useNavigation();
   const focused = useIsFocused();
   const [saleArr, setSaleArr] = useState([]);
   const [userSubscriptionExpired, setUserSubscriptionExpired] = useState(true);
   const [userDataObj, setUserDataObj] = useState({});
-
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const getSubscriptions = async () => {
+    setIsLoadingallcompo(true)
     try {
       let decodedObj = await getDecodedToken();
 
@@ -30,9 +32,13 @@ export default function MyPromotions(props) {
       if (res) {
         console.log(JSON.stringify(res.data, null, 2));
         setSaleArr(res.data);
+        setIsLoadingallcompo(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoadingallcompo(false)
+    }finally{
+      setIsLoadingallcompo(false)
     }
   };
 
@@ -172,7 +178,11 @@ export default function MyPromotions(props) {
     <>
       <Header normal={true} screenName={'Your Promotions'} rootProps={props} />
 
-      <View style={{ backgroundColor: CustomColors.mattBrownFaint, flex: 1 }}>
+        {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+             <View style={{ backgroundColor: CustomColors.mattBrownFaint, flex: 1 }}>
         <View style={reviewStyle.container}>
           <Text style={reviewStyle.title}>My Promotions</Text>
 
@@ -197,7 +207,7 @@ export default function MyPromotions(props) {
             <Text style={styles.textbtn}>Create an advertisement</Text>
           </TouchableOpacity>
         )} */}
-      </View>
+      </View>}
     </>
   );
 }

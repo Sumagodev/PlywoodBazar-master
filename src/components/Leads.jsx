@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View , ActivityIndicator} from 'react-native';
+import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Header from '../navigation/customheader/Header';
 import { getDecodedToken, getUserById } from '../services/User.service';
 import { getLeadsBycreatedById } from '../services/leads.service';
 import { errorToast } from '../utils/toastutill';
 import MyLeadItem from '../ReusableComponents/MyLeadItem';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function Leads(props) {
   const navigation = useNavigation();
 
@@ -24,8 +25,8 @@ export default function Leads(props) {
 
       const { data: res } = await getLeadsBycreatedById(decodedObj?.userId);
 
-      console.log("start array========================", res.data[0] , "==================end array")
-      
+      console.log("start array========================", res.data[0], "==================end array")
+
       if (res) {
         console.log(res.data.length)
         setleadsArr(res.data);
@@ -78,12 +79,12 @@ export default function Leads(props) {
   };
 
   const renderMyLeadsItem = ({ item, index }) => {
-    console.log('logi',item);
-    
-    const leadItem={
-      name:item?.name,
-   
-      date:moment(item?.createdAt).format('DD-MM-YYYY')
+    console.log('logi', item);
+
+    const leadItem = {
+      name: item?.name,
+
+      date: moment(item?.createdAt).format('DD-MM-YYYY')
     }
     return (
       <MyLeadItem leadItem={leadItem} item={item}></MyLeadItem>
@@ -98,40 +99,40 @@ export default function Leads(props) {
   return (
     <>
       <Header normal={true} screenName={'Leads'} rootProps={props} />
-    <View style={{flex:1,backgroundColor: '#FFF4EC',}}>
-    <View style={{flex:1, paddingHorizontal:10,alignItems:'center'}}>
+      <View style={{ flex: 1, backgroundColor: '#FFF4EC', }}>
+        <View style={{ flex: 1, paddingHorizontal: 10, alignItems: 'center' }}>
 
-      <Text style={{fontSize:wp(6),marginVertical:wp(2),fontWeight:800,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>My Leads</Text>
-      
-       {
-          isLoading ?
-            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
-            : null
-        }
-      
-      {
-        (userSubscriptionExpired == false) && (userSubscriptionBlocked == false) ?
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={<Text style={{ paddingVertical: 15 , textAlign:'center', color:'#000'}}>No Leads found</Text>}
-            data={leadsArr} renderItem={renderMyLeadsItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 50 }} />
-          :
-          userSubscriptionBlocked ?
-            <>
-             
-              <Text style={{ paddingHorizontal: 20, paddingVertical: 15 }}>Your subscription has been blocked by admin please contact admin for further details   </Text>
-             
-            </>
-            :
+          <Text style={{ fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>My Leads</Text>
 
-            <>
-            <View style={{height:hp(80), display:'flex', alignItems:'center', justifyContent:'center'}}>
-              <Text style={{ paddingHorizontal: 20, paddingVertical: 15, textAlign:'center' }}>You have {leadsArr ? leadsArr.length : 0} leads , get a subscription to view the leads   </Text>
-              </View>
-            </>
+          {
+            isLoading ?
+              <LoadingDialog size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+              : null
+          }
 
-      }
-      </View>
+          {
+            (userSubscriptionExpired == false) && (userSubscriptionBlocked == false) ?
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={<Text style={{ paddingVertical: 15, textAlign: 'center', color: '#000' }}>No Leads found</Text>}
+                data={leadsArr} renderItem={renderMyLeadsItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 50 }} />
+              :
+              userSubscriptionBlocked ?
+                <>
+
+                  <Text style={{ paddingHorizontal: 20, paddingVertical: 15 }}>Your subscription has been blocked by admin please contact admin for further details   </Text>
+
+                </>
+                :
+
+                <>
+                  <View style={{ height: hp(80), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ paddingHorizontal: 20, paddingVertical: 15, textAlign: 'center' }}>You have {leadsArr ? leadsArr.length : 0} leads , get a subscription to view the leads   </Text>
+                  </View>
+                </>
+
+          }
+        </View>
       </View>
     </>
   );
@@ -165,13 +166,13 @@ const styles1 = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 5,
     // width: wp(90),
-    
+
     // marginHorizontal: 20,
   },
   nameheading: {
     color: '#000000',
     fontSize: wp(4),
     fontFamily: 'Manrope-Bold',
-    marginBottom:5,
+    marginBottom: 5,
   },
 });

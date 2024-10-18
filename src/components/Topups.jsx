@@ -1,30 +1,36 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {FlatList, ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
-import {getAllTopup} from '../services/Topup.service';
-import {getDecodedToken} from '../services/User.service';
-import {buyTopup} from '../services/UserTopup.service';
-import {errorToast, toastSuccess} from '../utils/toastutill';
+import { getAllTopup } from '../services/Topup.service';
+import { getDecodedToken } from '../services/User.service';
+import { buyTopup } from '../services/UserTopup.service';
+import { errorToast, toastSuccess } from '../utils/toastutill';
 import MyTopUpItem from '../ReusableComponents/MyTopUpItem';
 import CustomColors from '../styles/CustomColors';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function Topups(props) {
   const navigation = useNavigation();
-
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const [subscriptionArr, setSubscriptionArr] = useState([]);
   const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
   const getSubscriptions = async () => {
+    setIsLoadingallcompo(true);
     try {
       let decoded = await getDecodedToken();
-      const {data: res} = await getAllTopup(`role=${decoded.role}`);
+      const { data: res } = await getAllTopup(`role=${decoded.role}`);
       if (res) {
         console.log(res.data);
         setSubscriptionArr(res.data);
+        setIsLoadingallcompo(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoadingallcompo(false)
+    } finally {
+      setIsLoadingallcompo(false)
     }
   };
 
@@ -42,7 +48,7 @@ export default function Topups(props) {
     console.log('Selected Subscription:', item);
 
     try {
-      const {data: res} = await buyTopup(item);
+      const { data: res } = await buyTopup(item);
       if (res) {
         toastSuccess(res.message);
         if (res?.data && res?.data.instrumentResponse) {
@@ -60,9 +66,9 @@ export default function Topups(props) {
     }
   };
 
-  
-  const renderMyTopupItem = ({item, index}) => {
-    
+
+  const renderMyTopupItem = ({ item, index }) => {
+
     const myItem = {
       description: item?.description,
       validity: 'Valid Till Subcription',
@@ -71,10 +77,10 @@ export default function Topups(props) {
       daysOfAdvertisement: item?.advertisementDays,
       daysOfSale: item?.saleDays,
       numberOfSale: item?.numberOfSales ? item?.numberOfSales : 0,
-      fullItem:item
+      fullItem: item
     };
     return (
-      <MyTopUpItem topUpItem={myItem} onPress={() => {setSelectedSubscriptionObj(item)}}></MyTopUpItem>
+      <MyTopUpItem topUpItem={myItem} onPress={() => { setSelectedSubscriptionObj(item) }}></MyTopUpItem>
     );
   };
 
@@ -85,20 +91,25 @@ export default function Topups(props) {
   return (
     <>
       <Header normal={true} screenName={'Topups'} rootProps={props} />
-      <ImageBackground  source={require('../../assets/img/main_bg.jpg')} style={{flex:1,overflow:'hidden'}}>
-      <View style={{flex: 1}}>
-      <Text style={{fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>My Topups</Text>
-        {subscriptionArr.length > 0 ? (
-          <FlatList data={subscriptionArr} renderItem={renderMyTopupItem} keyExtractor={(item, index) => index} contentContainerStyle={{paddingBottom: 50,alignSelf:'center'}} />
-        ) : (
-          <View style={{height: hp(70), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20}}>No Topups</Text>
-          </View>
-        )}
+      {
+        isLoadingallcompo ?
+          <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+          :
+          <ImageBackground source={require('../../assets/img/main_bg.jpg')} style={{ flex: 1, overflow: 'hidden' }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>My Topups</Text>
+              {subscriptionArr.length > 0 ? (
+                <FlatList data={subscriptionArr} renderItem={renderMyTopupItem} keyExtractor={(item, index) => index} contentContainerStyle={{ paddingBottom: 50, alignSelf: 'center' }} />
+              ) : (
+                <View style={{ height: hp(70), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontSize: 16, alignSelf: 'center', color: '#000', marginVertical: 20 }}>No Topups</Text>
+                </View>
+              )}
 
-        
-      </View>
-      </ImageBackground>
+
+            </View>
+          </ImageBackground>
+      }
     </>
   );
 }

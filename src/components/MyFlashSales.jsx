@@ -1,7 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View ,ActivityIndicator} from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import styles from '../../assets/stylecomponents/Style';
@@ -16,6 +16,7 @@ import FlashSaleItem from '../ReusableComponents/FlashSaleItem';
 import FadeRibbonText from '../ReusableComponents/FadeRibbon';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function MyFlashSales(props) {
   const navigation = useNavigation();
@@ -23,31 +24,40 @@ export default function MyFlashSales(props) {
   const [saleArr, setSaleArr] = useState([]);
   const [userSubscriptionExpired, setUserSubscriptionExpired] = useState(true);
   const [userDataObj, setUserDataObj] = useState({});
-
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const handleGetUser = async () => {
+
     try {
       let decoded = await getDecodedToken()
       let { data: res } = await getUserById(decoded.userId)
       if (res.data) {
         setUserDataObj(res.data)
         setUserSubscriptionExpired(res.data.userSubscriptionExpired)
+      
       }
     }
     catch (err) {
       errorToast(err)
+      setIsLoadingallcompo(false)
+    }finally{
+      setIsLoadingallcompo(false)
     }
   }
   const getSubscriptions = async () => {
-    console
+    setIsLoadingallcompo(true)
     try {
       let decodedObj = await getDecodedToken();
 
       const { data: res } = await getAllFlashSalesbyUserId(decodedObj?.userId);
       if (res) {
         setSaleArr(res.data);
+        setIsLoadingallcompo(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoadingallcompo(false)
+    }finally{
+      setIsLoadingallcompo(false)
     }
   };
 
@@ -179,7 +189,11 @@ export default function MyFlashSales(props) {
   return (
     <>
       <Header normal={true} screenName={'Your Flash Sales'} rootProps={props} />
-      <View style={{backgroundColor:'#fff', flex:1}}>
+   {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+                  <View style={{backgroundColor:'#fff', flex:1}}>
     <View style={{flexDirection:'row',justifyContent:'center',marginTop:wp(3)}}>
 
     <Text style={{fontSize:wp(6),fontWeight:800,}}>My Flash Sale</Text>
@@ -226,7 +240,7 @@ export default function MyFlashSales(props) {
 
 
       
-      {
+     {/* {
         (userSubscriptionExpired || userDataObj?.numberOfSales <= 0) &&
         <Text style={{ paddingHorizontal: 10 }}>
           You do not have a valid subscription , subscribe one to add a flash sale
@@ -238,8 +252,9 @@ export default function MyFlashSales(props) {
           Your subscription has been blocked by admin please contact admin for further details
         </Text>
       }
-    
+    */}
       </View>
+}
       {/* {
         (userDataObj?.numberOfSales > 0 && !userSubscriptionExpired && !userDataObj?.isBlocked) &&
         <Pressable onPress={() => navigation.navigate('AddFlashSales')} style={[styles.btnbg, { width: wp(90), marginHorizontal: 20, marginBottom: 15 }]}>

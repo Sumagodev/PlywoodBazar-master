@@ -14,6 +14,7 @@ import MySubscriptionItem from '../ReusableComponents/MySubscriptionItem';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import CustomColors from '../styles/CustomColors';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function MySubscriptions(props) {
   const navigation = useNavigation();
 
@@ -137,7 +138,7 @@ export default function MySubscriptions(props) {
         <ScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 10 ,alignItems:'center'}}>
         {
           isLoading ?
-            <ActivityIndicator size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
+            <LoadingDialog size={'large'} color={CustomColors.mattBrownDark} width={wp(50)} />
             : null
         }
           <Text style={{ fontSize: wp(6), marginVertical: wp(2), fontWeight: 800, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>My Subscriptions</Text>

@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View ,ActivityIndicator} from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
 import Header from '../navigation/customheader/Header';
@@ -12,22 +12,28 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { PRIMARY_COLOR, WHITE_COLOR } from '../utils/constants';
 import ProductItemVertical from '../ReusableComponents/ProductItemVertical';
 import CustomButtonOld from '../ReusableComponents/CustomButtonOld';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 
 export default function MyProducts(props) {
   const focused = useIsFocused()
   const navigation = useNavigation();
-
+  const [isLoadingallcompo, setIsLoadingallcompo] = useState(false);
   const [subscriptionArr, setSubscriptionArr] = useState([]);
   const getSubscriptions = async () => {
+    setIsLoadingallcompo(true)
     try {
       let decodedObj = await getDecodedToken();
       const { data: res } = await getAllProducts(`page=1&perPage=1000&userId=${decodedObj?.userId}`);
       if (res) {
         console.log(JSON.stringify(res.data, null, 2));
         setSubscriptionArr(res.data);
+        setIsLoadingallcompo(false)
       }
     } catch (error) {
       errorToast(error);
+      setIsLoadingallcompo(false)
+    }finally{
+    setIsLoadingallcompo(false)
     }
   };
 
@@ -116,8 +122,13 @@ export default function MyProducts(props) {
   }, [focused]);
 
   return (
-    <View style={styles1.mainContainer}>
+  <>
       <Header normal={true} screenName={'Your Products'} rootProps={props} />
+    {
+            isLoadingallcompo?
+            <LoadingDialog size="large" color={CustomColors.mattBrownDark} style={{ marginTop: wp(5), marginBottom: wp(5) }} />
+            :
+              <View style={styles1.mainContainer}>
       <View style={reviewStyle.container}>
         <Text style={reviewStyle.title}>Your Products</Text>
         <View style={reviewStyle.addBtn} ><CustomButtonOld onPress={() => navigation.navigate('AddProducts')} textSize={wp(4)} text={"Add"}></CustomButtonOld></View>
@@ -137,6 +148,8 @@ export default function MyProducts(props) {
         <Text style={styles.textbtn}>Add New Product</Text>
       </TouchableOpacity> */}
     </View>
+            }
+    </>
   );
 }
 const styles1 = StyleSheet.create({
@@ -144,7 +157,7 @@ const styles1 = StyleSheet.create({
     backgroundColor: '#FFF4EC',
     flex: 1,
     alignItems: 'center',
-    justifyContent:"center"
+    justifyContent: "center"
   },
 
   flexbetween: {
