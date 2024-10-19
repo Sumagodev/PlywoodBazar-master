@@ -15,12 +15,16 @@ import SubscriptionCard from '../ReusableComponents/SubscriptionCard';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientRibbon from '../ReusableComponents/GradientRibbon';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+import CustomColors from '../styles/CustomColors';
+import LoadingDialog from '../ReusableComponents/LoadingDialog';
 export default function Subscriptions(props) {
   const navigation = useNavigation();
   console.log(JSON.stringify(props, null, 2), "propspropspropspropsprops")
   const [subscriptionArr, setSubscriptionArr] = useState([]);
+  const [visible, setvisible] = useState(false);
   const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
   const getSubscriptions = async () => {
+    setvisible(true)
     try {
       let token = await getToken();
       console.log(token, 'check tokkls===========');
@@ -30,9 +34,11 @@ export default function Subscriptions(props) {
       if (res) {
         console.log(res.data);
         setSubscriptionArr(res.data);
+        setvisible(false)
       }
     } catch (error) {
       errorToast(error);
+      setvisible(false)
     }
   };
 
@@ -83,6 +89,8 @@ export default function Subscriptions(props) {
 
 
   const renderNewSubscriptionItem = ({ item, index }) => {
+    console.log('raiii',item);
+    
     const durationText = item?.noOfMonth
       ? `${item?.noOfMonth} ${item?.noOfMonth > 1 ? 'months' : 'month'}`
       : 'No Validity';
@@ -105,6 +113,9 @@ export default function Subscriptions(props) {
               For {item?.advertisementDays > 1 ? `${item?.advertisementDays} Days` : `${item?.advertisementDays} Day`}
             </Text>
 
+            <Text style={[stylesCard.durationText,{color:'#cc8d19'}]}>
+               {item?.subscriptiontype}
+            </Text>
             <View style={{ marginBottom: wp(5) }}>
               <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'} />
             </View>
@@ -162,6 +173,7 @@ export default function Subscriptions(props) {
             )}
           />
         </View>
+<LoadingDialog  visible={visible}  />
 
       </ImageBackground>
     </>
@@ -231,7 +243,7 @@ const stylesCard = StyleSheet.create({
     borderRadius: wp(25),
     position: 'absolute',
     left: -wp(11), // Half the width of the circle
-    top: '50%', // Center vertically based on the height of the card
+    top: '35%', // Center vertically based on the height of the card
     transform: [{ translateY: -32 }], // Half the height of the circle to offset it upwards
   },
   periodText: {

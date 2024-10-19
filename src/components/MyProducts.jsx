@@ -106,7 +106,7 @@ export default function MyProducts(props) {
       imagePath: { uri: generateImageUrl(item?.mainImage) },
       sellingPrice: item?.sellingprice,
       price: item?.price,
-      approval: item?.approved === 'APPROVED' ? true : false,
+      approval: item?.approved
 
     }
     return (

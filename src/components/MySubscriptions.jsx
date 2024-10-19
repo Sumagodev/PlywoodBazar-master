@@ -103,6 +103,8 @@ export default function MySubscriptions(props) {
     );
   };
   const renderMySubscriptionItem = ({ item, index }) => {
+    console.log('itemitem',item);
+    
     const myItem = {
       description: item?.description,
       name: item?.name,

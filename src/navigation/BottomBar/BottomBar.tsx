@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute, useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert,Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Filtercategory from '../../components/Filtercategory';
@@ -15,6 +15,8 @@ import Login from '../../components/Login';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { getUnreadNotificationsCount } from '../../services/Notifications.service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {  } from 'react-native-paper';
+import CustomButtonNew from '../../ReusableComponents/CustomButtonNew';
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({ state, descriptors, navigation }) {
@@ -22,67 +24,107 @@ function MyTabBar({ state, descriptors, navigation }) {
   const [count, setCount] = useState('')
   const focused = useIsFocused();
   const navigate = useNavigation()
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     getNotificationCount()
   }, [count, focused])
+  // useEffect(() => {
+  //   const checkRegistrationStatus = async () => {
+  //     try {
+  //       const isRegisterLogin: any = await AsyncStorage.getItem('isRegister');
+  //       const isRegistered = JSON.parse(isRegisterLogin); // Convert string to boolean
+  //       console.log('isRegisterLogin', isRegistered);
+
+  //       const showRegistrationAlert = () => {
+  //         if (!isRegistered) { // Use !isRegistered since we're checking for 'false'
+  //           Alert.alert(
+  //             'Get Registered/Login!',
+  //             'Click Register/Login to proceed.',
+  //             [
+  //               {
+  //                 text: 'Skip for Now',
+  //                 style: 'cancel',
+  //                 onPress: () => { },
+  //               },
+  //               {
+  //                 text: 'Register',
+  //                 style: 'default',
+  //                 onPress: () => {
+  //                   // Navigate to the registration page
+  //                   navigate.navigate('Register'); // Ensure 'Register' is the correct route name
+  //                 },
+  //               },
+  //               {
+  //                 text: 'Login',
+  //                 style: 'default',
+  //                 onPress: () => {
+  //                   // Navigate to the login page
+  //                   navigate.navigate('Login'); // Ensure 'Login' is the correct route name
+  //                 },
+  //               },
+  //             ],
+  //             { cancelable: false }
+  //           );
+  //         }
+  //       };
+
+  //       const timeoutId = setTimeout(() => {
+  //         showRegistrationAlert();
+  //       }, 20000); // Show alert after 20 seconds
+
+  //       return () => {
+  //         clearTimeout(timeoutId); // Cleanup the timeout on unmount
+  //       };
+  //     } catch (error) {
+  //       console.log('Error fetching isRegister value', error);
+  //     }
+  //   };
+
+  //   checkRegistrationStatus();
+  // }, [navigate]);
+
+
+
+  // Function to fetch notification count
+ 
   useEffect(() => {
     const checkRegistrationStatus = async () => {
       try {
-        const isRegisterLogin: any = await AsyncStorage.getItem('isRegister');
-        const isRegistered = JSON.parse(isRegisterLogin); // Convert string to boolean
-        console.log('isRegisterLogin', isRegistered);
+        const isRegisterLogin = await AsyncStorage.getItem('isRegister');
+        const isRegisteredParsed = JSON.parse(isRegisterLogin); // Convert string to boolean
+        console.log('isRegisterLogin', isRegisteredParsed);
 
-        const showRegistrationAlert = () => {
-          if (!isRegistered) { // Use !isRegistered since we're checking for 'false'
-            Alert.alert(
-              'Get Registered/Login!',
-              'Click Register/Login to proceed.',
-              [
-                {
-                  text: 'Skip for Now',
-                  style: 'cancel',
-                  onPress: () => { },
-                },
-                {
-                  text: 'Register',
-                  style: 'default',
-                  onPress: () => {
-                    // Navigate to the registration page
-                    navigate.navigate('Register'); // Ensure 'Register' is the correct route name
-                  },
-                },
-                {
-                  text: 'Login',
-                  style: 'default',
-                  onPress: () => {
-                    // Navigate to the login page
-                    navigate.navigate('Login'); // Ensure 'Login' is the correct route name
-                  },
-                },
-              ],
-              { cancelable: false }
-            );
-          }
-        };
+        setIsRegistered(isRegisteredParsed);
 
-        const timeoutId = setTimeout(() => {
-          showRegistrationAlert();
-        }, 20000); // Show alert after 20 seconds
+        if (!isRegisteredParsed) {
+          const timeoutId = setTimeout(() => {
+            setShowModal(true); // Show modal after 20 seconds
+          }, 20000); // 20-second delay before showing the modal
 
-        return () => {
-          clearTimeout(timeoutId); // Cleanup the timeout on unmount
-        };
+          return () => {
+            clearTimeout(timeoutId); // Clear timeout on component unmount
+          };
+        }
       } catch (error) {
         console.log('Error fetching isRegister value', error);
       }
     };
 
     checkRegistrationStatus();
-  }, [navigate]);
+  }, []);
 
+  // Handlers for modal buttons
+  const handleRegister = () => {
+    setShowModal(false);
+    navigate.navigate('Register'); // Navigate to Register screen
+  };
 
+  const handleLogin = () => {
+    setShowModal(false);
+    navigate.navigate('Login'); // Navigate to Login screen
+  };
 
-  // Function to fetch notification count
+ 
   const getNotificationCount = async (): Promise<number> => {
     try {
       const token: any | null = await getDecodedToken();
@@ -112,6 +154,35 @@ function MyTabBar({ state, descriptors, navigation }) {
         justifyContent: 'space-between',
       }}
     >
+        <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowModal(false)} // Close modal on hardware back button
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Get Registered/Login!</Text>
+            <Text style={styles.modalMessage}>Click Register/Login to proceed.</Text>
+
+            <View style={styles.buttonContainer}>
+              {/* Register Button */}
+             <View style={{flexDirection:'row',flexWrap:'wrap',justifyContent:"space-around"}}>
+
+             <CustomButtonNew textSize={wp(4)} text="Register" paddingVertical={wp(2)} paddingHorizontal={wp(6)} onPress={handleRegister} />
+             <CustomButtonNew textSize={wp(4)} text="Login" paddingVertical={wp(2)} paddingHorizontal={wp(9)} onPress={handleLogin} />
+             </View>
+             
+
+
+              {/* Skip Button */}
+              <TouchableOpacity style={styles.skipButton} onPress={() => setShowModal(false)}>
+                <Text style={styles.skipButtonText}>Skip for Now</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label = options.tabBarLabel !== undefined ? options.tabBarLabel : options.title !== undefined ? options.title : route.name;
@@ -261,6 +332,53 @@ const styles = StyleSheet.create({
   selectedLabel: {
     color: '#BF9F65',
     fontSize: wp(3),
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent overlay
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: 300,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'column',
+    width: '100%',
+  },
+  button: {
+    backgroundColor: '#4CAF50', // Green button
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  skipButton: {
+    padding: 10,
+    marginVertical: 5,
+    alignItems: 'center',
+  },
+  skipButtonText: {
+    color: '#FF0000', // Red text for skip
+    fontSize: 16,
   },
 })
 

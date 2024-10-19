@@ -5,6 +5,8 @@ import CustomColors from "../styles/CustomColors";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const ProductItemVertical = ({ onEditPress, product,onDeletePress }) => {
+    console.log('product',product);
+    
     return (
         <Pressable style={styles.container} onPress={onEditPress}>
             <Image style={styles.imageStyle} source={product.imagePath} />
@@ -18,14 +20,14 @@ const ProductItemVertical = ({ onEditPress, product,onDeletePress }) => {
                 </View>
                 <View style={styles.tableRow}>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1, paddingRight: wp(4) }}>
-                        <Text style={{ fontSize: wp(3.5),}} ellipsizeMode="tail" numberOfLines={1}>
-                            {product.approval ? 'Approved' : 'Not Approved'}
+                        <Text style={{ fontSize: wp(3.5),fontWeight:'bold'}} ellipsizeMode="tail" numberOfLines={1}>
+                            {product.approval}
                         </Text>
-                        <Icon
+                        {/*<Icon
                             name={product.approval ? 'check-decagram' : 'alert-decagram'}
                             size={wp(4)}
                             color={product.approval ? 'green' : 'red'}
-                        />
+                        />*/}
                     </View>
                 </View>
                 

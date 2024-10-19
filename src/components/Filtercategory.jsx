@@ -881,12 +881,10 @@ const Filtercategory = (props) => {
 
   return (
     <>
-
       {/* <Header backbtnshowpage /> */}
 
 
-
-      <Header normal={true} screenName={'Shop'} rootProps={props} />
+      <Header normal={true} rootProps={props} />
       <View style={[styles.padinghr, styles.bgwhite, { flex: 1 }]}>
         <View style={{ paddingBottom: 20 }}>
           <View style={{ display: 'flex', flexDirection: 'row', gap: 5, marginTop: hp(2), justifyContent: 'space-between' }}>
