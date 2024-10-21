@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, FlatList, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, Image, TextInput, TouchableOpacity, Alert, Modal, Button } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -7,23 +7,28 @@ import Header from '../navigation/customheader/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getAllProducts, searchProduct } from '../services/Product.service';
-import { getDecodedToken, searchVendorFromDb } from '../services/User.service';
+import {  searchVendorFromDb } from '../services/User.service';
 import { errorToast } from '../utils/toastutill';
 import ProductItemHorizontal from '../ReusableComponents/ProductItemHorizontal';
 import { generateImageUrl } from '../services/url.service';
 import { isAuthorisedContext } from '../navigation/Stack/Root';
-import { checkForValidSubscriptionAndReturnBoolean, getUserById, getUserUserById, topProfilesHomePage } from '../services/User.service';
+import { checkForValidSubscriptionAndReturnBoolean, getUserById, getUserUserById, topProfilesHomePage ,getDecodedToken} from '../services/User.service';
+import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
+
 export default function Search(props) {
   const navigation = useNavigation();
   const focused = useIsFocused();
+  const [showModal, setShowModal] = useState(false);
   const [productArr, setProductArr] = useState([]);
   const [currentUserId, setCurrentUserId] = useState('');
+  const [ProductCount, setProductCount] = useState();
   const [allProductsArr, setAllProducts] = useState([]);
   const [searchVendor, setSearchVendor] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  console.log('allProductsArr', allProductsArr);
+  console.log('ProductCount', ProductCount);
   const [currentUserHasActiveSubscription, setCurrentUserHasActiveSubscription] = useState(false);
   const [isAuthorized] = useContext(isAuthorisedContext);
+
 
   const handleSearchFromDb = async value => {
     try {
@@ -221,38 +226,74 @@ export default function Search(props) {
     if (focused) {
       setProductArr([]);
       setSearchQuery('');
+      HandleCheckValidSubscription()
     }
   }, [focused]);
+  // useEffect(() => {
+  //   if (isAuthorized) {
+
+  //     if (focused) {
+  //       const timer = setTimeout(() => {
+  //         Alert.alert(
+  //           'Product Add',
+  //           '"Add products to your profile—let others discover what you have!"',
+  //           [
+  //             {
+  //               text: 'Add Products',
+  //               style: 'default',
+  //               onPress: () => navigation.navigate('AddProducts'),
+  //             },
+  //             {
+  //               text: 'Skip for now',
+  //               style: 'cancel',
+  //             },
+  //           ],
+  //           { cancelable: true }
+  //         );
+  //       }, 20000); // 20 seconds delay
+
+  //       return () => clearTimeout(timer); // Clear timeout if the component is unmounted
+  //     }
+  //   } 
+  //   return () => {};
+  // }, [ focused]);
+
   useEffect(() => {
-    if (isAuthorized) {
+    if (isAuthorized && focused && ProductCount<1) {
+      const timer = setTimeout(() => {
+        setShowModal(true); // Show modal after 20 seconds
+      }, 20000); // 20-second delay
 
-      if (focused) {
-        const timer = setTimeout(() => {
-          Alert.alert(
-            'Product Add',
-            '"Add products to your profile—let others discover what you have!"',
-            [
-              {
-                text: 'Add Products',
-                style: 'default',
-                onPress: () => navigation.navigate('AddProducts'),
-              },
-              {
-                text: 'Skip for now',
-                style: 'cancel',
-              },
-            ],
-            { cancelable: true }
+      return () => clearTimeout(timer); // Clear timeout if the component is unmounted
+    }
+    return () => { };
+  }, [isAuthorized, focused]);
+
+  const HandleCheckValidSubscription = async () => {
+    try {
+      let decoded = await getDecodedToken();
+      console.log('decoded', decoded);
+setProductCount(decoded?.user?.productCount)
+      setCurrentUserId(decoded?.userId)
+      if (decoded) {
+        if (decoded?.user?.name) {
+    
+        }
+
+        let { data: res } = await checkForValidSubscriptionAndReturnBoolean(decoded?.userId);
+        if (res.data) {
+          console.log(
+            'setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
+            res.data,
+            'setCurrentUserHasActiveSubscription,setCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscriptionsetCurrentUserHasActiveSubscription',
           );
-        }, 20000); // 20 seconds delay
-
-        return () => clearTimeout(timer); // Clear timeout if the component is unmounted
+          setCurrentUserHasActiveSubscription(res.data);
+        }
       }
-    } 
-    return () => {};
-  }, [ focused]);
-
-
+    } catch (err) {
+      errorToast(err);
+    }
+  };
   const renderSearchItem = ({ item, index }) => {
     return (
       <TouchableOpacity onPress={() => handleRedirect(item)} style={{ paddingVertical: 10, borderBottomColor: 'rgba(0,0,0,0.2)', borderBottomWidth: 1 }}>
@@ -281,7 +322,41 @@ export default function Search(props) {
       {/* <Header normal={"normal"} /> */}
 
       <Header normal={true} screenName={'Search product'} rootProps={props} />
+      <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowModal(false)} // Allow closing the modal
+      >
+        <View style={stylesSearch.modalBackground}>
+          <View style={stylesSearch.modalContainer}>
+            <Text style={stylesSearch.modalText}>
+              Add products to your profile—let others discover what you have!
+            </Text>
 
+            <View style={stylesSearch.buttonContainer}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                {/* Add Products Button */}
+                <CustomButtonNew
+                  textSize={wp(4)}
+                  text="Add Products"
+                  paddingVertical={wp(2)}
+                  paddingHorizontal={wp(6)}
+                  onPress={() => {
+                    setShowModal(false); // Close modal
+                    navigation.navigate('AddProducts'); // Navigate to AddProducts screen
+                  }}
+                />
+              </View>
+
+              {/* Skip for Now Button */}
+              <TouchableOpacity style={stylesSearch.skipButton} onPress={() => setShowModal(false)}>
+                <Text style={stylesSearch.skipButtonText}>Skip for Now</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.container}>
         {/* <View style={[styles.flexRow, {marginTop: 25}]}>
           { <Pressable style={styles.flexRow} onPress={() => { setSearchVendor(false); setProductArr([]); setSearchQuery("") }}>
@@ -339,6 +414,7 @@ export default function Search(props) {
   );
 }
 const styles = StyleSheet.create({
+
   imgsmall: {
     width: wp(6),
     height: hp(3),
@@ -415,5 +491,61 @@ const stylesSearch = StyleSheet.create({
   },
   input: {
     flex: 1,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent overlay
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: 300,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'column',
+    width: '100%',
+  },
+  skipButton: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  skipButtonText: {
+    color: '#FF0000', // Red text for skip
+    fontSize: 16,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  spacer: {
+    marginTop: 10,
   },
 });

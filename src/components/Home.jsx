@@ -168,7 +168,8 @@ export default function Home() {
   // };
 
   useEffect(() => {
-    if (!currentUserHasActiveSubscription) {
+    if (!currentUserHasActiveSubscription &&  isAuthorized) {
+
       const timer = setTimeout(() => {
         setShowModal(true); // Show modal after 20 seconds
       }, 20000); // 20-second delay before showing the modal

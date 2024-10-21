@@ -13,14 +13,14 @@ import { formatDate } from "../utils/formatDate";
 //     'Moscow', 'Dubai', 'Seoul', 'Singapore', 'Hong Kong', 'Bangkok',
 // ];
 const { width, height } = Dimensions.get('window');
-const AllBannerListCard = ({ onEditPress, product, onDeletePress, editable }) => {
+const AllBannerListCard = ({ onEditPress, product, onDeletePress, editable, isVerified }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cities, setcities] = useState([])
     const [Categories, setCategories] = useState([])
     const [type, setType] = useState(null);
     console.log('citiess', Categories);
 
-    console.log('upppp', modalVisible);
+    console.log('upppp', product);
 
 
     return (
@@ -35,20 +35,38 @@ const AllBannerListCard = ({ onEditPress, product, onDeletePress, editable }) =>
                 <View style={{ flexDirection: 'row', }}>
                     <Text style={[styles.headStyle, { fontSize: wp(4.5), color: '#cc8d19', width: '100%' }]} numberOfLines={1} ellipsizeMode="tail">{product.name}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', width: '100%',justifyContent:'center', alignItems:"center" }}>
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: "center" }}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>Type:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }}>{product.Type}</Text>
                 </View>
-                {product.ProductName? <View style={{ flexDirection: 'row', width: '100%',justifyContent:'center', alignItems:"center"}}>
-                <Text style={[styles.headStyle, { width: '25%' }]}>Product:</Text>
-                <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
-            </View>:null}
-               
-                <View style={{ flexDirection: 'row', width: '100%',justifyContent:'center', alignItems:"center"}}>
+                {product.ProductName ? <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: "center" }}>
+                    <Text style={[styles.headStyle, { width: '25%' }]}>Product:</Text>
+                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.ProductName}</Text>
+                </View> : null}
+
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: "center" }}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>Created At:</Text>
                     <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{formatDate(product.createdAt)}</Text>
                 </View>
-               {/* <View style={{ flexDirection: 'row', width: '100%' }}>
+                {/*    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: "center" }}>
+                    <Text style={[styles.headStyle, { width: '25%' }]}>Verified:</Text>
+                    <Text style={{ fontWeight: "400", width: '70%', paddingRight: wp(4) }} numberOfLines={1} ellipsizeMode="tail">{product.isVerified}</Text>
+                </View>
+                
+                
+*/}
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-start', alignItems: "center" , paddingLeft: wp(1)}}>
+                <Text style={[styles.headStyle, { width: '25%' }]}>Status:</Text>
+                    <Text style={{ fontWeight: "400",  }} ellipsizeMode="tail" numberOfLines={1}>
+                         {product.isVerified ? 'Verified' : ' Not Verified'}
+                    </Text>
+                    <Icon
+                        name={product.isVerified ? 'check-decagram' : 'alert-decagram'}
+                        size={wp(4)}
+                        color={product.isVerified ? 'green' : 'red'}
+                    />
+                </View>
+                {/* <View style={{ flexDirection: 'row', width: '100%' }}>
                     <Text style={[styles.headStyle, { width: '25%' }]}>State:</Text>
                     <Text style={{ fontWeight: "400", width: '70%' }} numberOfLines={1} ellipsizeMode="tail">{product.state}</Text>
                 </View>
@@ -67,7 +85,7 @@ const AllBannerListCard = ({ onEditPress, product, onDeletePress, editable }) =>
                 </TouchableOpacity>
                 */}
                 {
-                    editable ? <View style={{ flexDirection: 'row',  alignItems: "center", position:'absolute',justifyContent:'flex-end',alignSelf:'flex-end',right:wp(-3),top:wp(1)}}>
+                    editable ? <View style={{ flexDirection: 'row', alignItems: "center", position: 'absolute', justifyContent: 'flex-end', alignSelf: 'flex-end', right: wp(-3), top: wp(1) }}>
                         <TouchableOpacity style={{ marginHorizontal: 10, width: wp(8), height: wp(8), alignItems: 'center', justifyContent: 'center', borderRadius: 50, backgroundColor: '#cc8d19', marginVertical: 2 }} onPress={onDeletePress}>
                             <FontAwesomeIcon name="trash-o" size={wp(4)} color='#fff' />
                         </TouchableOpacity>

@@ -70,6 +70,9 @@ import Product_Review_Note from '../ReusableComponents/NotificationCards/Product
 import Vendor_Review_Note from '../ReusableComponents/NotificationCards/Vendor_Review_Note';
 import DealerShip_Note from '../ReusableComponents/NotificationCards/DealerShip_Note';
 import { updateReadStatus } from '../services/Notifications.service';
+import Product_approval_status_updated from '../ReusableComponents/NotificationCards/Product_approval_status_updated';
+
+
 
 export default function Notification(props) {
   const [Notification, setNotification] = useState([]);
@@ -156,6 +159,8 @@ export default function Notification(props) {
         return <Vendor_Review_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       case 'dealershipOpportunity':
         return <DealerShip_Note isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
+      case 'product_approval_status_updated':
+        return <Product_approval_status_updated isSubscriber={currentUserHasActiveSubscription}  organizationName={item.payload.organizationName} productName={item.payload.productName} price={item.price} date={item.date} item={item} />;
       default:
         return null;
     }

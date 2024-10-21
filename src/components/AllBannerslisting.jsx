@@ -99,7 +99,7 @@ export default function AllBannerslisting(props) {
 
     const renderMyProductItem = ({ item, index }) => {
 
-        console.log('00000000', item);
+        console.log('00000000', item.isVerified);
         console.log('generateImageUrl(item?.image)', generateImageUrl(item?.image));
 
         const productItem = {
@@ -109,6 +109,7 @@ export default function AllBannerslisting(props) {
             Type: item?.type,
             createdAt: item?.createdAt,
             ProductName: item?.productId?.slug,
+            isVerified: item.isVerified ,
             // Cities: item?.cities,
             // Categories: item?.categories,
 

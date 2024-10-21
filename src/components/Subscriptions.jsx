@@ -1,6 +1,6 @@
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { FlatList, ImageBackground, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import styles from '../../assets/stylecomponents/Style';
@@ -17,12 +17,14 @@ import GradientRibbon from '../ReusableComponents/GradientRibbon';
 import CustomButtonNew from '../ReusableComponents/CustomButtonNew';
 import CustomColors from '../styles/CustomColors';
 import LoadingDialog from '../ReusableComponents/LoadingDialog';
+import { isAuthorisedContext } from '../navigation/Stack/Root';
 export default function Subscriptions(props) {
   const navigation = useNavigation();
-  console.log(JSON.stringify(props, null, 2), "propspropspropspropsprops")
+  console.log(props?.route?.params?.register, "propspropspropspropsprops")
   const [subscriptionArr, setSubscriptionArr] = useState([]);
   const [visible, setvisible] = useState(false);
   const [selectedSubscriptionObj, setSelectedSubscriptionObj] = useState(null);
+  const [isAuthorized] = useContext(isAuthorisedContext);
   const getSubscriptions = async () => {
     setvisible(true)
     try {
@@ -89,8 +91,8 @@ export default function Subscriptions(props) {
 
 
   const renderNewSubscriptionItem = ({ item, index }) => {
-    console.log('raiii',item);
-    
+    console.log('raiii', item);
+
     const durationText = item?.noOfMonth
       ? `${item?.noOfMonth} ${item?.noOfMonth > 1 ? 'months' : 'month'}`
       : 'No Validity';
@@ -113,8 +115,8 @@ export default function Subscriptions(props) {
               For {item?.advertisementDays > 1 ? `${item?.advertisementDays} Days` : `${item?.advertisementDays} Day`}
             </Text>
 
-            <Text style={[stylesCard.durationText,{color:'#cc8d19'}]}>
-               {item?.subscriptiontype}
+            <Text style={[stylesCard.durationText, { color: '#cc8d19' }]}>
+              {item?.subscriptiontype}
             </Text>
             <View style={{ marginBottom: wp(5) }}>
               <GradientRibbon feature1={item?.numberOfAdvertisement != 0 ? `${item?.numberOfAdvertisement} Advertisements` : 'No Advertisements'} feature2={item?.numberOfSales != 0 ? `${item?.numberOfSales} Flash sales` : 'No Flash sales'} />
@@ -149,7 +151,7 @@ export default function Subscriptions(props) {
 
 
 
-     {/*   {props.route?.params?.register && props.route?.params?.register == true ? (
+          {/*   {props.route?.params?.register && props.route?.params?.register == true ? (
             <TouchableOpacity onPress={() => navigation.navigate('BottomBar', { screen: 'Home' })} style={[{ width: wp(90), display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }]}>
               <Text style={[styles.textbtn, { color: '#ddc99b' }]}>
                 Skip <FontAwesome name="angle-double-right" size={21} color="#ddc99b" />{' '}
@@ -158,9 +160,9 @@ export default function Subscriptions(props) {
           ) : (
             <></>
           )}
-*/}  
+*/}
         </View>
-        <View style={[{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginVertical: wp(5) }]} >
+        {props?.route?.params?.register === 'true' ?  <View style={[{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginVertical: wp(5) }]} >
           <CustomButtonNew
             paddingHorizontal={wp(8)}
             paddingVertical={wp(3)}
@@ -172,8 +174,9 @@ export default function Subscriptions(props) {
               })
             )}
           />
-        </View>
-<LoadingDialog  visible={visible}  />
+        </View>:null}
+
+        <LoadingDialog visible={visible} />
 
       </ImageBackground>
     </>
@@ -230,8 +233,8 @@ const stylesCard = StyleSheet.create({
     borderRadius: 10,
     elevation: 2,
     marginLeft: 40, // Space for the floating circle
-    alignSelf:'center',
-    marginVertical:wp(5)
+    alignSelf: 'center',
+    marginVertical: wp(5)
   },
   periodContainer: {
     width: wp(25),
